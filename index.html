@@ -220,6 +220,7 @@ button::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer
              radial-gradient(farthest-side,rgba(0,0,0,0) 55%,rgba(0,0,0,.30) 100%)}
 button.toque{scale:.965}
 button.toque::after{opacity:1;transition:opacity .04s}
+button.toque-fuera::after{opacity:.5;transition:opacity .12s}
 button:disabled::after{display:none}
 #patronSvg button::after{display:none}
 
@@ -252,8 +253,9 @@ button:disabled::after{display:none}
 #ptr .c{width:46px;height:46px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(176,71,217,.5)}
 #ptr small{font-size:12px;font-weight:800;background:var(--card2);color:var(--lilac);padding:5px 11px;border-radius:12px;white-space:nowrap}
 #ptr.vuelve{transition:transform .25s ease,opacity .25s ease}
-#ptr.girando .c svg{animation:gira .8s linear infinite}
-@keyframes gira{to{transform:rotate(360deg)}}
+#ptr .giro{display:flex}
+#ptr.girando .c svg{animation:gira .75s linear infinite}
+@keyframes gira{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 
 /* Versión nueva */
 .novedad{display:flex;align-items:center;gap:10px;background:rgba(124,77,255,.18);border:1px solid rgba(155,107,255,.45);color:var(--lilac);border-radius:16px;padding:10px 14px;font-size:13px;font-weight:700;width:100%;max-width:380px;text-align:left}
@@ -281,7 +283,7 @@ svg.resaltando .arco.activo{opacity:1;stroke-width:22}
 /* Tarjeta "Por categoría" de Inicio: chica / agrandada */
 .tarj-cat{cursor:pointer}
 .tarj-cat h2{display:flex;align-items:center;justify-content:space-between}
-.tarj-cat .expandir{width:34px;height:34px;border-radius:11px;background:var(--card2);color:var(--lilac);display:flex;align-items:center;justify-content:center;transition:transform .45s ease}
+.tarj-cat .expandir{width:34px;height:34px;border-radius:11px;background:var(--card2);color:var(--lilac);display:flex;align-items:center;justify-content:center;transition:transform .8s ease}
 .tarj-cat.abierta .expandir{transform:rotate(180deg)}
 .cat-cuerpo{display:flex;align-items:center;gap:16px}
 .cat-graf{flex:none;display:flex;justify-content:center}
@@ -290,7 +292,7 @@ svg.resaltando .arco.activo{opacity:1;stroke-width:22}
 .tarj-cat:not(.abierta) .leg-it{width:100%}
 .tarj-cat:not(.abierta) .leg-it .n{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tarj-cat:not(.abierta) .leg-it .m{display:none}
-.tarj-cat .arco,.tarj-cat .base{stroke-width:28;transition:stroke-width .45s ease,opacity .25s ease}
+.tarj-cat .arco,.tarj-cat .base{stroke-width:28;transition:stroke-width .8s ease,opacity .25s ease}
 .tarj-cat.abierta .cat-cuerpo{flex-direction:column;gap:16px}
 .tarj-cat.abierta .cat-graf svg{width:220px;height:220px}
 .tarj-cat.abierta .cat-ley{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:8px}
@@ -298,9 +300,9 @@ svg.resaltando .arco.activo{opacity:1;stroke-width:22}
 .tarj-cat.abierta svg.resaltando .arco.activo{stroke-width:22}
 .tarj-cat:not(.abierta) .cc-grande{opacity:0}
 .tarj-cat.abierta .cc-chico{opacity:0}
-.tarj-cat.animando{transition:height .45s cubic-bezier(.2,.8,.2,1);overflow:hidden}
-.tarj-cat.animando .cat-graf svg{transition:transform .45s cubic-bezier(.2,.8,.2,1)}
-.tarj-cat.animando .leg-it{transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .35s ease .12s}
+.tarj-cat.animando{transition:height .8s cubic-bezier(.33,.9,.3,1);overflow:hidden}
+.tarj-cat.animando .cat-graf svg{transition:transform .8s cubic-bezier(.33,.9,.3,1)}
+.tarj-cat.animando .leg-it{transition:transform .8s cubic-bezier(.33,.9,.3,1),opacity .55s ease .2s}
 .ayuda-toca{font-size:12px;font-weight:700;color:var(--muted);text-align:center;margin-top:10px}
 .tarj-cat.abierta .ayuda-toca{margin-top:14px}
 /* Tarjetas tipo acordeón al llegar arriba o abajo */
@@ -319,6 +321,41 @@ svg.resaltando .arco.activo{opacity:1;stroke-width:22}
 /* Letra grande: agranda todo un 15% */
 body.grande .vista,body.grande .vidrio,body.grande .login-box,body.grande #patron>*{zoom:1.15}
 body.grande nav.barra{zoom:1.1}
+
+/* ================= Actualización 4 ================= */
+/* Mes tocable (Personal / Negocio) y calendario con meses y años */
+.per-btn{border:0;background:transparent;color:var(--ink);font-size:16px;font-weight:800;padding:9px 12px;border-radius:12px;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.per-btn svg{color:var(--lilac)}
+.cal-tit{border:0;background:rgba(255,255,255,.06);color:var(--ink);font-size:17px;font-weight:800;padding:9px 14px;border-radius:12px;display:flex;align-items:center;gap:6px}
+.cal-tit svg{color:var(--lilac)}
+.cal-grilla{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.cal-grilla button{border:0;border-radius:14px;background:rgba(255,255,255,.06);color:var(--ink);font-size:16px;font-weight:800;padding:16px 0}
+.cal-grilla button.hoy{box-shadow:inset 0 0 0 2px var(--violet2);color:var(--lilac)}
+.cal-grilla button[aria-selected="true"]{background:var(--grad);color:#fff;box-shadow:none}
+/* Avatar tocable */
+button.avatar{border:0;padding:0}
+/* Últimos gastos: Consultar todos */
+.h2-link{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ver-todos{border:0;background:transparent;color:var(--lilac);font-size:14px;font-weight:800;padding:6px 8px;border-radius:10px;display:flex;align-items:center;gap:2px}
+/* Pantalla "Todos los movimientos" */
+.titulo-todos{display:flex;align-items:center;gap:10px}
+.titulo-todos h1{margin:0;font-size:22px;font-weight:900}
+.volver{width:44px;height:44px;border-radius:14px;border:0;background:var(--card);color:var(--ink);display:flex;align-items:center;justify-content:center;flex:none}
+.buscar{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:0 14px;color:var(--muted)}
+.buscar input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font-size:16px;font-weight:600;padding:13px 0}
+.buscar input:focus{outline:none}
+.buscar:focus-within{border-color:var(--violet2);box-shadow:0 0 0 3px rgba(124,77,255,.3)}
+.filtro-tipo{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+.filtro-tipo button{flex:none;border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:8px 13px;background:transparent;color:var(--soft);font-weight:700;font-size:13px}
+.filtro-tipo button[aria-pressed="true"]{background:var(--violet);border-color:var(--violet);color:#fff;font-weight:800}
+.fecha-grupo{margin:0 0 6px;font-size:15px;font-weight:800;color:var(--soft)}
+/* Detalle de un gasto */
+.det-cab{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;padding:4px 0 6px}
+.det-cab span{font-size:16px;font-weight:700;color:var(--soft)}
+.det-cab b{font-size:34px;font-weight:900;letter-spacing:-.5px}
+.det-cab b.pos{color:var(--teal2)}
+.det-filas{background:rgba(11,9,22,.45);border-radius:18px;padding:4px 14px}
+.det-filas .fila-p b{max-width:60%;overflow-wrap:anywhere}
 
 /* Gastos que Google rechazó */
 .esperando.mal{color:#FFB3BF;background:rgba(255,107,129,.16)}
@@ -379,7 +416,7 @@ body.grande nav.barra{zoom:1.1}
 
 <!-- ============ APP ============ -->
 <div id="app" hidden>
-  <div id="ptr" aria-hidden="true"><span class="c"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg></span><small>Deslizá para actualizar</small></div>
+  <div id="ptr" aria-hidden="true"><span class="c"><span class="giro"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg></span></span><small>Deslizá para actualizar</small></div>
   <main id="contenido"></main>
   <nav class="barra" aria-label="Menú">
     <button type="button" data-ir="inicio"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"/></svg>Inicio</button>
@@ -401,7 +438,7 @@ body.grande nav.barra{zoom:1.1}
    ========================================================= */
 const API = window.BILLETERA_API || '';
 // Fecha y hora de esta versión (se muestra una vez cuando alguien abre la app actualizada)
-const APP_VERSION = '2026-10-27T04:50';
+const APP_VERSION = '2026-10-27T19:25';
 const COLORES = ['#9B6BFF', '#F05BB5', '#3FD6C6', '#FFB547', '#6FA8FF', '#FF8A5B', '#B5E36B', '#D7C8FF'];
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 const LISTAS_BASE = {
@@ -516,7 +553,7 @@ function calcNegocio(d, previo) {
     f.categoria = d.categoria; f.descripcion = d.descripcion; f.monto = d.monto; f.pago = d.pago;
     f.gastoReal = d.monto; f.movEfectivo = d.pago === 'Efectivo' ? -d.monto : 0;
   } else if (d.tipo === 'Cambio') {
-    f.categoria = 'Interés/Gastos'; f.descripcion = 'Cambio a efectivo'; f.monto = d.monto; f.pago = 'Transferencia';
+    f.categoria = 'Interés/Gastos'; f.descripcion = (d.nota || '').trim() || 'Cambio a efectivo'; f.monto = d.monto; f.pago = 'Transferencia';
     f.pctCambio = d.pctCambio; f.comision = r2(d.monto * d.pctCambio / 100); f.recibido = r2(d.monto - f.comision);
     f.gastoReal = f.comision; f.movEfectivo = f.recibido;
   } else if (d.tipo === 'Ajuste') {
@@ -619,14 +656,16 @@ function primerNombre(n) { return String(n || '').trim().split(/\s+/)[0] || ''; 
 /* ---------- Entrar / crear cuenta ---------- */
 // Ojito: muestra u oculta lo que se escribió en la contraseña
 const OJO_TACHADO = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7c2 0 3.7.6 5.1 1.5M22 12s-3.5 7-10 7c-2 0-3.7-.6-5.1-1.5"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="M3 3l18 18"/></svg>';
-const OJO_ABIERTO = document.querySelector('.ojo').innerHTML;
+const OJO_ABIERTO = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
 function ponerOjo(b, ver) {
   b.dataset.ojo.split(',').forEach(id => { $(id).type = ver ? 'text' : 'password'; });
   b.setAttribute('aria-pressed', ver);
   b.setAttribute('aria-label', ver ? 'Ocultar contraseña' : 'Mostrar contraseña');
-  b.innerHTML = ver ? OJO_TACHADO : OJO_ABIERTO;
+  // ojo abierto = la contraseña se ve · ojo tachado = está oculta
+  b.innerHTML = ver ? OJO_ABIERTO : OJO_TACHADO;
 }
 function ocultarClaves() { document.querySelectorAll('.ojo').forEach(b => ponerOjo(b, false)); }
+ocultarClaves();
 document.querySelectorAll('.ojo').forEach(b => {
   b.addEventListener('pointerdown', e => e.preventDefault()); // no cierra el teclado
   b.addEventListener('click', () => ponerOjo(b, b.getAttribute('aria-pressed') !== 'true'));
@@ -823,6 +862,8 @@ const IC = {
   alerta: '<path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17.5v.5"/>',
   cal: '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',
   expandir: '<path d="M7 10l5 5 5-5"/>',
+  lapiz: '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M14 6l4 4"/>',
+  lupa: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
   chispa: '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/>'
 };
 const svg = (n, s = 20, w = 1.9) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]}</svg>`;
@@ -852,21 +893,22 @@ function render() {
   document.querySelectorAll('nav.barra [data-ir]').forEach(b => b.toggleAttribute('aria-current', false));
   const actual = document.querySelector(`nav.barra [data-ir="${S.vista}"]`);
   if (actual) actual.setAttribute('aria-current', 'page');
-  const html = { inicio: vInicio, personal: () => vSeccion('personal'), negocio: () => vSeccion('negocio'), perfil: vPerfil }[S.vista]();
-  const barra = document.querySelector('#contenido .filtro-neg');
-  const x = barra ? barra.scrollLeft : null;
+  const html = { inicio: vInicio, personal: () => vSeccion('personal'), negocio: () => vSeccion('negocio'), perfil: vPerfil, todos: vTodos }[S.vista]();
+  const barras = ['.filtro-neg', '.filtro-tipo'];
+  const xs = barras.map(c => { const b = document.querySelector('#contenido ' + c); return b ? b.scrollLeft : null; });
   $('contenido').innerHTML = `<div class="vista">${html}</div>`;
   animarGraficos();
-  const nueva = document.querySelector('#contenido .filtro-neg');
-  if (nueva) {
-    if (x !== null) nueva.scrollLeft = x;
-    // que el negocio elegido quede siempre a la vista
+  barras.forEach((c, i) => {
+    const nueva = document.querySelector('#contenido ' + c);
+    if (!nueva) return;
+    if (xs[i] !== null) nueva.scrollLeft = xs[i];
+    // que lo elegido quede siempre a la vista
     const b = nueva.querySelector('[aria-pressed="true"]');
     if (b) {
       if (b.offsetLeft < nueva.scrollLeft) nueva.scrollLeft = b.offsetLeft - 6;
       else if (b.offsetLeft + b.offsetWidth > nueva.scrollLeft + nueva.clientWidth) nueva.scrollLeft = b.offsetLeft + b.offsetWidth - nueva.clientWidth + 6;
     }
-  }
+  });
 }
 function pintarSync() {
   const b = document.getElementById('btnSync');
@@ -970,9 +1012,9 @@ function alternarCat() {
   card.classList.add('animando');
   card.style.height = h1 + 'px';
   sv.style.transform = '';
-  its.forEach((e, i) => { e.style.transitionDelay = (i * 30) + 'ms'; e.style.transform = ''; e.style.opacity = ''; });
+  its.forEach((e, i) => { e.style.transitionDelay = (i * 55) + 'ms'; e.style.transform = ''; e.style.opacity = ''; });
   clearTimeout(alternarCat.t);
-  alternarCat.t = setTimeout(() => { card.classList.remove('animando'); card.style.height = ''; its.forEach(e => { e.style.transitionDelay = ''; }); }, 650);
+  alternarCat.t = setTimeout(() => { card.classList.remove('animando'); card.style.height = ''; its.forEach(e => { e.style.transitionDelay = ''; }); }, 1300);
 }
 function dona(items, total, tam, grosor, centro) {
   const R = tam / 2 - grosor / 2 - 2, C = 2 * Math.PI * R, cx = tam / 2;
@@ -998,7 +1040,7 @@ function filaMov(f, hojaN) {
   const pend = rechDe(f.id) ? '<span class="esperando mal">no se pudo subir</span>' : enCola(f.id) ? '<span class="esperando">sin subir</span>' : '';
   let titulo, detalle, monto, pos = false;
   if (hojaN) {
-    if (f.tipo === 'Cambio') { titulo = 'Cambio a efectivo'; detalle = `${fmt(f.monto)} al ${f.pctCambio}% · recibiste ${fmt(f.recibido)}`; monto = '+' + fmt(f.recibido); pos = true; }
+    if (f.tipo === 'Cambio') { const nota = notaCambio(f); titulo = 'Cambio a efectivo'; detalle = `${nota ? nota + ' · ' : ''}${fmt(f.monto)} al ${f.pctCambio}%`; monto = '+' + fmt(f.recibido); pos = true; }
     else if (f.tipo === 'Ajuste') { titulo = f.descripcion; detalle = 'Efectivo contado: ' + fmt(f.monto); monto = (f.movEfectivo >= 0 ? '+' : '-') + fmt(Math.abs(f.movEfectivo)); pos = f.movEfectivo >= 0; }
     else if (f.tipo === 'Inversión') { titulo = `${f.descripcion} × ${f.unidades}`; detalle = `Productos · ${f.pago}${f.recargo ? ' + ' + f.pctRecargo + '%' : ''}`; monto = '-' + fmt(totalNegocio(f)); }
     else { titulo = f.descripcion || f.categoria; detalle = `${f.categoria} · ${f.pago}`; monto = '-' + fmt(f.gastoReal); }
@@ -1015,6 +1057,7 @@ function filaMov(f, hojaN) {
     <span class="txt"><b>${esc(titulo)}${pend}</b><small>${fCorta(f.fecha)} · ${esc(detalle)}${esc(quien)}</small></span>
     <span class="monto${pos ? ' pos' : ''}">${monto}</span></button>`;
 }
+const notaCambio = f => (f.descripcion && f.descripcion !== 'Cambio a efectivo') ? f.descripcion : '';
 const ordenar = l => [...l].sort((a, b) => (b.fecha + (b.cargado || '')).localeCompare(a.fecha + (a.cargado || '')));
 
 /* ---------- Inicio ---------- */
@@ -1030,7 +1073,7 @@ function vInicio() {
   const etiquetaNeg = S.yo.admin ? (S.filtro || 'Todos los negocios') : S.yo.negocio;
   return `
   <div class="cabecera">
-    <div class="avatar">${esc(iniciales(S.yo.nombre))}</div>
+    <button type="button" class="avatar" data-ir2="perfil" aria-label="Ir a mi perfil">${esc(iniciales(S.yo.nombre))}</button>
     <div class="saludo"><small>Hola,</small><b>${esc(S.yo.nombre)}</b></div>
     ${chipSync()}
   </div>
@@ -1049,7 +1092,7 @@ function vInicio() {
     <div class="ayuda-toca">${S.catAbierta ? 'Tocá un color para ver su monto · Tocá la tarjeta para achicar' : 'Tocá para agrandar'}</div>
   </section>` : `<section class="tarj"><h2>Por categoría</h2><div class="vacio">Todavía no hay gastos este mes.<br>Tocá el <b>+</b> para cargar el primero.</div></section>`}
   <section class="tarj">
-    <h2>Últimos gastos</h2>
+    <h2 class="h2-link">Últimos gastos ${ultimos.length ? `<button type="button" class="ver-todos" data-ir2="todos">Consultar todos ${svg('der', 16, 2.6)}</button>` : ''}</h2>
     <div class="lista">${ultimos.length ? ultimos.map(f => filaMov(f, f._n)).join('') : '<div class="vacio">Acá vas a ver lo último que se cargó.</div>'}</div>
   </section>`;
 }
@@ -1091,7 +1134,7 @@ function vSeccion(cual) {
   <div class="periodo">
     ${porViaje ? '' : `<div class="segm" role="group" aria-label="Período">${[['mes', 'Mes'], ['semana', 'Semana'], ['dia', 'Día']].map(([v, t]) =>
       `<button type="button" data-per="${v}" aria-pressed="${S.per.tipo === v}">${t}</button>`).join('')}</div>
-    <div class="nav-per"><button type="button" data-mover="-1" aria-label="Anterior">${svg('izq', 20, 2.4)}</button><b>${esc(etiquetaPer(S.per))}</b><button type="button" data-mover="1" aria-label="Siguiente">${svg('der', 20, 2.4)}</button></div>`}
+    <div class="nav-per"><button type="button" data-mover="-1" aria-label="Anterior">${svg('izq', 20, 2.4)}</button><button type="button" class="per-btn" data-acc="elegirPeriodo" aria-label="Elegir ${S.per.tipo === 'mes' ? 'mes' : 'fecha'}: ${esc(etiquetaPer(S.per))}">${esc(etiquetaPer(S.per))}${svg('abajo', 16, 2.6)}</button><button type="button" data-mover="1" aria-label="Siguiente">${svg('der', 20, 2.4)}</button></div>`}
     ${esN && viajes.length ? ddHTML('ddVerViaje', 'Ver por viaje', [['', 'Por fecha (' + etiquetaPer(S.per) + ')'], ...viajes.map(v => [v, v])], S.viaje, v => { S.viaje = v; render(); }) : ''}
   </div>
   <div class="anillo">${anillo(cual, items, total, { tam: 220, grosor: 15, arriba: porViaje ? 'Este viaje' : etiquetaPer(S.per), valor: fmt(total), contar: total, abajo: movs(filas.length) })}</div>
@@ -1245,7 +1288,7 @@ function formNegocio(fila, tipo, neg) {
     fecha: fila ? fila.fecha : hoy(), viaje: fila ? fila.viaje : (viajesDe(negocio).includes(ultimoViaje) ? ultimoViaje : ''), viajeNuevo: false,
     descripcion: fila ? fila.descripcion : '', categoria: fila ? fila.categoria : '', unidades: fila ? String(fila.unidades || '') : '',
     monto: fila ? String(fila.monto || '') : '', pago: fila ? fila.pago : 'Transferencia', pctRecargo: fila ? String(fila.pctRecargo || '') : '',
-    pctCambio: fila ? String(fila.pctCambio || '') : '', abierto: '', confirmarBorrar: false, permitirSinEfectivo: false };
+    pctCambio: fila ? String(fila.pctCambio || '') : '', nota: fila && fila.tipo === 'Cambio' ? notaCambio(fila) : '', abierto: '', confirmarBorrar: false, permitirSinEfectivo: false };
   if (!fila && !tipo && necesitaInicial(negocio)) return formAjuste(negocio, true);
   pintarFormNegocio();
 }
@@ -1299,6 +1342,7 @@ function pintarFormNegocio() {
       ${fechaViaje}
       <div class="dos"><label class="campo" for="fMonto">Transferiste<input id="fMonto" inputmode="decimal" data-campo="monto" value="${esc(f.monto)}" placeholder="$ 0"></label>
         <label class="campo" for="fPctC">% del cambio<input id="fPctC" inputmode="decimal" data-campo="pctCambio" value="${esc(f.pctCambio)}" placeholder="Ej: 1"></label></div>
+      <label class="campo" for="fNota">Nota (opcional)<input id="fNota" data-campo="nota" value="${esc(f.nota)}" maxlength="80" placeholder="Agregá un detalle si querés"></label>
       <div id="calcB">${c.b}</div>`;
   }
   abrirModal(`${cab(f.editando ? 'Editar' : 'Compras y negocio', color, f.tipo === 'Cambio' ? 'cambio' : 'caja')}
@@ -1348,7 +1392,7 @@ function guardarNegocio() {
     if (!(d.monto > 0)) return errorForm('Poné el monto.');
     if (d.pago === 'Efectivo') saleEfectivo = d.monto;
   } else {
-    d.monto = num(f.monto); d.pctCambio = num(f.pctCambio || '0');
+    d.monto = num(f.monto); d.pctCambio = num(f.pctCambio || '0'); d.nota = (f.nota || '').trim();
     if (!(d.monto > 0)) return errorForm('Poné cuánto transferiste.');
     if (!(d.pctCambio >= 0 && d.pctCambio <= 100)) return errorForm('Revisá el % del cambio.');
   }
@@ -1436,8 +1480,8 @@ async function exportar(btn) {
     .concat(N.filter(f => f.tipo === 'Inversión').map(f => [f.fecha, f.negocio, f.viaje, f.descripcion, Number(f.unidades), Number(f.costoUnit), Number(f.monto), f.pago, f.pctRecargo === '' ? '' : Number(f.pctRecargo), Number(f.recargo) || '']));
   const nor = [['Fecha', 'Negocio', 'Viaje', 'Categoría', 'Descripción', 'Pago', 'Gasto real']]
     .concat(N.filter(f => f.tipo === 'No reversible').map(f => [f.fecha, f.negocio, f.viaje, f.categoria, f.descripcion, f.pago, Number(f.gastoReal)]));
-  const cam = [['Fecha', 'Negocio', 'Viaje', 'Transferido', '% del cambio', 'Comisión (gasto real)', 'Efectivo recibido']]
-    .concat(N.filter(f => f.tipo === 'Cambio').map(f => [f.fecha, f.negocio, f.viaje, Number(f.monto), Number(f.pctCambio), Number(f.comision), Number(f.recibido)]));
+  const cam = [['Fecha', 'Negocio', 'Viaje', 'Nota', 'Transferido', '% del cambio', 'Comisión (gasto real)', 'Efectivo recibido']]
+    .concat(N.filter(f => f.tipo === 'Cambio').map(f => [f.fecha, f.negocio, f.viaje, notaCambio(f), Number(f.monto), Number(f.pctCambio), Number(f.comision), Number(f.recibido)]));
   const per = [['Fecha', 'Negocio', 'Origen de la plata', 'Categoría', 'Descripción', 'Pago', 'Monto']]
     .concat(Pp.map(f => [f.fecha, f.negocio, f.origen, f.categoria, f.descripcion, f.pago, Number(f.monto)]));
   const wb = XLSX.utils.book_new();
@@ -1445,7 +1489,7 @@ async function exportar(btn) {
   hoja(resumen, 'Resumen', [20, 14, 12, 12, 14, 12, 16, 14, 16, 18]);
   hoja(inv, 'Inversiones', [12, 18, 16, 30, 10, 14, 14, 14, 10, 12]);
   hoja(nor, 'No reversibles', [12, 18, 16, 16, 26, 14, 12]);
-  hoja(cam, 'Cambios', [12, 18, 16, 14, 12, 18, 16]);
+  hoja(cam, 'Cambios', [12, 18, 16, 24, 14, 12, 18, 16]);
   if (!porViaje) hoja(per, 'Personal', [12, 18, 22, 22, 26, 14, 12]);
   const nombre = 'Billetera_' + (neg || 'Todos').replace(/[^A-Za-z0-9]+/g, '-') + '_' + val.replace(/[^A-Za-z0-9]+/g, '-') + '.xlsx';
   XLSX.writeFile(wb, nombre);
@@ -1456,6 +1500,7 @@ async function exportar(btn) {
    Clics y escritura (un solo lugar para todo)
    ========================================================= */
 function irA(v, desdeAtras) {
+  if (v === 'todos' && S.vista !== 'todos') { S.busca = ''; S.ftipo = 'todos'; S.todosMax = 60; }
   S.vista = v; S.catAbierta = false; S.firmas = {}; S.resaltes = {};
   if (v !== 'negocio') S.viaje = '';
   $('contenido').scrollTop = 0; render();
@@ -1482,6 +1527,18 @@ document.addEventListener('click', async ev => {
   if (ds.cal === 'cerrar') return cerrarCal();
   if (ds.calmes) { CAL.m += Number(ds.calmes); if (CAL.m < 0) { CAL.m = 11; CAL.y--; } if (CAL.m > 11) { CAL.m = 0; CAL.y++; } return pintarCal(); }
   if (ds.dia) { const fn = CAL.fn; cerrarCal(); return fn && fn(ds.dia); }
+  if (ds.calvista) { CAL.vista = ds.calvista; return pintarCal(); }
+  if (ds.calm !== undefined) {
+    CAL.m = Number(ds.calm);
+    if (ds.esteanio) CAL.y = aFecha(hoy()).getFullYear();
+    if (CAL.soloMes) { const fn = CAL.fn; cerrarCal(); return fn && fn(aISO(new Date(CAL.y, CAL.m, 1))); }
+    CAL.vista = 'dias'; return pintarCal();
+  }
+  if (ds.calanio) { CAL.y += Number(ds.calanio); return pintarCal(); }
+  if (ds.caly) { CAL.y = Number(ds.caly); CAL.vista = 'meses'; return pintarCal(); }
+  if (ds.calbloque) { CAL.y += 12 * Number(ds.calbloque); return pintarCal(); }
+  if (ds.ir2) return irA(ds.ir2);
+  if (ds.ftipo) { S.ftipo = ds.ftipo; S.todosMax = 60; return render(); }
   if (ds.filtro !== undefined) { S.filtro = ds.filtro; S.viaje = ''; return render(); }
   if (ds.per) { S.per = { tipo: ds.per, ref: hoy() }; return render(); }
   if (ds.mover) { S.per = moverPer(S.per, Number(ds.mover)); return render(); }
@@ -1490,9 +1547,7 @@ document.addEventListener('click', async ev => {
   if (ds.editar) {
     const [h, id] = ds.editar.split(':');
     const fila = (h === 'negocio' ? S.negocio : S.personal).find(f => f.id === id);
-    if (!fila) return;
-    if (h === 'negocio' && fila.tipo === 'Ajuste') { S.form = { hoja: 'negocio', id, editando: true, confirmarBorrar: false }; return verAjuste(fila); }
-    return h === 'negocio' ? formNegocio(fila) : formPersonal(fila);
+    return fila && verDetalle(h, fila);
   }
   if (ds.set && S.form) {
     S.form[ds.set] = ds.val;
@@ -1510,6 +1565,18 @@ document.addEventListener('click', async ev => {
     guardarNegocio: () => { leerCampos(); guardarNegocio(); },
     guardarAjuste: () => { leerCampos(); guardarAjuste(); },
     errores: verErrores,
+    editarDetalle: () => {
+      const d = S.detalle; if (!d) return;
+      const fila = (d.h === 'negocio' ? S.negocio : S.personal).find(f => f.id === d.id); if (!fila) return;
+      if (d.h === 'negocio' && fila.tipo === 'Ajuste') { S.form = { hoja: 'negocio', id: fila.id, editando: true, confirmarBorrar: false }; return verAjuste(fila); }
+      return d.h === 'negocio' ? formNegocio(fila) : formPersonal(fila);
+    },
+    elegirPeriodo: () => {
+      const tipo = S.per.tipo;
+      abrirCal(S.per.ref, v => { S.per = { tipo, ref: v }; render(); }, tipo === 'mes' ? 'meses' : 'dias', tipo === 'mes' ? 'Elegí el mes' : tipo === 'semana' ? 'Elegí la semana' : 'Elegí el día');
+    },
+    volverInicio: () => irA('inicio'),
+    verMas: () => { S.todosMax = (S.todosMax || 60) + 60; $('listaTodos').innerHTML = htmlListaTodos(); },
     letra: () => { const on = !LS.get('bd_letra', false); LS.set('bd_letra', on); document.body.classList.toggle('grande', on); t.setAttribute('aria-checked', on); avisar(on ? 'Letra grande activada' : 'Letra normal'); },
     saltarInicial: () => { const n = S.form.negocio; LS.set('bd_sininicial_' + n, true); limpiarModal(); formNegocio(null, 'Inversión', n); },
     ajustar: () => { const n = S.yo.admin ? S.filtro : S.yo.negocio; if (!n) return avisar('Elegí un negocio arriba para ajustar su efectivo.'); formAjuste(n, false); },
@@ -1535,6 +1602,7 @@ function verAjuste(fila) {
     ${botonBorrar()}`);
 }
 document.addEventListener('input', ev => {
+  if (ev.target.id === 'buscarTodos') { S.busca = ev.target.value; S.todosMax = 60; $('listaTodos').innerHTML = htmlListaTodos(); return; }
   const c = ev.target.dataset && ev.target.dataset.campo;
   if (!c || !S.form) return;
   S.form[c] = ev.target.value;
@@ -1628,16 +1696,18 @@ function cerrarListasAfuera(el) { if (!el.closest || !el.closest('.dd')) cerrarL
 /* =========================================================
    Calendario propio
    ========================================================= */
-const CAL = { y: 0, m: 0, valor: '', fn: null };
-function abrirCal(valor, fn) {
+const CAL = { y: 0, m: 0, valor: '', fn: null, vista: 'dias', soloMes: false, titulo: '' };
+function abrirCal(valor, fn, modo, titulo) {
   leerCampos();
   const d = aFecha(valor || hoy());
-  Object.assign(CAL, { y: d.getFullYear(), m: d.getMonth(), valor: valor || '', fn });
+  Object.assign(CAL, { y: d.getFullYear(), m: d.getMonth(), valor: valor || '', fn, vista: modo || 'dias', soloMes: modo === 'meses', titulo: titulo || 'Elegí la fecha' });
   pintarCal(); if ($('cal').hidden) { $('cal').hidden = false; histRevisar(); }
 }
 function cerrarCal(desdeAtras) { const estaba = !$('cal').hidden; $('cal').hidden = true; CAL.fn = null; if (estaba && !desdeAtras) histRevisar(); }
 $('cal').addEventListener('click', e => { if (e.target === $('cal')) cerrarCal(); });
+const MES_CORTO = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 function pintarCal() {
+  if (CAL.vista === 'meses' || CAL.vista === 'anios') return pintarCalGrilla();
   const h = hoy(), a = ayer();
   const primero = new Date(CAL.y, CAL.m, 1), vacios = (primero.getDay() + 6) % 7, dias = new Date(CAL.y, CAL.m + 1, 0).getDate();
   const mes = MESES[CAL.m][0].toUpperCase() + MESES[CAL.m].slice(1);
@@ -1648,12 +1718,124 @@ function pintarCal() {
   }
   const sel = CAL.valor ? aFecha(CAL.valor) : null;
   $('calIn').innerHTML = `
-    <div class="v-cab"><span class="ic" style="background:var(--grad)">${svg('cal', 20)}</span><b>Elegí la fecha</b><button class="cerrar" type="button" data-cal="cerrar" aria-label="Cerrar">${svg('x', 18, 2.2)}</button></div>
+    <div class="v-cab"><span class="ic" style="background:var(--grad)">${svg('cal', 20)}</span><b>${esc(CAL.titulo)}</b><button class="cerrar" type="button" data-cal="cerrar" aria-label="Cerrar">${svg('x', 18, 2.2)}</button></div>
     <div class="cal-sel">Fecha elegida<b>${sel ? DIAS[sel.getDay()][0].toUpperCase() + DIAS[sel.getDay()].slice(1) + ' ' + sel.getDate() + ' de ' + MESES[sel.getMonth()] : '—'}</b></div>
-    <div class="cal-cab"><button type="button" data-calmes="-1" aria-label="Mes anterior">${svg('izq', 20, 2.4)}</button><b>${mes} ${CAL.y}</b><button type="button" data-calmes="1" aria-label="Mes siguiente">${svg('der', 20, 2.4)}</button></div>
+    <div class="cal-cab"><button type="button" data-calmes="-1" aria-label="Mes anterior">${svg('izq', 20, 2.4)}</button><button type="button" class="cal-tit" data-calvista="meses" aria-label="Elegir mes y año">${mes} ${CAL.y}${svg('abajo', 16, 2.6)}</button><button type="button" data-calmes="1" aria-label="Mes siguiente">${svg('der', 20, 2.4)}</button></div>
     <div class="cal-sem" aria-hidden="true">${['L', 'M', 'M', 'J', 'V', 'S', 'D'].map(x => `<span>${x}</span>`).join('')}</div>
     <div class="cal-dias">${celdas}</div>
     <div class="cal-pie"><button class="btn btn-sec" type="button" data-dia="${h}">Hoy</button><button class="btn btn-sec" type="button" data-dia="${a}">Ayer</button><button class="btn btn-ghost" type="button" data-cal="cerrar">Cancelar</button></div>`;
+}
+
+// Vista rápida: los 12 meses de un año, o 12 años para elegir
+function pintarCalGrilla() {
+  const hoyD = aFecha(hoy()), sel = CAL.valor ? aFecha(CAL.valor) : null;
+  let cab, grilla;
+  if (CAL.vista === 'meses') {
+    cab = `<button type="button" data-calanio="-1" aria-label="Año anterior">${svg('izq', 20, 2.4)}</button><button type="button" class="cal-tit" data-calvista="anios" aria-label="Elegir año">${CAL.y}${svg('abajo', 16, 2.6)}</button><button type="button" data-calanio="1" aria-label="Año siguiente">${svg('der', 20, 2.4)}</button>`;
+    grilla = MES_CORTO.map((m, i) => `<button type="button" data-calm="${i}" class="${CAL.y === hoyD.getFullYear() && i === hoyD.getMonth() ? 'hoy' : ''}" aria-selected="${!!sel && sel.getFullYear() === CAL.y && sel.getMonth() === i}" aria-label="${MESES[i]} ${CAL.y}">${m}</button>`).join('');
+  } else {
+    const ini = CAL.y - 7;
+    cab = `<button type="button" data-calbloque="-1" aria-label="Años anteriores">${svg('izq', 20, 2.4)}</button><b>${ini} – ${ini + 11}</b><button type="button" data-calbloque="1" aria-label="Años siguientes">${svg('der', 20, 2.4)}</button>`;
+    grilla = Array.from({ length: 12 }, (_, k) => ini + k).map(y => `<button type="button" data-caly="${y}" class="${y === hoyD.getFullYear() ? 'hoy' : ''}" aria-selected="${!!sel && sel.getFullYear() === y}">${y}</button>`).join('');
+  }
+  const pie = CAL.soloMes
+    ? `<button class="btn btn-sec" type="button" data-calm="${hoyD.getMonth()}" data-esteanio="1">Este mes</button>`
+    : `<button class="btn btn-sec" type="button" data-calvista="dias">Volver a los días</button>`;
+  $('calIn').innerHTML = `
+    <div class="v-cab"><span class="ic" style="background:var(--grad)">${svg('cal', 20)}</span><b>${esc(CAL.titulo)}</b><button class="cerrar" type="button" data-cal="cerrar" aria-label="Cerrar">${svg('x', 18, 2.2)}</button></div>
+    <div class="cal-cab">${cab}</div>
+    <div class="cal-grilla">${grilla}</div>
+    <div class="dos">${pie}<button class="btn btn-ghost" type="button" data-cal="cerrar">Cancelar</button></div>`;
+}
+
+/* =========================================================
+   Todos los movimientos: lista por día, buscador y filtros
+   ========================================================= */
+const norm = t => String(t == null ? '' : t).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+const FILTROS_TIPO = [['todos', 'Todos'], ['personal', 'Personal'], ['Inversión', 'Compras'], ['No reversible', 'No reversible'], ['Cambio', 'Cambios'], ['Efectivo', 'Efectivo'], ['Transferencia', 'Transferencia']];
+function filasTodos() {
+  const q = norm(S.busca || '').trim(), ft = S.ftipo || 'todos';
+  const l = [...datosFiltrados(S.personal).map(f => Object.assign({ _n: false }, f)), ...datosFiltrados(S.negocio).map(f => Object.assign({ _n: true }, f))];
+  return ordenar(l.filter(f => {
+    if (ft === 'personal' && f._n) return false;
+    if (['Inversión', 'No reversible', 'Cambio'].includes(ft) && (!f._n || f.tipo !== ft)) return false;
+    if ((ft === 'Efectivo' || ft === 'Transferencia') && f.pago !== ft) return false;
+    if (q) {
+      const txt = norm([f.descripcion, f.categoria, f.viaje, f.negocio, f.tipo, f.origen, f.pago, f.monto, fmt(f.monto), fCorta(f.fecha)].join(' '));
+      if (!q.split(/\s+/).every(p => txt.includes(p))) return false;
+    }
+    return true;
+  }));
+}
+function fechaGrupo(iso) {
+  if (iso === hoy()) return 'Hoy';
+  if (iso === ayer()) return 'Ayer';
+  const d = aFecha(iso), base = d.getDate() + ' de ' + MESES[d.getMonth()];
+  return d.getFullYear() === aFecha(hoy()).getFullYear() ? base : base + ' de ' + d.getFullYear();
+}
+function htmlListaTodos() {
+  const l = filasTodos(), max = S.todosMax || 60;
+  if (!l.length) return `<div class="tarj"><div class="vacio">${S.busca || (S.ftipo && S.ftipo !== 'todos') ? 'No hay movimientos con esa búsqueda o filtro.' : 'Todavía no hay movimientos.'}</div></div>`;
+  let h = '', dia = '';
+  l.slice(0, max).forEach(f => {
+    if (f.fecha !== dia) { if (dia) h += '</div></section>'; dia = f.fecha; h += `<section class="tarj"><h3 class="fecha-grupo">${esc(fechaGrupo(dia))}</h3><div class="lista">`; }
+    h += filaMov(f, f._n);
+  });
+  h += '</div></section>';
+  if (l.length > max) h += `<button class="btn btn-sec" type="button" data-acc="verMas">Ver más (${l.length - max} más)</button>`;
+  return h;
+}
+function vTodos() {
+  return `
+  <div class="titulo-todos"><button type="button" class="volver" data-acc="volverInicio" aria-label="Volver a Inicio">${svg('izq', 20, 2.4)}</button><h1>Todos los movimientos</h1></div>
+  ${filtroNegocios()}
+  <label class="buscar">${svg('lupa', 18, 2.2)}<input id="buscarTodos" type="search" placeholder="Buscar (ej: chalana, tazas, 5000)" value="${esc(S.busca || '')}" autocomplete="off" enterkeyhint="search" aria-label="Buscar movimientos"></label>
+  <div class="filtro-tipo" role="group" aria-label="Filtrar">${FILTROS_TIPO.map(([v, t]) => `<button type="button" data-ftipo="${v}" aria-pressed="${(S.ftipo || 'todos') === v}">${t}</button>`).join('')}</div>
+  <div id="listaTodos" style="display:flex;flex-direction:column;gap:12px">${htmlListaTodos()}</div>`;
+}
+
+/* =========================================================
+   Detalle de un gasto: primero se mira, el lápiz lo edita
+   ========================================================= */
+function verDetalle(h, f) {
+  const esN = h === 'negocio', filas = [];
+  const add = (k, v) => { if (v !== '' && v != null) filas.push([k, String(v)]); };
+  let titulo, monto, signo = '-';
+  if (esN && f.tipo === 'Inversión') {
+    titulo = f.descripcion; monto = totalNegocio(f);
+    add('Tipo', 'Compra (inversión, se recupera)'); add('Producto', f.descripcion); add('Unidades', f.unidades);
+    add('Costo por unidad', fmt(f.costoUnit)); add('Costo total', fmt(f.monto));
+    if (Number(f.recargo)) add(`Recargo de la tienda (${f.pctRecargo}%)`, fmt(f.recargo));
+    add('Pago', f.pago);
+  } else if (esN && f.tipo === 'No reversible') {
+    titulo = f.descripcion || f.categoria; monto = f.gastoReal;
+    add('Tipo', 'Gasto no reversible'); add('Categoría', f.categoria); add('Descripción', f.descripcion); add('Pago', f.pago);
+  } else if (esN && f.tipo === 'Cambio') {
+    titulo = 'Cambio a efectivo'; monto = f.recibido; signo = '+';
+    add('Nota', notaCambio(f)); add('Transferiste', fmt(f.monto)); add('% del cambio', f.pctCambio + '%');
+    add('Comisión (cuenta como gasto)', fmt(f.comision)); add('Efectivo recibido', fmt(f.recibido));
+  } else if (esN) {
+    titulo = f.descripcion; monto = Math.abs(f.movEfectivo); signo = f.movEfectivo >= 0 ? '+' : '-';
+    add('Tipo', 'Ajuste de efectivo'); add('Efectivo contado', fmt(f.monto));
+  } else {
+    titulo = f.descripcion || f.categoria; monto = f.monto;
+    add('Tipo', 'Gasto personal'); add('Categoría', f.categoria); add('Descripción', f.descripcion);
+    add('¿De dónde salió la plata?', f.origen === 'Personal' ? 'Personal (plata propia)' : 'Negocio (MercadoLibre)'); add('Pago', f.pago);
+  }
+  if (esN) add('Viaje', f.viaje);
+  const d = aFecha(f.fecha);
+  add('Fecha', DIAS[d.getDay()][0].toUpperCase() + DIAS[d.getDay()].slice(1) + ' ' + d.getDate() + ' de ' + MESES[d.getMonth()] + ' ' + d.getFullYear());
+  add('Negocio', f.negocio);
+  if (S.yo.admin) add('Cargado por', f.usuario);
+  limpiarModal();
+  S.detalle = { h, id: f.id };
+  const col = esN ? (f.tipo === 'Cambio' || f.tipo === 'Ajuste' ? 'var(--teal)' : 'var(--violet)') : 'var(--fuchsia)';
+  abrirModal(`<div class="v-cab"><span class="ic" style="background:${col}">${svg(icoDe(f, esN), 20)}</span><b>Detalle</b>
+      <button class="cerrar" type="button" data-acc="editarDetalle" aria-label="Editar">${svg('lapiz', 19, 2.1)}</button>
+      <button class="cerrar" type="button" data-acc="cerrar" aria-label="Cerrar">${svg('x', 18, 2.2)}</button></div>
+    ${bannerRech(f.id)}
+    <div class="det-cab"><span>${esc(titulo)}</span><b class="${signo === '+' ? 'pos' : ''}">${signo}${fmt(monto)}</b>${enCola(f.id) && !rechDe(f.id) ? '<small class="esperando">sin subir todavía</small>' : ''}</div>
+    <div class="det-filas">${filas.map(([k, v]) => `<div class="fila-p"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('')}</div>`);
 }
 
 /* =========================================================
@@ -1661,30 +1843,48 @@ function pintarCal() {
    una luz sigue al dedo. Si sacás el dedo del botón, no se toca.
    ========================================================= */
 let toque = null, cancelado = null;
-function marcarToque(e) {
-  const r = toque.b.getBoundingClientRect();
-  toque.dentro = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
-  toque.b.style.setProperty('--x', (e.clientX - r.left) + 'px');
-  toque.b.style.setProperty('--y', (e.clientY - r.top) + 'px');
-  toque.b.classList.toggle('toque', toque.dentro);
+// La luz sigue al dedo todo el tiempo. Si el dedo sale del botón, la luz queda en el borde más cercano (más suave)
+// y el botón deja de estar "hundido": al soltar afuera, no se toca.
+function moverToque(x, y) {
+  const b = toque.b, r = b.getBoundingClientRect();
+  const dentro = x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+  toque.dentro = dentro;
+  b.style.setProperty('--x', (Math.min(Math.max(x, r.left), r.right) - r.left) + 'px');
+  b.style.setProperty('--y', (Math.min(Math.max(y, r.top), r.bottom) - r.top) + 'px');
+  b.classList.toggle('toque', dentro && !toque.scroll);
+  b.classList.toggle('toque-fuera', !dentro || !!toque.scroll);
 }
 function soltarToque(cancelar) {
   if (!toque) return;
   const b = toque.b, falta = Math.max(0, 140 - (Date.now() - toque.t));
   if (cancelar) cancelado = { b, t: Date.now() };
   toque = null;
-  if (cancelar) b.classList.remove('toque'); else setTimeout(() => b.classList.remove('toque'), falta);
+  const fin = () => b.classList.remove('toque', 'toque-fuera');
+  if (cancelar) fin(); else setTimeout(fin, falta);
 }
+// Un gesto (deslizar la pantalla, tirar para actualizar) anula el toque pero la luz sigue al dedo hasta soltar
+function anularToque() { if (toque) { toque.scroll = true; toque.b.classList.remove('toque'); toque.b.classList.add('toque-fuera'); } }
 document.addEventListener('pointerdown', e => {
   cancelado = null;
   const b = e.target.closest && e.target.closest('button');
   if (!b || b.disabled) return;
-  toque = { b, t: Date.now(), id: e.pointerId, dentro: true };
-  marcarToque(e);
+  toque = { b, t: Date.now(), id: e.pointerId, tipo: e.pointerType, dentro: true, scroll: false };
+  moverToque(e.clientX, e.clientY);
 }, true);
-document.addEventListener('pointermove', e => { if (toque && e.pointerId === toque.id) marcarToque(e); }, true);
-document.addEventListener('pointerup', e => { if (!toque || e.pointerId !== toque.id) return; marcarToque(e); soltarToque(!toque.dentro); }, true);
-document.addEventListener('pointercancel', () => soltarToque(true), true);
+// Mouse / lápiz
+document.addEventListener('pointermove', e => { if (toque && toque.tipo !== 'touch' && e.pointerId === toque.id) moverToque(e.clientX, e.clientY); }, true);
+document.addEventListener('pointerup', e => { if (!toque || toque.tipo === 'touch' || e.pointerId !== toque.id) return; moverToque(e.clientX, e.clientY); soltarToque(!toque.dentro); }, true);
+// Dedo: el celular sigue mandando el movimiento aunque la pantalla se deslice
+document.addEventListener('pointercancel', e => { if (!toque) return; if (toque.tipo === 'touch') anularToque(); else soltarToque(true); }, true);
+document.addEventListener('touchmove', e => { if (toque && toque.tipo === 'touch' && e.touches[0]) moverToque(e.touches[0].clientX, e.touches[0].clientY); }, { capture: true, passive: true });
+const finDedo = e => {
+  if (!toque || toque.tipo !== 'touch') return;
+  const t = e.changedTouches && e.changedTouches[0];
+  if (t) moverToque(t.clientX, t.clientY);
+  soltarToque(!toque.dentro || toque.scroll);
+};
+document.addEventListener('touchend', finDedo, { capture: true, passive: true });
+document.addEventListener('touchcancel', finDedo, { capture: true, passive: true });
 document.addEventListener('click', e => {
   if (cancelado && Date.now() - cancelado.t < 1000 && cancelado.b.contains(e.target)) { e.preventDefault(); e.stopImmediatePropagation(); }
   cancelado = null;
@@ -1700,7 +1900,7 @@ function ptrPintar(dist, texto) {
   el.classList.remove('vuelve');
   el.style.opacity = Math.min(1, dist / 40);
   el.style.transform = `translate(-50%, ${dist - 60}px)`;
-  el.querySelector('.c svg').style.transform = `rotate(${dist * 3.2}deg)`;
+  el.querySelector('.giro').style.transform = `rotate(${Math.round(dist * 3.3)}deg)`;
   el.querySelector('small').textContent = texto || (dist >= UMBRAL ? 'Soltá para actualizar' : 'Deslizá para actualizar');
 }
 function ptrOcultar() {
@@ -1715,8 +1915,10 @@ async function ptrActualizar() {
   el.classList.add('vuelve'); ptrPintar(UMBRAL, navigator.onLine ? 'Actualizando…' : 'Sin internet'); el.classList.add('vuelve');
   if (navigator.onLine) {
     el.classList.add('girando');
+    const t0 = Date.now();
     let bien = await sincronizar();
     while (S.sincronizando) { await esperar(150); bien = true; }
+    await esperar(Math.max(0, 1000 - (Date.now() - t0))); // que se vea girar al menos un segundo
     el.classList.remove('girando');
     el.querySelector('small').textContent = bien ? (S.cola.length ? 'Quedan gastos sin subir' : 'Todo actualizado ✓') : 'No se pudo conectar';
   }
@@ -1754,7 +1956,7 @@ function soltarEstirar() {
     const dy = e.touches[0].clientY - G.y0;
     const lado = dy > 0 && G.arriba && cont.scrollTop <= 0 ? 'arriba' : dy < 0 && G.abajo && cont.scrollTop + cont.clientHeight >= cont.scrollHeight - 2 ? 'abajo' : '';
     if (!lado) { if (G.activo) { soltarEstirar(); if (G.lado === 'arriba') ptrOcultar(); } G.activo = false; return; }
-    if (!G.activo && Math.abs(dy) > 12) { G.activo = true; G.lado = lado; soltarToque(true); }
+    if (!G.activo && Math.abs(dy) > 12) { G.activo = true; G.lado = lado; anularToque(); }
     if (!G.activo) return;
     G.dist = Math.min(Math.abs(dy) * 0.5, 110);
     estirar(G.dist, lado);
