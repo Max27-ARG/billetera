@@ -38,6 +38,10 @@ button{cursor:pointer}
 /* ---------- Campos ---------- */
 .campo{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:var(--soft);min-width:0}
 .campo input,.campo select,.input{width:100%;border:1px solid rgba(255,255,255,.12);background:rgba(11,9,22,.5);color:var(--ink);border-radius:14px;padding:12px;font-size:16px;font-weight:600}
+.clave{position:relative}
+.clave input{padding-right:54px}
+.ojo{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:12px;background:transparent;color:var(--soft);display:flex;align-items:center;justify-content:center}
+.ojo[aria-pressed="true"]{color:var(--lilac);background:rgba(124,77,255,.18)}
 .campo input:focus,.input:focus{outline:none;border-color:var(--violet2);box-shadow:0 0 0 3px rgba(124,77,255,.3)}
 .dos{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .dos>*{min-width:0}
@@ -123,8 +127,6 @@ button{cursor:pointer}
 .nav-per b{font-size:16px;font-weight:800}
 .anillo{display:flex;justify-content:center}
 .cats{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
-.cats span{display:flex;align-items:center;gap:6px;background:var(--card);border-radius:20px;padding:6px 10px;font-size:12px;font-weight:700}
-.cats i{width:8px;height:8px;border-radius:50%}
 .mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:8px}
 .mini>*{background:var(--card);border-radius:18px;padding:12px;display:flex;flex-direction:column;gap:3px;min-width:0;border:0;text-align:left;color:var(--ink)}
 .mini span{font-size:11px;font-weight:700;color:var(--muted)}
@@ -134,7 +136,7 @@ button{cursor:pointer}
 .mini .efe small{font-size:11px;font-weight:700;color:var(--tealink)}
 
 .lista{display:flex;flex-direction:column;gap:8px}
-.mov{display:flex;align-items:center;gap:12px;background:transparent;border:0;padding:6px 0;text-align:left;color:var(--ink);width:100%}
+.mov{display:flex;align-items:center;gap:12px;background:transparent;border:0;padding:6px 8px;margin:0 -8px;border-radius:16px;text-align:left;color:var(--ink);width:calc(100% + 16px)}
 .mov .ico{width:44px;height:44px;border-radius:14px;background:var(--card2);display:flex;align-items:center;justify-content:center;flex:none}
 .mov .txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .mov .txt b{font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -145,7 +147,7 @@ button{cursor:pointer}
 
 /* ---------- Barra ---------- */
 nav.barra{position:fixed;left:12px;right:12px;bottom:calc(12px + var(--safe-b));height:72px;max-width:536px;margin:0 auto;background:var(--card);border-radius:24px;display:flex;align-items:center;justify-content:space-around;padding:0 6px;box-shadow:0 10px 30px rgba(0,0,0,.4);z-index:5}
-nav.barra button{border:0;background:transparent;width:60px;height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:700;color:var(--dim)}
+nav.barra button{border:0;border-radius:16px;background:transparent;width:60px;height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:700;color:var(--dim)}
 nav.barra button[aria-current="page"]{color:var(--lilac);font-weight:800}
 nav.barra .mas{width:62px;height:62px;border-radius:50%;margin-top:-36px;background:var(--grad);color:#fff;box-shadow:0 10px 26px rgba(176,71,217,.5)}
 
@@ -199,6 +201,128 @@ nav.barra .mas{width:62px;height:62px;border-radius:50%;margin-top:-36px;backgro
 .acc{display:flex;gap:6px;flex-wrap:wrap}
 .acc button{border:0;border-radius:12px;padding:9px 12px;font-weight:800;font-size:13px;background:var(--card3);color:var(--ink)}
 .acc button.prim{background:var(--violet);color:#fff}
+
+/* ================= Actualización 2 ================= */
+/* Sin barras de desplazamiento */
+*{scrollbar-width:none}
+*::-webkit-scrollbar{display:none;width:0;height:0}
+/* Sin "tirar para recargar" del navegador */
+html,body{overscroll-behavior:none}
+#contenido,.pantalla,.vidrio{overscroll-behavior:contain}
+/* Sin seleccionar texto (y sin búsqueda de Google al mantener apretado) */
+body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+
+/* Animación al tocar: se hunde, bordes un toque más oscuros y una luz donde está el dedo */
+button{position:relative;overflow:hidden;transition:scale .14s ease;-webkit-tap-highlight-color:transparent}
+button::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .2s ease;
+  background:radial-gradient(circle at var(--x,50%) var(--y,50%),rgba(196,170,255,.42) 0,rgba(155,107,255,.20) 34px,rgba(124,77,255,0) 80px),
+             radial-gradient(farthest-side,rgba(0,0,0,0) 55%,rgba(0,0,0,.30) 100%)}
+button.toque{scale:.965}
+button.toque::after{opacity:1;transition:opacity .04s}
+button:disabled::after{display:none}
+#patronSvg button::after{display:none}
+
+/* Fecha: botón + Hoy / Ayer */
+.fecha-fila{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
+.fecha-fila .dd-btn{justify-content:flex-start;gap:10px}
+.fecha-fila .dd-btn svg{color:var(--lilac);flex:none}
+.fecha-fila .dd-btn span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fecha-fila .segm{padding:3px}
+.fecha-fila .segm button{flex:none;padding:8px 13px}
+
+/* Calendario propio */
+#cal{z-index:20;align-items:center}
+.cal{max-width:380px;gap:12px}
+.cal-sel{font-size:13px;font-weight:700;color:var(--muted)}
+.cal-sel b{display:block;font-size:22px;color:var(--ink);margin-top:2px;font-weight:800}
+.cal-cab{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.cal-cab b{font-size:17px;font-weight:800}
+.cal-cab button{width:44px;height:44px;border-radius:14px;border:0;background:rgba(255,255,255,.08);color:var(--ink);display:flex;align-items:center;justify-content:center}
+.cal-sem,.cal-dias{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;text-align:center}
+.cal-sem span{font-size:12px;font-weight:800;color:var(--muted);padding:4px 0}
+.cal-dias button{aspect-ratio:1;border:0;border-radius:12px;background:transparent;color:var(--ink);font-size:15px;font-weight:700;padding:0}
+.cal-dias button.hoy{box-shadow:inset 0 0 0 2px var(--violet2);color:var(--lilac)}
+.cal-dias button[aria-selected="true"]{background:var(--grad);color:#fff;box-shadow:none}
+.cal-pie{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.cal-pie .btn{padding:12px 8px;font-size:15px}
+
+/* Deslizar para actualizar */
+#ptr{position:fixed;left:50%;top:calc(10px + var(--safe-t));transform:translate(-50%,-90px);z-index:8;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none;opacity:0}
+#ptr .c{width:46px;height:46px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(176,71,217,.5)}
+#ptr small{font-size:12px;font-weight:800;background:var(--card2);color:var(--lilac);padding:5px 11px;border-radius:12px;white-space:nowrap}
+#ptr.vuelve{transition:transform .25s ease,opacity .25s ease}
+#ptr.girando .c svg{animation:gira .8s linear infinite}
+@keyframes gira{to{transform:rotate(360deg)}}
+
+/* Versión nueva */
+.novedad{display:flex;align-items:center;gap:10px;background:rgba(124,77,255,.18);border:1px solid rgba(155,107,255,.45);color:var(--lilac);border-radius:16px;padding:10px 14px;font-size:13px;font-weight:700;width:100%;max-width:380px;text-align:left}
+.novedad svg{flex:none}
+.novedad b{color:var(--ink);font-weight:800}
+
+/* ================= Actualización 3 ================= */
+/* Gráficos: anillo, resaltar una categoría */
+.arco{transition:opacity .25s ease,stroke-width .25s ease;cursor:pointer}
+svg.resaltando .arco{opacity:.22}
+svg.resaltando .arco.activo{opacity:1;stroke-width:22}
+.cc-grande,.cc-chico{transition:opacity .3s ease}
+/* Chips de categoría: grandes, con monto y % */
+.leg-it{border:0;background:transparent;color:var(--ink);font:inherit;display:flex;align-items:center;gap:8px;text-align:left;padding:0;min-width:0}
+.leg-it i{width:10px;height:10px;border-radius:50%;flex:none}
+.leg-it .n{font-weight:700}
+.leg-it .m{font-weight:700;color:var(--soft)}
+.leg-it b{font-weight:900}
+.cats .leg-it,.tarj-cat.abierta .leg-it{background:var(--card2);border-radius:22px;padding:9px 14px;font-size:15px;gap:7px;flex:none;white-space:nowrap;max-width:100%}
+.cats .leg-it .n,.tarj-cat.abierta .leg-it .n{overflow:hidden;text-overflow:ellipsis;min-width:0}
+.cats .leg-it[aria-pressed="true"],.tarj-cat.abierta .leg-it[aria-pressed="true"]{background:var(--ink);color:var(--bg2)}
+.cats .leg-it[aria-pressed="true"] .m,.tarj-cat.abierta .leg-it[aria-pressed="true"] .m{color:var(--card3)}
+.cats .leg-it .m::before,.tarj-cat.abierta .leg-it .m::before{content:'· '}
+.cats .leg-it b::before,.tarj-cat.abierta .leg-it b::before{content:'· ';font-weight:700}
+/* Tarjeta "Por categoría" de Inicio: chica / agrandada */
+.tarj-cat{cursor:pointer}
+.tarj-cat h2{display:flex;align-items:center;justify-content:space-between}
+.tarj-cat .expandir{width:34px;height:34px;border-radius:11px;background:var(--card2);color:var(--lilac);display:flex;align-items:center;justify-content:center;transition:transform .45s ease}
+.tarj-cat.abierta .expandir{transform:rotate(180deg)}
+.cat-cuerpo{display:flex;align-items:center;gap:16px}
+.cat-graf{flex:none;display:flex;justify-content:center}
+.cat-graf svg{width:118px;height:118px;display:block}
+.cat-ley{flex:1;min-width:0;display:flex;flex-direction:column;gap:9px;font-size:13px}
+.tarj-cat:not(.abierta) .leg-it{width:100%}
+.tarj-cat:not(.abierta) .leg-it .n{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tarj-cat:not(.abierta) .leg-it .m{display:none}
+.tarj-cat .arco,.tarj-cat .base{stroke-width:28;transition:stroke-width .45s ease,opacity .25s ease}
+.tarj-cat.abierta .cat-cuerpo{flex-direction:column;gap:16px}
+.tarj-cat.abierta .cat-graf svg{width:220px;height:220px}
+.tarj-cat.abierta .cat-ley{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:8px}
+.tarj-cat.abierta .arco,.tarj-cat.abierta .base{stroke-width:15}
+.tarj-cat.abierta svg.resaltando .arco.activo{stroke-width:22}
+.tarj-cat:not(.abierta) .cc-grande{opacity:0}
+.tarj-cat.abierta .cc-chico{opacity:0}
+.tarj-cat.animando{transition:height .45s cubic-bezier(.2,.8,.2,1);overflow:hidden}
+.tarj-cat.animando .cat-graf svg{transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.tarj-cat.animando .leg-it{transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .35s ease .12s}
+.ayuda-toca{font-size:12px;font-weight:700;color:var(--muted);text-align:center;margin-top:10px}
+.tarj-cat.abierta .ayuda-toca{margin-top:14px}
+/* Tarjetas tipo acordeón al llegar arriba o abajo */
+.vista>*{will-change:auto}
+.vista.estirando>*{transition:none!important}
+.vista.volviendo>*{transition:transform .5s cubic-bezier(.25,1.45,.45,1)}
+/* Interruptor (letra grande) */
+.interruptor{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;border:0;background:var(--card);border-radius:22px;padding:16px;color:var(--ink);text-align:left}
+.interruptor span{display:flex;flex-direction:column;gap:3px}
+.interruptor b{font-size:16px;font-weight:800}
+.interruptor small{font-size:12px;font-weight:600;color:var(--muted)}
+.switch{width:52px;height:30px;border-radius:15px;background:var(--card3);position:relative;flex:none;transition:background .2s}
+.switch::after{content:'';position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:transform .2s}
+.interruptor[aria-checked="true"] .switch{background:var(--violet)}
+.interruptor[aria-checked="true"] .switch::after{transform:translateX(22px)}
+/* Letra grande: agranda todo un 15% */
+body.grande .vista,body.grande .vidrio,body.grande .login-box,body.grande #patron>*{zoom:1.15}
+body.grande nav.barra{zoom:1.1}
+
+/* Gastos que Google rechazó */
+.esperando.mal{color:#FFB3BF;background:rgba(255,107,129,.16)}
+.sync.mal{background:rgba(255,107,129,.16);color:#FFB3BF}
 </style>
 </head>
 <body>
@@ -206,6 +330,7 @@ nav.barra .mas{width:62px;height:62px;border-radius:50%;margin-top:-36px;backgro
 <!-- ============ ENTRAR / CREAR CUENTA ============ -->
 <section id="login" class="pantalla" hidden>
   <div class="login-box">
+    <div class="novedad" id="novLogin" hidden></div>
     <div class="marca">
       <img src="icon-192.png" alt="">
       <h1>Billetera Digital</h1>
@@ -218,16 +343,16 @@ nav.barra .mas{width:62px;height:62px;border-radius:50%;margin-top:-36px;backgro
 
     <form id="formEntrar" class="login-box" novalidate>
       <label class="campo" for="eUsuario">Usuario<input id="eUsuario" autocomplete="username" autocapitalize="none" spellcheck="false"></label>
-      <label class="campo" for="eClave">Contraseña<input id="eClave" type="password" autocomplete="current-password"></label>
+      <div class="campo"><label for="eClave">Contraseña</label><div class="clave"><input id="eClave" type="password" autocomplete="current-password"><button type="button" class="ojo" data-ojo="eClave" aria-label="Mostrar contraseña" aria-pressed="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
       <div class="error" id="eError" hidden></div>
       <button class="btn btn-grad" id="eBtn" type="submit">Entrar</button>
     </form>
 
     <form id="formCrear" class="login-box" novalidate hidden>
       <label class="campo" for="cNombre">Nombre y apellido<input id="cNombre" autocomplete="name"></label>
-      <label class="campo" for="cNegocio">Negocio<select id="cNegocio"></select></label>
+      <div id="cNegocioBox"></div>
       <label class="campo" for="cUsuario">Usuario<input id="cUsuario" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="Ej: rina"></label>
-      <label class="campo" for="cClave">Contraseña<input id="cClave" type="password" autocomplete="new-password" placeholder="Mínimo 6 caracteres"></label>
+      <div class="campo"><label for="cClave">Contraseña</label><div class="clave"><input id="cClave" type="password" autocomplete="new-password" placeholder="Mínimo 6 caracteres"><button type="button" class="ojo" data-ojo="cClave,cClave2" aria-label="Mostrar las contraseñas" aria-pressed="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
       <label class="campo" for="cClave2">Repetí la contraseña<input id="cClave2" type="password" autocomplete="new-password"></label>
       <div class="error" id="cError" hidden></div>
       <div class="ok" id="cOk" hidden></div>
@@ -238,6 +363,7 @@ nav.barra .mas{width:62px;height:62px;border-radius:50%;margin-top:-36px;backgro
 
 <!-- ============ PATRÓN ============ -->
 <section id="patron" class="pantalla" hidden>
+  <div class="novedad" id="novPatron" hidden></div>
   <div class="avatar" id="patAvatar"></div>
   <h2 id="patTitulo">Dibujá tu patrón</h2>
   <p class="ayuda" id="patAyuda"></p>
@@ -253,6 +379,7 @@ nav.barra .mas{width:62px;height:62px;border-radius:50%;margin-top:-36px;backgro
 
 <!-- ============ APP ============ -->
 <div id="app" hidden>
+  <div id="ptr" aria-hidden="true"><span class="c"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg></span><small>Deslizá para actualizar</small></div>
   <main id="contenido"></main>
   <nav class="barra" aria-label="Menú">
     <button type="button" data-ir="inicio"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"/></svg>Inicio</button>
@@ -264,6 +391,7 @@ nav.barra .mas{width:62px;height:62px;border-radius:50%;margin-top:-36px;backgro
 </div>
 
 <div class="fondo" id="modal" hidden><div class="vidrio" id="modalIn" role="dialog" aria-modal="true"></div></div>
+<div class="fondo" id="cal" hidden><div class="vidrio cal" id="calIn" role="dialog" aria-modal="true" aria-label="Elegí la fecha"></div></div>
 <div class="aviso" id="aviso" role="status" hidden></div>
 
 <script>
@@ -272,6 +400,8 @@ nav.barra .mas{width:62px;height:62px;border-radius:50%;margin-top:-36px;backgro
    Estado
    ========================================================= */
 const API = window.BILLETERA_API || '';
+// Fecha y hora de esta versión (se muestra una vez cuando alguien abre la app actualizada)
+const APP_VERSION = '2026-10-27T04:50';
 const COLORES = ['#9B6BFF', '#F05BB5', '#3FD6C6', '#FFB547', '#6FA8FF', '#FF8A5B', '#B5E36B', '#D7C8FF'];
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 const LISTAS_BASE = {
@@ -283,7 +413,7 @@ const LISTAS_BASE = {
 const S = {
   token: '', yo: null, listas: LISTAS_BASE, personal: [], negocio: [], pendientes: 0, ultimaSync: 0,
   cola: [], vista: 'inicio', per: { tipo: 'mes', ref: hoy() }, viaje: '', filtro: '',
-  sincronizando: false, form: null
+  sincronizando: false, form: null, rech: [], catAbierta: false, firmas: {}, resaltes: {}
 };
 const $ = id => document.getElementById(id);
 const pesos = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 2 });
@@ -298,16 +428,26 @@ const LS = {
 };
 const kEstado = () => 'bd_estado_' + (S.yo ? S.yo.usuario : '');
 const kCola = () => 'bd_cola_' + (S.yo ? S.yo.usuario : '');
+const kRech = () => 'bd_rech_' + (S.yo ? S.yo.usuario : '');
 function guardarEstado() {
   LS.set(kEstado(), { yo: S.yo, listas: S.listas, personal: S.personal, negocio: S.negocio, pendientes: S.pendientes, ultimaSync: S.ultimaSync });
 }
 function guardarCola() { LS.set(kCola(), S.cola); }
+function guardarRech() { LS.set(kRech(), S.rech); }
+const rechDe = id => S.rech.find(z => z.op.id === id);
 
 /* ---------- Fechas ---------- */
 function hoy() { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); }
 function aFecha(s) { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); }
 function aISO(d) { const x = new Date(d); x.setMinutes(x.getMinutes() - x.getTimezoneOffset()); return x.toISOString().slice(0, 10); }
 function fCorta(s) { const d = aFecha(s); return d.getDate() + ' ' + MESES[d.getMonth()].slice(0, 3); }
+function ayer() { const d = aFecha(hoy()); d.setDate(d.getDate() - 1); return aISO(d); }
+const DIAS = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+function fLarga(s) {
+  if (!s) return 'Elegí la fecha';
+  const d = aFecha(s), base = d.getDate() + ' ' + MESES[d.getMonth()].slice(0, 3) + ' ' + d.getFullYear();
+  return s === hoy() ? 'Hoy · ' + base : s === ayer() ? 'Ayer · ' + base : base;
+}
 function rango(p) {
   const d = aFecha(p.ref);
   if (p.tipo === 'dia') return [p.ref, p.ref];
@@ -405,6 +545,7 @@ function nuevoId() { return (Date.now().toString(36) + Math.random().toString(36
 
 function encolar(op) {
   op.opId = nuevoId();
+  if (rechDe(op.id)) { S.rech = S.rech.filter(z => z.op.id !== op.id); guardarRech(); }
   S.cola.push(op); guardarCola();
   aplicarLocal(op); guardarEstado();
   render();
@@ -426,20 +567,33 @@ const enCola = id => S.cola.some(o => o.id === id);
 
 let timerSync = null;
 async function sincronizar() {
-  if (!S.token || S.sincronizando) return;
-  if (!navigator.onLine) { pintarSync(); return; }
+  if (!S.token || S.sincronizando) return false;
+  if (!navigator.onLine) { pintarSync(); return false; }
   S.sincronizando = true; pintarSync();
   const enviadas = S.cola.slice();
+  let bien = false;
   try {
     const r = await api({ accion: 'sync', token: S.token, ops: enviadas });
     const procesadas = new Set((r.resultados || []).map(x => x.opId));
     const fallas = (r.resultados || []).filter(x => !x.ok);
     S.cola = S.cola.filter(o => !procesadas.has(o.opId)); guardarCola();
+    // Lo que Google rechazó NO se pierde: queda en el celular, marcado en rojo, para corregirlo o borrarlo.
+    let rechazados = 0;
+    fallas.forEach(x => {
+      const op = enviadas.find(o => o.opId === x.opId);
+      if (!op || op.tipo !== 'guardar') return;
+      S.rech = S.rech.filter(z => z.op.id !== op.id);
+      S.rech.push({ op, error: x.error || 'Algo salió mal.' });
+      rechazados++;
+    });
+    guardarRech();
     S.yo = r.yo; S.listas = Object.assign({}, LISTAS_BASE, r.listas); S.personal = r.personal; S.negocio = r.negocio;
     S.pendientes = r.pendientes || 0; S.ultimaSync = Date.now();
+    S.rech.forEach(z => aplicarLocal(z.op));
     S.cola.forEach(aplicarLocal);
     guardarEstado();
-    if (fallas.length) avisar('No se pudo guardar un gasto: ' + fallas[0].error);
+    if (rechazados) avisar(rechazados === 1 ? 'Un gasto no se pudo subir: quedó marcado en rojo para corregirlo.' : rechazados + ' gastos no se pudieron subir: quedaron marcados en rojo.');
+    bien = true;
   } catch (e) {
     if (e.sesionVencida) { cerrarSesionLocal(e.message); }
     else if (e.config) avisar(e.message);
@@ -448,6 +602,7 @@ async function sincronizar() {
     if (S.token) { render(); }
   }
   if (S.cola.length && navigator.onLine) { clearTimeout(timerSync); timerSync = setTimeout(sincronizar, 15000); }
+  return bien;
 }
 window.addEventListener('online', () => sincronizar());
 window.addEventListener('offline', () => pintarSync());
@@ -462,7 +617,23 @@ function iniciales(n) { return String(n || '?').trim().split(/\s+/).slice(0, 2).
 function primerNombre(n) { return String(n || '').trim().split(/\s+/)[0] || ''; }
 
 /* ---------- Entrar / crear cuenta ---------- */
+// Ojito: muestra u oculta lo que se escribió en la contraseña
+const OJO_TACHADO = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7c2 0 3.7.6 5.1 1.5M22 12s-3.5 7-10 7c-2 0-3.7-.6-5.1-1.5"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="M3 3l18 18"/></svg>';
+const OJO_ABIERTO = document.querySelector('.ojo').innerHTML;
+function ponerOjo(b, ver) {
+  b.dataset.ojo.split(',').forEach(id => { $(id).type = ver ? 'text' : 'password'; });
+  b.setAttribute('aria-pressed', ver);
+  b.setAttribute('aria-label', ver ? 'Ocultar contraseña' : 'Mostrar contraseña');
+  b.innerHTML = ver ? OJO_TACHADO : OJO_ABIERTO;
+}
+function ocultarClaves() { document.querySelectorAll('.ojo').forEach(b => ponerOjo(b, false)); }
+document.querySelectorAll('.ojo').forEach(b => {
+  b.addEventListener('pointerdown', e => e.preventDefault()); // no cierra el teclado
+  b.addEventListener('click', () => ponerOjo(b, b.getAttribute('aria-pressed') !== 'true'));
+});
+
 function verTab(crear) {
+  ocultarClaves();
   $('tabEntrar').setAttribute('aria-pressed', !crear); $('tabCrear').setAttribute('aria-pressed', crear);
   $('formEntrar').hidden = crear; $('formCrear').hidden = !crear;
   $('loginSub').textContent = crear ? 'Completá tus datos' : 'Entrá con tu usuario y contraseña';
@@ -471,16 +642,18 @@ function verTab(crear) {
 $('tabEntrar').onclick = () => verTab(false);
 $('tabCrear').onclick = () => verTab(true);
 
+let negociosRegistro = LISTAS_BASE['Negocios'];
+function pintarNegocioRegistro() {
+  $('cNegocioBox').innerHTML = ddHTML('ddRegNeg', 'Negocio', negociosRegistro.map(n => [n, n]), S.regNeg || '', v => { S.regNeg = v; pintarNegocioRegistro(); }, 'Elegí tu negocio');
+}
 async function cargarNegociosRegistro() {
-  const sel = $('cNegocio');
-  const pintar = lista => { const v = sel.value; sel.innerHTML = '<option value="">Elegí tu negocio</option>' + lista.map(n => `<option>${esc(n)}</option>`).join(''); sel.value = v; };
-  if (!sel.options.length) pintar(LISTAS_BASE['Negocios']);
-  try { const r = await api({ accion: 'negocios' }); pintar(r.negocios); } catch (e) {}
+  pintarNegocioRegistro();
+  try { const r = await api({ accion: 'negocios' }); negociosRegistro = r.negocios; pintarNegocioRegistro(); } catch (e) {}
 }
 
 function mostrarLogin(msg) {
   mostrar('login'); verTab(false);
-  $('eClave').value = '';
+  $('eClave').value = ''; ocultarClaves();
   const ultimo = LS.get('bd_ultimo_usuario', '');
   if (ultimo) $('eUsuario').value = ultimo;
   $('eError').hidden = !msg; $('eError').textContent = msg || '';
@@ -493,12 +666,12 @@ $('formEntrar').addEventListener('submit', async e => {
   $('eBtn').disabled = true; $('eBtn').textContent = 'Entrando…'; $('eError').hidden = true;
   try {
     const r = await api({ accion: 'entrar', usuario: u, clave: c });
-    S.token = r.token; S.yo = r.yo;
+    S.token = r.token; S.yo = r.yo; ocultarClaves();
     LS.set('bd_sesion', { token: r.token, usuario: r.yo.usuario });
     LS.set('bd_ultimo_usuario', r.yo.usuario);
     const est = LS.get(kEstado(), null);
     if (est) Object.assign(S, { listas: est.listas || LISTAS_BASE, personal: est.personal || [], negocio: est.negocio || [] });
-    S.cola = LS.get(kCola(), []);
+    S.cola = LS.get(kCola(), []); S.rech = LS.get(kRech(), []);
     S.yo = r.yo;
     await sincronizar();
     if (LS.get('bd_patron_' + S.yo.usuario, '')) bienvenida(); else iniciarPatron('crear');
@@ -511,7 +684,7 @@ $('formEntrar').addEventListener('submit', async e => {
 $('formCrear').addEventListener('submit', async e => {
   e.preventDefault();
   const err = $('cError'), ok = $('cOk'); err.hidden = true; ok.hidden = true;
-  const d = { nombre: $('cNombre').value.trim(), negocio: $('cNegocio').value, usuario: $('cUsuario').value.trim().toLowerCase(), clave: $('cClave').value };
+  const d = { nombre: $('cNombre').value.trim(), negocio: S.regNeg || '', usuario: $('cUsuario').value.trim().toLowerCase(), clave: $('cClave').value };
   const mal = t => { err.textContent = t; err.hidden = false; };
   if (!d.nombre) return mal('Completá tu nombre y apellido.');
   if (!d.negocio) return mal('Elegí tu negocio.');
@@ -521,7 +694,7 @@ $('formCrear').addEventListener('submit', async e => {
   $('cBtn').disabled = true; $('cBtn').textContent = 'Creando…';
   try {
     const r = await api(Object.assign({ accion: 'registrar' }, d));
-    $('formCrear').reset();
+    $('formCrear').reset(); S.regNeg = ''; pintarNegocioRegistro();
     ok.textContent = r.estado === 'activo' ? '¡Listo! Sos el admin. Ya podés entrar.' : '¡Cuenta creada! Queda pendiente hasta que el admin la apruebe. Avisale.';
     ok.hidden = false;
     $('eUsuario').value = d.usuario;
@@ -534,9 +707,10 @@ function cerrarSesionLocal(msg) {
   // Se borra la sesión y los datos guardados, pero NO los gastos sin subir.
   if (S.yo) LS.del(kEstado());
   LS.del('bd_sesion');
-  S.token = ''; S.personal = []; S.negocio = []; S.cola = [];
-  cerrarModal();
-  mostrarLogin(msg);
+  S.token = ''; S.personal = []; S.negocio = []; S.cola = []; S.rech = [];
+  cerrarModal(true); cerrarCal(true);
+  S.vista = 'inicio'; S.catAbierta = false;
+  mostrarLogin(msg); histRevisar();
 }
 
 /* ---------- Patrón ---------- */
@@ -619,6 +793,7 @@ $('patOlvide').onclick = () => { LS.del('bd_patron_' + S.yo.usuario); cerrarSesi
 
 /* ---------- Bienvenida ---------- */
 function bienvenida() {
+  LS.set('bd_version_vista', APP_VERSION); mostrarNovedad();
   $('bvNombre').textContent = primerNombre(S.yo.nombre);
   mostrar('bienvenida');
   setTimeout(() => { mostrar('app'); S.vista = 'inicio'; render(); sincronizar(); }, 1600);
@@ -645,7 +820,10 @@ const IC = {
   abajo: '<path d="M6 9l6 6 6-6"/>', arriba: '<path d="M6 15l6-6 6 6"/>', tilde: '<path d="M5 12l5 5 9-10"/>',
   candado: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
   nube: '<path d="M7 18h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6 11a3.5 3.5 0 0 0 1 7z"/>',
-  alerta: '<path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17.5v.5"/>'
+  alerta: '<path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17.5v.5"/>',
+  cal: '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  expandir: '<path d="M7 10l5 5 5-5"/>',
+  chispa: '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/>'
 };
 const svg = (n, s = 20, w = 1.9) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]}</svg>`;
 function icoDe(f, hojaN) {
@@ -675,16 +853,32 @@ function render() {
   const actual = document.querySelector(`nav.barra [data-ir="${S.vista}"]`);
   if (actual) actual.setAttribute('aria-current', 'page');
   const html = { inicio: vInicio, personal: () => vSeccion('personal'), negocio: () => vSeccion('negocio'), perfil: vPerfil }[S.vista]();
+  const barra = document.querySelector('#contenido .filtro-neg');
+  const x = barra ? barra.scrollLeft : null;
   $('contenido').innerHTML = `<div class="vista">${html}</div>`;
+  animarGraficos();
+  const nueva = document.querySelector('#contenido .filtro-neg');
+  if (nueva) {
+    if (x !== null) nueva.scrollLeft = x;
+    // que el negocio elegido quede siempre a la vista
+    const b = nueva.querySelector('[aria-pressed="true"]');
+    if (b) {
+      if (b.offsetLeft < nueva.scrollLeft) nueva.scrollLeft = b.offsetLeft - 6;
+      else if (b.offsetLeft + b.offsetWidth > nueva.scrollLeft + nueva.clientWidth) nueva.scrollLeft = b.offsetLeft + b.offsetWidth - nueva.clientWidth + 6;
+    }
+  }
 }
 function pintarSync() {
   const b = document.getElementById('btnSync');
   if (b) b.outerHTML = chipSync();
+  const g = document.getElementById('btnSyncGrande');
+  if (g) { g.disabled = S.sincronizando; g.innerHTML = svg('nube', 18, 2.2) + (S.sincronizando ? 'Subiendo…' : 'Subir y actualizar ahora'); }
 }
 function chipSync() {
   const n = S.cola.length;
   if (S.sincronizando) return `<button class="sync" id="btnSync" type="button" data-acc="sync">${svg('nube', 14, 2.2)}Subiendo…</button>`;
   if (n) return `<button class="sync pend" id="btnSync" type="button" data-acc="sync">${svg('nube', 14, 2.2)}${n} sin subir</button>`;
+  if (S.rech.length) return `<button class="sync mal" id="btnSync" type="button" data-acc="errores">${svg('alerta', 14, 2.2)}${S.rech.length} con error</button>`;
   if (!navigator.onLine) return `<button class="sync" id="btnSync" type="button" data-acc="sync">${svg('nube', 14, 2.2)}Sin internet</button>`;
   return `<button class="sync okk" id="btnSync" type="button" data-acc="sync">${svg('tilde', 14, 2.6)}Todo subido</button>`;
 }
@@ -693,6 +887,92 @@ function filtroNegocios() {
   const ns = S.listas['Negocios'] || [];
   return `<div class="filtro-neg" role="group" aria-label="Negocio">${[['', 'Todos'], ...ns.map(n => [n, n])].map(([v, t]) =>
     `<button type="button" data-filtro="${esc(v)}" aria-pressed="${S.filtro === v}">${esc(t)}</button>`).join('')}</div>`;
+}
+// Anillo con animación de dibujo, conteo del total y categorías tocables
+const GRAF = {};
+function anillo(id, items, total, o) {
+  const tam = o.tam, g = o.grosor, cx = tam / 2, R = tam / 2 - (o.grosorMax || g) / 2 - 2, C = 2 * Math.PI * R;
+  GRAF[id] = { items, total, o };
+  let ac = 0, arcos = '';
+  items.forEach(([, v], i) => {
+    const largo = v / total * C, gap = items.length > 1 ? Math.min(4, largo / 3) : 0, vis = Math.max(largo - gap, 0.01);
+    arcos += `<circle class="arco" data-seg="${i}" data-graf="${id}" data-ini="${ac}" data-len="${vis}" cx="${cx}" cy="${cx}" r="${R}" fill="none" stroke="${COLORES[i % COLORES.length]}" stroke-width="${g}" stroke-dasharray="${vis} ${C}" stroke-dashoffset="${-ac}" transform="rotate(-90 ${cx} ${cx})"/>`;
+    ac += largo;
+  });
+  const grande = String(o.valor).length > 11 ? 22 : 27;
+  const chico = o.chico ? `<g class="cc-chico"><text x="${cx}" y="${cx - 4}" text-anchor="middle" font-size="18" font-weight="700" fill="#A49CC4">${esc(o.chico[0])}</text><text x="${cx}" y="${cx + 22}" text-anchor="middle" font-size="22" font-weight="800" fill="#F4F1FF">${esc(o.chico[1])}</text></g>` : '';
+  return `<svg data-graf="${id}" data-c="${C}" width="${tam}" height="${tam}" viewBox="0 0 ${tam} ${tam}" role="img" aria-label="Gráfico por categoría">
+    <circle class="base" cx="${cx}" cy="${cx}" r="${R}" fill="none" stroke="#241D3F" stroke-width="${g}"/>${total ? arcos : ''}
+    <g class="cc-grande"><text class="c1" x="${cx}" y="${cx - 12}" text-anchor="middle" font-size="13" font-weight="700" fill="#A49CC4">${esc(o.arriba)}</text>
+    <text class="c2" x="${cx}" y="${cx + 16}" text-anchor="middle" font-size="${grande}" font-weight="900" fill="#F4F1FF">${esc(o.valor)}</text>
+    <text class="c3" x="${cx}" y="${cx + 38}" text-anchor="middle" font-size="12" font-weight="700" fill="#B79CFF">${esc(o.abajo)}</text></g>${chico}</svg>`;
+}
+function legIt(id, [k, v], i, total) {
+  return `<button type="button" class="leg-it" data-graf="${id}" data-seg="${i}" aria-pressed="false"><i style="background:${COLORES[i % COLORES.length]}"></i><span class="n">${esc(k)}</span><span class="m">${fmt(v)}</span><b>${Math.round(v / total * 100)}%</b></button>`;
+}
+const movs = n => n + ' movimiento' + (n === 1 ? '' : 's');
+// Se anima solo cuando cambian los números o se entra a la pantalla (no cada vez que se actualiza solo)
+function animarGraficos() {
+  const reducir = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('#contenido svg[data-graf]').forEach(sv => {
+    const id = sv.dataset.graf, G = GRAF[id]; if (!G) return;
+    const firma = [G.total, G.o.arriba, G.items.map(x => x.join(':')).join(',')].join('|');
+    const nueva = S.firmas[id] !== firma; S.firmas[id] = firma;
+    aplicarResalte(id);
+    if (!nueva || reducir || !G.total) return;
+    const C = Number(sv.dataset.c), arcos = [...sv.querySelectorAll('.arco')];
+    const L = arcos.reduce((m, a) => Math.max(m, Number(a.dataset.ini) + Number(a.dataset.len)), 0);
+    const c2 = sv.querySelector('.c2'), t0 = performance.now(), dur = 900;
+    const paso = ahora => {
+      if (!sv.isConnected) return;
+      const p = Math.min(1, (ahora - t0) / dur), e = 1 - Math.pow(1 - p, 3), hecho = L * e;
+      arcos.forEach(a => a.setAttribute('stroke-dasharray', Math.max(0.001, Math.min(Number(a.dataset.len), hecho - Number(a.dataset.ini))) + ' ' + C));
+      if (G.o.contar != null && !S.resaltes[id]) c2.textContent = p < 1 ? fmt(Math.round(G.o.contar * e)) : G.o.valor;
+      if (p < 1) requestAnimationFrame(paso);
+    };
+    paso(t0); requestAnimationFrame(paso);
+  });
+}
+function aplicarResalte(id) {
+  const sv = document.querySelector(`#contenido svg[data-graf="${id}"]`), G = GRAF[id];
+  if (!sv || !G) return;
+  const nom = S.resaltes[id], idx = nom == null ? -1 : G.items.findIndex(x => x[0] === nom);
+  if (idx < 0) delete S.resaltes[id];
+  sv.classList.toggle('resaltando', idx >= 0);
+  sv.querySelectorAll('.arco').forEach(a => a.classList.toggle('activo', Number(a.dataset.seg) === idx));
+  document.querySelectorAll(`#contenido .leg-it[data-graf="${id}"]`).forEach(b => b.setAttribute('aria-pressed', Number(b.dataset.seg) === idx));
+  const c1 = sv.querySelector('.c1'), c2 = sv.querySelector('.c2'), c3 = sv.querySelector('.c3');
+  if (idx >= 0) { const [k, v] = G.items[idx]; c1.textContent = k; c2.textContent = fmt(v); c3.textContent = Math.round(v / G.total * 100) + '% del total'; }
+  else { c1.textContent = G.o.arriba; c2.textContent = G.o.valor; c3.textContent = G.o.abajo; }
+}
+function resaltar(el) {
+  const id = el.dataset.graf, G = GRAF[id]; if (!G) return;
+  const nom = G.items[Number(el.dataset.seg)][0];
+  S.resaltes[id] = S.resaltes[id] === nom ? undefined : nom;
+  aplicarResalte(id);
+}
+// Agranda / achica la tarjeta "Por categoría" con animación (el gráfico va al centro y crece; las categorías bajan)
+function alternarCat() {
+  const card = $('tarjCat'); if (!card) return;
+  const sv = card.querySelector('.cat-graf svg'), its = [...card.querySelectorAll('.leg-it')];
+  const h0 = card.offsetHeight, r0 = sv.getBoundingClientRect(), p0 = its.map(e => e.getBoundingClientRect());
+  S.catAbierta = !S.catAbierta;
+  if (!S.catAbierta) { delete S.resaltes.inicio; aplicarResalte('inicio'); }
+  card.classList.toggle('abierta', S.catAbierta);
+  card.querySelector('.ayuda-toca').textContent = S.catAbierta ? 'Tocá un color para ver su monto · Tocá la tarjeta para achicar' : 'Tocá para agrandar';
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const h1 = card.offsetHeight, r1 = sv.getBoundingClientRect(), p1 = its.map(e => e.getBoundingClientRect());
+  card.style.height = h0 + 'px';
+  sv.style.transformOrigin = '0 0';
+  sv.style.transform = `translate(${r0.left - r1.left}px,${r0.top - r1.top}px) scale(${r0.width / r1.width})`;
+  its.forEach((e, i) => { e.style.transform = `translate(${p0[i].left - p1[i].left}px,${p0[i].top - p1[i].top}px)`; e.style.opacity = '0'; });
+  void card.offsetHeight;
+  card.classList.add('animando');
+  card.style.height = h1 + 'px';
+  sv.style.transform = '';
+  its.forEach((e, i) => { e.style.transitionDelay = (i * 30) + 'ms'; e.style.transform = ''; e.style.opacity = ''; });
+  clearTimeout(alternarCat.t);
+  alternarCat.t = setTimeout(() => { card.classList.remove('animando'); card.style.height = ''; its.forEach(e => { e.style.transitionDelay = ''; }); }, 650);
 }
 function dona(items, total, tam, grosor, centro) {
   const R = tam / 2 - grosor / 2 - 2, C = 2 * Math.PI * R, cx = tam / 2;
@@ -715,7 +995,7 @@ function topN(items, n) {
 }
 
 function filaMov(f, hojaN) {
-  const pend = enCola(f.id) ? '<span class="esperando">sin subir</span>' : '';
+  const pend = rechDe(f.id) ? '<span class="esperando mal">no se pudo subir</span>' : enCola(f.id) ? '<span class="esperando">sin subir</span>' : '';
   let titulo, detalle, monto, pos = false;
   if (hojaN) {
     if (f.tipo === 'Cambio') { titulo = 'Cambio a efectivo'; detalle = `${fmt(f.monto)} al ${f.pctCambio}% · recibiste ${fmt(f.recibido)}`; monto = '+' + fmt(f.recibido); pos = true; }
@@ -760,12 +1040,14 @@ function vInicio() {
     <span class="total">${fmt(total)}</span>
     <div class="sub"><div><span>Compras y negocio</span><b>${fmt(tNeg)}</b></div><div><span>Gasto personal</span><b>${fmt(tPer)}</b></div></div>
   </section>
-  <section class="tarj">
-    <h2>Por categoría</h2>
-    ${total ? `<div class="dona">${dona(items, total, 118, 16, `<text x="59" y="56" text-anchor="middle" font-size="9" font-weight="700" fill="#A49CC4">Este mes</text><text x="59" y="70" text-anchor="middle" font-size="11" font-weight="800" fill="#F4F1FF">${items.length} categ.</text>`)}
-      <div class="leyenda">${items.map(([k, v], i) => `<div><i style="background:${COLORES[i % COLORES.length]}"></i><span>${esc(k)}</span><b>${Math.round(v / total * 100)}%</b></div>`).join('')}</div></div>`
-      : `<div class="vacio">Todavía no hay gastos este mes.<br>Tocá el <b>+</b> para cargar el primero.</div>`}
-  </section>
+  ${total ? `<section class="tarj tarj-cat${S.catAbierta ? ' abierta' : ''}" id="tarjCat" aria-label="Por categoría. Tocá para ${S.catAbierta ? 'achicar' : 'agrandar'}">
+    <h2>Por categoría <span class="expandir" aria-hidden="true">${svg('expandir', 20, 2.6)}</span></h2>
+    <div class="cat-cuerpo">
+      <div class="cat-graf">${anillo('inicio', items, total, { tam: 220, grosor: 15, grosorMax: 28, arriba: etiquetaPer({ tipo: 'mes', ref: hoy() }), valor: fmt(total), contar: total, abajo: movs(per.length + neg.length), chico: ['Este mes', items.length + ' categ.'] })}</div>
+      <div class="cat-ley">${items.map((it, i) => legIt('inicio', it, i, total)).join('')}</div>
+    </div>
+    <div class="ayuda-toca">${S.catAbierta ? 'Tocá un color para ver su monto · Tocá la tarjeta para achicar' : 'Tocá para agrandar'}</div>
+  </section>` : `<section class="tarj"><h2>Por categoría</h2><div class="vacio">Todavía no hay gastos este mes.<br>Tocá el <b>+</b> para cargar el primero.</div></section>`}
   <section class="tarj">
     <h2>Últimos gastos</h2>
     <div class="lista">${ultimos.length ? ultimos.map(f => filaMov(f, f._n)).join('') : '<div class="vacio">Acá vas a ver lo último que se cargó.</div>'}</div>
@@ -802,9 +1084,7 @@ function vSeccion(cual) {
     mini = `<div class="mini"><div><span>Con plata del negocio</span><b>${fmt(delNeg)}</b></div><div><span>Con plata propia</span><b>${fmt(total - delNeg)}</b></div></div>`;
   }
   const viajes = esN ? viajesDe(S.yo.admin ? S.filtro : S.yo.negocio) : [];
-  const centro = `<text x="110" y="98" text-anchor="middle" font-size="13" font-weight="700" fill="#A49CC4">${porViaje ? 'Este viaje' : esc(etiquetaPer(S.per))}</text>
-    <text x="110" y="126" text-anchor="middle" font-size="${total >= 1e8 ? 22 : 27}" font-weight="900" fill="#F4F1FF">${fmt(total)}</text>
-    <text x="110" y="148" text-anchor="middle" font-size="12" font-weight="700" fill="#B79CFF">${filas.length} movimiento${filas.length === 1 ? '' : 's'}</text>`;
+
   return `
   <div class="titulo"><h1>${esN ? 'Compras y negocio' : 'Gasto personal'}</h1>${chipSync()}</div>
   ${filtroNegocios()}
@@ -812,10 +1092,10 @@ function vSeccion(cual) {
     ${porViaje ? '' : `<div class="segm" role="group" aria-label="Período">${[['mes', 'Mes'], ['semana', 'Semana'], ['dia', 'Día']].map(([v, t]) =>
       `<button type="button" data-per="${v}" aria-pressed="${S.per.tipo === v}">${t}</button>`).join('')}</div>
     <div class="nav-per"><button type="button" data-mover="-1" aria-label="Anterior">${svg('izq', 20, 2.4)}</button><b>${esc(etiquetaPer(S.per))}</b><button type="button" data-mover="1" aria-label="Siguiente">${svg('der', 20, 2.4)}</button></div>`}
-    ${esN && viajes.length ? `<label class="campo" for="selViaje">Ver por viaje<select id="selViaje"><option value="">Por fecha (${esc(etiquetaPer(S.per))})</option>${viajes.map(v => `<option ${v === S.viaje ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select></label>` : ''}
+    ${esN && viajes.length ? ddHTML('ddVerViaje', 'Ver por viaje', [['', 'Por fecha (' + etiquetaPer(S.per) + ')'], ...viajes.map(v => [v, v])], S.viaje, v => { S.viaje = v; render(); }) : ''}
   </div>
-  <div class="anillo">${dona(items, total, 220, 15, centro)}</div>
-  ${items.length ? `<div class="cats">${items.map(([k, v], i) => `<span><i style="background:${COLORES[i % COLORES.length]}"></i>${esc(k)} ${Math.round(v / total * 100)}%</span>`).join('')}</div>` : ''}
+  <div class="anillo">${anillo(cual, items, total, { tam: 220, grosor: 15, arriba: porViaje ? 'Este viaje' : etiquetaPer(S.per), valor: fmt(total), contar: total, abajo: movs(filas.length) })}</div>
+  ${items.length ? `<div class="cats">${items.map((it, i) => legIt(cual, it, i, total)).join('')}</div>` : ''}
   ${mini}
   <section class="tarj"><h2>Movimientos</h2><div class="lista">${filas.length ? ordenar(filas).map(f => filaMov(f, esN)).join('') :
     `<div class="vacio">No hay movimientos ${porViaje ? 'en este viaje' : 'en este período'}.</div>`}</div></section>`;
@@ -823,11 +1103,22 @@ function vSeccion(cual) {
 
 /* ---------- Perfil ---------- */
 let usuariosAdmin = null;
+function opcionesExport() {
+  if (S.expViaje) return viajesDe('').map(v => [v, v]);
+  const meses = [...new Set([...S.personal, ...S.negocio].map(f => String(f.fecha).slice(0, 7)))].sort().reverse();
+  if (!meses.includes(hoy().slice(0, 7))) meses.unshift(hoy().slice(0, 7));
+  return meses.map(m => [m, etiquetaPer({ tipo: 'mes', ref: m + '-01' })]);
+}
+function valorExport() {
+  const op = opcionesExport();
+  return op.some(o => o[0] === S.expVal) ? S.expVal : (op[0] ? op[0][0] : '');
+}
 function vPerfil() {
   const y = S.yo;
   const meses = [...new Set([...S.personal, ...S.negocio].map(f => String(f.fecha).slice(0, 7)))].sort().reverse();
   if (!meses.includes(hoy().slice(0, 7))) meses.unshift(hoy().slice(0, 7));
   const viajes = viajesDe('');
+  const opExp = opcionesExport();
   const ult = S.ultimaSync ? new Date(S.ultimaSync).toLocaleString('es-AR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : 'nunca';
   return `
   <div class="titulo"><h1>Perfil</h1>${chipSync()}</div>
@@ -836,16 +1127,17 @@ function vPerfil() {
     <div class="fila-p"><span>Usuario</span><b>${esc(y.usuario)}</b></div>
     <div class="fila-p"><span>Última vez subido</span><b>${esc(ult)}</b></div>
     <div class="fila-p"><span>Gastos sin subir</span><b>${S.cola.length}</b></div>
+    ${S.rech.length ? `<div class="fila-p"><span>Con error (en rojo)</span><b style="color:#FFB3BF">${S.rech.length}</b></div>` : ''}
+    <div class="fila-p"><span>Versión de la app</span><b>${esc(textoVersion())}</b></div>
   </section>
-  <button class="btn btn-sec" type="button" data-acc="sync">${svg('nube', 18, 2.2)}Subir y actualizar ahora</button>
+  <button class="btn btn-sec" type="button" id="btnSyncGrande" data-acc="sync" ${S.sincronizando ? 'disabled' : ''}>${svg('nube', 18, 2.2)}${S.sincronizando ? 'Subiendo…' : 'Subir y actualizar ahora'}</button>
 
   <section class="tarj" style="display:flex;flex-direction:column;gap:12px">
     <h2 style="margin:0">Descargar en Excel</h2>
     <p class="ayuda" style="margin:0">Con las mismas columnas que tu Excel de Gastos de viaje y compras, para copiar y pegar.</p>
     <div class="segm" role="group"><button type="button" data-exp="mes" aria-pressed="${!S.expViaje}">Por mes</button><button type="button" data-exp="viaje" aria-pressed="${!!S.expViaje}" ${viajes.length ? '' : 'disabled'}>Por viaje</button></div>
-    ${S.expViaje ? `<label class="campo" for="expSel">Viaje<select id="expSel">${viajes.map(v => `<option ${v === S.expVal ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select></label>`
-      : `<label class="campo" for="expSel">Mes<select id="expSel">${meses.map(m => `<option value="${m}" ${m === S.expVal ? 'selected' : ''}>${esc(etiquetaPer({ tipo: 'mes', ref: m + '-01' }))}</option>`).join('')}</select></label>`}
-    ${y.admin ? `<label class="campo" for="expNeg">Negocio<select id="expNeg"><option value="">Todos los negocios</option>${(S.listas['Negocios'] || []).map(n => `<option ${n === S.expNeg ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select></label>` : ''}
+    ${ddHTML('ddExp', S.expViaje ? 'Viaje' : 'Mes', opExp, valorExport(), v => { S.expVal = v; render(); })}
+    ${y.admin ? ddHTML('ddExpNeg', 'Negocio', [['', 'Todos los negocios'], ...(S.listas['Negocios'] || []).map(n => [n, n])], S.expNeg || '', v => { S.expNeg = v; render(); }) : ''}
     <button class="btn btn-grad" type="button" data-acc="exportar">Descargar Excel</button>
   </section>
 
@@ -854,6 +1146,7 @@ function vPerfil() {
     <div id="usuariosAdmin">${usuariosAdmin ? htmlUsuarios() : `<button class="btn btn-sec" type="button" data-acc="verUsuarios">Ver cuentas</button>`}</div>
   </section>` : ''}
 
+  <button class="interruptor" type="button" role="switch" data-acc="letra" aria-checked="${!!LS.get('bd_letra', false)}"><span><b>Letra grande</b><small>Agranda toda la app en este celular</small></span><span class="switch" aria-hidden="true"></span></button>
   <button class="btn btn-sec" type="button" data-acc="cambiarPatron">Cambiar mi patrón</button>
   <button class="btn btn-ghost" type="button" data-acc="salir">Cerrar sesión</button>`;
 }
@@ -875,8 +1168,13 @@ function htmlUsuarios() {
 /* =========================================================
    Ventanas (formularios)
    ========================================================= */
-function abrirModal(html) { $('modalIn').innerHTML = html; $('modal').hidden = false; }
-function cerrarModal() { $('modal').hidden = true; $('modalIn').innerHTML = ''; S.form = null; S.formGuardado = null; S.volverA = null; }
+function abrirModal(html) { $('modalIn').innerHTML = html; if ($('modal').hidden) { $('modal').hidden = false; histRevisar(); } }
+function limpiarModal() { S.form = null; S.formGuardado = null; S.volverA = null; }
+function cerrarModal(desdeAtras) {
+  const estaba = !$('modal').hidden;
+  $('modal').hidden = true; $('modalIn').innerHTML = ''; limpiarModal();
+  if (estaba && !desdeAtras) histRevisar();
+}
 $('modal').addEventListener('click', e => { if (e.target === $('modal')) cerrarModal(); });
 const cab = (titulo, color, icono) => `<div class="v-cab"><span class="ic" style="background:${color}">${svg(icono, 20)}</span><b>${esc(titulo)}</b><button class="cerrar" type="button" data-acc="cerrar" aria-label="Cerrar">${svg('x', 18, 2.2)}</button></div>`;
 
@@ -896,11 +1194,12 @@ function formPersonal(fila) {
 function pintarFormPersonal() {
   const f = S.form, cats = S.listas['Categorías personales'] || [];
   abrirModal(`${cab(f.editando ? 'Editar gasto personal' : 'Gasto personal', 'var(--fuchsia)', 'user')}
+    ${bannerRech(f.id)}
     ${S.yo.admin && !f.editando ? selNegocio(f.negocio) : ''}
     <div class="campo">¿De dónde salió la plata?<div class="segm">${['Negocio (MercadoLibre)', 'Personal'].map(o => `<button type="button" data-set="origen" data-val="${esc(o)}" aria-pressed="${f.origen === o}">${esc(o)}</button>`).join('')}</div></div>
     <div class="campo">Categoría<div class="grid3">${cats.map(c => `<button type="button" class="chip" data-set="categoria" data-val="${esc(c)}" aria-pressed="${f.categoria === c}">${esc(c)}</button>`).join('')}</div></div>
-    <div class="dos"><label class="campo" for="fFecha">Fecha<input id="fFecha" type="date" value="${esc(f.fecha)}" data-campo="fecha"></label>
-      <label class="campo" for="fMonto">Monto<input id="fMonto" inputmode="decimal" placeholder="$ 0" value="${esc(f.monto)}" data-campo="monto"></label></div>
+    ${campoFecha(f.fecha)}
+    <label class="campo" for="fMonto">Monto<input id="fMonto" inputmode="decimal" placeholder="$ 0" value="${esc(f.monto)}" data-campo="monto"></label>
     <label class="campo" for="fDesc">Descripción (opcional)<input id="fDesc" value="${esc(f.descripcion)}" data-campo="descripcion" placeholder="Ej: Factura de luz"></label>
     <div class="campo">Pago<div class="segm">${['Efectivo', 'Transferencia'].map(o => `<button type="button" data-set="pago" data-val="${o}" aria-pressed="${f.pago === o}">${o}</button>`).join('')}</div></div>
     <div class="error" id="fError" hidden></div>
@@ -908,7 +1207,19 @@ function pintarFormPersonal() {
     ${f.editando ? botonBorrar() : ''}`);
 }
 function selNegocio(v) {
-  return `<label class="campo" for="fNeg">Negocio<select id="fNeg" data-campo="negocio">${(S.listas['Negocios'] || []).map(n => `<option ${n === v ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select></label>`;
+  return ddHTML('ddNeg', 'Negocio', (S.listas['Negocios'] || []).map(n => [n, n]), v, n => { leerCampos(); S.form.negocio = n; repintarForm(); });
+}
+function repintarForm() { if (!S.form) return; if (S.form.hoja === 'personal') pintarFormPersonal(); else pintarFormNegocio(); }
+function campoFecha(valor) {
+  const h = hoy(), a = ayer();
+  return `<div class="campo"><span id="lFecha">Fecha</span><div class="fecha-fila">
+    <button type="button" class="dd-btn" data-cal="abrir" aria-labelledby="lFecha">${svg('cal', 18, 2)}<span>${esc(fLarga(valor))}</span></button>
+    <div class="segm"><button type="button" data-fecha="${h}" aria-pressed="${valor === h}">Hoy</button><button type="button" data-fecha="${a}" aria-pressed="${valor === a}">Ayer</button></div>
+  </div></div>`;
+}
+function bannerRech(id) {
+  const z = rechDe(id);
+  return z ? `<div class="error">No se pudo subir: ${esc(z.error)} Corregilo y guardá de nuevo, o borralo.</div>` : '';
 }
 function botonBorrar() {
   return S.form.confirmarBorrar
@@ -950,8 +1261,12 @@ function pintarFormNegocio() {
   if (f.viaje && !viajes.includes(f.viaje)) viajes.unshift(f.viaje);
   const campoViaje = f.viajeNuevo
     ? `<label class="campo" for="fViaje">Viaje nuevo<input id="fViaje" data-campo="viaje" value="${esc(f.viaje)}" placeholder="Ej: Bermejo ${fCorta(hoy())}"></label>`
-    : `<label class="campo" for="fViajeSel">Viaje<select id="fViajeSel"><option value="">Sin viaje</option>${viajes.map(v => `<option ${v === f.viaje ? 'selected' : ''}>${esc(v)}</option>`).join('')}<option value="__nuevo">+ Nuevo viaje…</option></select></label>`;
-  const fechaViaje = `<div class="dos"><label class="campo" for="fFecha">Fecha<input id="fFecha" type="date" value="${esc(f.fecha)}" data-campo="fecha"></label>${campoViaje}</div>`;
+    : ddHTML('ddViaje', 'Viaje', [['', 'Sin viaje'], ...viajes.map(v => [v, v]), ['__nuevo', '+ Nuevo viaje…']], f.viaje || '', v => {
+        leerCampos();
+        if (v === '__nuevo') { S.form.viajeNuevo = true; S.form.viaje = 'Bermejo ' + fCorta(hoy()); } else S.form.viaje = v;
+        pintarFormNegocio();
+      });
+  const fechaViaje = `${campoFecha(f.fecha)}${campoViaje}`;
   const pagoSeg = `<div class="campo">Pago<div class="segm">${['Efectivo', 'Transferencia'].map(o => `<button type="button" data-set="pago" data-val="${o}" aria-pressed="${f.pago === o}">${o}</button>`).join('')}</div></div>`;
   const c = calcForm(f);
 
@@ -988,6 +1303,7 @@ function pintarFormNegocio() {
   }
   abrirModal(`${cab(f.editando ? 'Editar' : 'Compras y negocio', color, f.tipo === 'Cambio' ? 'cambio' : 'caja')}
     ${f.editando ? '' : `<div class="segm" role="group" aria-label="Tipo">${tabs.map(([v, t, s]) => `<button type="button" data-set="tipo" data-val="${v}" aria-pressed="${f.tipo === v}">${t}<small>${s}</small></button>`).join('')}</div>`}
+    ${bannerRech(f.id)}
     ${S.yo.admin && !f.editando ? selNegocio(f.negocio) : ''}
     ${cuerpo}
     <div class="error" id="fError" hidden></div>
@@ -1079,7 +1395,7 @@ function guardarAjuste() {
   encolar({ tipo: 'guardar', hoja: 'negocio', id: nuevoId(), datos: { negocio: f.negocio, tipo: 'Ajuste', fecha: hoy(), viaje: '', monto, inicial: !!f.inicial } });
   avisar('Efectivo actualizado');
   const volver = S.formGuardado; S.formGuardado = null;
-  if (f.inicial) { cerrarModal(); formNegocio(null, 'Inversión', f.negocio); return; }
+  if (f.inicial) { limpiarModal(); formNegocio(null, 'Inversión', f.negocio); return; }
   if (volver) { S.form = volver; pintarFormNegocio(); return; }
   cerrarModal();
 }
@@ -1096,11 +1412,13 @@ function cargarXLSX() {
     document.head.appendChild(s);
   });
 }
-async function exportar() {
-  const sel = $('expSel'); if (!sel) return;
-  const porViaje = !!S.expViaje, val = sel.value;
-  const neg = S.yo.admin ? ($('expNeg') ? $('expNeg').value : '') : S.yo.negocio;
-  try { await cargarXLSX(); } catch (e) { return avisar(e.message); }
+async function exportar(btn) {
+  const porViaje = !!S.expViaje, val = valorExport();
+  if (!val) return avisar('No hay nada para descargar todavía.');
+  const neg = S.yo.admin ? (S.expNeg || '') : S.yo.negocio;
+  const listo = cargando(btn, 'Preparando…');
+  try { await cargarXLSX(); } catch (e) { listo(); return avisar(e.message); }
+  listo();
   const filtra = f => (!neg || f.negocio === neg) && (porViaje ? f.viaje === val : String(f.fecha).slice(0, 7) === val);
   const N = S.negocio.filter(filtra).sort((a, b) => a.fecha.localeCompare(b.fecha));
   const Pp = porViaje ? [] : S.personal.filter(f => (!neg || f.negocio === neg) && String(f.fecha).slice(0, 7) === val).sort((a, b) => a.fecha.localeCompare(b.fecha));
@@ -1137,19 +1455,38 @@ async function exportar() {
 /* =========================================================
    Clics y escritura (un solo lugar para todo)
    ========================================================= */
-function irA(v) { S.vista = v; if (v !== 'negocio') S.viaje = ''; $('contenido').scrollTop = 0; render(); }
+function irA(v, desdeAtras) {
+  S.vista = v; S.catAbierta = false; S.firmas = {}; S.resaltes = {};
+  if (v !== 'negocio') S.viaje = '';
+  $('contenido').scrollTop = 0; render();
+  if (!desdeAtras) histRevisar();
+}
 document.querySelectorAll('nav.barra [data-ir]').forEach(b => b.onclick = () => irA(b.dataset.ir));
 $('btnMas').onclick = elegirTipo;
 
 document.addEventListener('click', async ev => {
   const t = ev.target.closest('button,[data-editar]');
+  cerrarListasAfuera(ev.target);
+  // Tarjeta "Por categoría" de Inicio: tocar en cualquier lado la agranda o achica; agrandada, tocar un color lo resalta
+  const seg = ev.target.closest('[data-seg]'), tc = ev.target.closest('#tarjCat');
+  if (tc) return (S.catAbierta && seg) ? resaltar(seg) : alternarCat();
+  if (seg) return resaltar(seg);
   if (!t) return;
   const ds = t.dataset;
+  // Listas desplegables propias
+  if (ds.dd) return abrirLista(ds.dd);
+  if (ds.ddval !== undefined) { const id = t.closest('.dd').id; cerrarListas(); return DD[id] && DD[id](ds.ddval); }
+  // Calendario y fecha rápida
+  if (ds.fecha && S.form) { leerCampos(); S.form.fecha = ds.fecha; return repintarForm(); }
+  if (ds.cal === 'abrir' && S.form) return abrirCal(S.form.fecha, v => { S.form.fecha = v; repintarForm(); });
+  if (ds.cal === 'cerrar') return cerrarCal();
+  if (ds.calmes) { CAL.m += Number(ds.calmes); if (CAL.m < 0) { CAL.m = 11; CAL.y--; } if (CAL.m > 11) { CAL.m = 0; CAL.y++; } return pintarCal(); }
+  if (ds.dia) { const fn = CAL.fn; cerrarCal(); return fn && fn(ds.dia); }
   if (ds.filtro !== undefined) { S.filtro = ds.filtro; S.viaje = ''; return render(); }
   if (ds.per) { S.per = { tipo: ds.per, ref: hoy() }; return render(); }
   if (ds.mover) { S.per = moverPer(S.per, Number(ds.mover)); return render(); }
   if (ds.exp) { S.expViaje = ds.exp === 'viaje'; S.expVal = ''; return render(); }
-  if (ds.nuevo) { cerrarModal(); return ds.nuevo === 'negocio' ? formNegocio(null) : formPersonal(null); }
+  if (ds.nuevo) { limpiarModal(); return ds.nuevo === 'negocio' ? formNegocio(null) : formPersonal(null); }
   if (ds.editar) {
     const [h, id] = ds.editar.split(':');
     const fila = (h === 'negocio' ? S.negocio : S.personal).find(f => f.id === id);
@@ -1163,7 +1500,7 @@ document.addEventListener('click', async ev => {
     return S.form.hoja === 'personal' ? pintarFormPersonal() : pintarFormNegocio();
   }
   if (ds.abrir && S.form) { S.form.abierto = S.form.abierto === ds.abrir ? '' : ds.abrir; leerCampos(); return pintarFormNegocio(); }
-  if (ds.adm) return accionAdmin(ds.adm);
+  if (ds.adm) return accionAdmin(ds.adm, t);
   const acc = ds.acc;
   if (!acc) return;
   ({
@@ -1172,16 +1509,18 @@ document.addEventListener('click', async ev => {
     guardarPersonal: () => { leerCampos(); guardarPersonal(); },
     guardarNegocio: () => { leerCampos(); guardarNegocio(); },
     guardarAjuste: () => { leerCampos(); guardarAjuste(); },
-    saltarInicial: () => { const n = S.form.negocio; LS.set('bd_sininicial_' + n, true); cerrarModal(); formNegocio(null, 'Inversión', n); },
+    errores: verErrores,
+    letra: () => { const on = !LS.get('bd_letra', false); LS.set('bd_letra', on); document.body.classList.toggle('grande', on); t.setAttribute('aria-checked', on); avisar(on ? 'Letra grande activada' : 'Letra normal'); },
+    saltarInicial: () => { const n = S.form.negocio; LS.set('bd_sininicial_' + n, true); limpiarModal(); formNegocio(null, 'Inversión', n); },
     ajustar: () => { const n = S.yo.admin ? S.filtro : S.yo.negocio; if (!n) return avisar('Elegí un negocio arriba para ajustar su efectivo.'); formAjuste(n, false); },
     borrar: () => { leerCampos(); S.form.confirmarBorrar = true; refrescarForm(); },
     noBorrar: () => { S.form.confirmarBorrar = false; refrescarForm(); },
     siBorrar: () => { encolar({ tipo: 'borrar', hoja: S.form.hoja === 'personal' ? 'personal' : 'negocio', id: S.form.id }); cerrarModal(); avisar('Gasto borrado'); },
-    avisoCambio: () => { const g = S.formGuardado; cerrarModal(); S.volverA = g; formNegocio(null, 'Cambio', g.negocio); S.form.viaje = g.viaje; pintarFormNegocio(); },
+    avisoCambio: () => { const g = S.formGuardado; limpiarModal(); S.volverA = g; formNegocio(null, 'Cambio', g.negocio); S.form.viaje = g.viaje; pintarFormNegocio(); },
     avisoAjustar: () => formAjuste(S.formGuardado.negocio, false),
     avisoVolver: () => { S.form = S.formGuardado; S.formGuardado = null; pintarFormNegocio(); },
-    exportar,
-    verUsuarios: cargarUsuarios,
+    exportar: () => exportar(t),
+    verUsuarios: () => cargarUsuarios(t),
     cambiarPatron: () => iniciarPatron('crear'),
     salir: async () => { try { if (navigator.onLine) await api({ accion: 'salir', token: S.token }); } catch (e) {} if (S.cola.length) { avisar('Tenés gastos sin subir: se suben cuando vuelvas a entrar.'); } cerrarSesionLocal(''); }
   }[acc] || (() => {}))();
@@ -1191,6 +1530,7 @@ function verAjuste(fila) {
   S.form.tipoVista = 'ajuste'; S.form.fila = fila;
   abrirModal(`${cab(fila.descripcion, 'var(--teal)', 'billetera')}
     <div class="caja"><div><span>Fecha</span><span>${fCorta(fila.fecha)}</span></div><div><span>Efectivo contado</span><span>${fmt(fila.monto)}</span></div><div class="t"><span>Corrección</span><b>${fila.movEfectivo >= 0 ? '+' : '-'}${fmt(Math.abs(fila.movEfectivo))}</b></div></div>
+    ${bannerRech(fila.id)}
     <p class="ayuda" style="margin:0">Un ajuste no se edita. Si estuvo mal, borralo y cargá uno nuevo desde "Efectivo disponible".</p>
     ${botonBorrar()}`);
 }
@@ -1199,16 +1539,8 @@ document.addEventListener('input', ev => {
   if (!c || !S.form) return;
   S.form[c] = ev.target.value;
   if (S.form.hoja === 'negocio' && ['monto', 'unidades', 'pctRecargo', 'pctCambio'].includes(c)) recalcular();
-  if (ev.target.id === 'expSel') S.expVal = ev.target.value;
 });
-document.addEventListener('change', ev => {
-  const t = ev.target;
-  if (t.id === 'selViaje') { S.viaje = t.value; return render(); }
-  if (t.id === 'expSel') S.expVal = t.value;
-  if (t.id === 'expNeg') S.expNeg = t.value;
-  if (t.id === 'fViajeSel') { leerCampos(); if (t.value === '__nuevo') { S.form.viajeNuevo = true; S.form.viaje = 'Bermejo ' + fCorta(hoy()); } else S.form.viaje = t.value; return pintarFormNegocio(); }
-  if (t.id === 'fNeg' && S.form) { leerCampos(); S.form.negocio = t.value; return S.form.hoja === 'personal' ? pintarFormPersonal() : pintarFormNegocio(); }
-});
+
 function leerCampos() { document.querySelectorAll('#modalIn [data-campo]').forEach(i => { if (S.form) S.form[i.dataset.campo] = i.value; }); }
 // Recalcula los totales sin redibujar (para no perder el foco del teclado)
 function recalcular() {
@@ -1218,12 +1550,13 @@ function recalcular() {
 }
 
 /* ---------- Admin ---------- */
-async function cargarUsuarios() {
+async function cargarUsuarios(btn) {
   if (!navigator.onLine) return avisar('Para ver las cuentas necesitás internet.');
+  const listo = cargando(btn, 'Cargando…');
   try { const r = await api({ accion: 'usuarios', token: S.token }); usuariosAdmin = r.usuarios; render(); }
-  catch (e) { avisar(e.message); }
+  catch (e) { listo(); avisar(e.message); }
 }
-async function accionAdmin(spec) {
+async function accionAdmin(spec, btn) {
   const [acc, usuario] = spec.split(':');
   if (!navigator.onLine) return avisar('Para esto necesitás internet.');
   if (acc === 'clave') {
@@ -1235,24 +1568,273 @@ async function accionAdmin(spec) {
     $('admGuardar').onclick = async () => {
       const c = $('admClave').value;
       if (c.length < 6) return errorForm('Tiene que tener al menos 6 caracteres.');
+      const listo = cargando($('admGuardar'), 'Guardando…');
       try { const r = await api({ accion: 'nuevaClave', token: S.token, usuario, clave: c }); usuariosAdmin = r.usuarios; cerrarModal(); avisar('Contraseña cambiada'); render(); }
-      catch (e) { errorForm(e.message); }
+      catch (e) { listo(); errorForm(e.message); }
     };
     return;
   }
+  const listo = cargando(btn, 'Cargando…');
   try {
     const r = await api({ accion: { aprobar: 'aprobar', rechazar: 'rechazar', desbloquear: 'desbloquear' }[acc], token: S.token, usuario });
     usuariosAdmin = r.usuarios;
     S.pendientes = usuariosAdmin.filter(u => u.estado === 'pendiente').length;
     avisar({ aprobar: 'Cuenta activada', rechazar: 'Cuenta desactivada', desbloquear: 'Cuenta desbloqueada' }[acc]);
     render();
-  } catch (e) { avisar(e.message); }
+  } catch (e) { listo(); avisar(e.message); }
+}
+
+/* =========================================================
+   Botones que esperan a Google: muestran "Cargando…"
+   ========================================================= */
+function cargando(b, texto) {
+  if (!b) return () => {};
+  const antes = b.innerHTML;
+  b.disabled = true; b.classList.remove('toque'); b.textContent = texto;
+  return () => { if (b.isConnected) { b.disabled = false; b.innerHTML = antes; } };
+}
+
+/* =========================================================
+   Listas desplegables propias (reemplazan las del celular)
+   ========================================================= */
+const DD = {};
+function ddHTML(id, etiqueta, opciones, valor, alElegir, vacio) {
+  DD[id] = alElegir;
+  const sel = opciones.find(o => o[0] === valor);
+  return `<div class="campo"><span id="l_${id}">${esc(etiqueta)}</span><div class="dd" id="${id}">
+    <button type="button" class="dd-btn" data-dd="${id}" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="l_${id}"><span>${sel ? esc(sel[1]) : `<span style="color:var(--dim)">${esc(vacio || 'Elegí una opción')}</span>`}</span>${svg('abajo', 18, 2.4)}</button>
+    <div class="dd-lista" role="listbox" hidden>${opciones.map(([v, t]) => `<button type="button" role="option" data-ddval="${esc(v)}" aria-selected="${v === valor}">${esc(t)}${v === valor ? svg('tilde', 16, 2.6) : ''}</button>`).join('')}</div>
+  </div></div>`;
+}
+function abrirLista(id) {
+  const caja = $(id); if (!caja) return;
+  const lista = caja.querySelector('.dd-lista'), btn = caja.querySelector('[data-dd]');
+  const abrir = lista.hidden;
+  cerrarListas();
+  if (!abrir) return;
+  lista.hidden = false; btn.setAttribute('aria-expanded', 'true');
+  btn.querySelector('svg:last-child').outerHTML = svg('arriba', 18, 2.4);
+  setTimeout(() => lista.scrollIntoView({ block: 'nearest', behavior: 'smooth' }), 30);
+}
+function cerrarListas() {
+  document.querySelectorAll('.dd [data-dd][aria-expanded="true"]').forEach(btn => {
+    btn.setAttribute('aria-expanded', 'false');
+    btn.parentNode.querySelector('.dd-lista').hidden = true;
+    btn.querySelector('svg:last-child').outerHTML = svg('abajo', 18, 2.4);
+  });
+}
+function cerrarListasAfuera(el) { if (!el.closest || !el.closest('.dd')) cerrarListas(); }
+
+/* =========================================================
+   Calendario propio
+   ========================================================= */
+const CAL = { y: 0, m: 0, valor: '', fn: null };
+function abrirCal(valor, fn) {
+  leerCampos();
+  const d = aFecha(valor || hoy());
+  Object.assign(CAL, { y: d.getFullYear(), m: d.getMonth(), valor: valor || '', fn });
+  pintarCal(); if ($('cal').hidden) { $('cal').hidden = false; histRevisar(); }
+}
+function cerrarCal(desdeAtras) { const estaba = !$('cal').hidden; $('cal').hidden = true; CAL.fn = null; if (estaba && !desdeAtras) histRevisar(); }
+$('cal').addEventListener('click', e => { if (e.target === $('cal')) cerrarCal(); });
+function pintarCal() {
+  const h = hoy(), a = ayer();
+  const primero = new Date(CAL.y, CAL.m, 1), vacios = (primero.getDay() + 6) % 7, dias = new Date(CAL.y, CAL.m + 1, 0).getDate();
+  const mes = MESES[CAL.m][0].toUpperCase() + MESES[CAL.m].slice(1);
+  let celdas = '<span></span>'.repeat(vacios);
+  for (let d = 1; d <= dias; d++) {
+    const iso = aISO(new Date(CAL.y, CAL.m, d));
+    celdas += `<button type="button" data-dia="${iso}" class="${iso === h ? 'hoy' : ''}" aria-selected="${iso === CAL.valor}" aria-label="${d} de ${MESES[CAL.m]}">${d}</button>`;
+  }
+  const sel = CAL.valor ? aFecha(CAL.valor) : null;
+  $('calIn').innerHTML = `
+    <div class="v-cab"><span class="ic" style="background:var(--grad)">${svg('cal', 20)}</span><b>Elegí la fecha</b><button class="cerrar" type="button" data-cal="cerrar" aria-label="Cerrar">${svg('x', 18, 2.2)}</button></div>
+    <div class="cal-sel">Fecha elegida<b>${sel ? DIAS[sel.getDay()][0].toUpperCase() + DIAS[sel.getDay()].slice(1) + ' ' + sel.getDate() + ' de ' + MESES[sel.getMonth()] : '—'}</b></div>
+    <div class="cal-cab"><button type="button" data-calmes="-1" aria-label="Mes anterior">${svg('izq', 20, 2.4)}</button><b>${mes} ${CAL.y}</b><button type="button" data-calmes="1" aria-label="Mes siguiente">${svg('der', 20, 2.4)}</button></div>
+    <div class="cal-sem" aria-hidden="true">${['L', 'M', 'M', 'J', 'V', 'S', 'D'].map(x => `<span>${x}</span>`).join('')}</div>
+    <div class="cal-dias">${celdas}</div>
+    <div class="cal-pie"><button class="btn btn-sec" type="button" data-dia="${h}">Hoy</button><button class="btn btn-sec" type="button" data-dia="${a}">Ayer</button><button class="btn btn-ghost" type="button" data-cal="cerrar">Cancelar</button></div>`;
+}
+
+/* =========================================================
+   Animación al tocar: se hunde, se oscurecen los bordes y
+   una luz sigue al dedo. Si sacás el dedo del botón, no se toca.
+   ========================================================= */
+let toque = null, cancelado = null;
+function marcarToque(e) {
+  const r = toque.b.getBoundingClientRect();
+  toque.dentro = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+  toque.b.style.setProperty('--x', (e.clientX - r.left) + 'px');
+  toque.b.style.setProperty('--y', (e.clientY - r.top) + 'px');
+  toque.b.classList.toggle('toque', toque.dentro);
+}
+function soltarToque(cancelar) {
+  if (!toque) return;
+  const b = toque.b, falta = Math.max(0, 140 - (Date.now() - toque.t));
+  if (cancelar) cancelado = { b, t: Date.now() };
+  toque = null;
+  if (cancelar) b.classList.remove('toque'); else setTimeout(() => b.classList.remove('toque'), falta);
+}
+document.addEventListener('pointerdown', e => {
+  cancelado = null;
+  const b = e.target.closest && e.target.closest('button');
+  if (!b || b.disabled) return;
+  toque = { b, t: Date.now(), id: e.pointerId, dentro: true };
+  marcarToque(e);
+}, true);
+document.addEventListener('pointermove', e => { if (toque && e.pointerId === toque.id) marcarToque(e); }, true);
+document.addEventListener('pointerup', e => { if (!toque || e.pointerId !== toque.id) return; marcarToque(e); soltarToque(!toque.dentro); }, true);
+document.addEventListener('pointercancel', () => soltarToque(true), true);
+document.addEventListener('click', e => {
+  if (cancelado && Date.now() - cancelado.t < 1000 && cancelado.b.contains(e.target)) { e.preventDefault(); e.stopImmediatePropagation(); }
+  cancelado = null;
+}, true);
+
+/* =========================================================
+   Deslizar hacia abajo para actualizar (sin recargar la app)
+   ========================================================= */
+const PTR = { y0: null, dist: 0, activo: false, ocupado: false };
+const UMBRAL = 72;
+function ptrPintar(dist, texto) {
+  const el = $('ptr');
+  el.classList.remove('vuelve');
+  el.style.opacity = Math.min(1, dist / 40);
+  el.style.transform = `translate(-50%, ${dist - 60}px)`;
+  el.querySelector('.c svg').style.transform = `rotate(${dist * 3.2}deg)`;
+  el.querySelector('small').textContent = texto || (dist >= UMBRAL ? 'Soltá para actualizar' : 'Deslizá para actualizar');
+}
+function ptrOcultar() {
+  const el = $('ptr');
+  el.classList.add('vuelve'); el.classList.remove('girando');
+  el.style.opacity = 0; el.style.transform = 'translate(-50%,-90px)';
+}
+const esperar = ms => new Promise(r => setTimeout(r, ms));
+async function ptrActualizar() {
+  PTR.ocupado = true;
+  const el = $('ptr');
+  el.classList.add('vuelve'); ptrPintar(UMBRAL, navigator.onLine ? 'Actualizando…' : 'Sin internet'); el.classList.add('vuelve');
+  if (navigator.onLine) {
+    el.classList.add('girando');
+    let bien = await sincronizar();
+    while (S.sincronizando) { await esperar(150); bien = true; }
+    el.classList.remove('girando');
+    el.querySelector('small').textContent = bien ? (S.cola.length ? 'Quedan gastos sin subir' : 'Todo actualizado ✓') : 'No se pudo conectar';
+  }
+  await esperar(900);
+  ptrOcultar(); PTR.ocupado = false;
+}
+/* Acordeón: al llegar arriba o abajo, se abre un poco el espacio entre las tarjetas de ese lado */
+function estirar(dist, lado) {
+  const vista = document.querySelector('#contenido .vista'); if (!vista) return;
+  const hijos = [...vista.children], n = hijos.length;
+  vista.classList.remove('volviendo'); vista.classList.add('estirando');
+  hijos.forEach((h, k) => {
+    const off = lado === 'arriba' ? dist * 0.45 * (1 - Math.pow(0.55, k + 1)) : -dist * 0.45 * (1 - Math.pow(0.55, n - k));
+    h.style.transform = `translateY(${off.toFixed(1)}px)`;
+  });
+}
+function soltarEstirar() {
+  const vista = document.querySelector('#contenido .vista'); if (!vista) return;
+  vista.classList.remove('estirando'); vista.classList.add('volviendo');
+  [...vista.children].forEach(h => { h.style.transform = ''; });
+  setTimeout(() => vista.classList.remove('volviendo'), 550);
+}
+(function () {
+  const cont = $('contenido');
+  const G = { y0: null, lado: '', activo: false, dist: 0 };
+  cont.addEventListener('touchstart', e => {
+    G.activo = false; G.dist = 0; G.lado = '';
+    if (e.touches.length !== 1) { G.y0 = null; return; }
+    G.y0 = e.touches[0].clientY;
+    G.arriba = cont.scrollTop <= 0;
+    G.abajo = cont.scrollTop + cont.clientHeight >= cont.scrollHeight - 2;
+  }, { passive: true });
+  cont.addEventListener('touchmove', e => {
+    if (G.y0 === null) return;
+    const dy = e.touches[0].clientY - G.y0;
+    const lado = dy > 0 && G.arriba && cont.scrollTop <= 0 ? 'arriba' : dy < 0 && G.abajo && cont.scrollTop + cont.clientHeight >= cont.scrollHeight - 2 ? 'abajo' : '';
+    if (!lado) { if (G.activo) { soltarEstirar(); if (G.lado === 'arriba') ptrOcultar(); } G.activo = false; return; }
+    if (!G.activo && Math.abs(dy) > 12) { G.activo = true; G.lado = lado; soltarToque(true); }
+    if (!G.activo) return;
+    G.dist = Math.min(Math.abs(dy) * 0.5, 110);
+    estirar(G.dist, lado);
+    if (lado === 'arriba' && !PTR.ocupado) ptrPintar(G.dist);
+  }, { passive: true });
+  const fin = () => {
+    G.y0 = null;
+    if (!G.activo) return;
+    G.activo = false; soltarEstirar();
+    if (G.lado === 'arriba' && !PTR.ocupado) { if (G.dist >= UMBRAL) ptrActualizar(); else ptrOcultar(); }
+  };
+  cont.addEventListener('touchend', fin);
+  cont.addEventListener('touchcancel', fin);
+})();
+
+/* =========================================================
+   Botón "atrás" del celular: cierra lo que está abierto
+   (calendario, ventana, o vuelve a Inicio) en vez de salir de la app
+   ========================================================= */
+// Mientras haya algo abierto, se deja UNA "marca" en el historial. Atrás la consume y cierra lo de arriba.
+const HIST = { guarda: false, ignorar: 0, t: null };
+const algoAbierto = () => !$('cal').hidden || !$('modal').hidden || (!$('app').hidden && S.vista !== 'inicio');
+function histRevisar() {
+  clearTimeout(HIST.t);
+  HIST.t = setTimeout(() => {
+    const hace = algoAbierto();
+    try {
+      if (hace && !HIST.guarda) { history.pushState({ billetera: 1 }, ''); HIST.guarda = true; }
+      else if (!hace && HIST.guarda) { HIST.guarda = false; HIST.ignorar++; history.back(); }
+    } catch (e) {}
+  }, 80);
+}
+window.addEventListener('popstate', () => {
+  if (HIST.ignorar > 0) { HIST.ignorar--; return; }
+  HIST.guarda = false;
+  if (!$('cal').hidden) cerrarCal(true);
+  else if (!$('modal').hidden) cerrarModal(true);
+  else if (!$('app').hidden && S.vista !== 'inicio') irA('inicio', true);
+  histRevisar();
+});
+
+/* =========================================================
+   Gastos con error: lista para corregirlos
+   ========================================================= */
+function verErrores() {
+  const filas = S.rech.map(z => {
+    const lista = z.op.hoja === 'negocio' ? S.negocio : S.personal;
+    const f = lista.find(x => x.id === z.op.id);
+    return f ? filaMov(f, z.op.hoja === 'negocio') : '';
+  }).join('');
+  abrirModal(`${cab('Gastos con error', '#C2324A', 'alerta')}
+    <p class="ayuda" style="margin:0">Google no los aceptó. Siguen guardados en tu celular: tocá cada uno para corregirlo y guardarlo de nuevo, o borrarlo.</p>
+    <div class="lista">${filas || '<div class="vacio">No hay gastos con error.</div>'}</div>`);
+}
+
+/* =========================================================
+   Versión nueva
+   ========================================================= */
+function textoVersion() {
+  const [f, h] = APP_VERSION.split('T');
+  const d = aFecha(f);
+  return d.getDate() + ' ' + MESES[d.getMonth()].slice(0, 3) + ' ' + d.getFullYear() + ', ' + h;
+}
+function mostrarNovedad() {
+  const vista = LS.get('bd_version_vista', '');
+  if (!vista && !LS.get('bd_ultimo_usuario', '')) LS.set('bd_version_vista', APP_VERSION); // instalación nueva: no hay "versión nueva"
+  const ver = LS.get('bd_version_vista', '') !== APP_VERSION;
+  ['novLogin', 'novPatron'].forEach(id => {
+    const el = $(id);
+    el.hidden = !ver;
+    if (ver) el.innerHTML = `${svg('chispa', 20, 1.9)}<span><b>Versión nueva</b> · ${esc(textoVersion())}</span>`;
+  });
 }
 
 /* =========================================================
    Arranque
    ========================================================= */
 (function arrancar() {
+  document.body.classList.toggle('grande', !!LS.get('bd_letra', false));
+  mostrarNovedad();
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) navigator.serviceWorker.register('sw.js').catch(() => {});
   const ses = LS.get('bd_sesion', null);
   if (!ses || !ses.token) return mostrarLogin('');
@@ -1261,7 +1843,7 @@ async function accionAdmin(spec) {
   const est = LS.get(kEstado(), null);
   if (!est || !est.yo) { LS.del('bd_sesion'); S.token = ''; return mostrarLogin(''); }
   Object.assign(S, { yo: est.yo, listas: Object.assign({}, LISTAS_BASE, est.listas), personal: est.personal || [], negocio: est.negocio || [], pendientes: est.pendientes || 0, ultimaSync: est.ultimaSync || 0 });
-  S.cola = LS.get(kCola(), []);
+  S.cola = LS.get(kCola(), []); S.rech = LS.get(kRech(), []);
   if (LS.get('bd_patron_' + S.yo.usuario, '')) iniciarPatron('abrir'); else iniciarPatron('crear');
 })();
 </script>
