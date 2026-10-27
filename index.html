@@ -84,7 +84,7 @@ button{cursor:pointer}
 
 /* ---------- App ---------- */
 #app{position:fixed;inset:0;display:flex;flex-direction:column}
-#contenido{flex:1;overflow:auto;padding:calc(20px + var(--safe-t)) max(18px,env(safe-area-inset-right,0px)) calc(120px + var(--safe-b)) max(18px,env(safe-area-inset-left,0px))}
+#contenido{flex:1;overflow:auto;padding:calc(20px + var(--safe-t)) max(18px,env(safe-area-inset-right,0px)) calc(170px + var(--safe-b)) max(18px,env(safe-area-inset-left,0px))}
 .vista{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
 .cabecera{display:flex;align-items:center;gap:12px}
 .avatar{width:46px;height:46px;border-radius:50%;background:var(--card2);color:var(--lilac);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex:none}
@@ -326,6 +326,7 @@ body.grande nav.barra{zoom:1.1}
 /* Mes tocable (Personal / Negocio) y calendario con meses y años */
 .per-btn{border:0;background:transparent;color:var(--ink);font-size:16px;font-weight:800;padding:9px 12px;border-radius:12px;display:flex;align-items:center;gap:6px;white-space:nowrap}
 .per-btn svg{color:var(--lilac)}
+.nav-per .per-btn{width:auto;height:44px;background:transparent;padding:0 12px}
 .cal-tit{border:0;background:rgba(255,255,255,.06);color:var(--ink);font-size:17px;font-weight:800;padding:9px 14px;border-radius:12px;display:flex;align-items:center;gap:6px}
 .cal-tit svg{color:var(--lilac)}
 .cal-grilla{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
@@ -356,6 +357,34 @@ button.avatar{border:0;padding:0}
 .det-cab b.pos{color:var(--teal2)}
 .det-filas{background:rgba(11,9,22,.45);border-radius:18px;padding:4px 14px}
 .det-filas .fila-p b{max-width:60%;overflow-wrap:anywhere}
+
+/* ================= Actualización 5: ayudante ================= */
+.robot{position:fixed;right:14px;bottom:calc(98px + var(--safe-b));z-index:6;width:56px;height:56px;border-radius:50%;border:0;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px rgba(176,71,217,.5),0 0 0 3px rgba(14,11,26,.9)}
+@media (prefers-reduced-motion:no-preference){.robot{animation:saluda 2.4s ease-in-out 1s 2}@keyframes saluda{0%,100%{translate:0 0}20%{translate:0 -6px}40%{translate:0 0}}}
+#guia{position:fixed;inset:0;z-index:25;pointer-events:none}
+.guia-luz{position:fixed;border-radius:18px;box-shadow:0 0 0 9999px rgba(8,6,16,.66);transition:left .25s ease,top .25s ease,width .25s ease,height .25s ease;pointer-events:none}
+.guia-luz::after{content:'';position:absolute;inset:-4px;border-radius:22px;border:3px solid var(--lilac)}
+@media (prefers-reduced-motion:no-preference){.guia-luz::after{animation:latido 1.4s ease-in-out infinite}@keyframes latido{50%{inset:-9px;opacity:.35}}}
+.guia-globo{position:fixed;pointer-events:auto;width:min(330px,calc(100vw - 24px));background:var(--ink);color:#1A1530;border-radius:20px;padding:12px 14px 12px;box-shadow:0 14px 40px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:8px;transition:left .25s ease,top .25s ease}
+.guia-globo::before{content:'';position:absolute;left:var(--ax,50%);width:16px;height:16px;background:var(--ink);transform:translateX(-50%) rotate(45deg);border-radius:3px}
+.guia-globo.abajo::before{top:-6px}
+.guia-globo.arriba::before{bottom:-6px}
+.guia-globo.centro::before{display:none}
+.guia-top{display:flex;align-items:center;gap:8px}
+.guia-top .guia-cara{width:30px;height:30px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.guia-top small{flex:1;font-size:12px;font-weight:800;color:#6A5F92}
+.guia-x{width:34px;height:34px;border-radius:11px;border:0;background:#E4DDFA;color:#1A1530;display:flex;align-items:center;justify-content:center}
+.guia-txt{margin:0;font-size:18px;font-weight:700;line-height:1.35}
+.guia-txt b{color:#5B2FD6;font-weight:900}
+.guia-globo.largo .guia-txt{font-size:16px;font-weight:600}
+.guia-acc{display:flex;gap:8px;justify-content:flex-end}
+.guia-acc button{border:0;border-radius:13px;padding:11px 16px;font-weight:800;font-size:15px}
+.guia-listo{background:var(--violet);color:#fff}
+.guia-saltar{background:transparent;color:#5B4F86}
+.guia-globo.sacude{animation:sacude .35s}
+.opcion.chica{padding:13px 14px}
+.opcion.chica .oi{width:40px;height:40px;border-radius:13px}
+.opcion.chica b{font-size:16px}
 
 /* Gastos que Google rechazó */
 .esperando.mal{color:#FFB3BF;background:rgba(255,107,129,.16)}
@@ -418,6 +447,7 @@ button.avatar{border:0;padding:0}
 <div id="app" hidden>
   <div id="ptr" aria-hidden="true"><span class="c"><span class="giro"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg></span></span><small>Deslizá para actualizar</small></div>
   <main id="contenido"></main>
+  <button type="button" id="robot" class="robot" data-acc="ayudante" aria-label="Ayudante: tocame si tenés dudas" hidden><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="8" width="14" height="11" rx="3.5"/><path d="M12 4.5V8"/><circle cx="12" cy="3.6" r="1.1" fill="currentColor"/><circle cx="9.5" cy="13" r="1.3" fill="currentColor" stroke="none"/><circle cx="14.5" cy="13" r="1.3" fill="currentColor" stroke="none"/><path d="M10 16.3c1.2.8 2.8.8 4 0"/><path d="M3 12.5v2.5M21 12.5v2.5"/></svg></button>
   <nav class="barra" aria-label="Menú">
     <button type="button" data-ir="inicio"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"/></svg>Inicio</button>
     <button type="button" data-ir="personal"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>Personal</button>
@@ -429,6 +459,7 @@ button.avatar{border:0;padding:0}
 
 <div class="fondo" id="modal" hidden><div class="vidrio" id="modalIn" role="dialog" aria-modal="true"></div></div>
 <div class="fondo" id="cal" hidden><div class="vidrio cal" id="calIn" role="dialog" aria-modal="true" aria-label="Elegí la fecha"></div></div>
+<div id="guia" hidden><div class="guia-luz"></div><div class="guia-globo" role="dialog" aria-live="polite" aria-label="Guía"><div class="guia-top"><span class="guia-cara"></span><small id="guiaN"></small><button type="button" class="guia-x" id="guiaX" aria-label="Salir de la guía"></button></div><p class="guia-txt" id="guiaTxt"></p><div class="guia-acc"><button type="button" class="guia-saltar" id="guiaSaltar">Saltar</button><button type="button" class="guia-listo" id="guiaListo">Listo ›</button></div></div></div>
 <div class="aviso" id="aviso" role="status" hidden></div>
 
 <script>
@@ -438,7 +469,7 @@ button.avatar{border:0;padding:0}
    ========================================================= */
 const API = window.BILLETERA_API || '';
 // Fecha y hora de esta versión (se muestra una vez cuando alguien abre la app actualizada)
-const APP_VERSION = '2026-10-27T19:25';
+const APP_VERSION = '2026-10-27T20:05';
 const COLORES = ['#9B6BFF', '#F05BB5', '#3FD6C6', '#FFB547', '#6FA8FF', '#FF8A5B', '#B5E36B', '#D7C8FF'];
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 const LISTAS_BASE = {
@@ -749,6 +780,7 @@ function cerrarSesionLocal(msg) {
   S.token = ''; S.personal = []; S.negocio = []; S.cola = []; S.rech = [];
   cerrarModal(true); cerrarCal(true);
   S.vista = 'inicio'; S.catAbierta = false;
+  if (typeof terminarGuia === 'function') terminarGuia('', false);
   mostrarLogin(msg); histRevisar();
 }
 
@@ -835,7 +867,7 @@ function bienvenida() {
   LS.set('bd_version_vista', APP_VERSION); mostrarNovedad();
   $('bvNombre').textContent = primerNombre(S.yo.nombre);
   mostrar('bienvenida');
-  setTimeout(() => { mostrar('app'); S.vista = 'inicio'; render(); sincronizar(); }, 1600);
+  setTimeout(() => { mostrar('app'); S.vista = 'inicio'; render(); pintarRobot(); sincronizar(); saludoRobot(); }, 1600);
 }
 
 /* =========================================================
@@ -863,6 +895,8 @@ const IC = {
   cal: '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',
   expandir: '<path d="M7 10l5 5 5-5"/>',
   lapiz: '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M14 6l4 4"/>',
+  robot: '<rect x="5" y="8" width="14" height="11" rx="3.5"/><path d="M12 4.5V8"/><circle cx="12" cy="3.6" r="1.1" fill="currentColor"/><circle cx="9.5" cy="13" r="1.3" fill="currentColor" stroke="none"/><circle cx="14.5" cy="13" r="1.3" fill="currentColor" stroke="none"/><path d="M10 16.3c1.2.8 2.8.8 4 0"/><path d="M3 12.5v2.5M21 12.5v2.5"/>',
+  info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>',
   lupa: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
   chispa: '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/>'
 };
@@ -1189,6 +1223,7 @@ function vPerfil() {
     <div id="usuariosAdmin">${usuariosAdmin ? htmlUsuarios() : `<button class="btn btn-sec" type="button" data-acc="verUsuarios">Ver cuentas</button>`}</div>
   </section>` : ''}
 
+  <button class="interruptor" type="button" role="switch" data-acc="ayudanteOnOff" aria-checked="${LS.get('bd_ayudante', true) !== false}"><span><b>Mostrar ayudante 🤖</b><small>El robotito que te guía paso a paso</small></span><span class="switch" aria-hidden="true"></span></button>
   <button class="interruptor" type="button" role="switch" data-acc="letra" aria-checked="${!!LS.get('bd_letra', false)}"><span><b>Letra grande</b><small>Agranda toda la app en este celular</small></span><span class="switch" aria-hidden="true"></span></button>
   <button class="btn btn-sec" type="button" data-acc="cambiarPatron">Cambiar mi patrón</button>
   <button class="btn btn-ghost" type="button" data-acc="salir">Cerrar sesión</button>`;
@@ -1577,6 +1612,11 @@ document.addEventListener('click', async ev => {
     },
     volverInicio: () => irA('inicio'),
     verMas: () => { S.todosMax = (S.todosMax || 60) + 60; $('listaTodos').innerHTML = htmlListaTodos(); },
+    ayudante: () => { if (!GUIA.activa) abrirAyudante(); },
+    ayudanteOnOff: () => { const on = LS.get('bd_ayudante', true) === false; LS.set('bd_ayudante', on); t.setAttribute('aria-checked', on); pintarRobot(); avisar(on ? 'Ayudante activado' : 'Ayudante oculto'); },
+    guia: () => { const n = t.dataset.guia; cerrarModal(); setTimeout(() => iniciarGuia(n), 120); },
+    guiaOtros: menuOtros,
+    guiaMenu: abrirAyudante,
     letra: () => { const on = !LS.get('bd_letra', false); LS.set('bd_letra', on); document.body.classList.toggle('grande', on); t.setAttribute('aria-checked', on); avisar(on ? 'Letra grande activada' : 'Letra normal'); },
     saltarInicial: () => { const n = S.form.negocio; LS.set('bd_sininicial_' + n, true); limpiarModal(); formNegocio(null, 'Inversión', n); },
     ajustar: () => { const n = S.yo.admin ? S.filtro : S.yo.negocio; if (!n) return avisar('Elegí un negocio arriba para ajustar su efectivo.'); formAjuste(n, false); },
@@ -2030,6 +2070,243 @@ function mostrarNovedad() {
     if (ver) el.innerHTML = `${svg('chispa', 20, 1.9)}<span><b>Versión nueva</b> · ${esc(textoVersion())}</span>`;
   });
 }
+
+/* =========================================================
+   Ayudante 🤖: guías paso a paso (sin internet, sin IA)
+   La pantalla se oscurece, queda iluminado lo que hay que tocar
+   y un globito dice qué hacer. Avanza solo al tocar lo correcto.
+   ========================================================= */
+const Q = sel => () => document.querySelector(sel);
+const cerca = (sel, padre) => () => { const e = document.querySelector(sel); return e && e.closest(padre); };
+const tabActiva = val => { const b = document.querySelector(`#modalIn [data-set=tipo][data-val="${val}"]`); return !!b && b.getAttribute('aria-pressed') === 'true'; };
+// Pasos que se repiten
+const P_MAS = { el: Q('#btnMas'), txt: 'Tocá el <b>+</b>' };
+const P_NEG = { el: Q('#modalIn [data-nuevo=negocio]'), txt: 'Tocá <b>Compras y negocio</b>' };
+const P_INI1 = { si: () => !!$('fAj'), el: Q('#fAj'), txt: 'Primero: ¿cuánta <b>plata en efectivo</b> del negocio tenés en la mano? Escribila (puede ser 0)', modo: 'listo', req: true };
+const P_INI2 = { si: () => !!$('fAj'), el: Q('#modalIn [data-acc=guardarAjuste]'), txt: 'Tocá <b>Guardar efectivo</b>' };
+const pTab = (val, nombre) => ({ si: () => !tabActiva(val), el: Q(`#modalIn [data-set=tipo][data-val="${val}"]`), txt: `Tocá <b>${nombre}</b>` });
+const P_VIAJE = { si: () => !!$('ddViaje'), el: Q('#ddViaje'), txt: 'Elegí el <b>viaje</b><br>(o “+ Nuevo viaje”)', valido: '#ddViaje [data-ddval]', opcional: true };
+const P_VIAJE2 = { si: () => !!$('fViaje'), el: Q('#fViaje'), txt: 'Revisá el <b>nombre del viaje</b>', modo: 'listo' };
+const P_PAGO = { el: cerca('#modalIn [data-set=pago]', '.segm'), txt: '¿<b>Efectivo</b> o <b>transferencia</b>?', valido: '#modalIn [data-set=pago]' };
+const pCampo = (id, txt, extra) => Object.assign({ el: Q('#' + id), txt, modo: 'listo', req: true }, extra || {});
+const pGuardar = (acc, txt) => ({ el: Q(`#modalIn [data-acc=${acc}]`), txt, final: true });
+
+const GUIAS = {
+  cambio: {
+    titulo: 'Cambio a efectivo', tarea: true,
+    atajo: () => abrirFormGuia('Cambio'),
+    camino: [P_MAS, P_NEG],
+    pasos: [P_INI1, P_INI2, pTab('Cambio', 'Cambio'), P_VIAJE, P_VIAJE2,
+      pCampo('fMonto', '¿Cuánto <b>transferiste</b>?'),
+      pCampo('fPctC', '¿Qué <b>%</b> te cobraron?<br>(si no te cobraron, 0)', { req: false }),
+      pGuardar('guardarNegocio', 'Tocá <b>Guardar cambio</b> ✓')]
+  },
+  compra: {
+    titulo: 'Compra de productos', tarea: true,
+    atajo: () => abrirFormGuia('Inversión'),
+    camino: [P_MAS, P_NEG],
+    pasos: [P_INI1, P_INI2, pTab('Inversión', 'Inversión'), P_VIAJE, P_VIAJE2,
+      pCampo('fDesc', 'Escribí el <b>producto</b>'),
+      pCampo('fUn', '¿Cuántas <b>unidades</b>?'),
+      pCampo('fMonto', '¿Cuánto pagaste <b>en total</b>?'),
+      P_PAGO, pGuardar('guardarNegocio', 'Tocá <b>Guardar compra</b> ✓')]
+  },
+  noreversible: {
+    titulo: 'Pasero, colectivo…', tarea: true,
+    atajo: () => abrirFormGuia('No reversible'),
+    camino: [P_MAS, P_NEG],
+    pasos: [P_INI1, P_INI2, pTab('No reversible', 'No reversible'), P_VIAJE, P_VIAJE2,
+      { el: cerca('#modalIn [data-abrir=cat]', '.dd'), txt: 'Elegí la <b>categoría</b><br>(colectivo y pasero van en <b>Insumos</b>)', valido: '#modalIn [data-set=categoria]' },
+      { el: cerca('#modalIn .combo', '.dd'), txt: 'Tocá la <b>flechita</b> y elegí<br>(o escribilo)', modo: 'listo', valido: '#modalIn [data-set=descripcion]' },
+      pCampo('fMonto', '¿Cuánto <b>pagaste</b>?'),
+      P_PAGO, pGuardar('guardarNegocio', 'Tocá <b>Guardar gasto</b> ✓')]
+  },
+  personal: {
+    titulo: 'Gasto personal', tarea: true, largo: true,
+    atajo: () => { limpiarModal(); formPersonal(null); },
+    camino: [P_MAS, { el: Q('#modalIn [data-nuevo=personal]'), txt: 'Tocá <b>Gasto personal</b>' }],
+    pasos: [
+      { el: cerca('#modalIn [data-set=origen]', '.segm'), txt: '¿De dónde salió la plata?<br><b>Negocio</b>: de lo que gana el negocio.<br><b>Personal</b>: de tu bolsillo.<br>Elegí una (ya hay una marcada).', modo: 'listo', valido: '#modalIn [data-set=origen]' },
+      { el: cerca('#modalIn [data-set=categoria]', '.grid3'), txt: 'Elegí <b>en qué gastaste</b>: casa, comida, salud…', valido: '#modalIn [data-set=categoria]' },
+      { el: cerca('#modalIn [data-cal=abrir]', '.fecha-fila'), txt: '¿Fue <b>hoy</b>? Entonces no toques nada.<br>Si fue otro día, tocá <b>Ayer</b> o la fecha.', modo: 'listo' },
+      pCampo('fMonto', '¿Cuánto <b>gastaste</b>?'),
+      pCampo('fDesc', 'Si querés, anotá un <b>detalle</b>, por ejemplo qué compraste.<br>No es obligatorio.', { req: false, opcional: true }),
+      P_PAGO, pGuardar('guardarPersonal', 'Tocá <b>Guardar gasto</b> ✓')]
+  },
+  corregir: {
+    titulo: 'Corregir o borrar', antes: () => { if (S.vista !== 'inicio') irA('inicio'); },
+    requiere: () => document.querySelector('#contenido [data-editar]') ? '' : 'Todavía no hay gastos para corregir.',
+    pasos: [
+      { el: Q('#contenido [data-editar]'), txt: 'Tocá el gasto que querés <b>corregir o borrar</b><br>(este o cualquier otro)', valido: '#contenido [data-editar]' },
+      { el: Q('#modalIn [data-acc=editarDetalle]'), txt: 'Tocá el <b>lápiz</b> ✏️' },
+      { el: Q('#modalIn [data-acc^=guardar], #modalIn [data-acc=borrar]'), txt: 'Cambiá lo que necesites y tocá <b>Guardar cambios</b>.<br>Para borrarlo: <b>Borrar este gasto</b>, abajo de todo.', modo: 'listo', btn: 'Entendido' }]
+  },
+  cuanto: {
+    titulo: 'Cuánto gasté', antes: () => { if (S.vista !== 'inicio') irA('inicio'); },
+    pasos: [
+      { el: Q('#contenido .hero'), txt: 'Acá ves <b>cuánto se gastó este mes</b>', modo: 'listo', btn: 'Siguiente' },
+      { si: () => !!$('tarjCat'), el: Q('#tarjCat'), txt: 'Acá, <b>en qué</b> se gastó.<br>Tocala para agrandarla.', modo: 'listo', btn: 'Siguiente' },
+      { el: Q('nav [data-ir=personal]'), txt: 'Tocá <b>Personal</b> para ver tus gastos mes por mes', valido: 'nav [data-ir=personal]' },
+      { el: Q('#contenido .per-btn'), txt: 'Tocá el <b>mes</b> para ver otro', modo: 'listo', btn: 'Entendido' }]
+  },
+  efectivo: {
+    titulo: 'Efectivo disponible', antes: () => { if (S.vista !== 'negocio') irA('negocio'); },
+    pasos: [
+      { el: Q('#contenido .mini .efe'), txt: 'Es la <b>plata en efectivo del negocio</b> que tenés en la mano.<br>Sube con los <b>cambios</b> y baja con lo que pagás <b>en efectivo</b>.<br>Si no coincide con lo que contás, tocalo para <b>ajustar</b>.', modo: 'listo', btn: 'Entendido', largo: true }]
+  },
+  recorrido: {
+    titulo: 'Recorrido', antes: () => { if (S.vista !== 'inicio') irA('inicio'); },
+    pasos: [
+      { el: Q('#contenido .hero'), txt: 'Acá ves <b>cuánto se gastó</b> este mes', modo: 'listo', btn: 'Siguiente' },
+      { si: () => !!$('tarjCat'), el: Q('#tarjCat'), txt: 'Acá, <b>en qué</b> se gastó. Tocala para agrandarla.', modo: 'listo', btn: 'Siguiente' },
+      { si: () => !!document.querySelector('#contenido .h2-link'), el: cerca('#contenido .h2-link', '.tarj'), txt: 'Lo <b>último que se cargó</b>. Tocá uno para ver el detalle.', modo: 'listo', btn: 'Siguiente' },
+      { el: Q('#btnMas'), txt: 'Con el <b>+</b> cargás un gasto', modo: 'listo', btn: 'Siguiente' },
+      { el: Q('nav [data-ir=personal]'), txt: '<b>Personal</b>: tus gastos de casa, comida, salud…', modo: 'listo', btn: 'Siguiente' },
+      { el: Q('nav [data-ir=negocio]'), txt: '<b>Negocio</b>: compras, cambios y el efectivo', modo: 'listo', btn: 'Siguiente' },
+      { el: Q('nav [data-ir=perfil]'), txt: '<b>Perfil</b>: Excel, letra grande y más', modo: 'listo', btn: 'Siguiente' },
+      { el: Q('#robot'), txt: 'Y si tenés dudas, <b>tocame</b> 🤖', modo: 'listo', btn: 'Terminar' }]
+  }
+};
+function abrirFormGuia(tipo) {
+  limpiarModal(); formNegocio(null);
+  if (S.form && S.form.hoja === 'negocio') { S.form.tipo = tipo; pintarFormNegocio(); }
+}
+const GUIA = { activa: false, nombre: '', pasos: [], i: -1, falta: 0, raf: 0, n: 0 };
+function pintarRobot() {
+  const r = $('robot');
+  r.hidden = LS.get('bd_ayudante', true) === false;
+}
+function abrirAyudante() {
+  const op = (guia, titulo, sub, fondo, icono) => `<button class="opcion" type="button" data-acc="guia" data-guia="${guia}" style="background:${fondo}"><span class="oi">${svg(icono, 24)}</span><span><b>${titulo}</b><small>${sub}</small></span>${svg('der', 20, 2.2)}</button>`;
+  abrirModal(`${cab('¿En qué te ayudo?', 'var(--grad)', 'robot')}
+    ${op('cambio', 'Cambio a efectivo', 'Lo primero al llegar a Bermejo', 'linear-gradient(135deg,#1F9E95,#2B7F9E)', 'cambio')}
+    ${op('compra', 'Compra de productos', 'Mercadería para vender', 'linear-gradient(135deg,#7C4DFF,#9E4BE6)', 'prod')}
+    ${op('noreversible', 'Pasero, colectivo…', 'Chalana, comida, baño…', 'linear-gradient(135deg,#C23A8C,#E040A0)', 'bus')}
+    <button class="opcion" type="button" data-acc="guiaOtros" style="background:var(--card3)"><span class="oi">${svg('info', 24)}</span><span><b>Otros</b><small>Gasto personal, corregir y más</small></span>${svg('der', 20, 2.2)}</button>`);
+}
+function menuOtros() {
+  const op = (guia, titulo, sub, icono) => `<button class="opcion chica" type="button" data-acc="guia" data-guia="${guia}" style="background:var(--card3)"><span class="oi">${svg(icono, 21)}</span><span><b>${titulo}</b><small>${sub}</small></span>${svg('der', 18, 2.2)}</button>`;
+  abrirModal(`<div class="v-cab"><button class="cerrar" type="button" data-acc="guiaMenu" aria-label="Volver">${svg('izq', 18, 2.4)}</button><b>Otros</b><button class="cerrar" type="button" data-acc="cerrar" aria-label="Cerrar">${svg('x', 18, 2.2)}</button></div>
+    ${op('personal', 'Cargar un gasto personal', 'Casa, comida, salud…', 'user')}
+    ${op('corregir', 'Corregir o borrar un gasto', 'Si te equivocaste', 'lapiz')}
+    ${op('cuanto', 'Ver cuánto gasté', 'Este mes y los anteriores', 'recibo')}
+    ${op('efectivo', '¿Qué es el efectivo disponible?', 'La plata en la mano del negocio', 'billetera')}
+    ${op('recorrido', 'Recorrido por la app', 'Te muestro cada parte', 'robot')}`);
+}
+function saludoRobot() {
+  if (LS.get('bd_ayudante', true) === false) return;
+  const k = 'bd_guia_hola_' + S.yo.usuario;
+  if (LS.get(k, false)) return;
+  LS.set(k, true);
+  setTimeout(() => {
+    if (!$('modal').hidden || $('app').hidden) return;
+    abrirModal(`<div class="v-cab"><span class="ic" style="background:var(--grad)">${svg('robot', 22)}</span><b>¡Hola, ${esc(primerNombre(S.yo.nombre))}! 👋</b><button class="cerrar" type="button" data-acc="cerrar" aria-label="Cerrar">${svg('x', 18, 2.2)}</button></div>
+      <p style="margin:0;font-size:17px;font-weight:600;line-height:1.45;color:var(--soft)">Soy tu <b style="color:var(--ink)">ayudante</b>. Cuando tengas una duda, tocame (estoy abajo a la derecha) y te muestro dónde tocar.<br><br>¿Te muestro la app? Es cortito.</p>
+      <button class="btn btn-grad" type="button" data-acc="guia" data-guia="recorrido">Sí, mostrame</button>
+      <button class="btn btn-ghost" type="button" data-acc="cerrar">Ahora no</button>`);
+  }, 700);
+}
+function iniciarGuia(nombre) {
+  const g = GUIAS[nombre]; if (!g) return;
+  if (g.antes) g.antes();
+  const falta = g.requiere && g.requiere();
+  if (falta) return avisar(falta);
+  const usos = LS.get('bd_guia_usos_' + nombre, 0);
+  let pasos = g.pasos;
+  if (g.camino) {
+    if (usos >= 3 && g.atajo) g.atajo(); // ya lo hizo 3 veces: directo al formulario
+    else { cerrarModal(); pasos = g.camino.concat(g.pasos); }
+  }
+  Object.assign(GUIA, { activa: true, nombre, pasos, i: -1, n: 0, largo: !!g.largo });
+  $('guia').hidden = false; pintarRobot();
+  $('guia').querySelector('.guia-cara').innerHTML = svg('robot', 18, 2);
+  $('guiaX').innerHTML = svg('x', 16, 2.4);
+  siguientePaso();
+  cancelAnimationFrame(GUIA.raf);
+  const bucle = () => { if (!GUIA.activa) return; ubicarGuia(); GUIA.raf = requestAnimationFrame(bucle); };
+  GUIA.raf = requestAnimationFrame(bucle);
+}
+function terminarGuia(mensaje, exito) {
+  if (!GUIA.activa) return;
+  const nombre = GUIA.nombre;
+  GUIA.activa = false; cancelAnimationFrame(GUIA.raf);
+  $('guia').hidden = true; pintarRobot();
+  if (exito && GUIAS[nombre].tarea) LS.set('bd_guia_usos_' + nombre, LS.get('bd_guia_usos_' + nombre, 0) + 1);
+  if (mensaje) setTimeout(() => avisar(mensaje), 50);
+}
+function pasoActual() { return GUIA.pasos[GUIA.i]; }
+function siguientePaso() {
+  let i = GUIA.i + 1;
+  // saltear pasos que no corresponden (ej: el efectivo inicial ya se cargó)
+  while (i < GUIA.pasos.length && GUIA.pasos[i].si && !GUIA.pasos[i].si()) i++;
+  if (i >= GUIA.pasos.length) return terminarGuia(GUIAS[GUIA.nombre].tarea ? '¡Listo! Quedó guardado 🎉' : '', true);
+  GUIA.i = i; GUIA.n++; GUIA.falta = 0;
+  const p = pasoActual();
+  $('guiaTxt').innerHTML = p.txt;
+  $('guiaN').textContent = 'Paso ' + GUIA.n;
+  $('guiaListo').hidden = p.modo !== 'listo';
+  $('guiaListo').textContent = p.btn || 'Listo ›';
+  $('guiaSaltar').hidden = !p.opcional;
+  $('guia').querySelector('.guia-globo').classList.toggle('largo', !!(p.largo || GUIA.largo));
+  const el = p.el();
+  if (el) {
+    el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    if (p.modo === 'listo' && el.matches('input')) setTimeout(() => { try { el.focus({ preventScroll: true }); } catch (e) {} }, 300);
+  }
+}
+// Ubica la luz y el globito sobre lo que hay que tocar (se llama en cada cuadro, así sigue a la pantalla)
+function ubicarGuia() {
+  const p = pasoActual(); if (!p) return;
+  const el = p.el(), luz = $('guia').querySelector('.guia-luz'), globo = $('guia').querySelector('.guia-globo');
+  const vv = window.visualViewport, W = vv ? vv.width : innerWidth, H = vv ? vv.height : innerHeight, top0 = vv ? vv.offsetTop : 0;
+  if (!el || !el.getClientRects().length) {
+    // lo que había que tocar desapareció (por ejemplo, se cerró la ventana)
+    if (++GUIA.falta > 150) return terminarGuia('Se cerró la guía. Si querés, tocame de nuevo 🤖');
+    luz.style.cssText = `left:${W / 2}px;top:${H / 2}px;width:0;height:0`;
+    return;
+  }
+  GUIA.falta = 0;
+  const r = el.getBoundingClientRect(), pad = 6;
+  luz.style.left = (r.left - pad) + 'px'; luz.style.top = (r.top - pad) + 'px';
+  luz.style.width = (r.width + pad * 2) + 'px'; luz.style.height = (r.height + pad * 2) + 'px';
+  const gw = globo.offsetWidth, gh = globo.offsetHeight;
+  let x = Math.min(Math.max(12, r.left + r.width / 2 - gw / 2), W - gw - 12), y, lado;
+  if (r.bottom + 16 + gh < top0 + H - 8) { y = r.bottom + 16; lado = 'abajo'; }
+  else if (r.top - 16 - gh > top0 + 8) { y = r.top - 16 - gh; lado = 'arriba'; }
+  else { y = Math.max(top0 + 12, top0 + H - gh - 12); lado = 'centro'; }
+  globo.style.left = x + 'px'; globo.style.top = y + 'px';
+  globo.classList.toggle('abajo', lado === 'abajo'); globo.classList.toggle('arriba', lado === 'arriba'); globo.classList.toggle('centro', lado === 'centro');
+  globo.style.setProperty('--ax', Math.min(Math.max(20, r.left + r.width / 2 - x), gw - 20) + 'px');
+}
+function avanzarDesde(p) {
+  if (!GUIA.activa || pasoActual() !== p) return;
+  if (!p.final) return siguientePaso();
+  // Después de "Guardar": ¿se guardó, falta algo o no alcanza el efectivo?
+  setTimeout(() => {
+    if (!GUIA.activa || pasoActual() !== p) return;
+    if ($('modal').hidden) return siguientePaso();
+    if (document.querySelector('#modalIn [data-acc=avisoCambio]')) return terminarGuia('No te alcanza el efectivo: elegí una opción de la ventana 👆', false);
+    const err = $('fError');
+    if (err && !err.hidden) { $('guiaTxt').innerHTML = 'Falta algo: mirá el <b>mensaje en rojo</b>, corregilo y tocá <b>Guardar</b> de nuevo'; sacudirGlobo(); }
+  }, 250);
+}
+function sacudirGlobo() { const g = $('guia').querySelector('.guia-globo'); g.classList.remove('sacude'); void g.offsetWidth; g.classList.add('sacude'); }
+// Avanza cuando se toca lo que corresponde
+document.addEventListener('click', e => {
+  if (!GUIA.activa || (e.target.closest && e.target.closest('#guia'))) return;
+  const p = pasoActual(); if (!p) return;
+  const el = p.el();
+  const ok = p.valido ? !!e.target.closest(p.valido) : (p.modo !== 'listo' && el && el.contains(e.target));
+  if (ok) setTimeout(() => avanzarDesde(p), 120);
+}, true);
+$('guiaListo').onclick = () => {
+  const p = pasoActual(); if (!p) return;
+  const el = p.el();
+  if (p.req && el && el.matches('input') && !el.value.trim()) { $('guiaTxt').innerHTML = p.txt + '<br><b>Escribilo primero</b> ✍️'; sacudirGlobo(); try { el.focus(); } catch (x) {} return; }
+  avanzarDesde(p);
+};
+$('guiaSaltar').onclick = () => { const p = pasoActual(); if (p) siguientePaso(); };
+$('guiaX').onclick = () => terminarGuia('Guía cerrada. Tocame cuando quieras 🤖', false);
 
 /* =========================================================
    Arranque
