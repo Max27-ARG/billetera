@@ -1,6 +1,6 @@
 // Billetera Digital — guarda la app en el celular para que abra sin internet.
 // Si cambiás algún archivo, subí el número de versión para que todos reciban la nueva.
-const VERSION = 'billetera-v4';
+const VERSION = 'billetera-v5';
 const ARCHIVOS = ['./', 'index.html', 'config.js', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', e => {

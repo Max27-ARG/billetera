@@ -386,6 +386,58 @@ button.avatar{border:0;padding:0}
 .opcion.chica .oi{width:40px;height:40px;border-radius:13px}
 .opcion.chica b{font-size:16px}
 
+/* ================= Actualización 6: modo simple ================= */
+body.simple nav.barra,body.simple #robot{display:none!important}
+.s-cab{display:flex;align-items:center;gap:12px}
+.s-cab .saludo b{font-size:24px;font-weight:900}
+.s-cab .saludo small{font-size:15px}
+.s-grande{display:flex;align-items:center;gap:16px;width:100%;border:0;border-radius:24px;padding:18px 16px;color:#fff;text-align:left;min-height:100px}
+.s-grande .oi{width:60px;height:60px;border-radius:18px;background:rgba(14,11,26,.24);display:flex;align-items:center;justify-content:center;flex:none;font-size:32px;line-height:1}
+.s-grande span.tx{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}
+.s-grande b{font-size:21px;font-weight:900;line-height:1.15}
+.s-grande small{font-size:14px;font-weight:600;opacity:.92;line-height:1.3}
+.s-efe{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;border:0;border-radius:22px;padding:16px 18px;background:var(--tealbg);color:var(--tealink);text-align:left}
+.s-efe span{display:flex;flex-direction:column;gap:2px}
+.s-efe small{font-size:13px;font-weight:700}
+.s-efe b{font-size:26px;font-weight:900;color:#fff}
+.s-efe em{font-style:normal;font-size:13px;font-weight:800;background:rgba(255,255,255,.12);padding:8px 12px;border-radius:12px;white-space:nowrap}
+.deuda{display:flex;align-items:center;justify-content:space-between;gap:12px;border-radius:22px;padding:16px 18px;background:rgba(255,181,71,.14);border:1px solid rgba(255,181,71,.4)}
+.deuda span{display:flex;flex-direction:column;gap:2px;min-width:0}
+.deuda small{font-size:13px;font-weight:700;color:var(--amber)}
+.deuda b{font-size:24px;font-weight:900}
+.deuda button{border:0;border-radius:14px;padding:12px 16px;background:var(--amber);color:#2A1A00;font-weight:900;font-size:15px;flex:none}
+.s-ver{font-size:18px;min-height:60px}
+/* Una pregunta por pantalla */
+.f-cab{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.f-atras{border:0;background:var(--card);color:var(--ink);font-weight:800;font-size:16px;border-radius:14px;padding:11px 14px;display:flex;align-items:center;gap:4px}
+.f-puntos{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.f-puntos i{width:10px;height:10px;border-radius:50%;background:var(--card3)}
+.f-puntos i.on{background:var(--violet2)}
+.f-puntos i.hecho{background:var(--lilac)}
+.f-tit{font-size:15px;font-weight:800;color:var(--lilac);display:flex;align-items:center;gap:8px;margin-top:6px}
+.f-preg{font-size:28px;font-weight:900;line-height:1.2;margin:0}
+.f-ayuda{font-size:16px;color:var(--soft);font-weight:600;margin:-4px 0 0;line-height:1.4}
+.f-num,.f-txt{width:100%;border:2px solid var(--violet2);background:rgba(11,9,22,.5);color:var(--ink);border-radius:20px;padding:16px 18px;font-weight:900}
+.f-num{font-size:38px}
+.f-txt{font-size:22px;font-weight:700}
+.f-num:focus,.f-txt:focus{outline:none;box-shadow:0 0 0 4px rgba(124,77,255,.35)}
+.f-ops{display:flex;flex-direction:column;gap:12px}
+.f-grilla{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.f-op{border:2px solid rgba(255,255,255,.12);background:var(--card);color:var(--ink);border-radius:20px;padding:18px 16px;font-size:20px;font-weight:800;text-align:left;min-height:68px;display:flex;align-items:center;gap:12px}
+.f-grilla .f-op{font-size:17px;padding:14px 12px;min-height:76px;justify-content:center;text-align:center}
+.f-op[aria-pressed="true"]{border-color:var(--violet2);background:rgba(124,77,255,.28)}
+.f-sig{font-size:20px;min-height:64px;border-radius:20px}
+.f-error{background:rgba(255,107,129,.16);color:#FFB3BF;border-radius:14px;padding:12px 14px;font-size:16px;font-weight:800}
+.f-res{background:var(--card);border-radius:22px;padding:6px 18px}
+.f-res .fila-p{font-size:17px;padding:14px 0}
+.f-res .fila-p b{font-size:18px}
+.f-fecha{border:0;background:transparent;color:var(--lilac);font-weight:800;font-size:16px;text-decoration:underline;padding:6px;align-self:center}
+/* Elegir modo */
+.modo-op{display:flex;flex-direction:column;align-items:flex-start;gap:6px;width:100%;border:2px solid rgba(255,255,255,.14);border-radius:22px;padding:18px;background:var(--card2);color:var(--ink);text-align:left}
+.modo-op b{font-size:21px;font-weight:900}
+.modo-op small{font-size:15px;font-weight:600;color:var(--soft);line-height:1.35}
+.modo-op.sim{border-color:var(--violet2);background:rgba(124,77,255,.22)}
+
 /* Gastos que Google rechazó */
 .esperando.mal{color:#FFB3BF;background:rgba(255,107,129,.16)}
 .sync.mal{background:rgba(255,107,129,.16);color:#FFB3BF}
@@ -469,7 +521,7 @@ button.avatar{border:0;padding:0}
    ========================================================= */
 const API = window.BILLETERA_API || '';
 // Fecha y hora de esta versión (se muestra una vez cuando alguien abre la app actualizada)
-const APP_VERSION = '2026-10-27T20:05';
+const APP_VERSION = '2026-10-27T21:05';
 const COLORES = ['#9B6BFF', '#F05BB5', '#3FD6C6', '#FFB547', '#6FA8FF', '#FF8A5B', '#B5E36B', '#D7C8FF'];
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 const LISTAS_BASE = {
@@ -501,6 +553,18 @@ function guardarEstado() {
   LS.set(kEstado(), { yo: S.yo, listas: S.listas, personal: S.personal, negocio: S.negocio, pendientes: S.pendientes, ultimaSync: S.ultimaSync });
 }
 function guardarCola() { LS.set(kCola(), S.cola); }
+// Modo simple / completo: lo pendiente de subir manda; después lo de Google; si no, lo guardado en el celular
+const kModoPend = () => 'bd_modo_pend_' + (S.yo ? S.yo.usuario : '');
+const kModo = () => 'bd_modo_' + (S.yo ? S.yo.usuario : '');
+function modoActual() { return S.yo ? (LS.get(kModoPend(), '') || S.yo.modo || LS.get(kModo(), '')) : ''; }
+const esSimple = () => modoActual() === 'simple';
+function aplicarModo() { document.body.classList.toggle('simple', esSimple()); if (typeof pintarRobot === 'function') pintarRobot(); }
+function setModo(m) {
+  LS.set(kModoPend(), m); LS.set(kModo(), m);
+  if (S.yo) S.yo.modo = m;
+  guardarEstado(); aplicarModo();
+  S.flujo = null; irA('inicio'); sincronizar();
+}
 function guardarRech() { LS.set(kRech(), S.rech); }
 const rechDe = id => S.rech.find(z => z.op.id === id);
 
@@ -550,6 +614,7 @@ function num(txt) {
   return Number(s);
 }
 const r2 = n => Math.round(n * 100) / 100;
+const pct = n => (Number(n) || 0).toLocaleString('es-AR', { maximumFractionDigits: 2 }) + '%';
 
 /* =========================================================
    Hablar con Google (Apps Script)
@@ -585,8 +650,12 @@ function calcNegocio(d, previo) {
     f.gastoReal = d.monto; f.movEfectivo = d.pago === 'Efectivo' ? -d.monto : 0;
   } else if (d.tipo === 'Cambio') {
     f.categoria = 'Interés/Gastos'; f.descripcion = (d.nota || '').trim() || 'Cambio a efectivo'; f.monto = d.monto; f.pago = 'Transferencia';
-    f.pctCambio = d.pctCambio; f.comision = r2(d.monto * d.pctCambio / 100); f.recibido = r2(d.monto - f.comision);
+    if (d.recibido !== undefined && d.recibido !== '') { f.recibido = d.recibido; f.comision = r2(d.monto - d.recibido); f.pctCambio = r2(f.comision / d.monto * 100); }
+    else { f.pctCambio = d.pctCambio; f.comision = r2(d.monto * d.pctCambio / 100); f.recibido = r2(d.monto - f.comision); }
     f.gastoReal = f.comision; f.movEfectivo = f.recibido;
+  } else if (d.tipo === 'Devolución') {
+    f.categoria = 'Devolución'; f.descripcion = (d.nota || '').trim() || 'Devolución al negocio';
+    f.monto = d.monto; f.pago = 'Efectivo'; f.movEfectivo = d.monto;
   } else if (d.tipo === 'Ajuste') {
     f.categoria = 'Ajuste de efectivo'; f.descripcion = d.inicial ? 'Efectivo inicial' : 'Ajuste de efectivo';
     f.monto = d.monto; f.pago = 'Efectivo'; f.movEfectivo = r2(d.monto - efectivoDe(d.negocio, d.id));
@@ -603,6 +672,12 @@ function partesNegocio(f) {
   else if (f.tipo === 'No reversible') out.push([f.categoria, Number(f.gastoReal) || 0, 'no']);
   else if (f.tipo === 'Cambio') out.push(['Interés/Gastos', Number(f.comision) || 0, 'no']);
   return out;
+}
+// Lo que se debe al negocio: gastos personales "a devolver" menos lo ya devuelto
+function deudaDe(neg) {
+  const usado = S.personal.filter(f => f.negocio === neg && f.devolver === 'sí').reduce((s, f) => s + (Number(f.monto) || 0), 0);
+  const devuelto = S.negocio.filter(f => f.negocio === neg && f.tipo === 'Devolución').reduce((s, f) => s + (Number(f.monto) || 0), 0);
+  return r2(Math.max(0, usado - devuelto));
 }
 const totalNegocio = f => partesNegocio(f).reduce((s, p) => s + p[1], 0);
 
@@ -641,7 +716,11 @@ async function sincronizar() {
   const enviadas = S.cola.slice();
   let bien = false;
   try {
-    const r = await api({ accion: 'sync', token: S.token, ops: enviadas });
+    const modoPend = LS.get(kModoPend(), '');
+    const modoAntes = modoActual();
+    const r = await api({ accion: 'sync', token: S.token, ops: enviadas, modo: modoPend || undefined });
+    if (modoPend && r.yo && r.yo.modo === modoPend) LS.del(kModoPend()); // queda pendiente hasta que Google lo guarde
+    if (r.yo && r.yo.modo) LS.set(kModo(), r.yo.modo);
     const procesadas = new Set((r.resultados || []).map(x => x.opId));
     const fallas = (r.resultados || []).filter(x => !x.ok);
     S.cola = S.cola.filter(o => !procesadas.has(o.opId)); guardarCola();
@@ -657,6 +736,7 @@ async function sincronizar() {
     guardarRech();
     S.yo = r.yo; S.listas = Object.assign({}, LISTAS_BASE, r.listas); S.personal = r.personal; S.negocio = r.negocio;
     S.pendientes = r.pendientes || 0; S.ultimaSync = Date.now();
+    if (modoActual() !== modoAntes) { aplicarModo(); if (!$('app').hidden) { S.flujo = null; S.vista = 'inicio'; } }
     S.rech.forEach(z => aplicarLocal(z.op));
     S.cola.forEach(aplicarLocal);
     guardarEstado();
@@ -669,7 +749,8 @@ async function sincronizar() {
     S.sincronizando = false;
     if (S.token) { render(); }
   }
-  if (S.cola.length && navigator.onLine) { clearTimeout(timerSync); timerSync = setTimeout(sincronizar, 15000); }
+  // Si se cargó algo mientras subía, se sube enseguida; si algo falló, se reintenta en 15 segundos
+  if (S.cola.length && navigator.onLine) { clearTimeout(timerSync); timerSync = setTimeout(sincronizar, S.cola.some(o => !enviadas.includes(o)) ? 300 : 15000); }
   return bien;
 }
 window.addEventListener('online', () => sincronizar());
@@ -744,6 +825,7 @@ $('formEntrar').addEventListener('submit', async e => {
     S.cola = LS.get(kCola(), []); S.rech = LS.get(kRech(), []);
     S.yo = r.yo;
     await sincronizar();
+    aplicarModo();
     if (LS.get('bd_patron_' + S.yo.usuario, '')) bienvenida(); else iniciarPatron('crear');
   } catch (err) {
     $('eError').textContent = err.red ? 'Sin conexión. Para entrar la primera vez necesitás internet.' : err.message;
@@ -779,7 +861,8 @@ function cerrarSesionLocal(msg) {
   LS.del('bd_sesion');
   S.token = ''; S.personal = []; S.negocio = []; S.cola = []; S.rech = [];
   cerrarModal(true); cerrarCal(true);
-  S.vista = 'inicio'; S.catAbierta = false;
+  S.vista = 'inicio'; S.catAbierta = false; S.flujo = null;
+  document.body.classList.remove('simple');
   if (typeof terminarGuia === 'function') terminarGuia('', false);
   mostrarLogin(msg); histRevisar();
 }
@@ -867,7 +950,7 @@ function bienvenida() {
   LS.set('bd_version_vista', APP_VERSION); mostrarNovedad();
   $('bvNombre').textContent = primerNombre(S.yo.nombre);
   mostrar('bienvenida');
-  setTimeout(() => { mostrar('app'); S.vista = 'inicio'; render(); pintarRobot(); sincronizar(); saludoRobot(); }, 1600);
+  setTimeout(() => { mostrar('app'); S.vista = 'inicio'; S.flujo = null; aplicarModo(); render(); sincronizar(); if (!modoActual()) elegirModo(); else saludoRobot(); }, 1600);
 }
 
 /* =========================================================
@@ -903,7 +986,7 @@ const IC = {
 const svg = (n, s = 20, w = 1.9) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]}</svg>`;
 function icoDe(f, hojaN) {
   if (hojaN) {
-    if (f.tipo === 'Inversión') return 'prod'; if (f.tipo === 'Cambio') return 'cambio'; if (f.tipo === 'Ajuste') return 'billetera';
+    if (f.tipo === 'Inversión') return 'prod'; if (f.tipo === 'Cambio') return 'cambio'; if (f.tipo === 'Ajuste' || f.tipo === 'Devolución') return 'billetera';
     const c = (f.categoria || '').toLowerCase();
     if (c.includes('sueldo') || /comida|bebida/.test((f.descripcion || '').toLowerCase())) return 'comida';
     if (c.includes('insumo')) return /colectivo|chalana|pasero|bodega/.test((f.descripcion || '').toLowerCase()) ? 'bus' : 'bolsa';
@@ -927,7 +1010,11 @@ function render() {
   document.querySelectorAll('nav.barra [data-ir]').forEach(b => b.toggleAttribute('aria-current', false));
   const actual = document.querySelector(`nav.barra [data-ir="${S.vista}"]`);
   if (actual) actual.setAttribute('aria-current', 'page');
-  const html = { inicio: vInicio, personal: () => vSeccion('personal'), negocio: () => vSeccion('negocio'), perfil: vPerfil, todos: vTodos }[S.vista]();
+  const vistas = esSimple()
+    ? { inicio: vSimple, lista: vSimpleLista, perfil: vPerfil, flujo: vFlujo, todos: vTodos }
+    : { inicio: vInicio, personal: () => vSeccion('personal'), negocio: () => vSeccion('negocio'), perfil: vPerfil, todos: vTodos };
+  if (!vistas[S.vista] || (S.vista === 'flujo' && !S.flujo)) S.vista = 'inicio';
+  const html = vistas[S.vista]();
   const barras = ['.filtro-neg', '.filtro-tipo'];
   const xs = barras.map(c => { const b = document.querySelector('#contenido ' + c); return b ? b.scrollLeft : null; });
   $('contenido').innerHTML = `<div class="vista">${html}</div>`;
@@ -1074,9 +1161,10 @@ function filaMov(f, hojaN) {
   const pend = rechDe(f.id) ? '<span class="esperando mal">no se pudo subir</span>' : enCola(f.id) ? '<span class="esperando">sin subir</span>' : '';
   let titulo, detalle, monto, pos = false;
   if (hojaN) {
-    if (f.tipo === 'Cambio') { const nota = notaCambio(f); titulo = 'Cambio a efectivo'; detalle = `${nota ? nota + ' · ' : ''}${fmt(f.monto)} al ${f.pctCambio}%`; monto = '+' + fmt(f.recibido); pos = true; }
+    if (f.tipo === 'Cambio') { const nota = notaCambio(f); titulo = 'Cambio a efectivo'; detalle = `${nota ? nota + ' · ' : ''}${fmt(f.monto)} al ${pct(f.pctCambio)}`; monto = '+' + fmt(f.recibido); pos = true; }
+    else if (f.tipo === 'Devolución') { titulo = 'Devolución al negocio'; detalle = f.descripcion !== 'Devolución al negocio' ? f.descripcion : 'Entró al efectivo'; monto = '+' + fmt(f.monto); pos = true; }
     else if (f.tipo === 'Ajuste') { titulo = f.descripcion; detalle = 'Efectivo contado: ' + fmt(f.monto); monto = (f.movEfectivo >= 0 ? '+' : '-') + fmt(Math.abs(f.movEfectivo)); pos = f.movEfectivo >= 0; }
-    else if (f.tipo === 'Inversión') { titulo = `${f.descripcion} × ${f.unidades}`; detalle = `Productos · ${f.pago}${f.recargo ? ' + ' + f.pctRecargo + '%' : ''}`; monto = '-' + fmt(totalNegocio(f)); }
+    else if (f.tipo === 'Inversión') { titulo = `${f.descripcion} × ${f.unidades}`; detalle = `Productos · ${f.pago}${f.recargo ? ' + ' + pct(f.pctRecargo) : ''}`; monto = '-' + fmt(totalNegocio(f)); }
     else { titulo = f.descripcion || f.categoria; detalle = `${f.categoria} · ${f.pago}`; monto = '-' + fmt(f.gastoReal); }
     if (f.viaje) detalle += ' · ' + f.viaje;
   } else {
@@ -1085,7 +1173,7 @@ function filaMov(f, hojaN) {
     monto = '-' + fmt(f.monto);
   }
   const quien = S.yo.admin && S.filtro === '' ? ' · ' + f.negocio : '';
-  const col = hojaN ? (f.tipo === 'Cambio' || f.tipo === 'Ajuste' ? 'var(--teal2)' : 'var(--violet2)') : 'var(--pink)';
+  const col = hojaN ? (['Cambio', 'Ajuste', 'Devolución'].includes(f.tipo) ? 'var(--teal2)' : 'var(--violet2)') : 'var(--pink)';
   return `<button class="mov" type="button" data-editar="${hojaN ? 'negocio' : 'personal'}:${esc(f.id)}">
     <span class="ico" style="color:${col}">${svg(icoDe(f, hojaN), 21)}</span>
     <span class="txt"><b>${esc(titulo)}${pend}</b><small>${fCorta(f.fecha)} · ${esc(detalle)}${esc(quien)}</small></span>
@@ -1117,6 +1205,7 @@ function vInicio() {
     <span class="total">${fmt(total)}</span>
     <div class="sub"><div><span>Compras y negocio</span><b>${fmt(tNeg)}</b></div><div><span>Gasto personal</span><b>${fmt(tPer)}</b></div></div>
   </section>
+  ${tarjetasDeuda()}
   ${total ? `<section class="tarj tarj-cat${S.catAbierta ? ' abierta' : ''}" id="tarjCat" aria-label="Por categoría. Tocá para ${S.catAbierta ? 'achicar' : 'agrandar'}">
     <h2>Por categoría <span class="expandir" aria-hidden="true">${svg('expandir', 20, 2.6)}</span></h2>
     <div class="cat-cuerpo">
@@ -1129,6 +1218,30 @@ function vInicio() {
     <h2 class="h2-link">Últimos gastos ${ultimos.length ? `<button type="button" class="ver-todos" data-ir2="todos">Consultar todos ${svg('der', 16, 2.6)}</button>` : ''}</h2>
     <div class="lista">${ultimos.length ? ultimos.map(f => filaMov(f, f._n)).join('') : '<div class="vacio">Acá vas a ver lo último que se cargó.</div>'}</div>
   </section>`;
+}
+
+function tarjetasDeuda() {
+  const negs = S.yo.admin ? (S.filtro ? [S.filtro] : (S.listas['Negocios'] || [])) : [S.yo.negocio];
+  return negs.map(n => [n, deudaDe(n)]).filter(x => x[1] > 0).map(([n, d]) => `<div class="deuda"><span><small>${S.yo.admin && n !== S.yo.negocio ? esc(n) + ' le debe al negocio' : 'Le debés al negocio'}</small><b>${fmt(d)}</b></span><button type="button" data-devolver="${esc(n)}">Devolver</button></div>`).join('');
+}
+function formDevolucion(neg, fila) {
+  const deuda = deudaDe(neg) + (fila ? Number(fila.monto) || 0 : 0);
+  S.form = { hoja: 'devolucion', id: fila ? fila.id : nuevoId(), editando: !!fila, negocio: neg, monto: fila ? String(fila.monto) : String(deudaDe(neg) || ''), nota: fila && fila.descripcion !== 'Devolución al negocio' ? fila.descripcion : '', fecha: fila ? fila.fecha : hoy(), confirmarBorrar: false };
+  abrirModal(`${cab(fila ? 'Editar devolución' : 'Devolver al negocio', 'var(--teal)', 'billetera')}
+    <p class="ayuda" style="margin:0;font-size:14px">${neg !== S.yo.negocio ? esc(neg) + ' le debe' : 'Le debés'} al negocio <b>${fmt(deuda)}</b>. Si devolviste una parte, cambiá el monto.</p>
+    <label class="campo" for="fMonto">¿Cuánto devolviste?<input id="fMonto" inputmode="decimal" data-campo="monto" value="${esc(S.form.monto)}" placeholder="$ 0" style="font-size:24px;font-weight:800"></label>
+    <label class="campo" for="fNota">Nota (opcional)<input id="fNota" data-campo="nota" value="${esc(S.form.nota)}" maxlength="80" placeholder="Agregá un detalle si querés"></label>
+    <div class="ayuda">La plata entra al <b>efectivo del negocio</b>.</div>
+    <div class="error" id="fError" hidden></div>
+    <button class="btn" type="button" data-acc="guardarDevolucion" style="background:linear-gradient(135deg,#1F9E95,#7C4DFF);color:#fff">Guardar devolución</button>
+    ${fila ? botonBorrar() : ''}`);
+}
+function formDevolucionBorrar() { const b = document.querySelector('#modalIn [data-acc=borrar]'); if (b) b.outerHTML = botonBorrar(); }
+function guardarDevolucion() {
+  const f = S.form, monto = num(f.monto);
+  if (!(monto > 0)) return errorForm('Poné cuánto devolviste.');
+  encolar({ tipo: 'guardar', hoja: 'negocio', id: f.id, datos: { negocio: f.negocio, tipo: 'Devolución', fecha: f.fecha, viaje: '', monto, nota: (f.nota || '').trim() } });
+  cerrarModal(); avisar(f.editando ? 'Cambios guardados' : 'Devolución guardada');
 }
 
 /* ---------- Personal / Negocio ---------- */
@@ -1198,7 +1311,7 @@ function vPerfil() {
   const opExp = opcionesExport();
   const ult = S.ultimaSync ? new Date(S.ultimaSync).toLocaleString('es-AR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : 'nunca';
   return `
-  <div class="titulo"><h1>Perfil</h1>${chipSync()}</div>
+  ${esSimple() ? `<div class="titulo-todos"><button type="button" class="volver" data-acc="volverInicio" aria-label="Volver">${svg('izq', 20, 2.4)}</button><h1>Mi perfil</h1></div>` : `<div class="titulo"><h1>Perfil</h1>${chipSync()}</div>`}
   <section class="tarj">
     <div class="cabecera" style="margin-bottom:8px"><div class="avatar">${esc(iniciales(y.nombre))}</div><div class="saludo"><b>${esc(y.nombre)}</b><small>${esc(y.negocio)}${y.admin ? ' · Admin' : ''}</small></div></div>
     <div class="fila-p"><span>Usuario</span><b>${esc(y.usuario)}</b></div>
@@ -1209,21 +1322,22 @@ function vPerfil() {
   </section>
   <button class="btn btn-sec" type="button" id="btnSyncGrande" data-acc="sync" ${S.sincronizando ? 'disabled' : ''}>${svg('nube', 18, 2.2)}${S.sincronizando ? 'Subiendo…' : 'Subir y actualizar ahora'}</button>
 
-  <section class="tarj" style="display:flex;flex-direction:column;gap:12px">
+  <button class="interruptor" type="button" role="switch" data-acc="modoOnOff" aria-checked="${esSimple()}"><span><b>Modo simple</b><small>Botones grandes y una pregunta por pantalla</small></span><span class="switch" aria-hidden="true"></span></button>
+  ${esSimple() ? '' : `<section class="tarj" style="display:flex;flex-direction:column;gap:12px">
     <h2 style="margin:0">Descargar en Excel</h2>
     <p class="ayuda" style="margin:0">Con las mismas columnas que tu Excel de Gastos de viaje y compras, para copiar y pegar.</p>
     <div class="segm" role="group"><button type="button" data-exp="mes" aria-pressed="${!S.expViaje}">Por mes</button><button type="button" data-exp="viaje" aria-pressed="${!!S.expViaje}" ${viajes.length ? '' : 'disabled'}>Por viaje</button></div>
     ${ddHTML('ddExp', S.expViaje ? 'Viaje' : 'Mes', opExp, valorExport(), v => { S.expVal = v; render(); })}
     ${y.admin ? ddHTML('ddExpNeg', 'Negocio', [['', 'Todos los negocios'], ...(S.listas['Negocios'] || []).map(n => [n, n])], S.expNeg || '', v => { S.expNeg = v; render(); }) : ''}
     <button class="btn btn-grad" type="button" data-acc="exportar">Descargar Excel</button>
-  </section>
+  </section>`}
 
   ${y.admin ? `<section class="tarj" style="display:flex;flex-direction:column;gap:10px">
     <h2 style="margin:0">Cuentas de la familia ${S.pendientes ? `<span class="estado pendiente">${S.pendientes} pendiente${S.pendientes > 1 ? 's' : ''}</span>` : ''}</h2>
     <div id="usuariosAdmin">${usuariosAdmin ? htmlUsuarios() : `<button class="btn btn-sec" type="button" data-acc="verUsuarios">Ver cuentas</button>`}</div>
   </section>` : ''}
 
-  <button class="interruptor" type="button" role="switch" data-acc="ayudanteOnOff" aria-checked="${LS.get('bd_ayudante', true) !== false}"><span><b>Mostrar ayudante 🤖</b><small>El robotito que te guía paso a paso</small></span><span class="switch" aria-hidden="true"></span></button>
+  ${esSimple() ? '' : `<button class="interruptor" type="button" role="switch" data-acc="ayudanteOnOff" aria-checked="${LS.get('bd_ayudante', true) !== false}"><span><b>Mostrar ayudante 🤖</b><small>El robotito que te guía paso a paso</small></span><span class="switch" aria-hidden="true"></span></button>`}
   <button class="interruptor" type="button" role="switch" data-acc="letra" aria-checked="${!!LS.get('bd_letra', false)}"><span><b>Letra grande</b><small>Agranda toda la app en este celular</small></span><span class="switch" aria-hidden="true"></span></button>
   <button class="btn btn-sec" type="button" data-acc="cambiarPatron">Cambiar mi patrón</button>
   <button class="btn btn-ghost" type="button" data-acc="salir">Cerrar sesión</button>`;
@@ -1239,7 +1353,9 @@ function htmlUsuarios() {
         ${u.bloqueado ? `<button type="button" class="prim" data-adm="desbloquear:${esc(u.usuario)}">Desbloquear</button>` : ''}
         ${!yo && u.estado !== 'desactivado' ? `<button type="button" data-adm="rechazar:${esc(u.usuario)}">${u.estado === 'pendiente' ? 'Rechazar' : 'Desactivar'}</button>` : ''}
         <button type="button" data-adm="clave:${esc(u.usuario)}">Nueva contraseña</button>
-      </div></div>`;
+        ${u.estado === 'activo' ? `<button type="button" data-adm="modo:${esc(u.usuario)}:${u.modo === 'simple' ? 'completo' : 'simple'}">${u.modo === 'simple' ? 'Pasar a modo completo' : 'Pasar a modo simple'}</button>` : ''}
+      </div>
+      <small style="color:var(--muted);font-weight:700;font-size:12px">Modo: ${u.modo === 'simple' ? 'Simple' : u.modo === 'completo' ? 'Completo' : 'todavía no eligió'}</small></div>`;
   }).join('');
 }
 
@@ -1266,7 +1382,7 @@ function elegirTipo() {
 function formPersonal(fila) {
   const f = S.form = { hoja: 'personal', id: fila ? fila.id : nuevoId(), editando: !!fila, negocio: fila ? fila.negocio : (S.filtro || S.yo.negocio),
     fecha: fila ? fila.fecha : hoy(), origen: fila ? fila.origen : 'Negocio (MercadoLibre)', categoria: fila ? fila.categoria : '',
-    descripcion: fila ? fila.descripcion : '', monto: fila ? String(fila.monto) : '', pago: fila ? fila.pago : 'Efectivo', confirmarBorrar: false };
+    descripcion: fila ? fila.descripcion : '', monto: fila ? String(fila.monto) : '', pago: fila ? fila.pago : 'Efectivo', devolver: fila ? (fila.devolver || '') : '', confirmarBorrar: false };
   pintarFormPersonal();
 }
 function pintarFormPersonal() {
@@ -1275,6 +1391,7 @@ function pintarFormPersonal() {
     ${bannerRech(f.id)}
     ${S.yo.admin && !f.editando ? selNegocio(f.negocio) : ''}
     <div class="campo">¿De dónde salió la plata?<div class="segm">${['Negocio (MercadoLibre)', 'Personal'].map(o => `<button type="button" data-set="origen" data-val="${esc(o)}" aria-pressed="${f.origen === o}">${esc(o)}</button>`).join('')}</div></div>
+    ${f.origen === 'Negocio (MercadoLibre)' ? `<button class="interruptor" type="button" role="switch" data-set="devolver" data-val="${f.devolver === 'sí' ? '' : 'sí'}" aria-checked="${f.devolver === 'sí'}" style="background:rgba(11,9,22,.45);padding:12px 14px"><span><b style="font-size:15px">Lo voy a devolver</b><small>Queda anotado lo que le debés al negocio</small></span><span class="switch" aria-hidden="true"></span></button>` : ''}
     <div class="campo">Categoría<div class="grid3">${cats.map(c => `<button type="button" class="chip" data-set="categoria" data-val="${esc(c)}" aria-pressed="${f.categoria === c}">${esc(c)}</button>`).join('')}</div></div>
     ${campoFecha(f.fecha)}
     <label class="campo" for="fMonto">Monto<input id="fMonto" inputmode="decimal" placeholder="$ 0" value="${esc(f.monto)}" data-campo="monto"></label>
@@ -1309,7 +1426,7 @@ function guardarPersonal() {
   if (!f.categoria) return errorForm('Elegí una categoría.');
   if (!(monto > 0)) return errorForm('Poné el monto.');
   if (!f.fecha) return errorForm('Poné la fecha.');
-  encolar({ tipo: 'guardar', hoja: 'personal', id: f.id, datos: { negocio: f.negocio, fecha: f.fecha, origen: f.origen, categoria: f.categoria, descripcion: f.descripcion.trim(), monto, pago: f.pago } });
+  encolar({ tipo: 'guardar', hoja: 'personal', id: f.id, datos: { negocio: f.negocio, fecha: f.fecha, origen: f.origen, categoria: f.categoria, descripcion: f.descripcion.trim(), monto, pago: f.pago, devolver: f.origen === 'Negocio (MercadoLibre)' && f.devolver === 'sí' ? 'sí' : '' } });
   cerrarModal(); avisar(f.editando ? 'Cambios guardados' : 'Gasto guardado');
   irA('personal');
 }
@@ -1517,15 +1634,18 @@ async function exportar(btn) {
     .concat(N.filter(f => f.tipo === 'No reversible').map(f => [f.fecha, f.negocio, f.viaje, f.categoria, f.descripcion, f.pago, Number(f.gastoReal)]));
   const cam = [['Fecha', 'Negocio', 'Viaje', 'Nota', 'Transferido', '% del cambio', 'Comisión (gasto real)', 'Efectivo recibido']]
     .concat(N.filter(f => f.tipo === 'Cambio').map(f => [f.fecha, f.negocio, f.viaje, notaCambio(f), Number(f.monto), Number(f.pctCambio), Number(f.comision), Number(f.recibido)]));
-  const per = [['Fecha', 'Negocio', 'Origen de la plata', 'Categoría', 'Descripción', 'Pago', 'Monto']]
-    .concat(Pp.map(f => [f.fecha, f.negocio, f.origen, f.categoria, f.descripcion, f.pago, Number(f.monto)]));
+  const per = [['Fecha', 'Negocio', 'Origen de la plata', 'Categoría', 'Descripción', 'Pago', 'Monto', 'A devolver']]
+    .concat(Pp.map(f => [f.fecha, f.negocio, f.origen, f.categoria, f.descripcion, f.pago, Number(f.monto), f.devolver === 'sí' ? 'Sí' : '']));
+  const dev = [['Fecha', 'Negocio', 'Nota', 'Devuelto']]
+    .concat(N.filter(f => f.tipo === 'Devolución').map(f => [f.fecha, f.negocio, f.descripcion !== 'Devolución al negocio' ? f.descripcion : '', Number(f.monto)]));
   const wb = XLSX.utils.book_new();
   const hoja = (aoa, nombre, anchos) => { const ws = XLSX.utils.aoa_to_sheet(aoa); ws['!cols'] = anchos.map(w => ({ wch: w })); XLSX.utils.book_append_sheet(wb, ws, nombre); };
   hoja(resumen, 'Resumen', [20, 14, 12, 12, 14, 12, 16, 14, 16, 18]);
   hoja(inv, 'Inversiones', [12, 18, 16, 30, 10, 14, 14, 14, 10, 12]);
   hoja(nor, 'No reversibles', [12, 18, 16, 16, 26, 14, 12]);
   hoja(cam, 'Cambios', [12, 18, 16, 24, 14, 12, 18, 16]);
-  if (!porViaje) hoja(per, 'Personal', [12, 18, 22, 22, 26, 14, 12]);
+  if (!porViaje) hoja(per, 'Personal', [12, 18, 22, 22, 26, 14, 12, 12]);
+  if (dev.length > 1) hoja(dev, 'Devoluciones', [12, 18, 26, 14]);
   const nombre = 'Billetera_' + (neg || 'Todos').replace(/[^A-Za-z0-9]+/g, '-') + '_' + val.replace(/[^A-Za-z0-9]+/g, '-') + '.xlsx';
   XLSX.writeFile(wb, nombre);
   avisar('Excel descargado');
@@ -1535,7 +1655,7 @@ async function exportar(btn) {
    Clics y escritura (un solo lugar para todo)
    ========================================================= */
 function irA(v, desdeAtras) {
-  if (v === 'todos' && S.vista !== 'todos') { S.busca = ''; S.ftipo = 'todos'; S.todosMax = 60; }
+  if ((v === 'todos' || v === 'lista') && S.vista !== v) { S.busca = ''; S.ftipo = 'todos'; S.todosMax = 60; }
   S.vista = v; S.catAbierta = false; S.firmas = {}; S.resaltes = {};
   if (v !== 'negocio') S.viaje = '';
   $('contenido').scrollTop = 0; render();
@@ -1573,6 +1693,10 @@ document.addEventListener('click', async ev => {
   if (ds.caly) { CAL.y = Number(ds.caly); CAL.vista = 'meses'; return pintarCal(); }
   if (ds.calbloque) { CAL.y += 12 * Number(ds.calbloque); return pintarCal(); }
   if (ds.ir2) return irA(ds.ir2);
+  if (ds.flujo) return iniciarFlujo(ds.flujo);
+  if (ds.fop !== undefined) return elegirOpcionFlujo(ds.fop);
+  if (ds.devolver) return esSimple() ? iniciarFlujo('devolver') : formDevolucion(ds.devolver);
+  if (ds.modo) { cerrarModal(); setModo(ds.modo); if (ds.modo === 'completo') saludoRobot(); return; }
   if (ds.ftipo) { S.ftipo = ds.ftipo; S.todosMax = 60; return render(); }
   if (ds.filtro !== undefined) { S.filtro = ds.filtro; S.viaje = ''; return render(); }
   if (ds.per) { S.per = { tipo: ds.per, ref: hoy() }; return render(); }
@@ -1600,10 +1724,24 @@ document.addEventListener('click', async ev => {
     guardarNegocio: () => { leerCampos(); guardarNegocio(); },
     guardarAjuste: () => { leerCampos(); guardarAjuste(); },
     errores: verErrores,
+    guardarDevolucion: () => { leerCampos(); guardarDevolucion(); },
+    modoOnOff: () => setModo(esSimple() ? 'completo' : 'simple'),
+    fSig: siguienteFlujo,
+    fAtras: atrasFlujo,
+    fSalir: () => { S.flujo = null; irA('inicio'); avisar('No se guardó nada'); },
+    fGuardar: guardarFlujo,
+    fFecha: () => abrirCal(S.flujo.d.fecha || hoy(), v => { S.flujo.d.fecha = v; render(); }),
+    fAvCambio: () => sublujoEfectivo('cambio'),
+    fAvContar: () => sublujoEfectivo('contar'),
+    sCorregir: corregirSimple,
+    sBorrar: () => { S.detalle.borrar = true; refrescarDetalle(); },
+    sNoBorrar: () => { S.detalle.borrar = false; refrescarDetalle(); },
+    sSiBorrar: () => { const d = S.detalle; encolar({ tipo: 'borrar', hoja: d.h, id: d.id }); cerrarModal(); avisar('Borrado'); },
     editarDetalle: () => {
       const d = S.detalle; if (!d) return;
       const fila = (d.h === 'negocio' ? S.negocio : S.personal).find(f => f.id === d.id); if (!fila) return;
       if (d.h === 'negocio' && fila.tipo === 'Ajuste') { S.form = { hoja: 'negocio', id: fila.id, editando: true, confirmarBorrar: false }; return verAjuste(fila); }
+      if (d.h === 'negocio' && fila.tipo === 'Devolución') return formDevolucion(fila.negocio, fila);
       return d.h === 'negocio' ? formNegocio(fila) : formPersonal(fila);
     },
     elegirPeriodo: () => {
@@ -1622,7 +1760,7 @@ document.addEventListener('click', async ev => {
     ajustar: () => { const n = S.yo.admin ? S.filtro : S.yo.negocio; if (!n) return avisar('Elegí un negocio arriba para ajustar su efectivo.'); formAjuste(n, false); },
     borrar: () => { leerCampos(); S.form.confirmarBorrar = true; refrescarForm(); },
     noBorrar: () => { S.form.confirmarBorrar = false; refrescarForm(); },
-    siBorrar: () => { encolar({ tipo: 'borrar', hoja: S.form.hoja === 'personal' ? 'personal' : 'negocio', id: S.form.id }); cerrarModal(); avisar('Gasto borrado'); },
+    siBorrar: () => { encolar({ tipo: 'borrar', hoja: S.form.hoja === 'personal' ? 'personal' : 'negocio', id: S.form.id }); cerrarModal(); avisar('Borrado'); },
     avisoCambio: () => { const g = S.formGuardado; limpiarModal(); S.volverA = g; formNegocio(null, 'Cambio', g.negocio); S.form.viaje = g.viaje; pintarFormNegocio(); },
     avisoAjustar: () => formAjuste(S.formGuardado.negocio, false),
     avisoVolver: () => { S.form = S.formGuardado; S.formGuardado = null; pintarFormNegocio(); },
@@ -1632,7 +1770,7 @@ document.addEventListener('click', async ev => {
     salir: async () => { try { if (navigator.onLine) await api({ accion: 'salir', token: S.token }); } catch (e) {} if (S.cola.length) { avisar('Tenés gastos sin subir: se suben cuando vuelvas a entrar.'); } cerrarSesionLocal(''); }
   }[acc] || (() => {}))();
 });
-function refrescarForm() { if (S.form.hoja === 'personal') pintarFormPersonal(); else if (S.form.tipoVista === 'ajuste') verAjuste(S.form.fila); else pintarFormNegocio(); }
+function refrescarForm() { if (S.form.hoja === 'devolucion') { const fila = S.negocio.find(x => x.id === S.form.id); const cb = S.form.confirmarBorrar; formDevolucion(S.form.negocio, fila); S.form.confirmarBorrar = cb; if (cb) formDevolucionBorrar(); return; } if (S.form.hoja === 'personal') pintarFormPersonal(); else if (S.form.tipoVista === 'ajuste') verAjuste(S.form.fila); else pintarFormNegocio(); }
 function verAjuste(fila) {
   S.form.tipoVista = 'ajuste'; S.form.fila = fila;
   abrirModal(`${cab(fila.descripcion, 'var(--teal)', 'billetera')}
@@ -1641,7 +1779,9 @@ function verAjuste(fila) {
     <p class="ayuda" style="margin:0">Un ajuste no se edita. Si estuvo mal, borralo y cargá uno nuevo desde "Efectivo disponible".</p>
     ${botonBorrar()}`);
 }
+document.addEventListener('keydown', ev => { if (ev.key === 'Enter' && ev.target.id === 'fIn') { ev.preventDefault(); siguienteFlujo(); } });
 document.addEventListener('input', ev => {
+  if (ev.target.id === 'fIn' && S.flujo) { const p = pasoFlujo(); if (p && p.k) S.flujo.d[p.k] = ev.target.value; const e = $('fErr'); if (e) e.hidden = true; return; }
   if (ev.target.id === 'buscarTodos') { S.busca = ev.target.value; S.todosMax = 60; $('listaTodos').innerHTML = htmlListaTodos(); return; }
   const c = ev.target.dataset && ev.target.dataset.campo;
   if (!c || !S.form) return;
@@ -1665,7 +1805,19 @@ async function cargarUsuarios(btn) {
   catch (e) { listo(); avisar(e.message); }
 }
 async function accionAdmin(spec, btn) {
-  const [acc, usuario] = spec.split(':');
+  const [acc, usuario, valor] = spec.split(':');
+  if (acc === 'modo') {
+    if (!navigator.onLine) return avisar('Para esto necesitás internet.');
+    const listo = cargando(btn, 'Cargando…');
+    try {
+      const r = await api({ accion: 'modoUsuario', token: S.token, usuario, modo: valor });
+      usuariosAdmin = r.usuarios;
+      if (usuario === S.yo.usuario) return setModo(valor);
+      avisar(valor === 'simple' ? 'Modo simple activado para ' + usuario : 'Modo completo activado para ' + usuario);
+      render();
+    } catch (e) { listo(); avisar(e.message.includes('desconocida') ? 'Falta actualizar el código de Google (Codigo.gs).' : e.message); }
+    return;
+  }
   if (!navigator.onLine) return avisar('Para esto necesitás internet.');
   if (acc === 'clave') {
     abrirModal(`${cab('Nueva contraseña', 'var(--violet)', 'candado')}
@@ -1845,15 +1997,18 @@ function verDetalle(h, f) {
     titulo = f.descripcion; monto = totalNegocio(f);
     add('Tipo', 'Compra (inversión, se recupera)'); add('Producto', f.descripcion); add('Unidades', f.unidades);
     add('Costo por unidad', fmt(f.costoUnit)); add('Costo total', fmt(f.monto));
-    if (Number(f.recargo)) add(`Recargo de la tienda (${f.pctRecargo}%)`, fmt(f.recargo));
+    if (Number(f.recargo)) add(`Recargo de la tienda (${pct(f.pctRecargo)})`, fmt(f.recargo));
     add('Pago', f.pago);
   } else if (esN && f.tipo === 'No reversible') {
     titulo = f.descripcion || f.categoria; monto = f.gastoReal;
     add('Tipo', 'Gasto no reversible'); add('Categoría', f.categoria); add('Descripción', f.descripcion); add('Pago', f.pago);
   } else if (esN && f.tipo === 'Cambio') {
     titulo = 'Cambio a efectivo'; monto = f.recibido; signo = '+';
-    add('Nota', notaCambio(f)); add('Transferiste', fmt(f.monto)); add('% del cambio', f.pctCambio + '%');
+    add('Nota', notaCambio(f)); add('Transferiste', fmt(f.monto)); add('% del cambio', pct(f.pctCambio));
     add('Comisión (cuenta como gasto)', fmt(f.comision)); add('Efectivo recibido', fmt(f.recibido));
+  } else if (esN && f.tipo === 'Devolución') {
+    titulo = 'Devolución al negocio'; monto = f.monto; signo = '+';
+    add('Tipo', 'Devolución al negocio'); if (f.descripcion !== 'Devolución al negocio') add('Nota', f.descripcion); add('Entró al efectivo', fmt(f.monto));
   } else if (esN) {
     titulo = f.descripcion; monto = Math.abs(f.movEfectivo); signo = f.movEfectivo >= 0 ? '+' : '-';
     add('Tipo', 'Ajuste de efectivo'); add('Efectivo contado', fmt(f.monto));
@@ -1861,6 +2016,7 @@ function verDetalle(h, f) {
     titulo = f.descripcion || f.categoria; monto = f.monto;
     add('Tipo', 'Gasto personal'); add('Categoría', f.categoria); add('Descripción', f.descripcion);
     add('¿De dónde salió la plata?', f.origen === 'Personal' ? 'Personal (plata propia)' : 'Negocio (MercadoLibre)'); add('Pago', f.pago);
+    if (f.devolver === 'sí') add('A devolver', 'Sí, se devuelve al negocio');
   }
   if (esN) add('Viaje', f.viaje);
   const d = aFecha(f.fecha);
@@ -1869,13 +2025,22 @@ function verDetalle(h, f) {
   if (S.yo.admin) add('Cargado por', f.usuario);
   limpiarModal();
   S.detalle = { h, id: f.id };
-  const col = esN ? (f.tipo === 'Cambio' || f.tipo === 'Ajuste' ? 'var(--teal)' : 'var(--violet)') : 'var(--fuchsia)';
+  const col = esN ? (['Cambio', 'Ajuste', 'Devolución'].includes(f.tipo) ? 'var(--teal)' : 'var(--violet)') : 'var(--fuchsia)';
   abrirModal(`<div class="v-cab"><span class="ic" style="background:${col}">${svg(icoDe(f, esN), 20)}</span><b>Detalle</b>
-      <button class="cerrar" type="button" data-acc="editarDetalle" aria-label="Editar">${svg('lapiz', 19, 2.1)}</button>
+      ${esSimple() ? '' : `<button class="cerrar" type="button" data-acc="editarDetalle" aria-label="Editar">${svg('lapiz', 19, 2.1)}</button>`}
       <button class="cerrar" type="button" data-acc="cerrar" aria-label="Cerrar">${svg('x', 18, 2.2)}</button></div>
     ${bannerRech(f.id)}
     <div class="det-cab"><span>${esc(titulo)}</span><b class="${signo === '+' ? 'pos' : ''}">${signo}${fmt(monto)}</b>${enCola(f.id) && !rechDe(f.id) ? '<small class="esperando">sin subir todavía</small>' : ''}</div>
-    <div class="det-filas">${filas.map(([k, v]) => `<div class="fila-p"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('')}</div>`);
+    <div class="det-filas">${filas.map(([k, v]) => `<div class="fila-p"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('')}</div>
+    ${esSimple() ? botonesDetalleSimple(esN, f) : ''}`);
+}
+// En el modo simple, abajo del detalle: Corregir y Borrar, grandes
+function botonesDetalleSimple(esN, f) {
+  const corregible = !(esN && f.tipo === 'Ajuste');
+  return `${corregible ? `<button class="btn btn-grad f-sig" type="button" data-acc="sCorregir">${svg('lapiz', 20, 2.2)} Corregir</button>` : ''}
+    ${S.detalle && S.detalle.borrar
+      ? `<div class="dos"><button class="btn btn-sec f-sig" type="button" data-acc="sNoBorrar">No</button><button class="btn f-sig" type="button" data-acc="sSiBorrar" style="background:#C2324A;color:#fff">Sí, borrar</button></div>`
+      : `<button class="btn btn-sec f-sig" type="button" data-acc="sBorrar">Borrar</button>`}`;
 }
 
 /* =========================================================
@@ -2034,7 +2199,8 @@ window.addEventListener('popstate', () => {
   HIST.guarda = false;
   if (!$('cal').hidden) cerrarCal(true);
   else if (!$('modal').hidden) cerrarModal(true);
-  else if (!$('app').hidden && S.vista !== 'inicio') irA('inicio', true);
+  else if (!$('app').hidden && S.vista === 'flujo' && S.flujo && S.flujo.i > 0) { S.flujo.i--; render(); }
+  else if (!$('app').hidden && S.vista !== 'inicio') { if (S.vista === 'flujo') S.flujo = null; irA('inicio', true); }
   histRevisar();
 });
 
@@ -2069,6 +2235,242 @@ function mostrarNovedad() {
     el.hidden = !ver;
     if (ver) el.innerHTML = `${svg('chispa', 20, 1.9)}<span><b>Versión nueva</b> · ${esc(textoVersion())}</span>`;
   });
+}
+
+/* =========================================================
+   MODO SIMPLE: botones grandes y una pregunta por pantalla
+   ========================================================= */
+function elegirModo() {
+  abrirModal(`<div class="v-cab"><span class="ic" style="background:var(--grad)">${svg('chispa', 22)}</span><b>¿Cómo querés usar la app?</b></div>
+    <p class="ayuda" style="margin:0;font-size:15px">Lo podés cambiar cuando quieras desde tu perfil.</p>
+    <button class="modo-op sim" type="button" data-modo="simple"><b>✋ Simple</b><small>Botones grandes y una pregunta por pantalla. Ideal para cargar rápido.</small></button>
+    <button class="modo-op" type="button" data-modo="completo"><b>📊 Completa</b><small>Todo: gráficos, filtros, Excel y más detalles.</small></button>`);
+}
+function vSimple() {
+  const neg = S.yo.negocio, ef = efectivoDe(neg), deuda = deudaDe(neg);
+  const boton = (flujo, emoji, titulo, sub, fondo) => `<button type="button" class="s-grande" data-flujo="${flujo}" style="background:${fondo}"><span class="oi" aria-hidden="true">${emoji}</span><span class="tx"><b>${titulo}</b><small>${sub}</small></span></button>`;
+  return `
+  <div class="s-cab">
+    <button type="button" class="avatar" data-ir2="perfil" aria-label="Mi perfil">${esc(iniciales(S.yo.nombre))}</button>
+    <div class="saludo"><small>Hola,</small><b>${esc(primerNombre(S.yo.nombre))}</b></div>
+    ${chipSync()}
+  </div>
+  ${deuda > 0 ? `<div class="deuda"><span><small>Le debés al negocio</small><b>${fmt(deuda)}</b></span><button type="button" data-devolver="${esc(neg)}">Devolver</button></div>` : ''}
+  <button type="button" class="s-efe" data-flujo="contar"><span><small>Efectivo del negocio</small><b>${fmt(ef)}</b></span><em>Contar</em></button>
+  ${boton('cambio', '💱', 'Cambié plata', 'Me dieron efectivo por transferencia', 'linear-gradient(135deg,#1F9E95,#2B7F9E)')}
+  ${boton('compra', '🛒', 'Compré mercadería', 'Productos para vender', 'linear-gradient(135deg,#7C4DFF,#9E4BE6)')}
+  ${boton('viaje', '🚌', 'Pagué pasaje, pasero o comida', 'Gastos del viaje', 'linear-gradient(135deg,#C23A8C,#E040A0)')}
+  ${boton('personal', '🏠', 'Gasté en algo mío', 'Casa, comida, salud…', 'linear-gradient(135deg,#B8661F,#D9862B)')}
+  <button type="button" class="btn btn-sec s-ver" data-ir2="lista">${svg('recibo', 22, 2)} Ver lo que cargué</button>`;
+}
+function vSimpleLista() {
+  return `
+  <div class="titulo-todos"><button type="button" class="volver" data-acc="volverInicio" aria-label="Volver">${svg('izq', 20, 2.4)}</button><h1>Lo que cargué</h1></div>
+  <p class="ayuda" style="margin:0;font-size:15px">Tocá uno para verlo, corregirlo o borrarlo.</p>
+  <div id="listaTodos" style="display:flex;flex-direction:column;gap:12px">${htmlListaTodos()}</div>`;
+}
+const NEGOCIO_FLUJO = ['cambio', 'compra', 'viaje'];
+const P_INI = { k: 'inicial', t: 'num', preg: 'Antes de empezar: ¿cuánta plata del negocio tenés en efectivo?', ayuda: 'Contala y escribila. Puede ser 0.', cero: true, si: fl => fl.pedirInicial };
+const P_PAG = { k: 'pago', t: 'ops', preg: '¿Cómo pagaste?', ops: () => [['Efectivo', '💵 Efectivo'], ['Transferencia', '📱 Transferencia']] };
+const FLUJOS = {
+  cambio: { titulo: 'Cambié plata', emoji: '💱', pasos: [P_INI,
+    { k: 'monto', t: 'num', preg: '¿Cuánto transferiste?' },
+    { k: 'recibido', t: 'num', preg: '¿Cuánto efectivo te dieron?', ayuda: 'Lo que te dieron en la mano', valid: d => num(d.recibido) <= num(d.monto) || 'No puede ser más de lo que transferiste.' },
+    { t: 'resumen' }] },
+  compra: { titulo: 'Compré mercadería', emoji: '🛒', pasos: [P_INI,
+    { k: 'descripcion', t: 'texto', preg: '¿Qué compraste?', ej: 'Ej: tazas, termos…' },
+    { k: 'unidades', t: 'num', preg: '¿Cuántas unidades?', sinPesos: true },
+    { k: 'monto', t: 'num', preg: '¿Cuánto pagaste en total?', ayuda: 'Por todo junto, no por cada una' },
+    P_PAG,
+    { k: 'extra', t: 'ops', preg: '¿Te cobraron algo extra por pagar con transferencia?', ops: () => [['No', 'No'], ['Sí', 'Sí, un recargo']], si: fl => fl.d.pago === 'Transferencia' },
+    { k: 'pct', t: 'num', preg: '¿Qué porcentaje te cobraron?', ayuda: 'Por ejemplo: 3', sinPesos: true, si: fl => fl.d.pago === 'Transferencia' && fl.d.extra === 'Sí', valid: d => num(d.pct) <= 100 || 'Revisá el porcentaje.' },
+    { t: 'resumen' }] },
+  viaje: { titulo: 'Pagué pasaje, pasero o comida', emoji: '🚌', pasos: [P_INI,
+    { k: 'que', t: 'grilla', preg: '¿Qué pagaste?', ops: () => [...(S.listas['Descripciones rápidas'] || []).map(x => [x, x]), ['Otra cosa', '✏️ Otra cosa']] },
+    { k: 'otro', t: 'texto', preg: '¿Qué fue?', ej: 'Escribilo corto', si: fl => fl.d.que === 'Otra cosa' },
+    { k: 'monto', t: 'num', preg: '¿Cuánto pagaste?' },
+    P_PAG, { t: 'resumen' }] },
+  personal: { titulo: 'Gasté en algo mío', emoji: '🏠', pasos: [
+    { k: 'categoria', t: 'grilla', preg: '¿En qué gastaste?', ops: () => (S.listas['Categorías personales'] || []).map(x => [x, x]) },
+    { k: 'monto', t: 'num', preg: '¿Cuánto gastaste?' },
+    P_PAG,
+    { k: 'quien', t: 'ops', preg: '¿De quién era la plata?', ops: () => [['Mía', '👛 Mía'], ['Negocio', '🏪 Del negocio (de las ventas)'], ['Devolver', '↩️ Del negocio, pero la voy a devolver']] },
+    { k: 'descripcion', t: 'texto', preg: '¿Querés anotar qué fue?', ayuda: 'No es obligatorio', ej: 'Ej: factura de luz', opcional: true },
+    { t: 'resumen' }] },
+  devolver: { titulo: 'Devolver al negocio', emoji: '↩️', pasos: [
+    { k: 'monto', t: 'num', preg: '¿Cuánto devolviste al negocio?', ayuda: () => 'Le debés ' + fmt(deudaDe(S.flujo.negocio) + (S.flujo.editId ? num(S.flujo.orig) || 0 : 0)) + '. Si devolviste una parte, cambiá el número.' },
+    { t: 'resumen' }] },
+  contar: { titulo: 'Contar el efectivo', emoji: '💵', pasos: [
+    { k: 'monto', t: 'num', preg: '¿Cuánta plata del negocio tenés en la mano?', ayuda: 'Contala y escribila. Puede ser 0.', cero: true },
+    { t: 'resumen' }] }
+};
+function iniciarFlujo(tipo, previo) {
+  cerrarModal();
+  const neg = S.yo.negocio;
+  S.flujo = Object.assign({ tipo, i: 0, d: { fecha: hoy() }, negocio: neg, pedirInicial: NEGOCIO_FLUJO.includes(tipo) && necesitaInicial(neg) }, previo || {});
+  if (tipo === 'devolver' && !S.flujo.d.monto) S.flujo.d.monto = String(deudaDe(neg) || '');
+  if (S.vista === 'flujo') { $('contenido').scrollTop = 0; render(); } else irA('flujo');
+}
+const pasosFlujo = () => FLUJOS[S.flujo.tipo].pasos.filter(p => !p.si || p.si(S.flujo));
+const pasoFlujo = () => pasosFlujo()[S.flujo.i];
+function vFlujo() {
+  const fl = S.flujo, F = FLUJOS[fl.tipo], vis = pasosFlujo();
+  fl.i = Math.min(Math.max(0, fl.i), vis.length - 1);
+  const p = vis[fl.i], d = fl.d;
+  const puntos = vis.map((_, k) => `<i class="${k === fl.i ? 'on' : k < fl.i ? 'hecho' : ''}"></i>`).join('');
+  const txt = v => typeof v === 'function' ? v(d) : v;
+  let cuerpo = '';
+  if (p.t === 'num' || p.t === 'texto') {
+    cuerpo = `<h1 class="f-preg">${esc(p.preg)}</h1>${p.ayuda ? `<p class="f-ayuda">${esc(txt(p.ayuda))}</p>` : ''}
+      <input id="fIn" class="${p.t === 'num' ? 'f-num' : 'f-txt'}" ${p.t === 'num' ? 'inputmode="decimal"' : 'enterkeyhint="next"'} autocomplete="off" value="${esc(d[p.k] || '')}" placeholder="${p.t === 'num' ? (p.sinPesos ? '0' : '$ 0') : esc(p.ej || '')}" aria-label="${esc(p.preg)}">
+      <div class="f-error" id="fErr" hidden></div>
+      <button class="btn btn-grad f-sig" type="button" data-acc="fSig">Siguiente ›</button>
+      ${p.opcional ? `<button class="btn btn-ghost" type="button" data-acc="fSig" style="font-size:16px">Saltar</button>` : ''}`;
+  } else if (p.t === 'ops' || p.t === 'grilla') {
+    cuerpo = `<h1 class="f-preg">${esc(p.preg)}</h1>
+      <div class="${p.t === 'ops' ? 'f-ops' : 'f-grilla'}">${p.ops().map(([v, t]) => `<button type="button" class="f-op" data-fop="${esc(v)}" aria-pressed="${d[p.k] === v}">${esc(t)}</button>`).join('')}</div>`;
+  } else {
+    cuerpo = resumenFlujo();
+  }
+  return `
+  <div class="f-cab"><button type="button" class="f-atras" data-acc="fAtras">${svg('izq', 18, 2.6)} Atrás</button><div class="f-puntos" aria-label="Pregunta ${fl.i + 1} de ${vis.length}">${puntos}</div><button type="button" class="cerrar" data-acc="fSalir" aria-label="Salir sin guardar">${svg('x', 18, 2.2)}</button></div>
+  <div class="f-tit"><span aria-hidden="true">${F.emoji}</span>${esc(F.titulo)}${fl.editId ? ' · corrigiendo' : ''}</div>
+  ${cuerpo}`;
+}
+function resumenFlujo() {
+  const fl = S.flujo, d = fl.d, filas = [], add = (k, v) => filas.push([k, v]);
+  const fecha = d.fecha || hoy(), fd = aFecha(fecha);
+  if (fl.tipo === 'cambio') {
+    const m = num(d.monto), r = num(d.recibido), c = r2(m - r);
+    add('Transferiste', fmt(m)); add('Te dieron', fmt(r)); add('Te cobraron', fmt(c) + (m ? ` (${pct(r2(c / m * 100))})` : ''));
+  } else if (fl.tipo === 'compra') {
+    const m = num(d.monto), u = num(d.unidades);
+    add('Compraste', d.descripcion); add('Unidades', u); add('Pagaste en total', fmt(m)); add('Cada una sale', fmt(m / u)); add('Pago', d.pago);
+    if (d.pago === 'Transferencia' && d.extra === 'Sí') add('Recargo', pct(num(d.pct)) + ' (' + fmt(r2(m * num(d.pct) / 100)) + ')');
+  } else if (fl.tipo === 'viaje') {
+    add('Pagaste', d.que === 'Otra cosa' ? d.otro : d.que); add('Monto', fmt(num(d.monto))); add('Pago', d.pago);
+  } else if (fl.tipo === 'personal') {
+    add('En qué', d.categoria); add('Monto', fmt(num(d.monto))); add('Pago', d.pago);
+    add('La plata era', d.quien === 'Mía' ? 'Mía' : d.quien === 'Negocio' ? 'Del negocio' : 'Del negocio (la vas a devolver)');
+    if (d.descripcion) add('Detalle', d.descripcion);
+  } else if (fl.tipo === 'devolver') {
+    const deuda = deudaDe(fl.negocio) + (fl.editId ? num(fl.orig) || 0 : 0);
+    add('Devolviste', fmt(num(d.monto))); add('Te queda por devolver', fmt(Math.max(0, deuda - num(d.monto))));
+  } else if (fl.tipo === 'contar') {
+    add('Tenés en la mano', fmt(num(d.monto))); add('La app decía', fmt(efectivoDe(fl.negocio)));
+  }
+  if (fl.pedirInicial) add('Efectivo antes de empezar', fmt(num(d.inicial)));
+  const fechaTxt = fecha === hoy() ? 'Hoy' : fecha === ayer() ? 'Ayer' : DIAS[fd.getDay()][0].toUpperCase() + DIAS[fd.getDay()].slice(1);
+  add('Fecha', fechaTxt + ', ' + fd.getDate() + ' de ' + MESES[fd.getMonth()]);
+  return `<h1 class="f-preg">¿Está todo bien?</h1>
+    <div class="f-res">${filas.map(([k, v]) => `<div class="fila-p"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('')}</div>
+    ${fl.tipo !== 'contar' ? `<button type="button" class="f-fecha" data-acc="fFecha">¿Fue otro día?</button>` : ''}
+    <button class="btn btn-grad f-sig" type="button" data-acc="fGuardar">Guardar ✓</button>`;
+}
+function errFlujo(t) { const e = $('fErr'); if (e) { e.textContent = t; e.hidden = false; } const i = $('fIn'); if (i) i.focus(); }
+function siguienteFlujo() {
+  const fl = S.flujo; if (!fl) return;
+  const p = pasoFlujo();
+  if (p.t === 'num' || p.t === 'texto') {
+    const v = ($('fIn') ? $('fIn').value : '').trim();
+    fl.d[p.k] = v;
+    if (p.t === 'num') {
+      const n = num(v);
+      if (!v || isNaN(n)) return errFlujo('Escribí un número.');
+      if (n < 0 || (!p.cero && n === 0)) return errFlujo(p.cero ? 'No puede ser negativo.' : 'Tiene que ser más de 0.');
+    } else if (!v && !p.opcional) return errFlujo('Escribí algo para seguir.');
+    if (p.valid) { const r = p.valid(fl.d); if (r !== true) return errFlujo(r); }
+  }
+  fl.i = Math.min(fl.i + 1, pasosFlujo().length - 1);
+  $('contenido').scrollTop = 0; render(); enfocarFlujo();
+}
+function enfocarFlujo() { const i = $('fIn'); if (i) { try { i.focus({ preventScroll: true }); const L = i.value.length; i.setSelectionRange(L, L); } catch (e) {} } }
+function elegirOpcionFlujo(v) {
+  const fl = S.flujo, p = pasoFlujo(); if (!p || !p.k) return;
+  fl.d[p.k] = v;
+  if (p.k === 'que' && v !== 'Otra cosa') fl.d.otro = '';
+  render();
+  setTimeout(() => { if (S.flujo === fl && pasoFlujo() === p) { fl.i++; $('contenido').scrollTop = 0; render(); enfocarFlujo(); } }, 180);
+}
+function atrasFlujo() {
+  const fl = S.flujo; if (!fl) return;
+  if (fl.i > 0) { fl.i--; render(); enfocarFlujo(); }
+  else if (fl.volver) { S.flujo = fl.volver; render(); }
+  else { S.flujo = null; irA('inicio'); }
+}
+const catDeViaje = q => /comida|bebida/i.test(q) ? 'Sueldo' : q === 'Otra cosa' ? 'Otros' : 'Insumos';
+function guardarFlujo() {
+  const fl = S.flujo, d = fl.d, neg = fl.negocio, fecha = d.fecha || hoy();
+  const id = fl.editId || nuevoId();
+  const viaje = fl.editId && fl.viajeOrig && fl.fechaOrig === fecha ? fl.viajeOrig : 'Bermejo ' + fCorta(fecha);
+  let op = null, saleEfectivo = 0;
+  if (fl.tipo === 'cambio') {
+    const m = num(d.monto), r = num(d.recibido);
+    op = { hoja: 'negocio', datos: { negocio: neg, tipo: 'Cambio', fecha, viaje, monto: m, recibido: r, pctCambio: r2((m - r) / m * 100), nota: fl.nota || '' } };
+  } else if (fl.tipo === 'compra') {
+    const recargo = d.pago === 'Transferencia' && d.extra === 'Sí';
+    op = { hoja: 'negocio', datos: { negocio: neg, tipo: 'Inversión', fecha, viaje, descripcion: d.descripcion, unidades: num(d.unidades), monto: num(d.monto), pago: d.pago, pctRecargo: recargo ? num(d.pct) : '' } };
+    if (d.pago === 'Efectivo') saleEfectivo = num(d.monto);
+  } else if (fl.tipo === 'viaje') {
+    op = { hoja: 'negocio', datos: { negocio: neg, tipo: 'No reversible', fecha, viaje, categoria: catDeViaje(d.que), descripcion: d.que === 'Otra cosa' ? d.otro : d.que, monto: num(d.monto), pago: d.pago } };
+    if (d.pago === 'Efectivo') saleEfectivo = num(d.monto);
+  } else if (fl.tipo === 'personal') {
+    op = { hoja: 'personal', datos: { negocio: neg, fecha, origen: d.quien === 'Mía' ? 'Personal' : 'Negocio (MercadoLibre)', devolver: d.quien === 'Devolver' ? 'sí' : '', categoria: d.categoria, descripcion: (d.descripcion || '').trim(), monto: num(d.monto), pago: d.pago } };
+  } else if (fl.tipo === 'devolver') {
+    op = { hoja: 'negocio', datos: { negocio: neg, tipo: 'Devolución', fecha, viaje: '', monto: num(d.monto), nota: fl.nota || '' } };
+  } else if (fl.tipo === 'contar') {
+    op = { hoja: 'negocio', datos: { negocio: neg, tipo: 'Ajuste', fecha: hoy(), viaje: '', monto: num(d.monto), inicial: false } };
+  }
+  // ¿Alcanza el efectivo?
+  if (saleEfectivo && !fl.sinControl) {
+    const ef = (fl.pedirInicial ? num(d.inicial) : 0) + efectivoDe(neg, fl.editId || null);
+    if (saleEfectivo > ef) return avisoEfectivoSimple(saleEfectivo, ef);
+  }
+  guardarInicialFlujo(fl);
+  encolar(Object.assign({ tipo: 'guardar', id }, op));
+  avisar(fl.editId ? '✓ Corregido' : '✓ Guardado');
+  if (fl.volver) { const v = fl.volver; v.i = pasosFl(v).length - 1; S.flujo = v; $('contenido').scrollTop = 0; return render(); }
+  S.flujo = null; irA('inicio');
+}
+const pasosFl = fl => FLUJOS[fl.tipo].pasos.filter(p => !p.si || p.si(fl));
+function guardarInicialFlujo(fl) {
+  if (!fl.pedirInicial) return;
+  fl.pedirInicial = false;
+  fl.i = Math.max(0, fl.i - 1); // la pregunta del efectivo inicial ya no se cuenta
+  encolar({ tipo: 'guardar', hoja: 'negocio', id: nuevoId(), datos: { negocio: fl.negocio, tipo: 'Ajuste', fecha: hoy(), viaje: '', monto: num(fl.d.inicial), inicial: true } });
+}
+function avisoEfectivoSimple(monto, ef) {
+  abrirModal(`<div class="v-cab"><span class="ic" style="background:rgba(255,181,71,.18);color:var(--amber)">${svg('alerta', 22, 2)}</span><b>No te alcanza el efectivo</b></div>
+    <p style="margin:0;font-size:17px;font-weight:600;color:var(--soft);line-height:1.45">Esto es <b style="color:var(--ink)">${fmt(monto)}</b> en efectivo y la app dice que tenés <b style="color:var(--ink)">${fmt(ef)}</b>.<br>¿Te faltó cargar un cambio?</p>
+    <button class="btn f-sig" type="button" data-acc="fAvCambio" style="background:linear-gradient(135deg,#1F9E95,#7C4DFF);color:#fff">💱 Sí, cargar el cambio</button>
+    <button class="btn btn-sec f-sig" type="button" data-acc="fAvContar">💵 Contar mi efectivo</button>
+    <button class="btn btn-ghost" type="button" data-acc="cerrar" style="font-size:16px">Volver</button>`);
+}
+// Desde el aviso: se carga el cambio (o se cuenta el efectivo) y después vuelve a lo que estaba cargando
+function sublujoEfectivo(tipo) {
+  const actual = S.flujo;
+  guardarInicialFlujo(actual);
+  cerrarModal();
+  iniciarFlujo(tipo, { volver: actual, pedirInicial: false });
+}
+function refrescarDetalle() {
+  const d = S.detalle; if (!d) return;
+  const fila = (d.h === 'negocio' ? S.negocio : S.personal).find(f => f.id === d.id); if (!fila) return;
+  const b = d.borrar; verDetalle(d.h, fila); S.detalle.borrar = b;
+  const caja = document.querySelector('#modalIn [data-acc=sBorrar], #modalIn [data-acc=sNoBorrar]');
+  if (caja) { const cont = caja.closest('.dos') || caja; cont.outerHTML = b ? `<div class="dos"><button class="btn btn-sec f-sig" type="button" data-acc="sNoBorrar">No</button><button class="btn f-sig" type="button" data-acc="sSiBorrar" style="background:#C2324A;color:#fff">Sí, borrar</button></div>` : `<button class="btn btn-sec f-sig" type="button" data-acc="sBorrar">Borrar</button>`; }
+}
+// "Corregir" en el modo simple: vuelve a las mismas preguntas, con lo que ya estaba cargado
+function corregirSimple() {
+  const det = S.detalle; if (!det) return;
+  const f = (det.h === 'negocio' ? S.negocio : S.personal).find(x => x.id === det.id); if (!f) return;
+  const base = { editId: f.id, fechaOrig: f.fecha, viajeOrig: f.viaje, pedirInicial: false, sinControl: false };
+  const s = v => String(v == null ? '' : v);
+  if (det.h === 'personal') return iniciarFlujo('personal', Object.assign(base, { d: { fecha: f.fecha, categoria: f.categoria, monto: s(f.monto), pago: f.pago, quien: f.origen === 'Personal' ? 'Mía' : f.devolver === 'sí' ? 'Devolver' : 'Negocio', descripcion: f.descripcion || '' } }));
+  if (f.tipo === 'Inversión') return iniciarFlujo('compra', Object.assign(base, { d: { fecha: f.fecha, descripcion: f.descripcion, unidades: s(f.unidades), monto: s(f.monto), pago: f.pago, extra: f.pctRecargo !== '' && f.pctRecargo != null && Number(f.recargo) ? 'Sí' : 'No', pct: s(f.pctRecargo) } }));
+  if (f.tipo === 'No reversible') { const enLista = (S.listas['Descripciones rápidas'] || []).includes(f.descripcion); return iniciarFlujo('viaje', Object.assign(base, { d: { fecha: f.fecha, que: enLista ? f.descripcion : 'Otra cosa', otro: enLista ? '' : (f.descripcion || f.categoria), monto: s(f.monto), pago: f.pago } })); }
+  if (f.tipo === 'Cambio') return iniciarFlujo('cambio', Object.assign(base, { nota: notaCambio(f), d: { fecha: f.fecha, monto: s(f.monto), recibido: s(f.recibido) } }));
+  if (f.tipo === 'Devolución') return iniciarFlujo('devolver', Object.assign(base, { orig: s(f.monto), nota: f.descripcion !== 'Devolución al negocio' ? f.descripcion : '', d: { fecha: f.fecha, monto: s(f.monto) } }));
 }
 
 /* =========================================================
@@ -2305,6 +2707,23 @@ $('guiaListo').onclick = () => {
   if (p.req && el && el.matches('input') && !el.value.trim()) { $('guiaTxt').innerHTML = p.txt + '<br><b>Escribilo primero</b> ✍️'; sacudirGlobo(); try { el.focus(); } catch (x) {} return; }
   avanzarDesde(p);
 };
+// Durante una guía, solo se puede tocar lo que está iluminado, el globito (✕, Listo, Siguiente, Saltar)
+// y el calendario si se abrió desde el paso. Todo lo demás queda bloqueado.
+function guiaPermite(t) {
+  if (!GUIA.activa || !t || !t.closest) return true;
+  if (t.closest('#guia .guia-globo')) return true;
+  const p = pasoActual(); if (!p) return false;
+  const el = p.el();
+  if (el && el.contains(t)) return true;
+  if (p.valido && t.closest(p.valido)) return true;
+  if (!$('cal').hidden && t.closest('#cal')) return true;
+  return false;
+}
+['pointerdown', 'mousedown', 'touchstart', 'click'].forEach(tipo => window.addEventListener(tipo, e => {
+  if (guiaPermite(e.target)) return;
+  e.preventDefault(); e.stopPropagation();
+  if (tipo === 'pointerdown') sacudirGlobo();
+}, { capture: true, passive: false }));
 $('guiaSaltar').onclick = () => { const p = pasoActual(); if (p) siguientePaso(); };
 $('guiaX').onclick = () => terminarGuia('Guía cerrada. Tocame cuando quieras 🤖', false);
 
@@ -2323,6 +2742,7 @@ $('guiaX').onclick = () => terminarGuia('Guía cerrada. Tocame cuando quieras �
   if (!est || !est.yo) { LS.del('bd_sesion'); S.token = ''; return mostrarLogin(''); }
   Object.assign(S, { yo: est.yo, listas: Object.assign({}, LISTAS_BASE, est.listas), personal: est.personal || [], negocio: est.negocio || [], pendientes: est.pendientes || 0, ultimaSync: est.ultimaSync || 0 });
   S.cola = LS.get(kCola(), []); S.rech = LS.get(kRech(), []);
+  aplicarModo();
   if (LS.get('bd_patron_' + S.yo.usuario, '')) iniciarPatron('abrir'); else iniciarPatron('crear');
 })();
 </script>
