@@ -444,9 +444,9 @@ body.simple nav.barra,body.simple #robot{display:none!important}
 .plata-ver{display:flex;align-items:center;min-height:50px;border:1px solid rgba(255,255,255,.12);background:rgba(11,9,22,.5);border-radius:14px;padding:10px 12px;font-size:21px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden}
 .plata-ver sup{font-size:.55em;position:relative;top:-.15em;vertical-align:super;margin-left:1px;font-weight:800}
 .pv{display:inline-flex;align-items:flex-start}
-.pv.vacio{color:var(--dim)}
+.pv.pv-vacio{color:var(--dim)}
 .plata:focus-within .plata-ver{border-color:var(--violet2);box-shadow:0 0 0 3px rgba(124,77,255,.3)}
-.plata:focus-within .pv::after{content:'';align-self:center;width:2px;height:1em;background:var(--lilac);margin-left:4px;animation:parpadeo 1s steps(1) infinite}
+.plata:focus-within .pv::after{content:'';align-self:flex-start;width:max(2px,.07em);height:.5em;margin-top:.14em;border-radius:2px;background:var(--lilac);margin-left:.08em;animation:parpadeo 1s steps(1) infinite}
 @keyframes parpadeo{50%{opacity:0}}
 .plata.grande .plata-ver{font-size:40px;font-weight:900;border:2px solid var(--violet2);border-radius:20px;padding:12px 18px;min-height:84px}
 .plata.efe .plata-ver{border-color:var(--teal2);font-size:28px}
@@ -534,7 +534,7 @@ body.simple nav.barra,body.simple #robot{display:none!important}
    ========================================================= */
 const API = window.BILLETERA_API || '';
 // Fecha y hora de esta versión (se muestra una vez cuando alguien abre la app actualizada)
-const APP_VERSION = '2026-10-27T22:45';
+const APP_VERSION = '2026-10-27T23:15';
 const COLORES = ['#9B6BFF', '#F05BB5', '#3FD6C6', '#FFB547', '#6FA8FF', '#FF8A5B', '#B5E36B', '#D7C8FF'];
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 const LISTAS_BASE = {
@@ -631,7 +631,7 @@ const r2 = n => Math.round(n * 100) / 100;
 const aCentavos = v => { const t = String(v == null ? '' : v).trim(); if (!t) return ''; const n = num(t); return isNaN(n) ? '' : String(Math.round(n * 100)); };
 const deCentavos = c => c === '' ? '' : (Number(c) / 100).toFixed(2);
 function verPlata(c) {
-  if (c === '') return `<span class="pv vacio"><span>$ 0</span><sup>,00</sup></span>`;
+  if (c === '') return `<span class="pv pv-vacio"><span>$ 0</span><sup>,00</sup></span>`;
   const n = Number(c), ent = Math.floor(n / 100), dec = String(n % 100).padStart(2, '0');
   return `<span class="pv"><span>$ ${ent.toLocaleString('es-AR')}</span><sup>,${dec}</sup></span>`;
 }
