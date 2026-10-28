@@ -521,7 +521,7 @@ body.simple nav.barra,body.simple #robot{display:none!important}
    ========================================================= */
 const API = window.BILLETERA_API || '';
 // Fecha y hora de esta versión (se muestra una vez cuando alguien abre la app actualizada)
-const APP_VERSION = '2026-10-27T21:05';
+const APP_VERSION = '2026-10-27T21:50';
 const COLORES = ['#9B6BFF', '#F05BB5', '#3FD6C6', '#FFB547', '#6FA8FF', '#FF8A5B', '#B5E36B', '#D7C8FF'];
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 const LISTAS_BASE = {
@@ -1011,7 +1011,7 @@ function render() {
   const actual = document.querySelector(`nav.barra [data-ir="${S.vista}"]`);
   if (actual) actual.setAttribute('aria-current', 'page');
   const vistas = esSimple()
-    ? { inicio: vSimple, lista: vSimpleLista, perfil: vPerfil, flujo: vFlujo, todos: vTodos }
+    ? { inicio: vSimple, menu: vMenuSimple, lista: vSimpleLista, perfil: vPerfil, flujo: vFlujo, todos: vTodos }
     : { inicio: vInicio, personal: () => vSeccion('personal'), negocio: () => vSeccion('negocio'), perfil: vPerfil, todos: vTodos };
   if (!vistas[S.vista] || (S.vista === 'flujo' && !S.flujo)) S.vista = 'inicio';
   const html = vistas[S.vista]();
@@ -1373,9 +1373,11 @@ $('modal').addEventListener('click', e => { if (e.target === $('modal')) cerrarM
 const cab = (titulo, color, icono) => `<div class="v-cab"><span class="ic" style="background:${color}">${svg(icono, 20)}</span><b>${esc(titulo)}</b><button class="cerrar" type="button" data-acc="cerrar" aria-label="Cerrar">${svg('x', 18, 2.2)}</button></div>`;
 
 function elegirTipo() {
+  const neg = S.filtro || S.yo.negocio, deuda = deudaDe(neg);
   abrirModal(`${cab('¿Qué querés cargar?', 'var(--card3)', 'recibo')}
     <button class="opcion" type="button" data-nuevo="negocio" style="background:linear-gradient(135deg,#7C4DFF,#9E4BE6)"><span class="oi">${svg('caja', 24)}</span><span><b>Compras y negocio</b><small>Mercadería e insumos</small></span>${svg('der', 20, 2.2)}</button>
-    <button class="opcion" type="button" data-nuevo="personal" style="background:linear-gradient(135deg,#C23A8C,#E040A0)"><span class="oi">${svg('user', 24)}</span><span><b>Gasto personal</b><small>Casa, comida, salud</small></span>${svg('der', 20, 2.2)}</button>`);
+    <button class="opcion" type="button" data-nuevo="personal" style="background:linear-gradient(135deg,#C23A8C,#E040A0)"><span class="oi">${svg('user', 24)}</span><span><b>Gasto personal</b><small>Casa, comida, salud</small></span>${svg('der', 20, 2.2)}</button>
+    <button class="opcion chica" type="button" data-acc="plataNegocio" style="background:var(--card3)"><span class="oi">${svg('billetera', 21)}</span><span><b>Plata del negocio</b><small>Usarla para algo personal, o devolverla${deuda > 0 ? ' · se debe ' + fmt(deuda) : ''}</small></span>${svg('der', 18, 2.2)}</button>`);
 }
 
 /* ---------- Gasto personal ---------- */
@@ -1693,9 +1695,11 @@ document.addEventListener('click', async ev => {
   if (ds.caly) { CAL.y = Number(ds.caly); CAL.vista = 'meses'; return pintarCal(); }
   if (ds.calbloque) { CAL.y += 12 * Number(ds.calbloque); return pintarCal(); }
   if (ds.ir2) return irA(ds.ir2);
-  if (ds.flujo) return iniciarFlujo(ds.flujo);
+  if (ds.menu) { S.menu = ds.menu; return irA('menu'); }
+  if (ds.flujo) return iniciarFlujo(ds.flujo, S.vista === 'menu' ? { menu: S.menu } : null);
   if (ds.fop !== undefined) return elegirOpcionFlujo(ds.fop);
-  if (ds.devolver) return esSimple() ? iniciarFlujo('devolver') : formDevolucion(ds.devolver);
+  if (ds.devolver) { if (!esSimple() && !(deudaDe(ds.devolver) > 0)) return avisar('Ahora no se le debe nada a ese negocio 👍'); return esSimple() ? iniciarFlujo('devolver') : formDevolucion(ds.devolver); }
+  if (ds.nuevo2 === 'volver') return elegirTipo();
   if (ds.modo) { cerrarModal(); setModo(ds.modo); if (ds.modo === 'completo') saludoRobot(); return; }
   if (ds.ftipo) { S.ftipo = ds.ftipo; S.todosMax = 60; return render(); }
   if (ds.filtro !== undefined) { S.filtro = ds.filtro; S.viaje = ''; return render(); }
@@ -1724,6 +1728,13 @@ document.addEventListener('click', async ev => {
     guardarNegocio: () => { leerCampos(); guardarNegocio(); },
     guardarAjuste: () => { leerCampos(); guardarAjuste(); },
     errores: verErrores,
+    plataNegocio: () => {
+      const neg = S.filtro || S.yo.negocio, deuda = deudaDe(neg);
+      abrirModal(`<div class="v-cab"><button class="cerrar" type="button" data-nuevo2="volver" aria-label="Volver">${svg('izq', 18, 2.4)}</button><b>Plata del negocio</b><button class="cerrar" type="button" data-acc="cerrar" aria-label="Cerrar">${svg('x', 18, 2.2)}</button></div>
+        <button class="opcion" type="button" data-acc="usarNegocio" style="background:linear-gradient(135deg,#C23A8C,#E040A0)"><span class="oi">${svg('user', 24)}</span><span><b>Usé plata del negocio</b><small>Para algo personal, la vaya a devolver o no</small></span>${svg('der', 20, 2.2)}</button>
+        <button class="opcion" type="button" data-devolver="${esc(neg)}" style="background:linear-gradient(135deg,#1F9E95,#2B7F9E)"><span class="oi">${svg('billetera', 24)}</span><span><b>Devolví plata al negocio</b><small>${deuda > 0 ? (neg !== S.yo.negocio ? esc(neg) + ' debe ' : 'Le debés ') + fmt(deuda) : 'Ahora no se debe nada'}</small></span>${svg('der', 20, 2.2)}</button>`);
+    },
+    usarNegocio: () => { limpiarModal(); formPersonal(null); S.form.origen = 'Negocio (MercadoLibre)'; S.form.devolver = 'sí'; pintarFormPersonal(); },
     guardarDevolucion: () => { leerCampos(); guardarDevolucion(); },
     modoOnOff: () => setModo(esSimple() ? 'completo' : 'simple'),
     fSig: siguienteFlujo,
@@ -2200,6 +2211,7 @@ window.addEventListener('popstate', () => {
   if (!$('cal').hidden) cerrarCal(true);
   else if (!$('modal').hidden) cerrarModal(true);
   else if (!$('app').hidden && S.vista === 'flujo' && S.flujo && S.flujo.i > 0) { S.flujo.i--; render(); }
+  else if (!$('app').hidden && S.vista === 'flujo' && S.flujo && S.flujo.menu) { S.menu = S.flujo.menu; S.flujo = null; irA('menu', true); }
   else if (!$('app').hidden && S.vista !== 'inicio') { if (S.vista === 'flujo') S.flujo = null; irA('inicio', true); }
   histRevisar();
 });
@@ -2257,11 +2269,24 @@ function vSimple() {
   </div>
   ${deuda > 0 ? `<div class="deuda"><span><small>Le debés al negocio</small><b>${fmt(deuda)}</b></span><button type="button" data-devolver="${esc(neg)}">Devolver</button></div>` : ''}
   <button type="button" class="s-efe" data-flujo="contar"><span><small>Efectivo del negocio</small><b>${fmt(ef)}</b></span><em>Contar</em></button>
-  ${boton('cambio', '💱', 'Cambié plata', 'Me dieron efectivo por transferencia', 'linear-gradient(135deg,#1F9E95,#2B7F9E)')}
-  ${boton('compra', '🛒', 'Compré mercadería', 'Productos para vender', 'linear-gradient(135deg,#7C4DFF,#9E4BE6)')}
-  ${boton('viaje', '🚌', 'Pagué pasaje, pasero o comida', 'Gastos del viaje', 'linear-gradient(135deg,#C23A8C,#E040A0)')}
-  ${boton('personal', '🏠', 'Gasté en algo mío', 'Casa, comida, salud…', 'linear-gradient(135deg,#B8661F,#D9862B)')}
+  <button type="button" class="s-grande" data-menu="negocio" style="background:linear-gradient(135deg,#7C4DFF,#B347D9);min-height:120px"><span class="oi" aria-hidden="true">🧳</span><span class="tx"><b>Negocio - Compras</b><small>Cambio de plata, mercadería, pasajes y paseros</small></span>${svg('der', 24, 2.4)}</button>
+  <button type="button" class="s-grande" data-menu="personal" style="background:linear-gradient(135deg,#B8661F,#E040A0);min-height:120px"><span class="oi" aria-hidden="true">🏠</span><span class="tx"><b>Gastos personales</b><small>Lo tuyo, y usar o devolver plata del negocio</small></span>${svg('der', 24, 2.4)}</button>
   <button type="button" class="btn btn-sec s-ver" data-ir2="lista">${svg('recibo', 22, 2)} Ver lo que cargué</button>`;
+}
+function vMenuSimple() {
+  const neg = S.yo.negocio, deuda = deudaDe(neg);
+  const boton = (flujo, emoji, titulo, sub, fondo) => `<button type="button" class="s-grande" data-flujo="${flujo}" style="background:${fondo}"><span class="oi" aria-hidden="true">${emoji}</span><span class="tx"><b>${titulo}</b><small>${sub}</small></span></button>`;
+  const negocio = S.menu === 'negocio';
+  return `
+  <div class="titulo-todos"><button type="button" class="volver" data-acc="volverInicio" aria-label="Volver">${svg('izq', 20, 2.4)}</button><h1>${negocio ? '🧳 Negocio - Compras' : '🏠 Gastos personales'}</h1></div>
+  <p class="ayuda" style="margin:0;font-size:16px">¿Qué querés anotar?</p>
+  ${negocio ? `
+    ${boton('cambio', '💱', 'Cambié plata', 'Me dieron efectivo por transferencia', 'linear-gradient(135deg,#1F9E95,#2B7F9E)')}
+    ${boton('compra', '🛒', 'Compré mercadería', 'Productos para vender', 'linear-gradient(135deg,#7C4DFF,#9E4BE6)')}
+    ${boton('viaje', '🚌', 'Pagué pasaje, pasero o comida', 'Gastos del viaje', 'linear-gradient(135deg,#C23A8C,#E040A0)')}` : `
+    ${boton('personal', '👛', 'Gasté con mi plata', 'Casa, comida, salud…', 'linear-gradient(135deg,#B8661F,#D9862B)')}
+    ${boton('usar', '↩️', 'Usé plata del negocio', 'Para pagar algo mío', 'linear-gradient(135deg,#C23A8C,#E040A0)')}
+    ${boton('devolver', '💵', 'Devolví plata al negocio', deuda > 0 ? 'Le debés ' + fmt(deuda) : 'Ahora no le debés nada', 'linear-gradient(135deg,#1F9E95,#2B7F9E)')}`}`;
 }
 function vSimpleLista() {
   return `
@@ -2290,12 +2315,20 @@ const FLUJOS = {
     { k: 'otro', t: 'texto', preg: '¿Qué fue?', ej: 'Escribilo corto', si: fl => fl.d.que === 'Otra cosa' },
     { k: 'monto', t: 'num', preg: '¿Cuánto pagaste?' },
     P_PAG, { t: 'resumen' }] },
-  personal: { titulo: 'Gasté en algo mío', emoji: '🏠', pasos: [
+  personal: { titulo: 'Gasté con mi plata', emoji: '👛', pasos: [
     { k: 'categoria', t: 'grilla', preg: '¿En qué gastaste?', ops: () => (S.listas['Categorías personales'] || []).map(x => [x, x]) },
     { k: 'monto', t: 'num', preg: '¿Cuánto gastaste?' },
     P_PAG,
-    { k: 'quien', t: 'ops', preg: '¿De quién era la plata?', ops: () => [['Mía', '👛 Mía'], ['Negocio', '🏪 Del negocio (de las ventas)'], ['Devolver', '↩️ Del negocio, pero la voy a devolver']] },
     { k: 'descripcion', t: 'texto', preg: '¿Querés anotar qué fue?', ayuda: 'No es obligatorio', ej: 'Ej: factura de luz', opcional: true },
+    { t: 'resumen' }] },
+  usar: { titulo: 'Usé plata del negocio', emoji: '↩️', pasos: [
+    { k: 'categoria', t: 'grilla', preg: '¿Para qué la usaste?', ops: () => (S.listas['Categorías personales'] || []).map(x => [x, x]) },
+    { k: 'monto', t: 'num', preg: '¿Cuánta plata del negocio usaste?' },
+    P_PAG,
+    { k: 'devuelto', t: 'ops', preg: '¿Ya la devolviste?', si: fl => !fl.editId, ops: () => [['Toda', '✅ Sí, toda'], ['Parte', '½ Una parte'], ['Todavia', '⏳ Todavía no'], ['No', '🚫 No la voy a devolver']] },
+    { k: 'parte', t: 'num', preg: '¿Cuánto devolviste?', ayuda: 'El resto queda como deuda con el negocio', si: fl => !fl.editId && fl.d.devuelto === 'Parte', valid: d => num(d.parte) < num(d.monto) || 'Tiene que ser menos de lo que usaste (si devolviste todo, volvé y elegí "Sí, toda").' },
+    { k: 'devolver', t: 'ops', preg: '¿La vas a devolver al negocio?', si: fl => !!fl.editId, ops: () => [['sí', '↩️ Sí, la devuelvo'], ['', '🚫 No']] },
+    { k: 'descripcion', t: 'texto', preg: '¿Querés anotar qué pagaste?', ayuda: 'No es obligatorio', ej: 'Ej: internet, luz…', opcional: true },
     { t: 'resumen' }] },
   devolver: { titulo: 'Devolver al negocio', emoji: '↩️', pasos: [
     { k: 'monto', t: 'num', preg: '¿Cuánto devolviste al negocio?', ayuda: () => 'Le debés ' + fmt(deudaDe(S.flujo.negocio) + (S.flujo.editId ? num(S.flujo.orig) || 0 : 0)) + '. Si devolviste una parte, cambiá el número.' },
@@ -2308,6 +2341,7 @@ function iniciarFlujo(tipo, previo) {
   cerrarModal();
   const neg = S.yo.negocio;
   S.flujo = Object.assign({ tipo, i: 0, d: { fecha: hoy() }, negocio: neg, pedirInicial: NEGOCIO_FLUJO.includes(tipo) && necesitaInicial(neg) }, previo || {});
+  if (tipo === 'devolver' && !S.flujo.editId && !(deudaDe(neg) > 0)) { S.flujo = null; return avisar('Ahora no le debés nada al negocio 👍'); }
   if (tipo === 'devolver' && !S.flujo.d.monto) S.flujo.d.monto = String(deudaDe(neg) || '');
   if (S.vista === 'flujo') { $('contenido').scrollTop = 0; render(); } else irA('flujo');
 }
@@ -2350,8 +2384,16 @@ function resumenFlujo() {
   } else if (fl.tipo === 'viaje') {
     add('Pagaste', d.que === 'Otra cosa' ? d.otro : d.que); add('Monto', fmt(num(d.monto))); add('Pago', d.pago);
   } else if (fl.tipo === 'personal') {
-    add('En qué', d.categoria); add('Monto', fmt(num(d.monto))); add('Pago', d.pago);
-    add('La plata era', d.quien === 'Mía' ? 'Mía' : d.quien === 'Negocio' ? 'Del negocio' : 'Del negocio (la vas a devolver)');
+    add('En qué', d.categoria); add('Monto', fmt(num(d.monto))); add('Pago', d.pago); add('La plata era', 'Tuya');
+    if (d.descripcion) add('Detalle', d.descripcion);
+  } else if (fl.tipo === 'usar') {
+    const m = num(d.monto);
+    add('Para qué', d.categoria); add('Usaste del negocio', fmt(m)); add('Pago', d.pago);
+    if (fl.editId) add('¿La devolvés?', d.devolver === 'sí' ? 'Sí' : 'No');
+    else if (d.devuelto === 'Toda') add('Devolviste', fmt(m) + ' (todo)');
+    else if (d.devuelto === 'Parte') { add('Devolviste', fmt(num(d.parte))); add('Te queda por devolver', fmt(m - num(d.parte))); }
+    else if (d.devuelto === 'Todavia') add('Te queda por devolver', fmt(m));
+    else add('¿La devolvés?', 'No');
     if (d.descripcion) add('Detalle', d.descripcion);
   } else if (fl.tipo === 'devolver') {
     const deuda = deudaDe(fl.negocio) + (fl.editId ? num(fl.orig) || 0 : 0);
@@ -2396,7 +2438,7 @@ function atrasFlujo() {
   const fl = S.flujo; if (!fl) return;
   if (fl.i > 0) { fl.i--; render(); enfocarFlujo(); }
   else if (fl.volver) { S.flujo = fl.volver; render(); }
-  else { S.flujo = null; irA('inicio'); }
+  else { const m = fl.menu; S.flujo = null; if (m) { S.menu = m; irA('menu'); } else irA('inicio'); }
 }
 const catDeViaje = q => /comida|bebida/i.test(q) ? 'Sueldo' : q === 'Otra cosa' ? 'Otros' : 'Insumos';
 function guardarFlujo() {
@@ -2415,7 +2457,13 @@ function guardarFlujo() {
     op = { hoja: 'negocio', datos: { negocio: neg, tipo: 'No reversible', fecha, viaje, categoria: catDeViaje(d.que), descripcion: d.que === 'Otra cosa' ? d.otro : d.que, monto: num(d.monto), pago: d.pago } };
     if (d.pago === 'Efectivo') saleEfectivo = num(d.monto);
   } else if (fl.tipo === 'personal') {
-    op = { hoja: 'personal', datos: { negocio: neg, fecha, origen: d.quien === 'Mía' ? 'Personal' : 'Negocio (MercadoLibre)', devolver: d.quien === 'Devolver' ? 'sí' : '', categoria: d.categoria, descripcion: (d.descripcion || '').trim(), monto: num(d.monto), pago: d.pago } };
+    op = { hoja: 'personal', datos: { negocio: neg, fecha, origen: 'Personal', devolver: '', categoria: d.categoria, descripcion: (d.descripcion || '').trim(), monto: num(d.monto), pago: d.pago } };
+  } else if (fl.tipo === 'usar') {
+    const devolver = fl.editId ? (d.devolver === 'sí' ? 'sí' : '') : (d.devuelto === 'No' ? '' : 'sí');
+    op = { hoja: 'personal', datos: { negocio: neg, fecha, origen: 'Negocio (MercadoLibre)', devolver, categoria: d.categoria, descripcion: (d.descripcion || '').trim(), monto: num(d.monto), pago: d.pago } };
+    // Si ya devolvió todo o una parte, se anota la devolución en el mismo momento
+    const yaDevolvio = fl.editId ? 0 : d.devuelto === 'Toda' ? num(d.monto) : d.devuelto === 'Parte' ? num(d.parte) : 0;
+    if (yaDevolvio > 0) fl.extra = { tipo: 'guardar', hoja: 'negocio', id: nuevoId(), datos: { negocio: neg, tipo: 'Devolución', fecha, viaje: '', monto: yaDevolvio, nota: '' } };
   } else if (fl.tipo === 'devolver') {
     op = { hoja: 'negocio', datos: { negocio: neg, tipo: 'Devolución', fecha, viaje: '', monto: num(d.monto), nota: fl.nota || '' } };
   } else if (fl.tipo === 'contar') {
@@ -2428,6 +2476,7 @@ function guardarFlujo() {
   }
   guardarInicialFlujo(fl);
   encolar(Object.assign({ tipo: 'guardar', id }, op));
+  if (fl.extra) { encolar(fl.extra); fl.extra = null; }
   avisar(fl.editId ? '✓ Corregido' : '✓ Guardado');
   if (fl.volver) { const v = fl.volver; v.i = pasosFl(v).length - 1; S.flujo = v; $('contenido').scrollTop = 0; return render(); }
   S.flujo = null; irA('inicio');
@@ -2466,7 +2515,7 @@ function corregirSimple() {
   const f = (det.h === 'negocio' ? S.negocio : S.personal).find(x => x.id === det.id); if (!f) return;
   const base = { editId: f.id, fechaOrig: f.fecha, viajeOrig: f.viaje, pedirInicial: false, sinControl: false };
   const s = v => String(v == null ? '' : v);
-  if (det.h === 'personal') return iniciarFlujo('personal', Object.assign(base, { d: { fecha: f.fecha, categoria: f.categoria, monto: s(f.monto), pago: f.pago, quien: f.origen === 'Personal' ? 'Mía' : f.devolver === 'sí' ? 'Devolver' : 'Negocio', descripcion: f.descripcion || '' } }));
+  if (det.h === 'personal') return iniciarFlujo(f.origen === 'Personal' ? 'personal' : 'usar', Object.assign(base, { d: { fecha: f.fecha, categoria: f.categoria, monto: s(f.monto), pago: f.pago, devolver: f.devolver === 'sí' ? 'sí' : '', descripcion: f.descripcion || '' } }));
   if (f.tipo === 'Inversión') return iniciarFlujo('compra', Object.assign(base, { d: { fecha: f.fecha, descripcion: f.descripcion, unidades: s(f.unidades), monto: s(f.monto), pago: f.pago, extra: f.pctRecargo !== '' && f.pctRecargo != null && Number(f.recargo) ? 'Sí' : 'No', pct: s(f.pctRecargo) } }));
   if (f.tipo === 'No reversible') { const enLista = (S.listas['Descripciones rápidas'] || []).includes(f.descripcion); return iniciarFlujo('viaje', Object.assign(base, { d: { fecha: f.fecha, que: enLista ? f.descripcion : 'Otra cosa', otro: enLista ? '' : (f.descripcion || f.categoria), monto: s(f.monto), pago: f.pago } })); }
   if (f.tipo === 'Cambio') return iniciarFlujo('cambio', Object.assign(base, { nota: notaCambio(f), d: { fecha: f.fecha, monto: s(f.monto), recibido: s(f.recibido) } }));
