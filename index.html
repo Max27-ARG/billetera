@@ -438,6 +438,19 @@ body.simple nav.barra,body.simple #robot{display:none!important}
 .modo-op small{font-size:15px;font-weight:600;color:var(--soft);line-height:1.35}
 .modo-op.sim{border-color:var(--violet2);background:rgba(124,77,255,.22)}
 
+/* ================= Actualización 8: campo de plata (estilo Ualá) ================= */
+.plata{position:relative}
+.plata-in{position:absolute;inset:0;width:100%;height:100%;opacity:0;border:0;font-size:16px;caret-color:transparent;cursor:text}
+.plata-ver{display:flex;align-items:center;min-height:50px;border:1px solid rgba(255,255,255,.12);background:rgba(11,9,22,.5);border-radius:14px;padding:10px 12px;font-size:21px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden}
+.plata-ver sup{font-size:.55em;position:relative;top:-.15em;vertical-align:super;margin-left:1px;font-weight:800}
+.pv{display:inline-flex;align-items:flex-start}
+.pv.vacio{color:var(--dim)}
+.plata:focus-within .plata-ver{border-color:var(--violet2);box-shadow:0 0 0 3px rgba(124,77,255,.3)}
+.plata:focus-within .pv::after{content:'';align-self:center;width:2px;height:1em;background:var(--lilac);margin-left:4px;animation:parpadeo 1s steps(1) infinite}
+@keyframes parpadeo{50%{opacity:0}}
+.plata.grande .plata-ver{font-size:40px;font-weight:900;border:2px solid var(--violet2);border-radius:20px;padding:12px 18px;min-height:84px}
+.plata.efe .plata-ver{border-color:var(--teal2);font-size:28px}
+
 /* Gastos que Google rechazó */
 .esperando.mal{color:#FFB3BF;background:rgba(255,107,129,.16)}
 .sync.mal{background:rgba(255,107,129,.16);color:#FFB3BF}
@@ -521,7 +534,7 @@ body.simple nav.barra,body.simple #robot{display:none!important}
    ========================================================= */
 const API = window.BILLETERA_API || '';
 // Fecha y hora de esta versión (se muestra una vez cuando alguien abre la app actualizada)
-const APP_VERSION = '2026-10-27T21:50';
+const APP_VERSION = '2026-10-27T22:45';
 const COLORES = ['#9B6BFF', '#F05BB5', '#3FD6C6', '#FFB547', '#6FA8FF', '#FF8A5B', '#B5E36B', '#D7C8FF'];
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 const LISTAS_BASE = {
@@ -537,7 +550,7 @@ const S = {
 };
 const $ = id => document.getElementById(id);
 const pesos = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 2 });
-const fmt = n => pesos.format(Math.round((Number(n) || 0) * 100) / 100).replace(/,00$/, '');
+const fmt = n => pesos.format(Math.round((Number(n) || 0) * 100) / 100);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 /* ---------- Guardado en el celular ---------- */
@@ -614,6 +627,27 @@ function num(txt) {
   return Number(s);
 }
 const r2 = n => Math.round(n * 100) / 100;
+// ---------- Campo de plata estilo Ualá: los números entran por la derecha (centavos chiquitos arriba) ----------
+const aCentavos = v => { const t = String(v == null ? '' : v).trim(); if (!t) return ''; const n = num(t); return isNaN(n) ? '' : String(Math.round(n * 100)); };
+const deCentavos = c => c === '' ? '' : (Number(c) / 100).toFixed(2);
+function verPlata(c) {
+  if (c === '') return `<span class="pv vacio"><span>$ 0</span><sup>,00</sup></span>`;
+  const n = Number(c), ent = Math.floor(n / 100), dec = String(n % 100).padStart(2, '0');
+  return `<span class="pv"><span>$ ${ent.toLocaleString('es-AR')}</span><sup>,${dec}</sup></span>`;
+}
+function plataHTML(id, valor, attrs, clase) {
+  const c = aCentavos(valor);
+  return `<div class="plata${clase ? ' ' + clase : ''}"><span class="plata-ver" aria-hidden="true">${verPlata(c)}</span><input id="${id}" class="plata-in" inputmode="numeric" autocomplete="off" value="${c}" ${attrs || ''}></div>`;
+}
+function normalizarPlata(el) {
+  let d = el.value.replace(/\D/g, '').replace(/^0+(?=\d)/, '').slice(0, 13);
+  el.value = d;
+  try { el.setSelectionRange(d.length, d.length); } catch (e) {}
+  const ver = el.parentNode.querySelector('.plata-ver'); if (ver) ver.innerHTML = verPlata(d);
+  return deCentavos(d);
+}
+const valorDe = el => el.classList && el.classList.contains('plata-in') ? deCentavos(el.value) : el.value;
+document.addEventListener('focusin', e => { if (e.target.classList && e.target.classList.contains('plata-in')) { const L = e.target.value.length; setTimeout(() => { try { e.target.setSelectionRange(L, L); } catch (x) {} }, 0); } });
 const pct = n => (Number(n) || 0).toLocaleString('es-AR', { maximumFractionDigits: 2 }) + '%';
 
 /* =========================================================
@@ -650,9 +684,14 @@ function calcNegocio(d, previo) {
     f.gastoReal = d.monto; f.movEfectivo = d.pago === 'Efectivo' ? -d.monto : 0;
   } else if (d.tipo === 'Cambio') {
     f.categoria = 'Interés/Gastos'; f.descripcion = (d.nota || '').trim() || 'Cambio a efectivo'; f.monto = d.monto; f.pago = 'Transferencia';
-    if (d.recibido !== undefined && d.recibido !== '') { f.recibido = d.recibido; f.comision = r2(d.monto - d.recibido); f.pctCambio = r2(f.comision / d.monto * 100); }
-    else { f.pctCambio = d.pctCambio; f.comision = r2(d.monto * d.pctCambio / 100); f.recibido = r2(d.monto - f.comision); }
-    f.gastoReal = f.comision; f.movEfectivo = f.recibido;
+    if (d.recibido !== undefined && d.recibido !== '') { f.recibido = d.recibido; f.comision = r2(d.monto - d.recibido); f.pctCambio = r2(f.comision / d.monto * 100); f.movEfectivo = f.recibido; }
+    else {
+      f.pctCambio = d.pctCambio; f.comision = r2(d.monto * d.pctCambio / 100);
+      // Comisión en efectivo: te dan todo y pagás la comisión con billetes que ya tenías. El efectivo neto queda igual.
+      if (d.pagoComision === 'Efectivo') { f.pago = 'Efectivo'; f.recibido = d.monto; f.movEfectivo = r2(d.monto - f.comision); }
+      else { f.recibido = r2(d.monto - f.comision); f.movEfectivo = f.recibido; }
+    }
+    f.gastoReal = f.comision;
   } else if (d.tipo === 'Devolución') {
     f.categoria = 'Devolución'; f.descripcion = (d.nota || '').trim() || 'Devolución al negocio';
     f.monto = d.monto; f.pago = 'Efectivo'; f.movEfectivo = d.monto;
@@ -1062,7 +1101,7 @@ function anillo(id, items, total, o) {
     arcos += `<circle class="arco" data-seg="${i}" data-graf="${id}" data-ini="${ac}" data-len="${vis}" cx="${cx}" cy="${cx}" r="${R}" fill="none" stroke="${COLORES[i % COLORES.length]}" stroke-width="${g}" stroke-dasharray="${vis} ${C}" stroke-dashoffset="${-ac}" transform="rotate(-90 ${cx} ${cx})"/>`;
     ac += largo;
   });
-  const grande = String(o.valor).length > 11 ? 22 : 27;
+  const L = String(o.valor).length, grande = L > 15 ? 17 : L > 13 ? 20 : L > 11 ? 23 : 27;
   const chico = o.chico ? `<g class="cc-chico"><text x="${cx}" y="${cx - 4}" text-anchor="middle" font-size="18" font-weight="700" fill="#A49CC4">${esc(o.chico[0])}</text><text x="${cx}" y="${cx + 22}" text-anchor="middle" font-size="22" font-weight="800" fill="#F4F1FF">${esc(o.chico[1])}</text></g>` : '';
   return `<svg data-graf="${id}" data-c="${C}" width="${tam}" height="${tam}" viewBox="0 0 ${tam} ${tam}" role="img" aria-label="Gráfico por categoría">
     <circle class="base" cx="${cx}" cy="${cx}" r="${R}" fill="none" stroke="#241D3F" stroke-width="${g}"/>${total ? arcos : ''}
@@ -1161,7 +1200,7 @@ function filaMov(f, hojaN) {
   const pend = rechDe(f.id) ? '<span class="esperando mal">no se pudo subir</span>' : enCola(f.id) ? '<span class="esperando">sin subir</span>' : '';
   let titulo, detalle, monto, pos = false;
   if (hojaN) {
-    if (f.tipo === 'Cambio') { const nota = notaCambio(f); titulo = 'Cambio a efectivo'; detalle = `${nota ? nota + ' · ' : ''}${fmt(f.monto)} al ${pct(f.pctCambio)}`; monto = '+' + fmt(f.recibido); pos = true; }
+    if (f.tipo === 'Cambio') { const nota = notaCambio(f); titulo = 'Cambio a efectivo'; detalle = `${nota ? nota + ' · ' : ''}${fmt(f.monto)} al ${pct(f.pctCambio)}${f.pago === 'Efectivo' && Number(f.comision) ? ' · comisión en efectivo' : ''}`; monto = '+' + fmt(f.recibido); pos = true; }
     else if (f.tipo === 'Devolución') { titulo = 'Devolución al negocio'; detalle = f.descripcion !== 'Devolución al negocio' ? f.descripcion : 'Entró al efectivo'; monto = '+' + fmt(f.monto); pos = true; }
     else if (f.tipo === 'Ajuste') { titulo = f.descripcion; detalle = 'Efectivo contado: ' + fmt(f.monto); monto = (f.movEfectivo >= 0 ? '+' : '-') + fmt(Math.abs(f.movEfectivo)); pos = f.movEfectivo >= 0; }
     else if (f.tipo === 'Inversión') { titulo = `${f.descripcion} × ${f.unidades}`; detalle = `Productos · ${f.pago}${f.recargo ? ' + ' + pct(f.pctRecargo) : ''}`; monto = '-' + fmt(totalNegocio(f)); }
@@ -1229,7 +1268,7 @@ function formDevolucion(neg, fila) {
   S.form = { hoja: 'devolucion', id: fila ? fila.id : nuevoId(), editando: !!fila, negocio: neg, monto: fila ? String(fila.monto) : String(deudaDe(neg) || ''), nota: fila && fila.descripcion !== 'Devolución al negocio' ? fila.descripcion : '', fecha: fila ? fila.fecha : hoy(), confirmarBorrar: false };
   abrirModal(`${cab(fila ? 'Editar devolución' : 'Devolver al negocio', 'var(--teal)', 'billetera')}
     <p class="ayuda" style="margin:0;font-size:14px">${neg !== S.yo.negocio ? esc(neg) + ' le debe' : 'Le debés'} al negocio <b>${fmt(deuda)}</b>. Si devolviste una parte, cambiá el monto.</p>
-    <label class="campo" for="fMonto">¿Cuánto devolviste?<input id="fMonto" inputmode="decimal" data-campo="monto" value="${esc(S.form.monto)}" placeholder="$ 0" style="font-size:24px;font-weight:800"></label>
+    <div class="campo"><label for="fMonto">¿Cuánto devolviste?</label>${plataHTML('fMonto', S.form.monto, 'data-campo="monto"')}</div>
     <label class="campo" for="fNota">Nota (opcional)<input id="fNota" data-campo="nota" value="${esc(S.form.nota)}" maxlength="80" placeholder="Agregá un detalle si querés"></label>
     <div class="ayuda">La plata entra al <b>efectivo del negocio</b>.</div>
     <div class="error" id="fError" hidden></div>
@@ -1396,7 +1435,7 @@ function pintarFormPersonal() {
     ${f.origen === 'Negocio (MercadoLibre)' ? `<button class="interruptor" type="button" role="switch" data-set="devolver" data-val="${f.devolver === 'sí' ? '' : 'sí'}" aria-checked="${f.devolver === 'sí'}" style="background:rgba(11,9,22,.45);padding:12px 14px"><span><b style="font-size:15px">Lo voy a devolver</b><small>Queda anotado lo que le debés al negocio</small></span><span class="switch" aria-hidden="true"></span></button>` : ''}
     <div class="campo">Categoría<div class="grid3">${cats.map(c => `<button type="button" class="chip" data-set="categoria" data-val="${esc(c)}" aria-pressed="${f.categoria === c}">${esc(c)}</button>`).join('')}</div></div>
     ${campoFecha(f.fecha)}
-    <label class="campo" for="fMonto">Monto<input id="fMonto" inputmode="decimal" placeholder="$ 0" value="${esc(f.monto)}" data-campo="monto"></label>
+    <div class="campo"><label for="fMonto">Monto</label>${plataHTML('fMonto', f.monto, 'data-campo="monto"')}</div>
     <label class="campo" for="fDesc">Descripción (opcional)<input id="fDesc" value="${esc(f.descripcion)}" data-campo="descripcion" placeholder="Ej: Factura de luz"></label>
     <div class="campo">Pago<div class="segm">${['Efectivo', 'Transferencia'].map(o => `<button type="button" data-set="pago" data-val="${o}" aria-pressed="${f.pago === o}">${o}</button>`).join('')}</div></div>
     <div class="error" id="fError" hidden></div>
@@ -1442,7 +1481,7 @@ function formNegocio(fila, tipo, neg) {
     fecha: fila ? fila.fecha : hoy(), viaje: fila ? fila.viaje : (viajesDe(negocio).includes(ultimoViaje) ? ultimoViaje : ''), viajeNuevo: false,
     descripcion: fila ? fila.descripcion : '', categoria: fila ? fila.categoria : '', unidades: fila ? String(fila.unidades || '') : '',
     monto: fila ? String(fila.monto || '') : '', pago: fila ? fila.pago : 'Transferencia', pctRecargo: fila ? String(fila.pctRecargo || '') : '',
-    pctCambio: fila ? String(fila.pctCambio || '') : '', nota: fila && fila.tipo === 'Cambio' ? notaCambio(fila) : '', abierto: '', confirmarBorrar: false, permitirSinEfectivo: false };
+    pctCambio: fila ? String(fila.pctCambio || '') : '', pagoComision: fila && fila.tipo === 'Cambio' && fila.pago === 'Efectivo' ? 'Efectivo' : 'Transferencia', nota: fila && fila.tipo === 'Cambio' ? notaCambio(fila) : '', abierto: '', confirmarBorrar: false, permitirSinEfectivo: false };
   if (!fila && !tipo && necesitaInicial(negocio)) return formAjuste(negocio, true);
   pintarFormNegocio();
 }
@@ -1472,7 +1511,7 @@ function pintarFormNegocio() {
       <div class="campo">Categoría<div class="fijo">Productos ${svg('candado', 16, 2)}</div></div>
       <label class="campo" for="fDesc">Producto<input id="fDesc" data-campo="descripcion" value="${esc(f.descripcion)}" placeholder="Ej: Tazas con calentador"></label>
       <div class="dos"><label class="campo" for="fUn">Unidades<input id="fUn" inputmode="decimal" data-campo="unidades" value="${esc(f.unidades)}" placeholder="0"></label>
-        <label class="campo" for="fMonto">Costo total<input id="fMonto" inputmode="decimal" data-campo="monto" value="${esc(f.monto)}" placeholder="$ 0"></label></div>
+        <div class="campo"><label for="fMonto">Costo total</label>${plataHTML('fMonto', f.monto, 'data-campo="monto"')}</div></div>
       <span class="ayuda" id="calcA">${c.a}</span>
       ${pagoSeg}
       ${f.pago === 'Transferencia' ? `<label class="campo" for="fPct">% recargo de la tienda (si te cobran)<input id="fPct" inputmode="decimal" data-campo="pctRecargo" value="${esc(f.pctRecargo)}" placeholder="Ej: 3"></label>` : ''}
@@ -1488,14 +1527,15 @@ function pintarFormNegocio() {
         <div class="combo"><input id="fDesc" data-campo="descripcion" value="${esc(f.descripcion)}" placeholder="Escribí o elegí de la lista"><button type="button" data-abrir="desc" aria-label="Ver descripciones comunes" aria-expanded="${f.abierto === 'desc'}">${svg(f.abierto === 'desc' ? 'arriba' : 'abajo', 18, 2.4)}</button></div>
         ${f.abierto === 'desc' ? `<div class="dd-lista" role="listbox">${descs.map(c => `<button type="button" role="option" aria-selected="${c === f.descripcion}" data-set="descripcion" data-val="${esc(c)}">${esc(c)}${c === f.descripcion ? svg('tilde', 16, 2.6) : ''}</button>`).join('')}</div>` : ''}
       </div></div>
-      <label class="campo" for="fMonto">Monto<input id="fMonto" inputmode="decimal" data-campo="monto" value="${esc(f.monto)}" placeholder="$ 0"></label>
+      <div class="campo"><label for="fMonto">Monto</label>${plataHTML('fMonto', f.monto, 'data-campo="monto"')}</div>
       ${pagoSeg}
       <div id="calcB">${c.b}</div>`;
   } else {
     cuerpo = `<p class="ayuda" style="margin:0">Cargalo cuando pasás plata por transferencia y te la dan en efectivo.</p>
       ${fechaViaje}
-      <div class="dos"><label class="campo" for="fMonto">Transferiste<input id="fMonto" inputmode="decimal" data-campo="monto" value="${esc(f.monto)}" placeholder="$ 0"></label>
-        <label class="campo" for="fPctC">% del cambio<input id="fPctC" inputmode="decimal" data-campo="pctCambio" value="${esc(f.pctCambio)}" placeholder="Ej: 1"></label></div>
+      <div class="campo"><label for="fMonto">Transferiste</label>${plataHTML('fMonto', f.monto, 'data-campo="monto"')}</div>
+      <label class="campo" for="fPctC">% del cambio<input id="fPctC" inputmode="decimal" data-campo="pctCambio" value="${esc(f.pctCambio)}" placeholder="Ej: 1"></label>
+      <div class="campo">¿Cómo pagaste la comisión?<div class="segm">${[['Efectivo', 'En efectivo', 'recibís todo'], ['Transferencia', 'Descontada', 'recibís menos']].map(([v, t, sub]) => `<button type="button" data-set="pagoComision" data-val="${v}" aria-pressed="${f.pagoComision === v}">${t}<small>${sub}</small></button>`).join('')}</div></div>
       <label class="campo" for="fNota">Nota (opcional)<input id="fNota" data-campo="nota" value="${esc(f.nota)}" maxlength="80" placeholder="Agregá un detalle si querés"></label>
       <div id="calcB">${c.b}</div>`;
   }
@@ -1518,10 +1558,10 @@ function calcForm(f) {
       b: `${f.pago === 'Efectivo' ? notaEfectivo(ef, total) : ''}<div class="caja" style="margin-top:${f.pago === 'Efectivo' ? 13 : 0}px"><div><span>Productos</span><span>${fmt(total)}</span></div>${rec ? `<div><span>Recargo (${pct}%)</span><span>${fmt(rec)}</span></div>` : ''}<div class="t"><span>Total pagado</span><b>${fmt(total + rec)}</b></div></div>` };
   }
   if (f.tipo === 'No reversible') return { b: f.pago === 'Efectivo' ? notaEfectivo(ef, num(f.monto)) : '' };
-  const m = num(f.monto), pct = num(f.pctCambio);
-  const com = m > 0 && pct >= 0 ? r2(m * pct / 100) : 0, rec = m > 0 ? r2(m - com) : 0;
-  return { b: `<div class="caja"><div><span>Comisión (cuenta como gasto)</span><span style="color:#FFB3D9;font-weight:800">-${fmt(com)}</span></div><div class="t"><span>Efectivo que recibís</span><b>${fmt(rec)}</b></div></div>
-      <div class="efe-nota" style="margin-top:13px">Efectivo de ${esc(f.negocio)}: ${fmt(ef)} → <b>${fmt(ef + rec)}</b></div>` };
+  const m = num(f.monto) > 0 ? num(f.monto) : 0, pc = num(f.pctCambio);
+  const com = m > 0 && pc >= 0 ? r2(m * pc / 100) : 0, efe = f.pagoComision === 'Efectivo', rec = efe ? m : r2(m - com);
+  return { b: `<div class="caja"><div><span>Comisión (cuenta como gasto)</span><span style="color:#FFB3D9;font-weight:800">-${fmt(com)}</span></div>${efe && com ? `<div><span>La pagás en efectivo</span><span>${fmt(com)}</span></div>` : ''}<div class="t"><span>Efectivo que recibís</span><b>${fmt(rec)}</b></div></div>
+      <div class="efe-nota" style="margin-top:13px">Efectivo de ${esc(f.negocio)}: ${fmt(ef)} → <b>${fmt(r2(ef + m - com))}</b></div>` };
 }
 function notaEfectivo(ef, monto) {
   const queda = r2(ef - (monto > 0 ? monto : 0));
@@ -1546,7 +1586,7 @@ function guardarNegocio() {
     if (!(d.monto > 0)) return errorForm('Poné el monto.');
     if (d.pago === 'Efectivo') saleEfectivo = d.monto;
   } else {
-    d.monto = num(f.monto); d.pctCambio = num(f.pctCambio || '0'); d.nota = (f.nota || '').trim();
+    d.monto = num(f.monto); d.pctCambio = num(f.pctCambio || '0'); d.nota = (f.nota || '').trim(); d.pagoComision = f.pagoComision === 'Efectivo' ? 'Efectivo' : 'Transferencia';
     if (!(d.monto > 0)) return errorForm('Poné cuánto transferiste.');
     if (!(d.pctCambio >= 0 && d.pctCambio <= 100)) return errorForm('Revisá el % del cambio.');
   }
@@ -1580,7 +1620,7 @@ function formAjuste(negocio, inicial) {
   S.form = { hoja: 'ajuste', negocio, inicial, monto: '' };
   abrirModal(`<div class="v-cab"><span class="ic" style="background:var(--teal)">${svg('billetera', 22)}</span><b>${inicial ? 'Antes de empezar' : 'Ajustar efectivo'}</b><button class="cerrar" type="button" data-acc="${inicial ? 'saltarInicial' : 'cerrar'}" aria-label="Cerrar">${svg('x', 18, 2.2)}</button></div>
     <div><b style="font-size:21px">¿Cuánto efectivo tenés ahora?</b><p class="ayuda" style="margin:6px 0 0">Contá la plata de ${esc(negocio)} que tenés en la mano${inicial ? ', aunque sea $ 0. Desde acá la app suma y resta sola.' : '. La diferencia queda anotada como "Ajuste de efectivo".'}</p></div>
-    <label class="campo" for="fAj">Efectivo de ${esc(negocio)}<input id="fAj" inputmode="decimal" data-campo="monto" placeholder="$ 0" style="font-size:26px;font-weight:800;border-color:var(--teal2)"></label>
+    <div class="campo"><label for="fAj">Efectivo de ${esc(negocio)}</label>${plataHTML('fAj', '', 'data-campo="monto"', 'efe')}</div>
     ${inicial ? '' : `<div class="caja"><div class="t"><span>La app dice</span><b>${fmt(ef)}</b></div></div>`}
     <div class="error" id="fError" hidden></div>
     <button class="btn" type="button" data-acc="guardarAjuste" style="background:linear-gradient(135deg,#1F9E95,#7C4DFF);color:#fff">Guardar efectivo</button>
@@ -1634,8 +1674,8 @@ async function exportar(btn) {
     .concat(N.filter(f => f.tipo === 'Inversión').map(f => [f.fecha, f.negocio, f.viaje, f.descripcion, Number(f.unidades), Number(f.costoUnit), Number(f.monto), f.pago, f.pctRecargo === '' ? '' : Number(f.pctRecargo), Number(f.recargo) || '']));
   const nor = [['Fecha', 'Negocio', 'Viaje', 'Categoría', 'Descripción', 'Pago', 'Gasto real']]
     .concat(N.filter(f => f.tipo === 'No reversible').map(f => [f.fecha, f.negocio, f.viaje, f.categoria, f.descripcion, f.pago, Number(f.gastoReal)]));
-  const cam = [['Fecha', 'Negocio', 'Viaje', 'Nota', 'Transferido', '% del cambio', 'Comisión (gasto real)', 'Efectivo recibido']]
-    .concat(N.filter(f => f.tipo === 'Cambio').map(f => [f.fecha, f.negocio, f.viaje, notaCambio(f), Number(f.monto), Number(f.pctCambio), Number(f.comision), Number(f.recibido)]));
+  const cam = [['Fecha', 'Negocio', 'Viaje', 'Nota', 'Transferido', '% del cambio', 'Comisión (gasto real)', 'Comisión pagada con', 'Efectivo recibido']]
+    .concat(N.filter(f => f.tipo === 'Cambio').map(f => [f.fecha, f.negocio, f.viaje, notaCambio(f), Number(f.monto), Number(f.pctCambio), Number(f.comision), Number(f.comision) ? (f.pago === 'Efectivo' ? 'Efectivo' : 'Descontada') : '', Number(f.recibido)]));
   const per = [['Fecha', 'Negocio', 'Origen de la plata', 'Categoría', 'Descripción', 'Pago', 'Monto', 'A devolver']]
     .concat(Pp.map(f => [f.fecha, f.negocio, f.origen, f.categoria, f.descripcion, f.pago, Number(f.monto), f.devolver === 'sí' ? 'Sí' : '']));
   const dev = [['Fecha', 'Negocio', 'Nota', 'Devuelto']]
@@ -1645,7 +1685,7 @@ async function exportar(btn) {
   hoja(resumen, 'Resumen', [20, 14, 12, 12, 14, 12, 16, 14, 16, 18]);
   hoja(inv, 'Inversiones', [12, 18, 16, 30, 10, 14, 14, 14, 10, 12]);
   hoja(nor, 'No reversibles', [12, 18, 16, 16, 26, 14, 12]);
-  hoja(cam, 'Cambios', [12, 18, 16, 24, 14, 12, 18, 16]);
+  hoja(cam, 'Cambios', [12, 18, 16, 24, 14, 12, 18, 18, 16]);
   if (!porViaje) hoja(per, 'Personal', [12, 18, 22, 22, 26, 14, 12, 12]);
   if (dev.length > 1) hoja(dev, 'Devoluciones', [12, 18, 26, 14]);
   const nombre = 'Billetera_' + (neg || 'Todos').replace(/[^A-Za-z0-9]+/g, '-') + '_' + val.replace(/[^A-Za-z0-9]+/g, '-') + '.xlsx';
@@ -1792,15 +1832,16 @@ function verAjuste(fila) {
 }
 document.addEventListener('keydown', ev => { if (ev.key === 'Enter' && ev.target.id === 'fIn') { ev.preventDefault(); siguienteFlujo(); } });
 document.addEventListener('input', ev => {
-  if (ev.target.id === 'fIn' && S.flujo) { const p = pasoFlujo(); if (p && p.k) S.flujo.d[p.k] = ev.target.value; const e = $('fErr'); if (e) e.hidden = true; return; }
+  const valor = ev.target.classList && ev.target.classList.contains('plata-in') ? normalizarPlata(ev.target) : ev.target.value;
+  if (ev.target.id === 'fIn' && S.flujo) { const p = pasoFlujo(); if (p && p.k) S.flujo.d[p.k] = valor; const e = $('fErr'); if (e) e.hidden = true; return; }
   if (ev.target.id === 'buscarTodos') { S.busca = ev.target.value; S.todosMax = 60; $('listaTodos').innerHTML = htmlListaTodos(); return; }
   const c = ev.target.dataset && ev.target.dataset.campo;
   if (!c || !S.form) return;
-  S.form[c] = ev.target.value;
+  S.form[c] = valor;
   if (S.form.hoja === 'negocio' && ['monto', 'unidades', 'pctRecargo', 'pctCambio'].includes(c)) recalcular();
 });
 
-function leerCampos() { document.querySelectorAll('#modalIn [data-campo]').forEach(i => { if (S.form) S.form[i.dataset.campo] = i.value; }); }
+function leerCampos() { document.querySelectorAll('#modalIn [data-campo]').forEach(i => { if (S.form) S.form[i.dataset.campo] = valorDe(i); }); }
 // Recalcula los totales sin redibujar (para no perder el foco del teclado)
 function recalcular() {
   const c = calcForm(S.form);
@@ -2016,7 +2057,9 @@ function verDetalle(h, f) {
   } else if (esN && f.tipo === 'Cambio') {
     titulo = 'Cambio a efectivo'; monto = f.recibido; signo = '+';
     add('Nota', notaCambio(f)); add('Transferiste', fmt(f.monto)); add('% del cambio', pct(f.pctCambio));
-    add('Comisión (cuenta como gasto)', fmt(f.comision)); add('Efectivo recibido', fmt(f.recibido));
+    add('Comisión (cuenta como gasto)', fmt(f.comision));
+    if (Number(f.comision)) add('La comisión se pagó', f.pago === 'Efectivo' ? 'En efectivo' : 'Descontada de la transferencia');
+    add('Efectivo recibido', fmt(f.recibido));
   } else if (esN && f.tipo === 'Devolución') {
     titulo = 'Devolución al negocio'; monto = f.monto; signo = '+';
     add('Tipo', 'Devolución al negocio'); if (f.descripcion !== 'Devolución al negocio') add('Nota', f.descripcion); add('Entró al efectivo', fmt(f.monto));
@@ -2300,7 +2343,8 @@ const P_PAG = { k: 'pago', t: 'ops', preg: '¿Cómo pagaste?', ops: () => [['Efe
 const FLUJOS = {
   cambio: { titulo: 'Cambié plata', emoji: '💱', pasos: [P_INI,
     { k: 'monto', t: 'num', preg: '¿Cuánto transferiste?' },
-    { k: 'recibido', t: 'num', preg: '¿Cuánto efectivo te dieron?', ayuda: 'Lo que te dieron en la mano', valid: d => num(d.recibido) <= num(d.monto) || 'No puede ser más de lo que transferiste.' },
+    { k: 'pct', t: 'num', preg: '¿Qué porcentaje te cobraron?', ayuda: 'Por ejemplo: 1. Si no te cobraron nada, poné 0.', sinPesos: true, cero: true, valid: d => num(d.pct) <= 100 || 'Revisá el porcentaje.' },
+    { k: 'comision', t: 'ops', preg: d => '¿Cómo pagaste la comisión de ' + fmt(r2(num(d.monto) * num(d.pct) / 100)) + '?', si: fl => num(fl.d.pct) > 0, ops: () => [['Efectivo', '💵 En efectivo (me dieron todo)'], ['Descuento', '📱 Me la descontaron (me dieron menos)']] },
     { t: 'resumen' }] },
   compra: { titulo: 'Compré mercadería', emoji: '🛒', pasos: [P_INI,
     { k: 'descripcion', t: 'texto', preg: '¿Qué compraste?', ej: 'Ej: tazas, termos…' },
@@ -2355,13 +2399,13 @@ function vFlujo() {
   const txt = v => typeof v === 'function' ? v(d) : v;
   let cuerpo = '';
   if (p.t === 'num' || p.t === 'texto') {
-    cuerpo = `<h1 class="f-preg">${esc(p.preg)}</h1>${p.ayuda ? `<p class="f-ayuda">${esc(txt(p.ayuda))}</p>` : ''}
-      <input id="fIn" class="${p.t === 'num' ? 'f-num' : 'f-txt'}" ${p.t === 'num' ? 'inputmode="decimal"' : 'enterkeyhint="next"'} autocomplete="off" value="${esc(d[p.k] || '')}" placeholder="${p.t === 'num' ? (p.sinPesos ? '0' : '$ 0') : esc(p.ej || '')}" aria-label="${esc(p.preg)}">
+    cuerpo = `<h1 class="f-preg">${esc(txt(p.preg))}</h1>${p.ayuda ? `<p class="f-ayuda">${esc(txt(p.ayuda))}</p>` : ''}
+      ${p.t === 'num' && !p.sinPesos ? plataHTML('fIn', d[p.k], `aria-label="${esc(txt(p.preg))}"`, 'grande') : `<input id="fIn" class="${p.t === 'num' ? 'f-num' : 'f-txt'}" ${p.t === 'num' ? 'inputmode="decimal"' : 'enterkeyhint="next"'} autocomplete="off" value="${esc(d[p.k] || '')}" placeholder="${p.t === 'num' ? (p.sinPesos ? '0' : '$ 0') : esc(p.ej || '')}" aria-label="${esc(txt(p.preg))}">`}
       <div class="f-error" id="fErr" hidden></div>
       <button class="btn btn-grad f-sig" type="button" data-acc="fSig">Siguiente ›</button>
       ${p.opcional ? `<button class="btn btn-ghost" type="button" data-acc="fSig" style="font-size:16px">Saltar</button>` : ''}`;
   } else if (p.t === 'ops' || p.t === 'grilla') {
-    cuerpo = `<h1 class="f-preg">${esc(p.preg)}</h1>
+    cuerpo = `<h1 class="f-preg">${esc(txt(p.preg))}</h1>
       <div class="${p.t === 'ops' ? 'f-ops' : 'f-grilla'}">${p.ops().map(([v, t]) => `<button type="button" class="f-op" data-fop="${esc(v)}" aria-pressed="${d[p.k] === v}">${esc(t)}</button>`).join('')}</div>`;
   } else {
     cuerpo = resumenFlujo();
@@ -2375,8 +2419,10 @@ function resumenFlujo() {
   const fl = S.flujo, d = fl.d, filas = [], add = (k, v) => filas.push([k, v]);
   const fecha = d.fecha || hoy(), fd = aFecha(fecha);
   if (fl.tipo === 'cambio') {
-    const m = num(d.monto), r = num(d.recibido), c = r2(m - r);
-    add('Transferiste', fmt(m)); add('Te dieron', fmt(r)); add('Te cobraron', fmt(c) + (m ? ` (${pct(r2(c / m * 100))})` : ''));
+    const m = num(d.monto), pc = num(d.pct) || 0, c = r2(m * pc / 100), efe = d.comision === 'Efectivo' && c > 0;
+    add('Transferiste', fmt(m)); add('Comisión', pct(pc) + ' = ' + fmt(c));
+    if (c > 0) add('La comisión', efe ? 'La pagaste en efectivo' : 'Te la descontaron');
+    add('Te dieron en efectivo', fmt(efe ? m : m - c));
   } else if (fl.tipo === 'compra') {
     const m = num(d.monto), u = num(d.unidades);
     add('Compraste', d.descripcion); add('Unidades', u); add('Pagaste en total', fmt(m)); add('Cada una sale', fmt(m / u)); add('Pago', d.pago);
@@ -2414,7 +2460,7 @@ function siguienteFlujo() {
   const fl = S.flujo; if (!fl) return;
   const p = pasoFlujo();
   if (p.t === 'num' || p.t === 'texto') {
-    const v = ($('fIn') ? $('fIn').value : '').trim();
+    const v = ($('fIn') ? valorDe($('fIn')) : '').trim();
     fl.d[p.k] = v;
     if (p.t === 'num') {
       const n = num(v);
@@ -2447,8 +2493,8 @@ function guardarFlujo() {
   const viaje = fl.editId && fl.viajeOrig && fl.fechaOrig === fecha ? fl.viajeOrig : 'Bermejo ' + fCorta(fecha);
   let op = null, saleEfectivo = 0;
   if (fl.tipo === 'cambio') {
-    const m = num(d.monto), r = num(d.recibido);
-    op = { hoja: 'negocio', datos: { negocio: neg, tipo: 'Cambio', fecha, viaje, monto: m, recibido: r, pctCambio: r2((m - r) / m * 100), nota: fl.nota || '' } };
+    const m = num(d.monto), pc = num(d.pct) || 0;
+    op = { hoja: 'negocio', datos: { negocio: neg, tipo: 'Cambio', fecha, viaje, monto: m, pctCambio: pc, pagoComision: d.comision === 'Efectivo' && pc > 0 ? 'Efectivo' : 'Transferencia', nota: fl.nota || '' } };
   } else if (fl.tipo === 'compra') {
     const recargo = d.pago === 'Transferencia' && d.extra === 'Sí';
     op = { hoja: 'negocio', datos: { negocio: neg, tipo: 'Inversión', fecha, viaje, descripcion: d.descripcion, unidades: num(d.unidades), monto: num(d.monto), pago: d.pago, pctRecargo: recargo ? num(d.pct) : '' } };
@@ -2518,7 +2564,7 @@ function corregirSimple() {
   if (det.h === 'personal') return iniciarFlujo(f.origen === 'Personal' ? 'personal' : 'usar', Object.assign(base, { d: { fecha: f.fecha, categoria: f.categoria, monto: s(f.monto), pago: f.pago, devolver: f.devolver === 'sí' ? 'sí' : '', descripcion: f.descripcion || '' } }));
   if (f.tipo === 'Inversión') return iniciarFlujo('compra', Object.assign(base, { d: { fecha: f.fecha, descripcion: f.descripcion, unidades: s(f.unidades), monto: s(f.monto), pago: f.pago, extra: f.pctRecargo !== '' && f.pctRecargo != null && Number(f.recargo) ? 'Sí' : 'No', pct: s(f.pctRecargo) } }));
   if (f.tipo === 'No reversible') { const enLista = (S.listas['Descripciones rápidas'] || []).includes(f.descripcion); return iniciarFlujo('viaje', Object.assign(base, { d: { fecha: f.fecha, que: enLista ? f.descripcion : 'Otra cosa', otro: enLista ? '' : (f.descripcion || f.categoria), monto: s(f.monto), pago: f.pago } })); }
-  if (f.tipo === 'Cambio') return iniciarFlujo('cambio', Object.assign(base, { nota: notaCambio(f), d: { fecha: f.fecha, monto: s(f.monto), recibido: s(f.recibido) } }));
+  if (f.tipo === 'Cambio') return iniciarFlujo('cambio', Object.assign(base, { nota: notaCambio(f), d: { fecha: f.fecha, monto: s(f.monto), pct: s(f.pctCambio), comision: f.pago === 'Efectivo' ? 'Efectivo' : 'Descuento' } }));
   if (f.tipo === 'Devolución') return iniciarFlujo('devolver', Object.assign(base, { orig: s(f.monto), nota: f.descripcion !== 'Devolución al negocio' ? f.descripcion : '', d: { fecha: f.fecha, monto: s(f.monto) } }));
 }
 
@@ -2550,6 +2596,7 @@ const GUIAS = {
     pasos: [P_INI1, P_INI2, pTab('Cambio', 'Cambio'), P_VIAJE, P_VIAJE2,
       pCampo('fMonto', '¿Cuánto <b>transferiste</b>?'),
       pCampo('fPctC', '¿Qué <b>%</b> te cobraron?<br>(si no te cobraron, 0)', { req: false }),
+      { el: cerca('#modalIn [data-set=pagoComision]', '.segm'), txt: 'La comisión: ¿la pagaste <b>en efectivo</b> o te la <b>descontaron</b>?', modo: 'listo', valido: '#modalIn [data-set=pagoComision]' },
       pGuardar('guardarNegocio', 'Tocá <b>Guardar cambio</b> ✓')]
   },
   compra: {
@@ -2782,7 +2829,7 @@ $('guiaX').onclick = () => terminarGuia('Guía cerrada. Tocame cuando quieras �
 (function arrancar() {
   document.body.classList.toggle('grande', !!LS.get('bd_letra', false));
   mostrarNovedad();
-  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) navigator.serviceWorker.register('sw.js').catch(() => {});
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(r => r.update()).catch(() => {});
   const ses = LS.get('bd_sesion', null);
   if (!ses || !ses.token) return mostrarLogin('');
   S.token = ses.token;

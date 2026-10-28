@@ -1,10 +1,11 @@
 // Billetera Digital — guarda la app en el celular para que abra sin internet.
 // Si cambiás algún archivo, subí el número de versión para que todos reciban la nueva.
-const VERSION = 'billetera-v6';
+const VERSION = 'billetera-v7';
 const ARCHIVOS = ['./', 'index.html', 'config.js', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(VERSION).then(c => c.addAll(ARCHIVOS)).then(() => self.skipWaiting()));
+  // 'reload': baja los archivos de internet, no de una copia vieja guardada por el navegador
+  e.waitUntil(caches.open(VERSION).then(c => c.addAll(ARCHIVOS.map(u => new Request(u, { cache: 'reload' })))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', e => {
@@ -18,18 +19,17 @@ self.addEventListener('fetch', e => {
   if (req.method !== 'GET') return;            // lo que va a Google (POST) nunca se guarda
   const url = new URL(req.url);
 
-  // Archivos de la app: primero internet (para tener lo último), si tarda o no hay, lo guardado.
+  // Archivos de la app: primero internet, SIEMPRE la versión más nueva (sin copias viejas del navegador).
+  // Si no hay internet o tarda mucho, se usa lo guardado en el celular (por ejemplo, en Bermejo).
   if (url.origin === location.origin) {
     e.respondWith((async () => {
       const cache = await caches.open(VERSION);
+      const red = fetch(new Request(req.url, { cache: 'no-cache', credentials: 'same-origin' }))
+        .then(res => { if (res && res.ok) cache.put(req, res.clone()); return res; });
       try {
-        const res = await Promise.race([
-          fetch(req),
-          new Promise((_, no) => setTimeout(() => no(new Error('lento')), 3500))
-        ]);
-        if (res && res.ok) cache.put(req, res.clone());
-        return res;
+        return await Promise.race([red, new Promise((_, no) => setTimeout(() => no(new Error('lento')), 6000))]);
       } catch (err) {
+        e.waitUntil(red.catch(() => {})); // si llega tarde, igual se guarda para la próxima
         return (await cache.match(req, { ignoreSearch: true })) ||
                (req.mode === 'navigate' ? await cache.match('index.html') : Response.error());
       }
