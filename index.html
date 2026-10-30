@@ -359,8 +359,36 @@ button.avatar{border:0;padding:0}
 .det-filas .fila-p b{max-width:60%;overflow-wrap:anywhere}
 
 /* ================= Actualización 5: ayudante ================= */
-.robot{position:fixed;right:14px;bottom:calc(98px + var(--safe-b));z-index:6;width:56px;height:56px;border-radius:50%;border:0;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px rgba(176,71,217,.5),0 0 0 3px rgba(14,11,26,.9)}
+.robot{position:fixed;right:14px;bottom:var(--rb,calc(98px + var(--safe-b)));z-index:6;width:56px;height:56px;border-radius:50%;border:0;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px rgba(176,71,217,.5),0 0 0 3px rgba(14,11,26,.9)}
 @media (prefers-reduced-motion:no-preference){.robot{animation:saluda 2.4s ease-in-out 1s 2}@keyframes saluda{0%,100%{translate:0 0}20%{translate:0 -6px}40%{translate:0 0}}}
+/* Anillo de luz que gira alrededor del ícono 🤖 */
+.robot::before{content:'';position:absolute;inset:-7px;border-radius:50%;background:conic-gradient(from 0deg,rgba(201,184,255,0) 0deg,rgba(201,184,255,0) 150deg,#C9B8FF 230deg,#E040A0 300deg,rgba(224,64,160,0) 360deg);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 4.5px),#000 calc(100% - 4px));mask:radial-gradient(farthest-side,transparent calc(100% - 4.5px),#000 calc(100% - 4px));filter:drop-shadow(0 0 5px rgba(224,64,160,.8));pointer-events:none}
+#robot.robot{overflow:visible}
+@media (prefers-reduced-motion:no-preference){.robot::before{animation:gira 2.4s linear infinite}@keyframes gira{to{transform:rotate(360deg)}}}
+.robot-globo{position:fixed;right:84px;bottom:calc(var(--rb,calc(98px + var(--safe-b))) + 4px);z-index:6;max-width:min(250px,calc(100vw - 110px));background:var(--ink);color:#1A1530;border-radius:18px 18px 4px 18px;padding:11px 14px;font-size:15px;font-weight:700;line-height:1.35;box-shadow:0 12px 30px rgba(0,0,0,.45);cursor:pointer}
+.robot-globo::after{content:'';position:absolute;right:-7px;bottom:10px;border:8px solid transparent;border-left-color:var(--ink);border-right:0}
+body.grande .robot-globo{font-size:17px}
+@media (prefers-reduced-motion:no-preference){.robot-globo{animation:globoEntra .35s cubic-bezier(.2,1.3,.4,1)}@keyframes globoEntra{from{transform:translateX(16px) scale(.85);opacity:0}}.robot-globo.chau{transition:opacity .3s,transform .3s;opacity:0;transform:translateX(12px)}}
+/* Charla con la IA */
+.vidrio>:not(.ia-msgs){flex-shrink:0}
+.vidrio.chat{height:100%;max-height:100%;overflow:hidden;padding-bottom:12px;background:rgba(26,21,48,.96)}
+.ia-msgs{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:2px 2px 6px;overscroll-behavior:contain}
+.ia-b{max-width:86%;padding:11px 14px;border-radius:18px;font-size:16px;line-height:1.45;word-wrap:break-word}
+.ia-b.ia{align-self:flex-start;background:var(--card3);color:var(--ink);border-bottom-left-radius:6px}
+.ia-b.yo{align-self:flex-end;background:var(--grad);color:#fff;border-bottom-right-radius:6px;font-weight:600}
+.ia-b.error{background:rgba(255,92,122,.16);color:#FFC2CD}
+.ia-b b{color:#fff}
+.ia-ver{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;margin-top:10px;padding:11px 12px;border:0;border-radius:14px;background:var(--grad);color:#fff;font-weight:800;font-size:15px}
+.ia-sug{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.ia-sug button{border:1px solid rgba(201,184,255,.35);background:rgba(124,77,255,.14);color:var(--lilac);border-radius:16px;padding:9px 13px;font-size:15px;font-weight:700;text-align:left}
+.escribiendo{display:flex;gap:5px;padding:15px 16px}
+.escribiendo i{width:8px;height:8px;border-radius:50%;background:var(--lilac);opacity:.4}
+@media (prefers-reduced-motion:no-preference){.escribiendo i{animation:punto 1.1s infinite}.escribiendo i:nth-child(2){animation-delay:.18s}.escribiendo i:nth-child(3){animation-delay:.36s}@keyframes punto{30%{opacity:1;transform:translateY(-4px)}}}
+.ia-escribir{display:flex;align-items:flex-end;gap:8px}
+.ia-escribir textarea{flex:1;resize:none;min-height:50px;max-height:120px;border:1px solid rgba(255,255,255,.14);background:rgba(11,9,22,.55);color:var(--ink);border-radius:18px;padding:13px 14px;font:inherit;font-size:16px;line-height:1.4}
+.ia-escribir textarea:focus{outline:none;border-color:var(--violet2);box-shadow:0 0 0 3px rgba(124,77,255,.3)}
+.ia-enviar{flex:none;width:50px;height:50px;border-radius:50%;border:0;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center}
+.ia-enviar:disabled{opacity:.45}
 #guia{position:fixed;inset:0;z-index:25;pointer-events:none}
 .guia-luz{position:fixed;border-radius:18px;box-shadow:0 0 0 9999px rgba(8,6,16,.66);transition:left .25s ease,top .25s ease,width .25s ease,height .25s ease;pointer-events:none}
 .guia-luz::after{content:'';position:absolute;inset:-4px;border-radius:22px;border:3px solid var(--lilac)}
@@ -383,11 +411,16 @@ button.avatar{border:0;padding:0}
 .guia-saltar{background:transparent;color:#5B4F86}
 .guia-globo.sacude{animation:sacude .35s}
 .opcion.chica{padding:13px 14px}
+.ay-sec{font-size:12.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin:8px 4px -2px}
+.opcion.ia-op{background:var(--grad)}
+.opcion.ia-op .oi{font-size:24px;background:rgba(255,255,255,.18)}
 .opcion.chica .oi{width:40px;height:40px;border-radius:13px}
 .opcion.chica b{font-size:16px}
 
 /* ================= Actualización 6: modo simple ================= */
-body.simple nav.barra,body.simple #robot{display:none!important}
+body.simple nav.barra,body.en-flujo #robot,body.en-flujo #robotGlobo{display:none!important}
+body.simple{--rb:calc(18px + var(--safe-b))}
+body.simple .vista{padding-bottom:78px}
 .s-cab{display:flex;align-items:center;gap:12px}
 .s-cab .saludo b{font-size:24px;font-weight:900}
 .s-cab .saludo small{font-size:15px}
@@ -512,7 +545,8 @@ body.simple nav.barra,body.simple #robot{display:none!important}
 <div id="app" hidden>
   <div id="ptr" aria-hidden="true"><span class="c"><span class="giro"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg></span></span><small>Deslizá para actualizar</small></div>
   <main id="contenido"></main>
-  <button type="button" id="robot" class="robot" data-acc="ayudante" aria-label="Ayudante: tocame si tenés dudas" hidden><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="8" width="14" height="11" rx="3.5"/><path d="M12 4.5V8"/><circle cx="12" cy="3.6" r="1.1" fill="currentColor"/><circle cx="9.5" cy="13" r="1.3" fill="currentColor" stroke="none"/><circle cx="14.5" cy="13" r="1.3" fill="currentColor" stroke="none"/><path d="M10 16.3c1.2.8 2.8.8 4 0"/><path d="M3 12.5v2.5M21 12.5v2.5"/></svg></button>
+  <button type="button" id="robot" class="robot" data-acc="ayudante" aria-label="Ayudante: guías y preguntas a la IA" hidden><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="8" width="14" height="11" rx="3.5"/><path d="M12 4.5V8"/><circle cx="12" cy="3.6" r="1.1" fill="currentColor"/><circle cx="9.5" cy="13" r="1.3" fill="currentColor" stroke="none"/><circle cx="14.5" cy="13" r="1.3" fill="currentColor" stroke="none"/><path d="M10 16.3c1.2.8 2.8.8 4 0"/><path d="M3 12.5v2.5M21 12.5v2.5"/></svg></button>
+<div id="robotGlobo" class="robot-globo" role="status" hidden></div>
   <nav class="barra" aria-label="Menú">
     <button type="button" data-ir="inicio"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"/></svg>Inicio</button>
     <button type="button" data-ir="personal"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>Personal</button>
@@ -534,7 +568,7 @@ body.simple nav.barra,body.simple #robot{display:none!important}
    ========================================================= */
 const API = window.BILLETERA_API || '';
 // Fecha y hora de esta versión (se muestra una vez cuando alguien abre la app actualizada)
-const APP_VERSION = '2026-10-27T23:15';
+const APP_VERSION = '2026-10-30T22:00';
 const COLORES = ['#9B6BFF', '#F05BB5', '#3FD6C6', '#FFB547', '#6FA8FF', '#FF8A5B', '#B5E36B', '#D7C8FF'];
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 const LISTAS_BASE = {
@@ -694,7 +728,7 @@ function calcNegocio(d, previo) {
     f.gastoReal = f.comision;
   } else if (d.tipo === 'Devolución') {
     f.categoria = 'Devolución'; f.descripcion = (d.nota || '').trim() || 'Devolución al negocio';
-    f.monto = d.monto; f.pago = 'Efectivo'; f.movEfectivo = d.monto;
+    f.monto = d.monto; f.pago = d.pago === 'Transferencia' ? 'Transferencia' : 'Efectivo'; f.movEfectivo = f.pago === 'Efectivo' ? d.monto : 0;
   } else if (d.tipo === 'Ajuste') {
     f.categoria = 'Ajuste de efectivo'; f.descripcion = d.inicial ? 'Efectivo inicial' : 'Ajuste de efectivo';
     f.monto = d.monto; f.pago = 'Efectivo'; f.movEfectivo = r2(d.monto - efectivoDe(d.negocio, d.id));
@@ -1017,6 +1051,7 @@ const IC = {
   cal: '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',
   expandir: '<path d="M7 10l5 5 5-5"/>',
   lapiz: '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M14 6l4 4"/>',
+  enviar: '<path d="M4 12l16-8-6 16-2.5-6.5z"/><path d="M11.5 13.5L20 4"/>',
   robot: '<rect x="5" y="8" width="14" height="11" rx="3.5"/><path d="M12 4.5V8"/><circle cx="12" cy="3.6" r="1.1" fill="currentColor"/><circle cx="9.5" cy="13" r="1.3" fill="currentColor" stroke="none"/><circle cx="14.5" cy="13" r="1.3" fill="currentColor" stroke="none"/><path d="M10 16.3c1.2.8 2.8.8 4 0"/><path d="M3 12.5v2.5M21 12.5v2.5"/>',
   info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>',
   lupa: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
@@ -1053,6 +1088,7 @@ function render() {
     ? { inicio: vSimple, menu: vMenuSimple, lista: vSimpleLista, perfil: vPerfil, flujo: vFlujo, todos: vTodos }
     : { inicio: vInicio, personal: () => vSeccion('personal'), negocio: () => vSeccion('negocio'), perfil: vPerfil, todos: vTodos };
   if (!vistas[S.vista] || (S.vista === 'flujo' && !S.flujo)) S.vista = 'inicio';
+  document.body.classList.toggle('en-flujo', S.vista === 'flujo');
   const html = vistas[S.vista]();
   const barras = ['.filtro-neg', '.filtro-tipo'];
   const xs = barras.map(c => { const b = document.querySelector('#contenido ' + c); return b ? b.scrollLeft : null; });
@@ -1201,7 +1237,7 @@ function filaMov(f, hojaN) {
   let titulo, detalle, monto, pos = false;
   if (hojaN) {
     if (f.tipo === 'Cambio') { const nota = notaCambio(f); titulo = 'Cambio a efectivo'; detalle = `${nota ? nota + ' · ' : ''}${fmt(f.monto)} al ${pct(f.pctCambio)}${f.pago === 'Efectivo' && Number(f.comision) ? ' · comisión en efectivo' : ''}`; monto = '+' + fmt(f.recibido); pos = true; }
-    else if (f.tipo === 'Devolución') { titulo = 'Devolución al negocio'; detalle = f.descripcion !== 'Devolución al negocio' ? f.descripcion : 'Entró al efectivo'; monto = '+' + fmt(f.monto); pos = true; }
+    else if (f.tipo === 'Devolución') { titulo = 'Devolución al negocio'; detalle = (f.descripcion !== 'Devolución al negocio' ? f.descripcion + ' · ' : '') + (f.pago === 'Transferencia' ? 'Volvió por transferencia' : 'Entró al efectivo'); monto = '+' + fmt(f.monto); pos = true; }
     else if (f.tipo === 'Ajuste') { titulo = f.descripcion; detalle = 'Efectivo contado: ' + fmt(f.monto); monto = (f.movEfectivo >= 0 ? '+' : '-') + fmt(Math.abs(f.movEfectivo)); pos = f.movEfectivo >= 0; }
     else if (f.tipo === 'Inversión') { titulo = `${f.descripcion} × ${f.unidades}`; detalle = `Productos · ${f.pago}${f.recargo ? ' + ' + pct(f.pctRecargo) : ''}`; monto = '-' + fmt(totalNegocio(f)); }
     else { titulo = f.descripcion || f.categoria; detalle = `${f.categoria} · ${f.pago}`; monto = '-' + fmt(f.gastoReal); }
@@ -1265,21 +1301,33 @@ function tarjetasDeuda() {
 }
 function formDevolucion(neg, fila) {
   const deuda = deudaDe(neg) + (fila ? Number(fila.monto) || 0 : 0);
-  S.form = { hoja: 'devolucion', id: fila ? fila.id : nuevoId(), editando: !!fila, negocio: neg, monto: fila ? String(fila.monto) : String(deudaDe(neg) || ''), nota: fila && fila.descripcion !== 'Devolución al negocio' ? fila.descripcion : '', fecha: fila ? fila.fecha : hoy(), confirmarBorrar: false };
+  S.form = { hoja: 'devolucion', id: fila ? fila.id : nuevoId(), editando: !!fila, negocio: neg, monto: fila ? String(fila.monto) : String(deudaDe(neg) || ''), nota: fila && fila.descripcion !== 'Devolución al negocio' ? fila.descripcion : '', fecha: fila ? fila.fecha : hoy(), pago: fila && fila.pago === 'Transferencia' ? 'Transferencia' : 'Efectivo', confirmarBorrar: false };
   abrirModal(`${cab(fila ? 'Editar devolución' : 'Devolver al negocio', 'var(--teal)', 'billetera')}
     <p class="ayuda" style="margin:0;font-size:14px">${neg !== S.yo.negocio ? esc(neg) + ' le debe' : 'Le debés'} al negocio <b>${fmt(deuda)}</b>. Si devolviste una parte, cambiá el monto.</p>
     <div class="campo"><label for="fMonto">¿Cuánto devolviste?</label>${plataHTML('fMonto', S.form.monto, 'data-campo="monto"')}</div>
     <label class="campo" for="fNota">Nota (opcional)<input id="fNota" data-campo="nota" value="${esc(S.form.nota)}" maxlength="80" placeholder="Agregá un detalle si querés"></label>
-    <div class="ayuda">La plata entra al <b>efectivo del negocio</b>.</div>
+    <div class="campo">¿Cómo la devolviste?<div class="segm">${[['Efectivo', 'En efectivo', 'entra al efectivo'], ['Transferencia', 'Transferencia', 'vuelve a Mercado Pago']].map(([v, t, sub]) => `<button type="button" data-set="pago" data-val="${v}" aria-pressed="${S.form.pago === v}">${t}<small>${sub}</small></button>`).join('')}</div></div>
+    <div class="ayuda" id="devAyuda">${ayudaDevolucion(S.form.pago)}</div>
     <div class="error" id="fError" hidden></div>
     <button class="btn" type="button" data-acc="guardarDevolucion" style="background:linear-gradient(135deg,#1F9E95,#7C4DFF);color:#fff">Guardar devolución</button>
     ${fila ? botonBorrar() : ''}`);
 }
+// Cuando no hay nada anotado para devolver: en vez de frenar, ofrece cargar lo que se usó
+function sinDeuda(neg) {
+  const otro = S.yo.admin && neg !== S.yo.negocio;
+  const simple = esSimple();
+  abrirModal(`${cab('Devolver al negocio', 'var(--teal)', 'billetera')}
+    <p style="margin:0;font-size:17px;font-weight:700;line-height:1.4;color:var(--ink)">${otro ? esc(neg) + ' no tiene' : 'No tenés'} nada anotado para devolver.</p>
+    <p class="ayuda" style="margin:0;font-size:15px;line-height:1.5">¿${otro ? 'Usó' : 'Usaste'} plata del negocio y no se cargó? Primero hay que cargar esa plata usada${simple ? '. En el mismo paso podés marcar si ya la devolviste, toda o una parte.' : ' (queda como gasto personal "a devolver"), y después se devuelve.'}</p>
+    <button class="btn btn-grad" type="button" data-acc="${simple ? 'cargarUsado' : 'usarNegocio'}">Cargarlo ahora</button>
+    <button class="btn btn-ghost" type="button" data-acc="cerrar">Ahora no</button>`);
+}
+const ayudaDevolucion = pago => pago === 'Transferencia' ? 'Baja lo que debés. El <b>efectivo</b> del negocio no cambia, porque la plata volvió a Mercado Pago.' : 'Baja lo que debés y la plata entra al <b>efectivo del negocio</b>.';
 function formDevolucionBorrar() { const b = document.querySelector('#modalIn [data-acc=borrar]'); if (b) b.outerHTML = botonBorrar(); }
 function guardarDevolucion() {
   const f = S.form, monto = num(f.monto);
   if (!(monto > 0)) return errorForm('Poné cuánto devolviste.');
-  encolar({ tipo: 'guardar', hoja: 'negocio', id: f.id, datos: { negocio: f.negocio, tipo: 'Devolución', fecha: f.fecha, viaje: '', monto, nota: (f.nota || '').trim() } });
+  encolar({ tipo: 'guardar', hoja: 'negocio', id: f.id, datos: { negocio: f.negocio, tipo: 'Devolución', fecha: f.fecha, viaje: '', monto, nota: (f.nota || '').trim(), pago: f.pago === 'Transferencia' ? 'Transferencia' : 'Efectivo' } });
   cerrarModal(); avisar(f.editando ? 'Cambios guardados' : 'Devolución guardada');
 }
 
@@ -1361,7 +1409,7 @@ function vPerfil() {
   </section>
   <button class="btn btn-sec" type="button" id="btnSyncGrande" data-acc="sync" ${S.sincronizando ? 'disabled' : ''}>${svg('nube', 18, 2.2)}${S.sincronizando ? 'Subiendo…' : 'Subir y actualizar ahora'}</button>
 
-  <button class="interruptor" type="button" role="switch" data-acc="modoOnOff" aria-checked="${esSimple()}"><span><b>Modo simple</b><small>Botones grandes y una pregunta por pantalla</small></span><span class="switch" aria-hidden="true"></span></button>
+  <button class="interruptor" type="button" role="switch" data-acc="modoOnOff" aria-checked="${esSimple()}"><span><b>Modo simple</b><small>Todo más grande y una pregunta por pantalla</small></span><span class="switch" aria-hidden="true"></span></button>
   ${esSimple() ? '' : `<section class="tarj" style="display:flex;flex-direction:column;gap:12px">
     <h2 style="margin:0">Descargar en Excel</h2>
     <p class="ayuda" style="margin:0">Con las mismas columnas que tu Excel de Gastos de viaje y compras, para copiar y pegar.</p>
@@ -1401,11 +1449,12 @@ function htmlUsuarios() {
 /* =========================================================
    Ventanas (formularios)
    ========================================================= */
-function abrirModal(html) { $('modalIn').innerHTML = html; if ($('modal').hidden) { $('modal').hidden = false; histRevisar(); } }
+function abrirModal(html, clase) { $('modalIn').className = 'vidrio' + (clase ? ' ' + clase : ''); $('modalIn').innerHTML = html; if (!clase) { $('modal').style.height = ''; $('modal').style.top = ''; } if ($('modal').hidden) { $('modal').hidden = false; histRevisar(); } }
 function limpiarModal() { S.form = null; S.formGuardado = null; S.volverA = null; }
 function cerrarModal(desdeAtras) {
   const estaba = !$('modal').hidden;
-  $('modal').hidden = true; $('modalIn').innerHTML = ''; limpiarModal();
+  $('modal').hidden = true; $('modalIn').innerHTML = ''; $('modalIn').className = 'vidrio'; $('modal').style.height = ''; $('modal').style.top = ''; limpiarModal();
+  if (typeof IA !== 'undefined') IA.cargando = false;
   if (estaba && !desdeAtras) histRevisar();
 }
 $('modal').addEventListener('click', e => { if (e.target === $('modal')) cerrarModal(); });
@@ -1678,8 +1727,8 @@ async function exportar(btn) {
     .concat(N.filter(f => f.tipo === 'Cambio').map(f => [f.fecha, f.negocio, f.viaje, notaCambio(f), Number(f.monto), Number(f.pctCambio), Number(f.comision), Number(f.comision) ? (f.pago === 'Efectivo' ? 'Efectivo' : 'Descontada') : '', Number(f.recibido)]));
   const per = [['Fecha', 'Negocio', 'Origen de la plata', 'Categoría', 'Descripción', 'Pago', 'Monto', 'A devolver']]
     .concat(Pp.map(f => [f.fecha, f.negocio, f.origen, f.categoria, f.descripcion, f.pago, Number(f.monto), f.devolver === 'sí' ? 'Sí' : '']));
-  const dev = [['Fecha', 'Negocio', 'Nota', 'Devuelto']]
-    .concat(N.filter(f => f.tipo === 'Devolución').map(f => [f.fecha, f.negocio, f.descripcion !== 'Devolución al negocio' ? f.descripcion : '', Number(f.monto)]));
+  const dev = [['Fecha', 'Negocio', 'Nota', 'Cómo se devolvió', 'Devuelto']]
+    .concat(N.filter(f => f.tipo === 'Devolución').map(f => [f.fecha, f.negocio, f.descripcion !== 'Devolución al negocio' ? f.descripcion : '', f.pago === 'Transferencia' ? 'Transferencia' : 'Efectivo', Number(f.monto)]));
   const wb = XLSX.utils.book_new();
   const hoja = (aoa, nombre, anchos) => { const ws = XLSX.utils.aoa_to_sheet(aoa); ws['!cols'] = anchos.map(w => ({ wch: w })); XLSX.utils.book_append_sheet(wb, ws, nombre); };
   hoja(resumen, 'Resumen', [20, 14, 12, 12, 14, 12, 16, 14, 16, 18]);
@@ -1687,7 +1736,7 @@ async function exportar(btn) {
   hoja(nor, 'No reversibles', [12, 18, 16, 16, 26, 14, 12]);
   hoja(cam, 'Cambios', [12, 18, 16, 24, 14, 12, 18, 18, 16]);
   if (!porViaje) hoja(per, 'Personal', [12, 18, 22, 22, 26, 14, 12, 12]);
-  if (dev.length > 1) hoja(dev, 'Devoluciones', [12, 18, 26, 14]);
+  if (dev.length > 1) hoja(dev, 'Devoluciones', [12, 18, 26, 18, 14]);
   const nombre = 'Billetera_' + (neg || 'Todos').replace(/[^A-Za-z0-9]+/g, '-') + '_' + val.replace(/[^A-Za-z0-9]+/g, '-') + '.xlsx';
   XLSX.writeFile(wb, nombre);
   avisar('Excel descargado');
@@ -1738,9 +1787,9 @@ document.addEventListener('click', async ev => {
   if (ds.menu) { S.menu = ds.menu; return irA('menu'); }
   if (ds.flujo) return iniciarFlujo(ds.flujo, S.vista === 'menu' ? { menu: S.menu } : null);
   if (ds.fop !== undefined) return elegirOpcionFlujo(ds.fop);
-  if (ds.devolver) { if (!esSimple() && !(deudaDe(ds.devolver) > 0)) return avisar('Ahora no se le debe nada a ese negocio 👍'); return esSimple() ? iniciarFlujo('devolver') : formDevolucion(ds.devolver); }
+  if (ds.devolver) { if (!(deudaDe(ds.devolver) > 0)) return sinDeuda(ds.devolver); return esSimple() ? iniciarFlujo('devolver') : formDevolucion(ds.devolver); }
   if (ds.nuevo2 === 'volver') return elegirTipo();
-  if (ds.modo) { cerrarModal(); setModo(ds.modo); if (ds.modo === 'completo') saludoRobot(); return; }
+  if (ds.modo) { cerrarModal(); setModo(ds.modo); saludoRobot(); return; }
   if (ds.ftipo) { S.ftipo = ds.ftipo; S.todosMax = 60; return render(); }
   if (ds.filtro !== undefined) { S.filtro = ds.filtro; S.viaje = ''; return render(); }
   if (ds.per) { S.per = { tipo: ds.per, ref: hoy() }; return render(); }
@@ -1755,6 +1804,7 @@ document.addEventListener('click', async ev => {
   if (ds.set && S.form) {
     S.form[ds.set] = ds.val;
     if (ds.set === 'categoria' || ds.set === 'descripcion') S.form.abierto = '';
+    if (S.form.hoja === 'devolucion') { t.parentNode.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b === t)); const a = $('devAyuda'); if (a) a.innerHTML = ayudaDevolucion(ds.val); return; }
     return S.form.hoja === 'personal' ? pintarFormPersonal() : pintarFormNegocio();
   }
   if (ds.abrir && S.form) { S.form.abierto = S.form.abierto === ds.abrir ? '' : ds.abrir; leerCampos(); return pintarFormNegocio(); }
@@ -1774,6 +1824,7 @@ document.addEventListener('click', async ev => {
         <button class="opcion" type="button" data-acc="usarNegocio" style="background:linear-gradient(135deg,#C23A8C,#E040A0)"><span class="oi">${svg('user', 24)}</span><span><b>Usé plata del negocio</b><small>Para algo personal, la vaya a devolver o no</small></span>${svg('der', 20, 2.2)}</button>
         <button class="opcion" type="button" data-devolver="${esc(neg)}" style="background:linear-gradient(135deg,#1F9E95,#2B7F9E)"><span class="oi">${svg('billetera', 24)}</span><span><b>Devolví plata al negocio</b><small>${deuda > 0 ? (neg !== S.yo.negocio ? esc(neg) + ' debe ' : 'Le debés ') + fmt(deuda) : 'Ahora no se debe nada'}</small></span>${svg('der', 20, 2.2)}</button>`);
     },
+    cargarUsado: () => iniciarFlujo('usar'),
     usarNegocio: () => { limpiarModal(); formPersonal(null); S.form.origen = 'Negocio (MercadoLibre)'; S.form.devolver = 'sí'; pintarFormPersonal(); },
     guardarDevolucion: () => { leerCampos(); guardarDevolucion(); },
     modoOnOff: () => setModo(esSimple() ? 'completo' : 'simple'),
@@ -1801,11 +1852,14 @@ document.addEventListener('click', async ev => {
     },
     volverInicio: () => irA('inicio'),
     verMas: () => { S.todosMax = (S.todosMax || 60) + 60; $('listaTodos').innerHTML = htmlListaTodos(); },
-    ayudante: () => { if (!GUIA.activa) abrirAyudante(); },
+    ayudante: () => { cerrarGlobito(); if (!GUIA.activa) abrirAyudante(); },
     ayudanteOnOff: () => { const on = LS.get('bd_ayudante', true) === false; LS.set('bd_ayudante', on); t.setAttribute('aria-checked', on); pintarRobot(); avisar(on ? 'Ayudante activado' : 'Ayudante oculto'); },
     guia: () => { const n = t.dataset.guia; cerrarModal(); setTimeout(() => iniciarGuia(n), 120); },
-    guiaOtros: menuOtros,
     guiaMenu: abrirAyudante,
+    abrirIA: () => abrirIA(),
+    iaEnviar: () => enviarIA(),
+    iaSug: () => enviarIA(t.dataset.txt),
+    iaGuia: () => irAccionIA(t.dataset.g),
     letra: () => { const on = !LS.get('bd_letra', false); LS.set('bd_letra', on); document.body.classList.toggle('grande', on); t.setAttribute('aria-checked', on); avisar(on ? 'Letra grande activada' : 'Letra normal'); },
     saltarInicial: () => { const n = S.form.negocio; LS.set('bd_sininicial_' + n, true); limpiarModal(); formNegocio(null, 'Inversión', n); },
     ajustar: () => { const n = S.yo.admin ? S.filtro : S.yo.negocio; if (!n) return avisar('Elegí un negocio arriba para ajustar su efectivo.'); formAjuste(n, false); },
@@ -2062,7 +2116,8 @@ function verDetalle(h, f) {
     add('Efectivo recibido', fmt(f.recibido));
   } else if (esN && f.tipo === 'Devolución') {
     titulo = 'Devolución al negocio'; monto = f.monto; signo = '+';
-    add('Tipo', 'Devolución al negocio'); if (f.descripcion !== 'Devolución al negocio') add('Nota', f.descripcion); add('Entró al efectivo', fmt(f.monto));
+    add('Tipo', 'Devolución al negocio'); if (f.descripcion !== 'Devolución al negocio') add('Nota', f.descripcion);
+    if (f.pago === 'Transferencia') add('Cómo se devolvió', 'Por transferencia (el efectivo no cambia)'); else add('Entró al efectivo', fmt(f.monto));
   } else if (esN) {
     titulo = f.descripcion; monto = Math.abs(f.movEfectivo); signo = f.movEfectivo >= 0 ? '+' : '-';
     add('Tipo', 'Ajuste de efectivo'); add('Efectivo contado', fmt(f.monto));
@@ -2298,7 +2353,7 @@ function mostrarNovedad() {
 function elegirModo() {
   abrirModal(`<div class="v-cab"><span class="ic" style="background:var(--grad)">${svg('chispa', 22)}</span><b>¿Cómo querés usar la app?</b></div>
     <p class="ayuda" style="margin:0;font-size:15px">Lo podés cambiar cuando quieras desde tu perfil.</p>
-    <button class="modo-op sim" type="button" data-modo="simple"><b>✋ Simple</b><small>Botones grandes y una pregunta por pantalla. Ideal para cargar rápido.</small></button>
+    <button class="modo-op sim" type="button" data-modo="simple"><b>✋ Simple</b><small>Todo más grande y una pregunta por pantalla. Ideal para cargar rápido.</small></button>
     <button class="modo-op" type="button" data-modo="completo"><b>📊 Completa</b><small>Todo: gráficos, filtros, Excel y más detalles.</small></button>`);
 }
 function vSimple() {
@@ -2371,11 +2426,13 @@ const FLUJOS = {
     P_PAG,
     { k: 'devuelto', t: 'ops', preg: '¿Ya la devolviste?', si: fl => !fl.editId, ops: () => [['Toda', '✅ Sí, toda'], ['Parte', '½ Una parte'], ['Todavia', '⏳ Todavía no'], ['No', '🚫 No la voy a devolver']] },
     { k: 'parte', t: 'num', preg: '¿Cuánto devolviste?', ayuda: 'El resto queda como deuda con el negocio', si: fl => !fl.editId && fl.d.devuelto === 'Parte', valid: d => num(d.parte) < num(d.monto) || 'Tiene que ser menos de lo que usaste (si devolviste todo, volvé y elegí "Sí, toda").' },
+    Object.assign({ k: 'pagoDev', t: 'ops', preg: '¿Cómo la devolviste?', ops: () => [['Efectivo', '💵 En efectivo'], ['Transferencia', '📱 Por transferencia']] }, { si: fl => !fl.editId && (fl.d.devuelto === 'Toda' || fl.d.devuelto === 'Parte') }),
     { k: 'devolver', t: 'ops', preg: '¿La vas a devolver al negocio?', si: fl => !!fl.editId, ops: () => [['sí', '↩️ Sí, la devuelvo'], ['', '🚫 No']] },
     { k: 'descripcion', t: 'texto', preg: '¿Querés anotar qué pagaste?', ayuda: 'No es obligatorio', ej: 'Ej: internet, luz…', opcional: true },
     { t: 'resumen' }] },
   devolver: { titulo: 'Devolver al negocio', emoji: '↩️', pasos: [
     { k: 'monto', t: 'num', preg: '¿Cuánto devolviste al negocio?', ayuda: () => 'Le debés ' + fmt(deudaDe(S.flujo.negocio) + (S.flujo.editId ? num(S.flujo.orig) || 0 : 0)) + '. Si devolviste una parte, cambiá el número.' },
+    { k: 'pagoDev', t: 'ops', preg: '¿Cómo la devolviste?', ops: () => [['Efectivo', '💵 En efectivo'], ['Transferencia', '📱 Por transferencia']] },
     { t: 'resumen' }] },
   contar: { titulo: 'Contar el efectivo', emoji: '💵', pasos: [
     { k: 'monto', t: 'num', preg: '¿Cuánta plata del negocio tenés en la mano?', ayuda: 'Contala y escribila. Puede ser 0.', cero: true },
@@ -2385,10 +2442,11 @@ function iniciarFlujo(tipo, previo) {
   cerrarModal();
   const neg = S.yo.negocio;
   S.flujo = Object.assign({ tipo, i: 0, d: { fecha: hoy() }, negocio: neg, pedirInicial: NEGOCIO_FLUJO.includes(tipo) && necesitaInicial(neg) }, previo || {});
-  if (tipo === 'devolver' && !S.flujo.editId && !(deudaDe(neg) > 0)) { S.flujo = null; return avisar('Ahora no le debés nada al negocio 👍'); }
+  if (tipo === 'devolver' && !S.flujo.editId && !(deudaDe(neg) > 0)) { S.flujo = null; return sinDeuda(neg); }
   if (tipo === 'devolver' && !S.flujo.d.monto) S.flujo.d.monto = String(deudaDe(neg) || '');
   if (S.vista === 'flujo') { $('contenido').scrollTop = 0; render(); } else irA('flujo');
 }
+const textoPagoDev = v => v === 'Transferencia' ? 'Por transferencia (el efectivo no cambia)' : 'En efectivo (entra al efectivo)';
 const pasosFlujo = () => FLUJOS[S.flujo.tipo].pasos.filter(p => !p.si || p.si(S.flujo));
 const pasoFlujo = () => pasosFlujo()[S.flujo.i];
 function vFlujo() {
@@ -2436,14 +2494,14 @@ function resumenFlujo() {
     const m = num(d.monto);
     add('Para qué', d.categoria); add('Usaste del negocio', fmt(m)); add('Pago', d.pago);
     if (fl.editId) add('¿La devolvés?', d.devolver === 'sí' ? 'Sí' : 'No');
-    else if (d.devuelto === 'Toda') add('Devolviste', fmt(m) + ' (todo)');
-    else if (d.devuelto === 'Parte') { add('Devolviste', fmt(num(d.parte))); add('Te queda por devolver', fmt(m - num(d.parte))); }
+    else if (d.devuelto === 'Toda') { add('Devolviste', fmt(m) + ' (todo)'); add('Cómo', textoPagoDev(d.pagoDev)); }
+    else if (d.devuelto === 'Parte') { add('Devolviste', fmt(num(d.parte))); add('Cómo', textoPagoDev(d.pagoDev)); add('Te queda por devolver', fmt(m - num(d.parte))); }
     else if (d.devuelto === 'Todavia') add('Te queda por devolver', fmt(m));
     else add('¿La devolvés?', 'No');
     if (d.descripcion) add('Detalle', d.descripcion);
   } else if (fl.tipo === 'devolver') {
     const deuda = deudaDe(fl.negocio) + (fl.editId ? num(fl.orig) || 0 : 0);
-    add('Devolviste', fmt(num(d.monto))); add('Te queda por devolver', fmt(Math.max(0, deuda - num(d.monto))));
+    add('Devolviste', fmt(num(d.monto))); add('Cómo', textoPagoDev(d.pagoDev)); add('Te queda por devolver', fmt(Math.max(0, deuda - num(d.monto))));
   } else if (fl.tipo === 'contar') {
     add('Tenés en la mano', fmt(num(d.monto))); add('La app decía', fmt(efectivoDe(fl.negocio)));
   }
@@ -2509,9 +2567,9 @@ function guardarFlujo() {
     op = { hoja: 'personal', datos: { negocio: neg, fecha, origen: 'Negocio (MercadoLibre)', devolver, categoria: d.categoria, descripcion: (d.descripcion || '').trim(), monto: num(d.monto), pago: d.pago } };
     // Si ya devolvió todo o una parte, se anota la devolución en el mismo momento
     const yaDevolvio = fl.editId ? 0 : d.devuelto === 'Toda' ? num(d.monto) : d.devuelto === 'Parte' ? num(d.parte) : 0;
-    if (yaDevolvio > 0) fl.extra = { tipo: 'guardar', hoja: 'negocio', id: nuevoId(), datos: { negocio: neg, tipo: 'Devolución', fecha, viaje: '', monto: yaDevolvio, nota: '' } };
+    if (yaDevolvio > 0) fl.extra = { tipo: 'guardar', hoja: 'negocio', id: nuevoId(), datos: { negocio: neg, tipo: 'Devolución', fecha, viaje: '', monto: yaDevolvio, nota: '', pago: d.pagoDev === 'Transferencia' ? 'Transferencia' : 'Efectivo' } };
   } else if (fl.tipo === 'devolver') {
-    op = { hoja: 'negocio', datos: { negocio: neg, tipo: 'Devolución', fecha, viaje: '', monto: num(d.monto), nota: fl.nota || '' } };
+    op = { hoja: 'negocio', datos: { negocio: neg, tipo: 'Devolución', fecha, viaje: '', monto: num(d.monto), nota: fl.nota || '', pago: d.pagoDev === 'Transferencia' ? 'Transferencia' : 'Efectivo' } };
   } else if (fl.tipo === 'contar') {
     op = { hoja: 'negocio', datos: { negocio: neg, tipo: 'Ajuste', fecha: hoy(), viaje: '', monto: num(d.monto), inicial: false } };
   }
@@ -2565,7 +2623,7 @@ function corregirSimple() {
   if (f.tipo === 'Inversión') return iniciarFlujo('compra', Object.assign(base, { d: { fecha: f.fecha, descripcion: f.descripcion, unidades: s(f.unidades), monto: s(f.monto), pago: f.pago, extra: f.pctRecargo !== '' && f.pctRecargo != null && Number(f.recargo) ? 'Sí' : 'No', pct: s(f.pctRecargo) } }));
   if (f.tipo === 'No reversible') { const enLista = (S.listas['Descripciones rápidas'] || []).includes(f.descripcion); return iniciarFlujo('viaje', Object.assign(base, { d: { fecha: f.fecha, que: enLista ? f.descripcion : 'Otra cosa', otro: enLista ? '' : (f.descripcion || f.categoria), monto: s(f.monto), pago: f.pago } })); }
   if (f.tipo === 'Cambio') return iniciarFlujo('cambio', Object.assign(base, { nota: notaCambio(f), d: { fecha: f.fecha, monto: s(f.monto), pct: s(f.pctCambio), comision: f.pago === 'Efectivo' ? 'Efectivo' : 'Descuento' } }));
-  if (f.tipo === 'Devolución') return iniciarFlujo('devolver', Object.assign(base, { orig: s(f.monto), nota: f.descripcion !== 'Devolución al negocio' ? f.descripcion : '', d: { fecha: f.fecha, monto: s(f.monto) } }));
+  if (f.tipo === 'Devolución') return iniciarFlujo('devolver', Object.assign(base, { orig: s(f.monto), nota: f.descripcion !== 'Devolución al negocio' ? f.descripcion : '', d: { fecha: f.fecha, monto: s(f.monto), pagoDev: f.pago === 'Transferencia' ? 'Transferencia' : 'Efectivo' } }));
 }
 
 /* =========================================================
@@ -2578,6 +2636,7 @@ const cerca = (sel, padre) => () => { const e = document.querySelector(sel); ret
 const tabActiva = val => { const b = document.querySelector(`#modalIn [data-set=tipo][data-val="${val}"]`); return !!b && b.getAttribute('aria-pressed') === 'true'; };
 // Pasos que se repiten
 const P_MAS = { el: Q('#btnMas'), txt: 'Tocá el <b>+</b>' };
+const P_PLATA = { el: Q('#modalIn [data-acc=plataNegocio]'), txt: 'Elegí <b>Plata del negocio</b>' };
 const P_NEG = { el: Q('#modalIn [data-nuevo=negocio]'), txt: 'Tocá <b>Compras y negocio</b>' };
 const P_INI1 = { si: () => !!$('fAj'), el: Q('#fAj'), txt: 'Primero: ¿cuánta <b>plata en efectivo</b> del negocio tenés en la mano? Escribila (puede ser 0)', modo: 'listo', req: true };
 const P_INI2 = { si: () => !!$('fAj'), el: Q('#modalIn [data-acc=guardarAjuste]'), txt: 'Tocá <b>Guardar efectivo</b>' };
@@ -2643,26 +2702,85 @@ const GUIAS = {
     titulo: 'Cuánto gasté', antes: () => { if (S.vista !== 'inicio') irA('inicio'); },
     pasos: [
       { el: Q('#contenido .hero'), txt: 'Acá ves <b>cuánto se gastó este mes</b>', modo: 'listo', btn: 'Siguiente' },
-      { si: () => !!$('tarjCat'), el: Q('#tarjCat'), txt: 'Acá, <b>en qué</b> se gastó.<br>Tocala para agrandarla.', modo: 'listo', btn: 'Siguiente' },
+      { si: () => !!$('tarjCat'), el: Q('#tarjCat'), txt: 'Acá, <b>en qué</b> se gastó.<br>Elegila para agrandarla.', modo: 'listo', btn: 'Siguiente' },
       { el: Q('nav [data-ir=personal]'), txt: 'Tocá <b>Personal</b> para ver tus gastos mes por mes', valido: 'nav [data-ir=personal]' },
       { el: Q('#contenido .per-btn'), txt: 'Tocá el <b>mes</b> para ver otro', modo: 'listo', btn: 'Entendido' }]
   },
   efectivo: {
     titulo: 'Efectivo disponible', antes: () => { if (S.vista !== 'negocio') irA('negocio'); },
     pasos: [
-      { el: Q('#contenido .mini .efe'), txt: 'Es la <b>plata en efectivo del negocio</b> que tenés en la mano.<br>Sube con los <b>cambios</b> y baja con lo que pagás <b>en efectivo</b>.<br>Si no coincide con lo que contás, tocalo para <b>ajustar</b>.', modo: 'listo', btn: 'Entendido', largo: true }]
+      { el: Q('#contenido .mini .efe'), txt: 'Es la <b>plata en efectivo del negocio</b> que tenés en la mano.<br>Sube con los <b>cambios</b> y baja con lo que pagás <b>en efectivo</b>.<br>Si no coincide con lo que contás, elegilo para <b>ajustar</b>.', modo: 'listo', btn: 'Entendido', largo: true }]
+  },
+  usar: {
+    titulo: 'Usé plata del negocio', tarea: true, largo: true,
+    atajo: () => { limpiarModal(); formPersonal(null); S.form.origen = 'Negocio (MercadoLibre)'; S.form.devolver = 'sí'; pintarFormPersonal(); },
+    camino: [P_MAS, P_PLATA, { el: Q('#modalIn [data-acc=usarNegocio]'), txt: 'Tocá <b>Usé plata del negocio</b>' }],
+    pasos: [
+      { el: cerca('#modalIn [data-set=categoria]', '.grid3'), txt: 'Elegí <b>para qué la usaste</b>: casa, comida, salud…', valido: '#modalIn [data-set=categoria]' },
+      { el: cerca('#modalIn [data-cal=abrir]', '.fecha-fila'), txt: '¿Fue <b>hoy</b>? Entonces no cambies nada.<br>Si fue otro día, elegí <b>Ayer</b> o la fecha.', modo: 'listo' },
+      pCampo('fMonto', '¿Cuánta plata del negocio <b>usaste</b>?'),
+      pCampo('fDesc', 'Si querés, anotá un <b>detalle</b>.<br>No es obligatorio.', { req: false, opcional: true }),
+      P_PAGO,
+      { el: Q('#modalIn [data-set=devolver]'), txt: '<b>Lo voy a devolver</b> ya está prendido: así queda anotado lo que se le debe al negocio.<br>Si no la vas a devolver, apagalo.', modo: 'listo', valido: '#modalIn [data-set=devolver]' },
+      pGuardar('guardarPersonal', 'Elegí <b>Guardar gasto</b> ✓<br>Cuando la devuelvas, usá <b>Devolví plata al negocio</b>')]
+  },
+  devolver: {
+    titulo: 'Devolver plata al negocio', tarea: true,
+    requiere: () => { const n = S.filtro || S.yo.negocio; if (deudaDe(n) > 0) return ''; sinDeuda(n); return true; },
+    atajo: () => { limpiarModal(); formDevolucion(S.filtro || S.yo.negocio); },
+    camino: [P_MAS, P_PLATA, { el: Q('#modalIn [data-devolver]'), txt: 'Elegí <b>Devolví plata al negocio</b>' }],
+    pasos: [
+      pCampo('fMonto', 'Ya está puesto <b>todo lo que se debe</b>.<br>Si devolviste una parte, cambiá el monto.'),
+      { el: cerca('#modalIn [data-set=pago]', '.segm'), txt: '¿Cómo la devolviste?<br><b>En efectivo</b>: entra al efectivo del negocio.<br><b>Transferencia</b>: vuelve a Mercado Pago; el efectivo no cambia.', modo: 'listo', valido: '#modalIn [data-set=pago]', largo: true },
+      pGuardar('guardarDevolucion', 'Elegí <b>Guardar devolución</b> ✓')]
+  },
+  contar: {
+    titulo: 'Contar o ajustar el efectivo', tarea: true, antes: () => { if (S.vista !== 'negocio') irA('negocio'); },
+    requiere: () => S.yo.admin && !S.filtro ? 'Primero elegí arriba de qué negocio es el efectivo.' : '',
+    pasos: [
+      { el: Q('#contenido .mini .efe'), txt: 'Esta tarjeta es el <b>efectivo del negocio</b>.<br>Elegila para ajustarlo.', valido: '#contenido .mini .efe' },
+      pCampo('fAj', 'Contá la plata del negocio que tenés <b>en la mano</b> y escribila (puede ser 0)'),
+      pGuardar('guardarAjuste', 'Elegí <b>Guardar efectivo</b> ✓<br>La app corrige la diferencia sola')]
+  },
+  todos: {
+    titulo: 'Ver todos los movimientos', antes: () => { if (S.vista !== 'inicio') irA('inicio'); },
+    requiere: () => document.querySelector('#contenido [data-ir2=todos]') ? '' : 'Todavía no hay movimientos cargados.',
+    pasos: [
+      { el: Q('#contenido [data-ir2=todos]'), txt: 'Elegí <b>Consultar todos</b>', valido: '#contenido [data-ir2=todos]' },
+      { el: Q('#contenido .buscar'), txt: 'Acá podés <b>buscar</b> por palabra o por monto.<br>Por ejemplo: chalana, tazas o 5000.', modo: 'listo', btn: 'Siguiente' },
+      { el: Q('#contenido .filtro-tipo'), txt: 'Con estos filtros ves <b>solo un tipo</b>: personal, compras, cambios, efectivo o transferencia.', modo: 'listo', btn: 'Siguiente' },
+      { el: Q('#listaTodos'), txt: 'Elegí cualquier movimiento para ver el <b>detalle</b>. Ahí también está el lápiz ✏️ para corregirlo.', modo: 'listo', btn: 'Entendido' }]
+  },
+  excel: {
+    titulo: 'Descargar el Excel', antes: () => { if (S.vista !== 'perfil') irA('perfil'); },
+    pasos: [
+      { el: cerca('#contenido [data-exp=mes]', '.segm'), txt: '¿El Excel de <b>un mes</b> o de <b>un viaje</b>?', modo: 'listo', btn: 'Siguiente' },
+      { el: Q('#ddExp'), txt: 'Elegí <b>cuál</b> mes o viaje', modo: 'listo', btn: 'Siguiente' },
+      { el: Q('#contenido [data-acc=exportar]'), txt: 'Elegí <b>Descargar Excel</b>.<br>El archivo queda en las <b>Descargas</b> del celular.', valido: '#contenido [data-acc=exportar]' }]
+  },
+  tipos: {
+    titulo: 'Recuperable y No reversible', antes: () => { if (S.vista !== 'negocio') irA('negocio'); },
+    pasos: [
+      { el: Q('#contenido .mini > div:nth-child(1)'), txt: '<b>Recuperable</b>: lo que compraste <b>para vender</b> (mercadería).<br>Esa plata vuelve cuando vendés.', modo: 'listo', btn: 'Siguiente' },
+      { el: Q('#contenido .mini > div:nth-child(2)'), txt: '<b>No reversible</b>: gastos que <b>no vuelven</b>.<br>Pasero, colectivo, chalana, comida del viaje, la comisión del cambio…', modo: 'listo', btn: 'Entendido' }]
+  },
+  ajustes: {
+    titulo: 'Letra grande y modo simple', antes: () => { if (S.vista !== 'perfil') irA('perfil'); },
+    pasos: [
+      { el: Q('#contenido [data-acc=letra]'), txt: '<b>Letra grande</b>: agranda toda la app en este celular. Prendelo o apagalo cuando quieras.', modo: 'listo', btn: 'Siguiente' },
+      { el: Q('#contenido [data-acc=modoOnOff]'), txt: '<b>Modo simple</b>: todo más grande y <b>una pregunta por pantalla</b>. Ideal si la app te resulta difícil.', modo: 'listo', btn: 'Entendido' }]
   },
   recorrido: {
     titulo: 'Recorrido', antes: () => { if (S.vista !== 'inicio') irA('inicio'); },
     pasos: [
       { el: Q('#contenido .hero'), txt: 'Acá ves <b>cuánto se gastó</b> este mes', modo: 'listo', btn: 'Siguiente' },
-      { si: () => !!$('tarjCat'), el: Q('#tarjCat'), txt: 'Acá, <b>en qué</b> se gastó. Tocala para agrandarla.', modo: 'listo', btn: 'Siguiente' },
+      { si: () => !!$('tarjCat'), el: Q('#tarjCat'), txt: 'Acá, <b>en qué</b> se gastó. Elegila para agrandarla.', modo: 'listo', btn: 'Siguiente' },
       { si: () => !!document.querySelector('#contenido .h2-link'), el: cerca('#contenido .h2-link', '.tarj'), txt: 'Lo <b>último que se cargó</b>. Tocá uno para ver el detalle.', modo: 'listo', btn: 'Siguiente' },
-      { el: Q('#btnMas'), txt: 'Con el <b>+</b> cargás un gasto', modo: 'listo', btn: 'Siguiente' },
+      { el: Q('#btnMas'), txt: 'Con el <b>+</b> cargás un gasto, una compra, un cambio o plata del negocio que usaste o devolviste', modo: 'listo', btn: 'Siguiente' },
       { el: Q('nav [data-ir=personal]'), txt: '<b>Personal</b>: tus gastos de casa, comida, salud…', modo: 'listo', btn: 'Siguiente' },
       { el: Q('nav [data-ir=negocio]'), txt: '<b>Negocio</b>: compras, cambios y el efectivo', modo: 'listo', btn: 'Siguiente' },
-      { el: Q('nav [data-ir=perfil]'), txt: '<b>Perfil</b>: Excel, letra grande y más', modo: 'listo', btn: 'Siguiente' },
-      { el: Q('#robot'), txt: 'Y si tenés dudas, <b>tocame</b> 🤖', modo: 'listo', btn: 'Terminar' }]
+      { el: Q('nav [data-ir=perfil]'), txt: '<b>Perfil</b>: Excel, letra grande, modo simple y más', modo: 'listo', btn: 'Siguiente' },
+      { el: Q('#robot'), txt: 'Si tenés una duda, usá el ícono 🤖: tiene guías paso a paso y la <b>IA</b>, que te responde como en una charla', modo: 'listo', btn: 'Terminar', largo: true }]
   }
 };
 function abrirFormGuia(tipo) {
@@ -2672,43 +2790,55 @@ function abrirFormGuia(tipo) {
 const GUIA = { activa: false, nombre: '', pasos: [], i: -1, falta: 0, raf: 0, n: 0 };
 function pintarRobot() {
   const r = $('robot');
-  r.hidden = LS.get('bd_ayudante', true) === false;
+  r.hidden = !esSimple() && LS.get('bd_ayudante', true) === false;
+  if (r.hidden) { const g = $('robotGlobo'); if (g) g.hidden = true; }
 }
 function abrirAyudante() {
-  const op = (guia, titulo, sub, fondo, icono) => `<button class="opcion" type="button" data-acc="guia" data-guia="${guia}" style="background:${fondo}"><span class="oi">${svg(icono, 24)}</span><span><b>${titulo}</b><small>${sub}</small></span>${svg('der', 20, 2.2)}</button>`;
-  abrirModal(`${cab('¿En qué te ayudo?', 'var(--grad)', 'robot')}
-    ${op('cambio', 'Cambio a efectivo', 'Lo primero al llegar a Bermejo', 'linear-gradient(135deg,#1F9E95,#2B7F9E)', 'cambio')}
-    ${op('compra', 'Compra de productos', 'Mercadería para vender', 'linear-gradient(135deg,#7C4DFF,#9E4BE6)', 'prod')}
-    ${op('noreversible', 'Pasero, colectivo…', 'Chalana, comida, baño…', 'linear-gradient(135deg,#C23A8C,#E040A0)', 'bus')}
-    <button class="opcion" type="button" data-acc="guiaOtros" style="background:var(--card3)"><span class="oi">${svg('info', 24)}</span><span><b>Otros</b><small>Gasto personal, corregir y más</small></span>${svg('der', 20, 2.2)}</button>`);
-}
-function menuOtros() {
+  if (esSimple()) return abrirIA();
   const op = (guia, titulo, sub, icono) => `<button class="opcion chica" type="button" data-acc="guia" data-guia="${guia}" style="background:var(--card3)"><span class="oi">${svg(icono, 21)}</span><span><b>${titulo}</b><small>${sub}</small></span>${svg('der', 18, 2.2)}</button>`;
-  abrirModal(`<div class="v-cab"><button class="cerrar" type="button" data-acc="guiaMenu" aria-label="Volver">${svg('izq', 18, 2.4)}</button><b>Otros</b><button class="cerrar" type="button" data-acc="cerrar" aria-label="Cerrar">${svg('x', 18, 2.2)}</button></div>
+  const sec = t => `<div class="ay-sec">${t}</div>`;
+  abrirModal(`${cab('¿En qué te ayudo?', 'var(--grad)', 'robot')}
+    <button class="opcion ia-op" type="button" data-acc="abrirIA"><span class="oi">💬</span><span><b>Preguntale a la IA</b><small>Escribí tu duda como en una charla</small></span>${svg('der', 20, 2.2)}</button>
+    ${sec('En Bermejo')}
+    ${op('cambio', 'Cambio a efectivo', 'Lo primero al llegar', 'cambio')}
+    ${op('compra', 'Compra de productos', 'Mercadería para vender', 'prod')}
+    ${op('noreversible', 'Pasero, colectivo…', 'Chalana, comida, baño…', 'bus')}
+    ${sec('Gastos personales y plata del negocio')}
     ${op('personal', 'Cargar un gasto personal', 'Casa, comida, salud…', 'user')}
-    ${op('corregir', 'Corregir o borrar un gasto', 'Si te equivocaste', 'lapiz')}
-    ${op('cuanto', 'Ver cuánto gasté', 'Este mes y los anteriores', 'recibo')}
-    ${op('efectivo', '¿Qué es el efectivo disponible?', 'La plata en la mano del negocio', 'billetera')}
-    ${op('recorrido', 'Recorrido por la app', 'Te muestro cada parte', 'robot')}`);
+    ${op('usar', 'Usé plata del negocio', 'Para algo personal', 'user')}
+    ${op('devolver', 'Devolví plata al negocio', 'En efectivo o por transferencia', 'billetera')}
+    ${op('contar', 'Contar o ajustar el efectivo', 'Si no coincide con lo que tenés', 'billetera')}
+    ${op('efectivo', '¿Qué es el efectivo disponible?', 'La plata en la mano del negocio', 'info')}
+    ${sec('Ver y corregir')}
+    ${op('cuanto', 'Cuánto gasté', 'Este mes y los anteriores', 'recibo')}
+    ${op('todos', 'Ver todos los movimientos', 'Buscar y filtrar', 'lupa')}
+    ${op('corregir', 'Corregir o borrar', 'Si te equivocaste', 'lapiz')}
+    ${op('excel', 'Descargar el Excel', 'Por mes o por viaje', 'recibo')}
+    ${sec('La app')}
+    ${op('tipos', '¿Qué es Recuperable y No reversible?', 'Los dos tipos de gasto del negocio', 'info')}
+    ${op('ajustes', 'Letra grande y modo simple', 'Para verla más cómoda', 'info')}
+    ${op('recorrido', 'Recorrido por la app', 'Cada parte, de a una', 'robot')}`);
 }
 function saludoRobot() {
-  if (LS.get('bd_ayudante', true) === false) return;
   const k = 'bd_guia_hola_' + S.yo.usuario;
-  if (LS.get(k, false)) return;
-  LS.set(k, true);
-  setTimeout(() => {
-    if (!$('modal').hidden || $('app').hidden) return;
-    abrirModal(`<div class="v-cab"><span class="ic" style="background:var(--grad)">${svg('robot', 22)}</span><b>¡Hola, ${esc(primerNombre(S.yo.nombre))}! 👋</b><button class="cerrar" type="button" data-acc="cerrar" aria-label="Cerrar">${svg('x', 18, 2.2)}</button></div>
-      <p style="margin:0;font-size:17px;font-weight:600;line-height:1.45;color:var(--soft)">Soy tu <b style="color:var(--ink)">ayudante</b>. Cuando tengas una duda, tocame (estoy abajo a la derecha) y te muestro dónde tocar.<br><br>¿Te muestro la app? Es cortito.</p>
-      <button class="btn btn-grad" type="button" data-acc="guia" data-guia="recorrido">Sí, mostrame</button>
-      <button class="btn btn-ghost" type="button" data-acc="cerrar">Ahora no</button>`);
-  }, 700);
+  // La primera vez en el modo completo: bienvenida con recorrido. Las demás veces: el globito.
+  if (!esSimple() && LS.get('bd_ayudante', true) !== false && !LS.get(k, false)) {
+    LS.set(k, true);
+    return setTimeout(() => {
+      if (!$('modal').hidden || $('app').hidden) return;
+      abrirModal(`<div class="v-cab"><span class="ic" style="background:var(--grad)">${svg('robot', 22)}</span><b>¡Hola, ${esc(primerNombre(S.yo.nombre))}! 👋</b><button class="cerrar" type="button" data-acc="cerrar" aria-label="Cerrar">${svg('x', 18, 2.2)}</button></div>
+        <p style="margin:0;font-size:17px;font-weight:600;line-height:1.45;color:var(--soft)">Soy el <b style="color:var(--ink)">ayudante</b> de la app. Si tenés una duda, usá el ícono 🤖, abajo a la derecha: ahí hay guías paso a paso y una IA que te responde.<br><br>¿Querés ver un recorrido corto por la app?</p>
+        <button class="btn btn-grad" type="button" data-acc="guia" data-guia="recorrido">Sí, ver el recorrido</button>
+        <button class="btn btn-ghost" type="button" data-acc="cerrar">Ahora no</button>`);
+    }, 700);
+  }
+  globitoRobot();
 }
 function iniciarGuia(nombre) {
   const g = GUIAS[nombre]; if (!g) return;
   if (g.antes) g.antes();
   const falta = g.requiere && g.requiere();
-  if (falta) return avisar(falta);
+  if (falta) return falta === true ? undefined : avisar(falta);
   const usos = LS.get('bd_guia_usos_' + nombre, 0);
   let pasos = g.pasos;
   if (g.camino) {
@@ -2759,7 +2889,7 @@ function ubicarGuia() {
   const vv = window.visualViewport, W = vv ? vv.width : innerWidth, H = vv ? vv.height : innerHeight, top0 = vv ? vv.offsetTop : 0;
   if (!el || !el.getClientRects().length) {
     // lo que había que tocar desapareció (por ejemplo, se cerró la ventana)
-    if (++GUIA.falta > 150) return terminarGuia('Se cerró la guía. Si querés, tocame de nuevo 🤖');
+    if (++GUIA.falta > 150) return terminarGuia('Se cerró la guía. El ícono 🤖 queda abajo a la derecha');
     luz.style.cssText = `left:${W / 2}px;top:${H / 2}px;width:0;height:0`;
     return;
   }
@@ -2821,7 +2951,220 @@ function guiaPermite(t) {
   if (tipo === 'pointerdown') sacudirGlobo();
 }, { capture: true, passive: false }));
 $('guiaSaltar').onclick = () => { const p = pasoActual(); if (p) siguientePaso(); };
-$('guiaX').onclick = () => terminarGuia('Guía cerrada. Tocame cuando quieras 🤖', false);
+$('guiaX').onclick = () => terminarGuia('Guía cerrada. El ícono 🤖 queda abajo a la derecha', false);
+
+/* =========================================================
+   IA: charla con Gemini (a través del cerebro de Google, que guarda la clave)
+   ========================================================= */
+// Manual de la app para la IA. REGLA: cada actualización de la app pone al día este manual y las guías.
+const MANUAL_IA = `CÓMO RESPONDER
+- Hablá en español de Argentina, con "vos", cálido y con respeto. Palabras simples: la familia no es experta en tecnología.
+- Respuestas cortas: 2 a 6 renglones. Si explicás pasos, numeralos (1., 2., 3.) y usá los nombres exactos que se ven en la app, en **negrita**.
+- Nada de dobles sentidos ni frases que puedan sonar raras. No digas "tocame" ni "botón del robot": decí "el ícono 🤖". Para pedir que elijan algo decí "tocá" o "elegí".
+- Explicá según el MODO que usa la persona (SIMPLE o COMPLETO, está en los DATOS). Si pregunta por el otro modo, explicalo también.
+- Montos siempre así: $ 1.234,56. Para sumas usá los RESÚMENES POR MES; si hace falta, sumá con cuidado los MOVIMIENTOS y mostrá de dónde sale.
+- Vos no podés cargar, cambiar ni borrar nada: explicá cómo se hace en la app.
+- Si la respuesta es cómo hacer algo en la app, terminá con UNA etiqueta (sola, en el último renglón) de esta lista, la que corresponda; la app la convierte en "Ver cómo se hace". No la nombres en el texto:
+  [[guia:cambio]] cambio de plata · [[guia:compra]] compra de mercadería · [[guia:pasero]] pasaje, pasero, chalana, comida del viaje · [[guia:personal]] gasto personal con su plata · [[guia:usar]] usé plata del negocio · [[guia:devolver]] devolver plata al negocio · [[guia:contar]] contar o ajustar el efectivo · [[guia:efectivo]] qué es el efectivo disponible · [[guia:corregir]] corregir o borrar · [[guia:cuanto]] ver cuánto gasté · [[guia:todos]] ver todos los movimientos · [[guia:excel]] descargar el Excel · [[guia:tipos]] qué es recuperable y no reversible · [[guia:ajustes]] letra grande y modo simple · [[guia:recorrido]] recorrido por la app
+- Temas fuera de la app (impuestos, monotributo, precios, consejos de plata): decí con amabilidad que solo ayudás con la Billetera.
+
+QUÉ ES LA APP
+Billetera Digital anota los gastos de la familia: los personales y los del negocio de cada uno (sus tiendas de MercadoLibre). Cada persona tiene su negocio. Enzo es el admin: armó la app, ve los datos de todos y aprueba las cuentas nuevas.
+- Funciona SIN internet (por ejemplo en la feria de Bermejo, Bolivia): guarda todo en el celular y lo sube solo cuando vuelve la señal. Arriba se ve "Todo subido" o cuántos faltan subir. La IA sí necesita internet.
+- Para abrir la app se dibuja un patrón. Si se olvidó: "Olvidé mi patrón" y se entra con usuario y contraseña.
+- Los montos se escriben como en Ualá: los números entran por la derecha y los dos últimos son los centavos. Para $ 500.000,00 se escribe 50000000 (con los dos ceros de los centavos). Si escribe 500000 queda $ 5.000,00.
+- Si un movimiento aparece en rojo, Google no lo aceptó: hay que abrirlo y corregirlo.
+- Hay dos modos; se cambia en **Perfil** → **Modo simple** (prender o apagar).
+
+MODO SIMPLE (una pregunta por pantalla)
+Inicio: arriba el saludo y el círculo con las iniciales (abre el Perfil). Si se debe plata al negocio, aparece "Le debés al negocio $ X" con **Devolver**. Después "Efectivo del negocio" con **Contar**. Dos opciones grandes: **🧳 Negocio - Compras** y **🏠 Gastos personales**. Abajo, **Ver lo que cargué**. El ícono 🤖 abre esta charla.
+- 🧳 Negocio - Compras:
+  · **💱 Cambié plata**: ¿Cuánto transferiste? → ¿Qué porcentaje te cobraron? → ¿Cómo pagaste la comisión? (**En efectivo**: me dieron todo y pagué la comisión con billetes / **Me la descontaron**: me dieron menos) → resumen → **Guardar**.
+  · **🛒 Compré mercadería**: producto, unidades, cuánto pagó en total, cómo pagó.
+  · **🚌 Pagué pasaje, pasero o comida**: qué pagó, cuánto, cómo.
+- 🏠 Gastos personales:
+  · **👛 Gasté con mi plata**: gasto personal pagado con su propia plata.
+  · **↩️ Usé plata del negocio**: para qué, cuánto, cómo pagó, ¿ya la devolviste? (Sí, toda / Una parte / Todavía no / No la voy a devolver). Si ya devolvió, pregunta cómo: en efectivo o por transferencia.
+  · **💵 Devolví plata al negocio**: cuánto (ya aparece todo lo que se debe) y cómo: **En efectivo** o **Por transferencia**.
+- En cada pantalla: **Siguiente**, **Atrás** arriba a la izquierda y **✕** para salir. Al final, un resumen "¿Está todo bien?" y **Guardar**.
+- **Ver lo que cargué**: la lista; tocando uno se ve el detalle y se puede **corregir** o **borrar**.
+
+MODO COMPLETO
+Barra de abajo: **Inicio**, **Personal**, **+** (en el medio), **Negocio**, **Perfil**. El ícono 🤖 (abajo a la derecha) tiene esta charla y guías paso a paso que iluminan dónde tocar.
+- **Inicio**: cuánto se gastó en el mes (círculo), "Por categoría" (se agranda al elegirla), "Últimos gastos" con **Consultar todos** (buscar por palabra o monto y filtrar por tipo: Personal, Compras, No reversible, Cambios, Efectivo, Transferencia).
+- **+** abre: **Compras y negocio** (pestañas **Inversión**, **No reversible**, **Cambio**), **Gasto personal** y **Plata del negocio** (Usé plata del negocio / Devolví plata al negocio).
+  · Cambio: monto transferido, % y "¿Cómo pagaste la comisión?" (**En efectivo** / **Descontada**).
+  · Gasto personal: de dónde salió la plata (**Negocio** o **Personal**), categoría, fecha (Hoy, Ayer o calendario), monto, detalle opcional, efectivo o transferencia. Si la plata es del negocio, **Lo voy a devolver** deja anotada la deuda.
+  · Devolución: cuánto, cómo (**En efectivo** / **Transferencia**) y nota opcional.
+- **Negocio**: Mes / Semana / Día, **Recuperable**, **No reversible**, **Efectivo disponible** (elegirlo permite ajustarlo) y los movimientos. Se puede ver por viaje.
+- **Personal**: los gastos personales, mes por mes (elegí el mes para ver otro).
+- **Perfil**: datos de la cuenta, **Versión de la app**, **Subir y actualizar ahora**, **Modo simple**, **Descargar en Excel** (por mes o por viaje), **Cuentas de la familia** (solo el admin), **Mostrar ayudante 🤖**, **Letra grande**, **Cambiar mi patrón**, **Cerrar sesión**.
+- Para corregir: abrir el movimiento → lápiz ✏️ → cambiar → **Guardar cambios**. Para borrar: **Borrar este gasto**, abajo de todo.
+
+CONCEPTOS
+- **Inversión / Recuperable**: mercadería comprada para vender. La plata vuelve cuando se vende. Puede tener un recargo de la tienda si se pagó por transferencia.
+- **No reversible**: gastos que no vuelven: pasero, colectivo, chalana, baño, bodega, comida del viaje, la comisión del cambio. Categorías: Insumos (pasajes, pasero), Sueldo (comida y bebida del viaje), Interés/Gastos (comisiones, recargos), Otros.
+- **Cambio a efectivo**: en Bermejo se transfiere por Mercado Pago a un cambista que da efectivo. La comisión (un %) es un gasto no reversible. Con la comisión en efectivo dan todo lo transferido y la comisión se paga con billetes; descontada, dan menos. En los dos casos el efectivo del negocio sube lo transferido menos la comisión.
+- **Efectivo del negocio / Efectivo disponible**: la plata del negocio que la persona tiene en la mano. Sube con los cambios y las devoluciones en efectivo; baja con lo que se paga en efectivo. Si no coincide con lo que cuenta: **Contar** (simple) o elegir **Efectivo disponible** (completo), escribir lo que tiene y la app corrige la diferencia ("Ajuste de efectivo"). Si al pagar no alcanza el efectivo, la app avisa.
+- **Viaje**: cada ida a Bermejo se anota como "Bermejo" + la fecha (ida y vuelta en el día).
+- **Plata del negocio usada para algo personal**: se carga con **Usé plata del negocio**. Si se va a devolver, queda "Le debés al negocio". Al devolver, baja la deuda: **en efectivo** suma al efectivo del negocio; **por transferencia** vuelve a Mercado Pago y el efectivo no cambia.
+- Si alguien quiere devolver y la app dice que no tiene nada anotado, es porque la plata usada no se cargó con **Usé plata del negocio** (o ya devolvió todo). La app ofrece **Cargarlo ahora**.
+- **Excel**: se descarga desde Perfil (modo completo), por mes o por viaje, y queda en las Descargas del celular.`;
+
+// Etiqueta de la IA → guía (modo completo) o paso a paso / pantalla (modo simple)
+const IA_ACC = {
+  cambio: { guia: 'cambio', flujo: 'cambio' }, compra: { guia: 'compra', flujo: 'compra' }, pasero: { guia: 'noreversible', flujo: 'viaje' },
+  personal: { guia: 'personal', flujo: 'personal' }, usar: { guia: 'usar', flujo: 'usar' }, devolver: { guia: 'devolver', flujo: 'devolver' },
+  contar: { guia: 'contar', flujo: 'contar' }, efectivo: { guia: 'efectivo' }, corregir: { guia: 'corregir', vista: 'lista' },
+  cuanto: { guia: 'cuanto', vista: 'lista' }, todos: { guia: 'todos', vista: 'lista' }, excel: { guia: 'excel' }, tipos: { guia: 'tipos' },
+  ajustes: { guia: 'ajustes', vista: 'perfil' }, recorrido: { guia: 'recorrido' }
+};
+const IA = { msgs: [], cargando: false };
+
+// Lo que la IA sabe de la persona: lo mismo que ve en la app
+function contextoIA() {
+  const y = S.yo, L = [];
+  const negs = y.admin ? (S.listas['Negocios'] || []) : [y.negocio];
+  L.push('Hoy es ' + new Date().toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) + '.');
+  L.push(`Persona: ${y.nombre} (usuario ${y.usuario}). Su negocio: ${y.negocio}. ${y.admin ? 'Es el ADMIN: ve los datos de todos los negocios.' : 'Ve lo que cargó en la app.'}`);
+  L.push('Modo de la app que usa ahora: ' + (esSimple() ? 'SIMPLE' : 'COMPLETO') + '.');
+  L.push(`Movimientos sin subir todavía: ${S.cola.length}. Con error (en rojo): ${S.rech.length}.`);
+  L.push('\nEFECTIVO Y DEUDA (ahora mismo):');
+  negs.forEach(n => L.push(`- ${n}: efectivo del negocio ${fmt(efectivoDe(n))} · le deben al negocio (plata usada sin devolver) ${fmt(deudaDe(n))}`));
+  const suma = (arr, fk, fv) => { const m = {}; arr.forEach(f => { const k = fk(f); m[k] = (m[k] || 0) + (Number(fv(f)) || 0); }); return Object.entries(m).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${fmt(v)}`).join(', '); };
+  const tot = (arr, fv) => fmt(arr.reduce((s, f) => s + (Number(fv(f)) || 0), 0));
+  const meses = [...new Set(S.personal.concat(S.negocio).map(f => String(f.fecha).slice(0, 7)))].filter(Boolean).sort().reverse().slice(0, 12);
+  L.push('\nRESÚMENES POR MES (más nuevo primero):');
+  meses.forEach(m => {
+    L.push(`* ${MESES[Number(m.slice(5, 7)) - 1]} ${m.slice(0, 4)}`);
+    negs.forEach(n => {
+      const P = S.personal.filter(f => f.negocio === n && String(f.fecha).startsWith(m));
+      const N = S.negocio.filter(f => f.negocio === n && String(f.fecha).startsWith(m));
+      if (!P.length && !N.length) return;
+      const pre = negs.length > 1 ? `  [${n}] ` : '  ';
+      if (P.length) {
+        L.push(`${pre}Gastos personales: total ${tot(P, f => f.monto)} (${P.length} gastos). Por categoría: ${suma(P, f => f.categoria, f => f.monto)}.`);
+        const PN = P.filter(f => f.origen === 'Negocio (MercadoLibre)');
+        if (PN.length) L.push(`${pre}  De esos, pagados con plata del negocio: ${tot(PN, f => f.monto)}; marcados para devolver: ${tot(PN.filter(f => f.devolver === 'sí'), f => f.monto)}.`);
+      }
+      const t = tp => N.filter(f => f.tipo === tp);
+      if (t('Inversión').length) L.push(`${pre}Compras de mercadería (recuperable): ${tot(t('Inversión'), f => f.monto)} en ${t('Inversión').length} compras.`);
+      const no = N.flatMap(partesNegocio).filter(p => p[2] === 'no');
+      if (no.length) L.push(`${pre}No reversible: total ${fmt(no.reduce((s, p) => s + p[1], 0))}. Por categoría: ${suma(no, p => p[0], p => p[1])}.`);
+      if (t('Cambio').length) L.push(`${pre}Cambios a efectivo: ${t('Cambio').length}, transferido ${tot(t('Cambio'), f => f.monto)}, comisiones ${tot(t('Cambio'), f => f.comision)}.`);
+      if (t('Devolución').length) L.push(`${pre}Devoluciones al negocio: ${tot(t('Devolución'), f => f.monto)} (en efectivo ${tot(t('Devolución').filter(f => f.pago !== 'Transferencia'), f => f.monto)}, por transferencia ${tot(t('Devolución').filter(f => f.pago === 'Transferencia'), f => f.monto)}).`);
+    });
+  });
+  const orden = (a, b) => String(b.fecha).localeCompare(String(a.fecha));
+  L.push('\nMOVIMIENTOS PERSONALES (más nuevo primero): fecha | negocio | cargó | categoría | detalle | plata de | pago | monto | a devolver');
+  S.personal.slice().sort(orden).slice(0, 300).forEach(f => L.push([f.fecha, f.negocio, f.usuario || '', f.categoria, f.descripcion || '-', f.origen === 'Personal' ? 'propia' : 'del negocio', f.pago, fmt(f.monto), f.devolver === 'sí' ? 'sí' : 'no'].join(' | ')));
+  L.push('\nMOVIMIENTOS DEL NEGOCIO (más nuevo primero): fecha | negocio | cargó | viaje | tipo | categoría | detalle | monto | pago | extra | efectivo +/-');
+  S.negocio.slice().sort(orden).slice(0, 300).forEach(f => {
+    let extra = '';
+    if (f.tipo === 'Inversión') extra = `${f.unidades} unidades a ${fmt(f.costoUnit)}` + (Number(f.recargo) ? `, recargo ${fmt(f.recargo)}` : '');
+    else if (f.tipo === 'Cambio') extra = `${pct(f.pctCambio)}, comisión ${fmt(f.comision)} ${f.pago === 'Efectivo' ? 'pagada en efectivo' : 'descontada'}, efectivo recibido ${fmt(f.recibido)}`;
+    else if (f.tipo === 'Ajuste') extra = 'efectivo contado ' + fmt(f.monto);
+    else if (f.tipo === 'Devolución') extra = f.pago === 'Transferencia' ? 'devuelta por transferencia' : 'devuelta en efectivo';
+    const mov = Number(f.movEfectivo) || 0;
+    L.push([f.fecha, f.negocio, f.usuario || '', f.viaje || '-', f.tipo, f.categoria, f.descripcion || '-', fmt(f.monto), f.pago, extra || '-', (mov >= 0 ? '+' : '-') + fmt(Math.abs(mov))].join(' | '));
+  });
+  return L.join('\n');
+}
+
+function abrirIA() {
+  if (GUIA.activa) return;
+  IA.msgs = []; IA.cargando = false;
+  abrirModal(`<div class="v-cab"><span class="ic" style="background:var(--grad)">${svg('robot', 20)}</span><b>Preguntale a la IA</b><button class="cerrar" type="button" data-acc="cerrar" aria-label="Cerrar">${svg('x', 18, 2.2)}</button></div>
+    <div class="ia-msgs" id="iaMsgs" aria-live="polite"></div>
+    <div class="ia-escribir"><textarea id="iaIn" rows="1" maxlength="600" placeholder="Escribí tu pregunta…" enterkeyhint="send" aria-label="Tu pregunta"></textarea>
+    <button type="button" class="ia-enviar" data-acc="iaEnviar" aria-label="Enviar">${svg('enviar', 22, 2.2)}</button></div>`, 'chat');
+  ajustarChat();
+  pintarIA();
+}
+function textoIA(t) {
+  return esc(t).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/(^|\n)\s*[*•-]\s+/g, '$1• ').replace(/\n/g, '<br>');
+}
+function pintarIA() {
+  const box = $('iaMsgs'); if (!box) return;
+  const nombre = primerNombre(S.yo.nombre);
+  const sug = esSimple()
+    ? ['¿Cómo devuelvo plata al negocio?', '¿Cuánto efectivo del negocio tengo?', '¿Cuánto gasté este mes?']
+    : ['¿Cuánto gasté este mes y en qué?', '¿Qué es "No reversible"?', '¿Cómo cargo un cambio de plata?'];
+  let h = `<div class="ia-b ia">¡Hola, ${esc(nombre)}! Preguntame lo que quieras sobre la app o sobre tus gastos.${navigator.onLine ? '' : '<br><br>⚠️ Ahora <b>no hay internet</b>: la IA funciona solo con señal.'}</div>`;
+  if (!IA.msgs.length) h += `<div class="ia-sug">${sug.map(s => `<button type="button" data-acc="iaSug" data-txt="${esc(s)}">${esc(s)}</button>`).join('')}</div>`;
+  IA.msgs.forEach(m => {
+    if (m.rol === 'yo') h += `<div class="ia-b yo">${esc(m.txt).replace(/\n/g, '<br>')}</div>`;
+    else if (m.rol === 'error') h += `<div class="ia-b ia error">${esc(m.txt)}</div>`;
+    else {
+      const acc = (m.txt.match(/\[\[guia:([a-z]+)\]\]/) || [])[1];
+      const limpio = m.txt.replace(/\[\[guia:[a-z]*\]\]/g, '').trim();
+      const ir = acc && IA_ACC[acc] && (esSimple() ? (IA_ACC[acc].flujo || IA_ACC[acc].vista) : IA_ACC[acc].guia);
+      h += `<div class="ia-b ia">${textoIA(limpio)}${ir ? `<button type="button" class="ia-ver" data-acc="iaGuia" data-g="${acc}">Ver cómo se hace ${svg('der', 16, 2.6)}</button>` : ''}</div>`;
+    }
+  });
+  if (IA.cargando) h += `<div class="ia-b ia escribiendo" aria-label="La IA está escribiendo"><i></i><i></i><i></i></div>`;
+  box.innerHTML = h;
+  box.scrollTop = box.scrollHeight;
+  const b = document.querySelector('#modalIn .ia-enviar'); if (b) b.disabled = IA.cargando;
+}
+async function enviarIA(texto) {
+  const inp = $('iaIn');
+  const txt = String(texto != null ? texto : (inp ? inp.value : '')).trim();
+  if (!txt || IA.cargando) return;
+  if (inp && texto == null) { inp.value = ''; inp.style.height = ''; }
+  IA.msgs.push({ rol: 'yo', txt });
+  if (!navigator.onLine) { IA.msgs.push({ rol: 'error', txt: 'No hay internet. La IA funciona solo con señal: probá cuando tengas conexión.' }); return pintarIA(); }
+  IA.cargando = true; pintarIA();
+  const mensajes = IA.msgs.filter(m => m.rol !== 'error').slice(-14).map(m => ({ rol: m.rol === 'yo' ? 'user' : 'ia', txt: m.txt }));
+  try {
+    const r = await api({ accion: 'ia', token: S.token, mensajes, manual: MANUAL_IA, contexto: contextoIA() });
+    IA.msgs.push({ rol: 'ia', txt: String(r.respuesta || '') });
+  } catch (e) {
+    if (e.sesionVencida) { IA.cargando = false; cerrarModal(); return cerrarSesionLocal(e.message); }
+    IA.msgs.push({ rol: 'error', txt: e.red ? 'No pude conectarme. Revisá la señal y probá de nuevo.' : /Acción desconocida/.test(e.message) ? 'La IA todavía no está activada en Google. Avisale a Enzo.' : e.message });
+  }
+  IA.cargando = false;
+  if ($('iaMsgs')) pintarIA();
+}
+function irAccionIA(id) {
+  const a = IA_ACC[id]; if (!a) return;
+  cerrarModal();
+  if (esSimple()) {
+    if (a.flujo) return iniciarFlujo(a.flujo);
+    if (a.vista) return irA(a.vista);
+    return;
+  }
+  if (a.guia) setTimeout(() => iniciarGuia(a.guia), 150);
+}
+// El chat ocupa la pantalla y se acomoda cuando aparece el teclado
+function ajustarChat() {
+  const vv = window.visualViewport, m = $('modal');
+  if (!m) return;
+  if (!vv || !$('modalIn').classList.contains('chat') || m.hidden) { m.style.height = ''; m.style.top = ''; return; }
+  m.style.top = vv.offsetTop + 'px'; m.style.height = vv.height + 'px';
+  const box = $('iaMsgs'); if (box) box.scrollTop = box.scrollHeight;
+}
+if (window.visualViewport) { visualViewport.addEventListener('resize', ajustarChat); visualViewport.addEventListener('scroll', ajustarChat); }
+document.addEventListener('keydown', ev => { if (ev.key === 'Enter' && !ev.shiftKey && ev.target.id === 'iaIn') { ev.preventDefault(); enviarIA(); } });
+document.addEventListener('input', ev => { if (ev.target.id === 'iaIn') { ev.target.style.height = ''; ev.target.style.height = Math.min(ev.target.scrollHeight, 120) + 'px'; } });
+
+// Globito del ícono 🤖: aparece unos segundos cada vez que se entra a la app
+function globitoRobot() {
+  const r = $('robot'), g = $('robotGlobo');
+  if (!r || !g || r.hidden) return;
+  clearTimeout(globitoRobot.t1); clearTimeout(globitoRobot.t2);
+  globitoRobot.t1 = setTimeout(() => {
+    if (!$('modal').hidden || $('app').hidden || GUIA.activa || getComputedStyle(r).display === 'none') return;
+    g.innerHTML = `¡Hola, ${esc(primerNombre(S.yo.nombre))}! Si tenés alguna duda con la app, acá estoy para ayudarte 🤖`;
+    g.hidden = false; g.classList.remove('chau');
+    globitoRobot.t2 = setTimeout(cerrarGlobito, 5500);
+  }, 900);
+}
+function cerrarGlobito() {
+  const g = $('robotGlobo'); if (!g || g.hidden) return;
+  g.classList.add('chau'); setTimeout(() => { g.hidden = true; g.classList.remove('chau'); }, 350);
+}
+$('robotGlobo').onclick = () => { cerrarGlobito(); abrirAyudante(); };
 
 /* =========================================================
    Arranque
