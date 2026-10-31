@@ -643,7 +643,7 @@ body.simple .vista{padding-bottom:78px}
 const API = window.BILLETERA_API || '';
 // Fecha y hora de esta versión (se muestra una vez cuando alguien abre la app actualizada)
 // Versión: MAYOR.MENOR.ARREGLO (arreglo → sube el último; algo nuevo → el del medio; cambio enorme → el primero)
-const APP_SERIE = '1.10.1', APP_FECHA = '2026-10-31';
+const APP_SERIE = '1.10.2', APP_FECHA = '2026-10-31';
 const APP_VERSION = APP_SERIE;
 const COLORES = ['#9B6BFF', '#F05BB5', '#3FD6C6', '#FFB547', '#6FA8FF', '#FF8A5B', '#B5E36B', '#D7C8FF'];
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
@@ -2896,7 +2896,7 @@ const GUIAS = {
   cuanto: {
     titulo: 'Cuánto gasté', antes: () => { if (S.vista !== 'inicio') irA('inicio'); },
     pasos: [
-      { el: Q('#contenido .hero'), txt: 'Acá ves <b>cuánto se gastó este mes</b>', modo: 'listo', btn: 'Siguiente' },
+      { el: Q('#contenido .hero'), txt: 'Acá ves <b>cuánto se gastó este mes</b>', modo: 'listo', mirar: true, btn: 'Siguiente' },
       { si: () => !!$('tarjCat'), el: Q('#tarjCat'), txt: 'Acá, <b>en qué</b> se gastó.<br>Elegila para agrandarla.', modo: 'listo', btn: 'Siguiente' },
       { el: Q('nav [data-ir=personal]'), txt: 'Tocá <b>Personal</b> para ver tus gastos mes por mes', valido: 'nav [data-ir=personal]' },
       { el: Q('#contenido .per-btn'), txt: 'Tocá el <b>mes</b> para ver otro', modo: 'listo', btn: 'Entendido' }]
@@ -2904,7 +2904,7 @@ const GUIAS = {
   efectivo: {
     titulo: 'Efectivo disponible', antes: () => { if (S.vista !== 'negocio') irA('negocio'); },
     pasos: [
-      { el: Q('#contenido .mini .efe'), txt: 'Es la <b>plata en efectivo del negocio</b> que tenés en la mano.<br>Sube con los <b>cambios</b> y baja con lo que pagás <b>en efectivo</b>.<br>Si no coincide con lo que contás, elegilo para <b>ajustar</b>.', modo: 'listo', btn: 'Entendido', largo: true }]
+      { el: Q('#contenido .mini .efe'), txt: 'Es la <b>plata en efectivo del negocio</b> que tenés en la mano.<br>Sube con los <b>cambios</b> y baja con lo que pagás <b>en efectivo</b>.<br>Si no coincide con lo que contás, elegilo para <b>ajustar</b>.', modo: 'listo', mirar: true, btn: 'Entendido', largo: true }]
   },
   usar: {
     titulo: 'Usé plata del negocio', tarea: true, largo: true,
@@ -2944,7 +2944,7 @@ const GUIAS = {
       { el: Q('#contenido [data-ir2=todos]'), txt: 'Elegí <b>Consultar todos</b>', valido: '#contenido [data-ir2=todos]' },
       { el: Q('#contenido .buscar'), txt: 'Acá podés <b>buscar</b> por palabra o por monto.', modo: 'listo', btn: 'Siguiente' },
       { el: Q('#contenido .filtro-tipo'), txt: 'Con estos filtros ves <b>solo un tipo</b>: personal, compras, cambios, efectivo o transferencia.', modo: 'listo', btn: 'Siguiente' },
-      { el: Q('#listaTodos'), txt: 'Elegí cualquier movimiento para ver el <b>detalle</b>. Ahí también está el lápiz ✏️ para corregirlo.', modo: 'listo', btn: 'Entendido' }]
+      { el: Q('#listaTodos'), txt: 'Tocando cualquier movimiento ves su <b>detalle</b>. Ahí también está el lápiz ✏️ para corregirlo.', modo: 'listo', mirar: true, btn: 'Entendido' }]
   },
   excel: {
     titulo: 'Descargar el Excel', antes: () => { if (S.vista !== 'perfil') irA('perfil'); },
@@ -2956,9 +2956,9 @@ const GUIAS = {
   tipos: {
     titulo: 'Tipos de gasto del negocio', antes: () => { if (S.vista !== 'negocio') irA('negocio'); },
     pasos: [
-      { el: Q('#contenido .mini > div:nth-child(1)'), txt: '<b>Recuperable</b>: lo que compraste <b>para vender</b> (mercadería).<br>Esa plata vuelve cuando vendés.', modo: 'listo', btn: 'Siguiente' },
-      { el: Q('#contenido .mini > div:nth-child(2)'), txt: '<b>No reversible</b>: los gastos de los <b>viajes</b> que no vuelven: pasajes, comida, la comisión del cambio…', modo: 'listo', btn: 'Siguiente' },
-      { el: Q('#contenido .mini > div:nth-child(3)'), txt: '<b>Gastos generales</b>: los gastos del negocio <b>fuera de los viajes</b>, como envíos o impuestos.', modo: 'listo', btn: 'Entendido' }]
+      { el: Q('#contenido .mini > div:nth-child(1)'), txt: '<b>Recuperable</b>: lo que compraste <b>para vender</b> (mercadería).<br>Esa plata vuelve cuando vendés.', modo: 'listo', mirar: true, btn: 'Siguiente' },
+      { el: Q('#contenido .mini > div:nth-child(2)'), txt: '<b>No reversible</b>: los gastos de los <b>viajes</b> que no vuelven: pasajes, comida, la comisión del cambio…', modo: 'listo', mirar: true, btn: 'Siguiente' },
+      { el: Q('#contenido .mini > div:nth-child(3)'), txt: '<b>Gastos generales</b>: los gastos del negocio <b>fuera de los viajes</b>, como envíos o impuestos.', modo: 'listo', mirar: true, btn: 'Entendido' }]
   },
   ajustes: {
     titulo: 'Apariencia y modo simple', antes: () => { if (S.vista !== 'perfil') irA('perfil'); },
@@ -2972,14 +2972,14 @@ const GUIAS = {
   recorrido: {
     titulo: 'Recorrido', antes: () => { if (S.vista !== 'inicio') irA('inicio'); },
     pasos: [
-      { el: Q('#contenido .hero'), txt: 'Acá ves <b>cuánto se gastó</b> este mes', modo: 'listo', btn: 'Siguiente' },
+      { el: Q('#contenido .hero'), txt: 'Acá ves <b>cuánto se gastó</b> este mes', modo: 'listo', mirar: true, btn: 'Siguiente' },
       { si: () => !!$('tarjCat'), el: Q('#tarjCat'), txt: 'Acá, <b>en qué</b> se gastó. Elegila para agrandarla.', modo: 'listo', btn: 'Siguiente' },
-      { si: () => !!document.querySelector('#contenido .h2-link'), el: cerca('#contenido .h2-link', '.tarj'), txt: 'Lo <b>último que se cargó</b>. Tocá uno para ver el detalle.', modo: 'listo', btn: 'Siguiente' },
-      { el: Q('#btnMas'), txt: 'Con el <b>+</b> cargás un gasto, una compra, un cambio o plata del negocio que usaste o devolviste', modo: 'listo', btn: 'Siguiente' },
-      { el: Q('nav [data-ir=personal]'), txt: '<b>Personal</b>: tus gastos de casa, comida, salud…', modo: 'listo', btn: 'Siguiente' },
-      { el: Q('nav [data-ir=negocio]'), txt: '<b>Negocio</b>: compras, cambios y el efectivo', modo: 'listo', btn: 'Siguiente' },
-      { el: Q('nav [data-ir=perfil]'), txt: '<b>Perfil</b>: Excel, tamaño de letra, modo claro, modo simple y más', modo: 'listo', btn: 'Siguiente' },
-      { el: Q('#robot'), txt: 'Si tenés una duda, usá el ícono 🤖: tiene guías paso a paso y la <b>IA</b>, que te responde como en una charla', modo: 'listo', btn: 'Terminar', largo: true }]
+      { si: () => !!document.querySelector('#contenido .h2-link'), el: cerca('#contenido .h2-link', '.tarj'), txt: 'Lo <b>último que se cargó</b>. Después, tocando uno, ves su detalle.', modo: 'listo', mirar: true, btn: 'Siguiente' },
+      { el: Q('#btnMas'), txt: 'Con el <b>+</b> cargás un gasto, una compra, un cambio o plata del negocio que usaste o devolviste', modo: 'listo', mirar: true, btn: 'Siguiente' },
+      { el: Q('nav [data-ir=personal]'), txt: '<b>Personal</b>: tus gastos propios, mes por mes', modo: 'listo', mirar: true, btn: 'Siguiente' },
+      { el: Q('nav [data-ir=negocio]'), txt: '<b>Negocio</b>: compras, cambios y el efectivo', modo: 'listo', mirar: true, btn: 'Siguiente' },
+      { el: Q('nav [data-ir=perfil]'), txt: '<b>Perfil</b>: Excel, tamaño de letra, modo claro, modo simple y más', modo: 'listo', mirar: true, btn: 'Siguiente' },
+      { el: Q('#robot'), txt: 'Si tenés una duda, usá el ícono 🤖: tiene guías paso a paso y la <b>IA</b>, que te responde como en una charla', modo: 'listo', mirar: true, btn: 'Terminar', largo: true }]
   }
 };
 function abrirFormGuia(tipo) {
@@ -3086,7 +3086,8 @@ function ubicarGuia() {
   const p = pasoActual(); if (!p) return;
   const el = p.el(), luz = $('guia').querySelector('.guia-luz'), globo = $('guia').querySelector('.guia-globo');
   const vv = window.visualViewport, W = vv ? vv.width : innerWidth, H = vv ? vv.height : innerHeight, top0 = vv ? vv.offsetTop : 0;
-  if (!el || !el.getClientRects().length) {
+  const tapado = el && !$('modal').hidden && !el.closest('#modal') && !el.closest('#cal');
+  if (!el || !el.getClientRects().length || tapado) {
     // lo que había que tocar desapareció (por ejemplo, se cerró la ventana)
     if (++GUIA.falta > 150) return terminarGuia('Se cerró la guía. El ícono 🤖 queda abajo a la derecha');
     luz.style.cssText = `left:${W / 2}px;top:${H / 2}px;width:0;height:0`;
@@ -3139,6 +3140,7 @@ function guiaPermite(t) {
   if (t.closest('#guia .guia-globo')) return true;
   const p = pasoActual(); if (!p) return false;
   const el = p.el();
+  if (p.mirar) return false; // paso para mirar: solo se usa el globito (Siguiente / ✕)
   if (el && el.contains(t)) return true;
   if (p.valido && t.closest(p.valido)) return true;
   if (!$('cal').hidden && t.closest('#cal')) return true;
