@@ -25,7 +25,27 @@
   --grad:linear-gradient(135deg,#7C4DFF 0%,#B347D9 55%,#E040A0 100%);
   --font:'Urbanist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --safe-t:env(safe-area-inset-top,0px); --safe-b:env(safe-area-inset-bottom,0px);
+  --campo:rgba(11,9,22,.5); --campo2:rgba(11,9,22,.3); --borde:rgba(255,255,255,.13); --sutil:rgba(255,255,255,.07);
+  --errtxt:#FFB3BF; --vidrio:rgba(34,27,60,.72); --chatbg:rgba(26,21,48,.96); --velo:rgba(8,6,16,.55); --login1:#2A1650;
+  --sobre:#1A1530; --globo:var(--ink); --acento:var(--lilac); --c3:#B79CFF; --patpunto:#4A4170;
   color-scheme:dark;
+}
+/* ---------- Modo claro: fondo claro teñido de lila ---------- */
+html.claro .s-efe b{color:var(--tealink)}
+html.claro .opcion.chica{color:var(--ink)}
+html.claro .opcion.chica .oi{background:var(--card2);color:var(--lilac)}
+html.claro .robot-globo,html.claro .guia-globo{border:1px solid var(--borde);box-shadow:0 12px 30px rgba(60,30,140,.22)}
+html.claro .vidrio{box-shadow:0 18px 50px rgba(60,30,140,.18)}
+html.claro{
+  --bg:#F5F1FF; --bg2:#EEE7FF; --card:#FFFFFF; --card2:#F0EAFF; --card3:#E6DCFF;
+  --ink:#1F1739; --muted:#6A5F90; --soft:#4B4170; --dim:#9289B5;
+  --violet:#7C4DFF; --violet2:#7C4DFF; --lilac:#5B2FD6; --fuchsia:#D6338F; --pink:#C42A82;
+  --teal:#1F9E95; --teal2:#0F8278; --tealbg:#D3F2EE; --tealink:#0B6058;
+  --amber:#A86300; --red:#D2304D;
+  --campo:#FFFFFF; --campo2:rgba(255,255,255,.75); --borde:rgba(70,40,150,.16); --sutil:rgba(70,40,150,.07);
+  --errtxt:#B8173F; --vidrio:rgba(255,255,255,.9); --chatbg:#FBF9FF; --velo:rgba(45,25,100,.32); --login1:#E2D5FF;
+  --sobre:#1F1739; --globo:#FFFFFF; --acento:#5B2FD6; --c3:#7C4DFF; --patpunto:#CFC3F0;
+  color-scheme:light;
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;-webkit-tap-highlight-color:transparent;font-variant-numeric:tabular-nums}
@@ -37,7 +57,7 @@ button{cursor:pointer}
 
 /* ---------- Campos ---------- */
 .campo{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:var(--soft);min-width:0}
-.campo input,.campo select,.input{width:100%;border:1px solid rgba(255,255,255,.12);background:rgba(11,9,22,.5);color:var(--ink);border-radius:14px;padding:12px;font-size:16px;font-weight:600}
+.campo input,.campo select,.input{width:100%;border:1px solid var(--borde);background:var(--campo);color:var(--ink);border-radius:14px;padding:12px;font-size:16px;font-weight:600}
 .clave{position:relative}
 .clave input{padding-right:54px}
 .ojo{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:12px;background:transparent;color:var(--soft);display:flex;align-items:center;justify-content:center}
@@ -50,20 +70,20 @@ button{cursor:pointer}
 .btn-sec{background:var(--card3);color:var(--ink)}
 .btn-ghost{background:transparent;color:var(--soft);font-weight:700;font-size:14px;padding:10px}
 .btn:disabled{opacity:.55;cursor:default}
-.error{background:rgba(255,107,129,.14);color:#FFB3BF;border-radius:12px;padding:10px 12px;font-size:14px;font-weight:700}
+.error{background:rgba(255,107,129,.14);color:var(--errtxt);border-radius:12px;padding:10px 12px;font-size:14px;font-weight:700}
 .ok{background:rgba(63,214,198,.14);color:var(--tealink);border-radius:12px;padding:10px 12px;font-size:14px;font-weight:700}
 .ayuda{font-size:12px;font-weight:600;color:var(--soft);line-height:1.4}
-.segm{display:flex;background:rgba(11,9,22,.5);border-radius:16px;padding:4px;gap:4px}
+.segm{display:flex;background:var(--campo);border-radius:16px;padding:4px;gap:4px}
 .segm button{flex:1 1 0;border:0;background:transparent;border-radius:12px;padding:10px 4px;font-weight:700;font-size:14px;color:var(--soft);display:flex;flex-direction:column;align-items:center;gap:1px}
 .segm button small{font-size:10px;font-weight:600}
 .segm button[aria-pressed="true"]{background:var(--violet);color:#fff;font-weight:800}
 .chips{display:flex;gap:8px;flex-wrap:wrap}
-.chip{border:1px solid rgba(255,255,255,.16);background:rgba(11,9,22,.35);border-radius:14px;padding:10px 12px;font-weight:700;font-size:13px;color:var(--ink)}
+.chip{border:1px solid var(--borde);background:var(--campo2);border-radius:14px;padding:10px 12px;font-weight:700;font-size:13px;color:var(--ink)}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--bg2);border-color:var(--ink);font-weight:800}
 .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 
 /* ---------- Login ---------- */
-#login{display:flex;align-items:center;justify-content:center;background:radial-gradient(120% 70% at 50% 0%,#2A1650 0%,var(--bg) 60%)}
+#login{display:flex;align-items:center;justify-content:center;background:radial-gradient(120% 70% at 50% 0%,var(--login1) 0%,var(--bg) 60%)}
 .login-box{width:100%;max-width:380px;display:flex;flex-direction:column;gap:14px}
 .marca{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:6px;text-align:center}
 .marca img{width:84px;height:84px;border-radius:24px;box-shadow:0 14px 40px rgba(176,71,217,.45)}
@@ -152,41 +172,41 @@ nav.barra button[aria-current="page"]{color:var(--lilac);font-weight:800}
 nav.barra .mas{width:62px;height:62px;border-radius:50%;margin-top:-36px;background:var(--grad);color:#fff;box-shadow:0 10px 26px rgba(176,71,217,.5)}
 
 /* ---------- Ventanas ---------- */
-.fondo{position:fixed;inset:0;background:rgba(8,6,16,.55);z-index:10;display:flex;align-items:flex-end;justify-content:center;padding:calc(12px + var(--safe-t)) 10px calc(10px + var(--safe-b))}
-.vidrio{width:100%;max-width:520px;max-height:100%;overflow:auto;background:rgba(34,27,60,.72);backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%);border:1px solid rgba(255,255,255,.12);border-radius:28px;padding:18px 16px 16px;display:flex;flex-direction:column;gap:13px}
+.fondo{position:fixed;inset:0;background:var(--velo);z-index:10;display:flex;align-items:flex-end;justify-content:center;padding:calc(12px + var(--safe-t)) 10px calc(10px + var(--safe-b))}
+.vidrio{width:100%;max-width:520px;max-height:100%;overflow:auto;background:var(--vidrio);backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%);border:1px solid var(--borde);border-radius:28px;padding:18px 16px 16px;display:flex;flex-direction:column;gap:13px}
 @media (prefers-reduced-motion:no-preference){.vidrio{animation:sube .22s ease-out}@keyframes sube{from{transform:translateY(30px);opacity:.5}to{transform:none;opacity:1}}}
 .v-cab{display:flex;align-items:center;gap:10px}
 .v-cab .ic{width:40px;height:40px;border-radius:13px;display:flex;align-items:center;justify-content:center;color:#fff;flex:none}
 .v-cab b{font-size:19px;font-weight:800;flex:1}
-.cerrar{width:40px;height:40px;border-radius:13px;border:0;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:var(--ink)}
+.cerrar{width:40px;height:40px;border-radius:13px;border:0;background:var(--sutil);display:flex;align-items:center;justify-content:center;color:var(--ink)}
 .opcion{display:flex;align-items:center;gap:14px;border-radius:20px;padding:16px;border:0;color:#fff;text-align:left;width:100%}
 .opcion .oi{width:48px;height:48px;border-radius:15px;background:rgba(14,11,26,.25);display:flex;align-items:center;justify-content:center;flex:none}
 .opcion span{display:flex;flex-direction:column;gap:3px;flex:1}
 .opcion b{font-size:17px;font-weight:800}
 .opcion small{font-size:13px;font-weight:600}
-.caja{display:flex;flex-direction:column;gap:6px;background:rgba(11,9,22,.5);border-radius:16px;padding:12px 14px}
+.caja{display:flex;flex-direction:column;gap:6px;background:var(--campo);border-radius:16px;padding:12px 14px}
 .caja div{display:flex;justify-content:space-between;gap:10px;font-size:13px;font-weight:600;color:var(--soft)}
 .caja .t{color:var(--ink);font-size:15px;font-weight:800;align-items:center}
 .caja .t b{font-size:20px}
 .efe-nota{font-size:12px;font-weight:700;color:var(--tealink);background:rgba(31,77,71,.6);border-radius:12px;padding:8px 12px}
 .efe-nota.mal{color:var(--amber);background:rgba(255,181,71,.14)}
-.fijo{display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(255,255,255,.08);background:rgba(11,9,22,.25);border-radius:14px;padding:12px;font-size:16px;font-weight:700;color:var(--ink)}
+.fijo{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--sutil);background:var(--campo2);border-radius:14px;padding:12px;font-size:16px;font-weight:700;color:var(--ink)}
 
 /* Desplegable propio */
 .dd{position:relative}
-.dd-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid rgba(255,255,255,.12);background:rgba(11,9,22,.5);color:var(--ink);border-radius:14px;padding:12px;font-size:16px;font-weight:700;text-align:left}
-.dd-lista{margin-top:6px;background:var(--card2);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:6px;display:flex;flex-direction:column;box-shadow:0 14px 30px rgba(0,0,0,.45)}
+.dd-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--borde);background:var(--campo);color:var(--ink);border-radius:14px;padding:12px;font-size:16px;font-weight:700;text-align:left}
+.dd-lista{margin-top:6px;background:var(--card2);border:1px solid var(--borde);border-radius:16px;padding:6px;display:flex;flex-direction:column;box-shadow:0 14px 30px rgba(0,0,0,.45)}
 .dd-lista button{border:0;background:transparent;color:var(--ink);text-align:left;padding:10px;border-radius:10px;font-size:15px;font-weight:600;display:flex;justify-content:space-between;align-items:center}
 .dd-lista button[aria-selected="true"]{background:var(--violet);font-weight:800}
-.combo{display:flex;border:1px solid rgba(255,255,255,.12);background:rgba(11,9,22,.5);border-radius:14px;overflow:hidden}
+.combo{display:flex;border:1px solid var(--borde);background:var(--campo);border-radius:14px;overflow:hidden}
 .combo input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);padding:12px;font-size:16px;font-weight:600}
 .combo input:focus{outline:none}
-.combo button{width:48px;border:0;border-left:1px solid rgba(255,255,255,.12);background:rgba(124,77,255,.35);color:#fff;display:flex;align-items:center;justify-content:center}
+.combo button{width:48px;border:0;border-left:1px solid var(--borde);background:rgba(124,77,255,.35);color:#fff;display:flex;align-items:center;justify-content:center}
 
 .aviso{position:fixed;left:50%;transform:translateX(-50%);top:calc(14px + var(--safe-t));background:var(--ink);color:var(--bg2);padding:11px 16px;border-radius:14px;font-weight:800;font-size:14px;z-index:30;max-width:calc(100% - 32px);text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.4)}
 
 /* Perfil */
-.fila-p{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-top:1px solid rgba(255,255,255,.06);font-size:14px}
+.fila-p{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--sutil);font-size:14px}
 .fila-p:first-of-type{border-top:0}
 .fila-p span{color:var(--muted);font-weight:600}
 .fila-p b{font-weight:800;text-align:right}
@@ -197,7 +217,7 @@ nav.barra .mas{width:62px;height:62px;border-radius:50%;margin-top:-36px;backgro
 .estado{font-size:11px;font-weight:800;border-radius:8px;padding:3px 8px;white-space:nowrap}
 .estado.activo{background:var(--tealbg);color:var(--tealink)}
 .estado.pendiente{background:rgba(255,181,71,.16);color:var(--amber)}
-.estado.desactivado,.estado.bloq{background:rgba(255,107,129,.14);color:#FFB3BF}
+.estado.desactivado,.estado.bloq{background:rgba(255,107,129,.14);color:var(--errtxt)}
 .acc{display:flex;gap:6px;flex-wrap:wrap}
 .acc button{border:0;border-radius:12px;padding:9px 12px;font-weight:800;font-size:13px;background:var(--card3);color:var(--ink)}
 .acc button.prim{background:var(--violet);color:#fff}
@@ -239,7 +259,7 @@ button:disabled::after{display:none}
 .cal-sel b{display:block;font-size:22px;color:var(--ink);margin-top:2px;font-weight:800}
 .cal-cab{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .cal-cab b{font-size:17px;font-weight:800}
-.cal-cab button{width:44px;height:44px;border-radius:14px;border:0;background:rgba(255,255,255,.08);color:var(--ink);display:flex;align-items:center;justify-content:center}
+.cal-cab button{width:44px;height:44px;border-radius:14px;border:0;background:var(--sutil);color:var(--ink);display:flex;align-items:center;justify-content:center}
 .cal-sem,.cal-dias{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;text-align:center}
 .cal-sem span{font-size:12px;font-weight:800;color:var(--muted);padding:4px 0}
 .cal-dias button{aspect-ratio:1;border:0;border-radius:12px;background:transparent;color:var(--ink);font-size:15px;font-weight:700;padding:0}
@@ -319,18 +339,33 @@ svg.resaltando .arco.activo{opacity:1;stroke-width:22}
 .interruptor[aria-checked="true"] .switch{background:var(--violet)}
 .interruptor[aria-checked="true"] .switch::after{transform:translateX(22px)}
 /* Letra grande: agranda todo un 15% */
-body.grande .vista,body.grande .vidrio,body.grande .login-box,body.grande #patron>*{zoom:1.15}
-body.grande nav.barra{zoom:1.1}
+.vista,.vidrio,.login-box,#patron>*{zoom:var(--zoom,1)}
+nav.barra{zoom:var(--zoomnav,1)}
+/* Apariencia */
+.ap-ejemplo{background:var(--campo);border:1px solid var(--borde);border-radius:16px;padding:12px 14px}
+.ap-ejemplo small{font-size:12px;font-weight:700;color:var(--muted)}
+.ap-ejemplo p{margin:6px 0 0;font-size:17px;font-weight:600;line-height:1.45;color:var(--ink)}
+.ap-tam{display:flex;align-items:center;gap:12px;background:var(--campo);border:1px solid var(--borde);border-radius:16px;padding:8px 14px}
+.ap-tam .a1{font-size:14px;font-weight:800;color:var(--muted)}
+.ap-tam .a2{font-size:26px;font-weight:800;color:var(--muted)}
+.ap-tam input{flex:1;accent-color:var(--violet);height:34px;margin:0}
+.ap-fuentes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ap-fuentes button{border:2px solid var(--borde);background:var(--campo);color:var(--ink);border-radius:16px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:700}
+.ap-fuentes button b{font-size:24px;font-weight:700;line-height:1.1}
+.ap-fuentes button small{font-size:12px;color:var(--muted);font-family:var(--font)}
+.ap-fuentes button[aria-pressed="true"]{border-color:var(--violet);background:rgba(124,77,255,.16)}
+.campo>b{color:var(--acento)}
 
 /* ================= Actualización 4 ================= */
 /* Mes tocable (Personal / Negocio) y calendario con meses y años */
 .per-btn{border:0;background:transparent;color:var(--ink);font-size:16px;font-weight:800;padding:9px 12px;border-radius:12px;display:flex;align-items:center;gap:6px;white-space:nowrap}
 .per-btn svg{color:var(--lilac)}
 .nav-per .per-btn{width:auto;height:44px;background:transparent;padding:0 12px}
-.cal-tit{border:0;background:rgba(255,255,255,.06);color:var(--ink);font-size:17px;font-weight:800;padding:9px 14px;border-radius:12px;display:flex;align-items:center;gap:6px}
+.cal-tit{border:0;background:var(--sutil);color:var(--ink);font-size:17px;font-weight:800;padding:9px 14px;border-radius:12px;display:flex;align-items:center;gap:6px}
 .cal-tit svg{color:var(--lilac)}
+.cal-cab .cal-tit{width:auto;height:44px;white-space:nowrap}
 .cal-grilla{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.cal-grilla button{border:0;border-radius:14px;background:rgba(255,255,255,.06);color:var(--ink);font-size:16px;font-weight:800;padding:16px 0}
+.cal-grilla button{border:0;border-radius:14px;background:var(--sutil);color:var(--ink);font-size:16px;font-weight:800;padding:16px 0}
 .cal-grilla button.hoy{box-shadow:inset 0 0 0 2px var(--violet2);color:var(--lilac)}
 .cal-grilla button[aria-selected="true"]{background:var(--grad);color:#fff;box-shadow:none}
 /* Avatar tocable */
@@ -342,12 +377,12 @@ button.avatar{border:0;padding:0}
 .titulo-todos{display:flex;align-items:center;gap:10px}
 .titulo-todos h1{margin:0;font-size:22px;font-weight:900}
 .volver{width:44px;height:44px;border-radius:14px;border:0;background:var(--card);color:var(--ink);display:flex;align-items:center;justify-content:center;flex:none}
-.buscar{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:0 14px;color:var(--muted)}
+.buscar{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--borde);border-radius:16px;padding:0 14px;color:var(--muted)}
 .buscar input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font-size:16px;font-weight:600;padding:13px 0}
 .buscar input:focus{outline:none}
 .buscar:focus-within{border-color:var(--violet2);box-shadow:0 0 0 3px rgba(124,77,255,.3)}
 .filtro-tipo{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
-.filtro-tipo button{flex:none;border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:8px 13px;background:transparent;color:var(--soft);font-weight:700;font-size:13px}
+.filtro-tipo button{flex:none;border:1px solid var(--borde);border-radius:20px;padding:8px 13px;background:transparent;color:var(--soft);font-weight:700;font-size:13px}
 .filtro-tipo button[aria-pressed="true"]{background:var(--violet);border-color:var(--violet);color:#fff;font-weight:800}
 .fecha-grupo{margin:0 0 6px;font-size:15px;font-weight:800;color:var(--soft)}
 /* Detalle de un gasto */
@@ -355,7 +390,7 @@ button.avatar{border:0;padding:0}
 .det-cab span{font-size:16px;font-weight:700;color:var(--soft)}
 .det-cab b{font-size:34px;font-weight:900;letter-spacing:-.5px}
 .det-cab b.pos{color:var(--teal2)}
-.det-filas{background:rgba(11,9,22,.45);border-radius:18px;padding:4px 14px}
+.det-filas{background:var(--campo);border-radius:18px;padding:4px 14px}
 .det-filas .fila-p b{max-width:60%;overflow-wrap:anywhere}
 
 /* ================= Actualización 5: ayudante ================= */
@@ -365,19 +400,19 @@ button.avatar{border:0;padding:0}
 .robot::before{content:'';position:absolute;inset:-7px;border-radius:50%;background:conic-gradient(from 0deg,rgba(201,184,255,0) 0deg,rgba(201,184,255,0) 150deg,#C9B8FF 230deg,#E040A0 300deg,rgba(224,64,160,0) 360deg);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 4.5px),#000 calc(100% - 4px));mask:radial-gradient(farthest-side,transparent calc(100% - 4.5px),#000 calc(100% - 4px));filter:drop-shadow(0 0 5px rgba(224,64,160,.8));pointer-events:none}
 #robot.robot{overflow:visible}
 @media (prefers-reduced-motion:no-preference){.robot::before{animation:gira 2.4s linear infinite}@keyframes gira{to{transform:rotate(360deg)}}}
-.robot-globo{position:fixed;right:84px;bottom:calc(var(--rb,calc(98px + var(--safe-b))) + 4px);z-index:6;max-width:min(250px,calc(100vw - 110px));background:var(--ink);color:#1A1530;border-radius:18px 18px 4px 18px;padding:11px 14px;font-size:15px;font-weight:700;line-height:1.35;box-shadow:0 12px 30px rgba(0,0,0,.45);cursor:pointer}
-.robot-globo::after{content:'';position:absolute;right:-7px;bottom:10px;border:8px solid transparent;border-left-color:var(--ink);border-right:0}
-body.grande .robot-globo{font-size:17px}
+.robot-globo{position:fixed;right:84px;bottom:calc(var(--rb,calc(98px + var(--safe-b))) + 4px);z-index:6;max-width:min(250px,calc(100vw - 110px));background:var(--globo);color:var(--sobre);border-radius:18px 18px 4px 18px;padding:11px 14px;font-size:calc(15px * var(--zoom,1));font-weight:700;line-height:1.35;box-shadow:0 12px 30px rgba(0,0,0,.45);cursor:pointer}
+.robot-globo::after{content:'';position:absolute;right:-7px;bottom:10px;border:8px solid transparent;border-left-color:var(--globo);border-right:0}
+
 @media (prefers-reduced-motion:no-preference){.robot-globo{animation:globoEntra .35s cubic-bezier(.2,1.3,.4,1)}@keyframes globoEntra{from{transform:translateX(16px) scale(.85);opacity:0}}.robot-globo.chau{transition:opacity .3s,transform .3s;opacity:0;transform:translateX(12px)}}
 /* Charla con la IA */
 .vidrio>:not(.ia-msgs){flex-shrink:0}
-.vidrio.chat{height:100%;max-height:100%;overflow:hidden;padding-bottom:12px;background:rgba(26,21,48,.96)}
+.vidrio.chat{height:100%;max-height:100%;overflow:hidden;padding-bottom:12px;background:var(--chatbg)}
 .ia-msgs{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:2px 2px 6px;overscroll-behavior:contain}
 .ia-b{max-width:86%;padding:11px 14px;border-radius:18px;font-size:16px;line-height:1.45;word-wrap:break-word}
 .ia-b.ia{align-self:flex-start;background:var(--card3);color:var(--ink);border-bottom-left-radius:6px}
 .ia-b.yo{align-self:flex-end;background:var(--grad);color:#fff;border-bottom-right-radius:6px;font-weight:600}
-.ia-b.error{background:rgba(255,92,122,.16);color:#FFC2CD}
-.ia-b b{color:#fff}
+.ia-b.error{background:rgba(255,92,122,.16);color:var(--errtxt)}
+.ia-b.ia b{color:var(--ink)}
 .ia-ver{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;margin-top:10px;padding:11px 12px;border:0;border-radius:14px;background:var(--grad);color:#fff;font-weight:800;font-size:15px}
 .ia-sug{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
 .ia-sug button{border:1px solid rgba(201,184,255,.35);background:rgba(124,77,255,.14);color:var(--lilac);border-radius:16px;padding:9px 13px;font-size:15px;font-weight:700;text-align:left}
@@ -385,16 +420,21 @@ body.grande .robot-globo{font-size:17px}
 .escribiendo i{width:8px;height:8px;border-radius:50%;background:var(--lilac);opacity:.4}
 @media (prefers-reduced-motion:no-preference){.escribiendo i{animation:punto 1.1s infinite}.escribiendo i:nth-child(2){animation-delay:.18s}.escribiendo i:nth-child(3){animation-delay:.36s}@keyframes punto{30%{opacity:1;transform:translateY(-4px)}}}
 .ia-escribir{display:flex;align-items:flex-end;gap:8px}
-.ia-escribir textarea{flex:1;resize:none;min-height:50px;max-height:120px;border:1px solid rgba(255,255,255,.14);background:rgba(11,9,22,.55);color:var(--ink);border-radius:18px;padding:13px 14px;font:inherit;font-size:16px;line-height:1.4}
+.ia-escribir textarea{flex:1;resize:none;min-height:50px;max-height:120px;border:1px solid var(--borde);background:var(--campo);color:var(--ink);border-radius:18px;padding:13px 14px;font:inherit;font-size:16px;line-height:1.4}
 .ia-escribir textarea:focus{outline:none;border-color:var(--violet2);box-shadow:0 0 0 3px rgba(124,77,255,.3)}
+.ia-foto{flex:none;width:50px;height:50px;border-radius:50%;border:1px solid var(--borde,var(--borde));background:var(--card2);color:var(--lilac);display:flex;align-items:center;justify-content:center}
+.ia-adj{display:flex;align-items:center;gap:10px;background:var(--card2);border-radius:16px;padding:8px}
+.ia-adj img{width:54px;height:54px;object-fit:cover;border-radius:10px;flex:none}
+.ia-adj span{flex:1;font-size:13px;font-weight:700;color:var(--soft)}
+.ia-img{display:block;max-width:100%;max-height:220px;border-radius:12px;margin-bottom:6px}
 .ia-enviar{flex:none;width:50px;height:50px;border-radius:50%;border:0;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center}
 .ia-enviar:disabled{opacity:.45}
 #guia{position:fixed;inset:0;z-index:25;pointer-events:none}
 .guia-luz{position:fixed;border-radius:18px;box-shadow:0 0 0 9999px rgba(8,6,16,.66);transition:left .25s ease,top .25s ease,width .25s ease,height .25s ease;pointer-events:none}
 .guia-luz::after{content:'';position:absolute;inset:-4px;border-radius:22px;border:3px solid var(--lilac)}
 @media (prefers-reduced-motion:no-preference){.guia-luz::after{animation:latido 1.4s ease-in-out infinite}@keyframes latido{50%{inset:-9px;opacity:.35}}}
-.guia-globo{position:fixed;pointer-events:auto;width:min(330px,calc(100vw - 24px));background:var(--ink);color:#1A1530;border-radius:20px;padding:12px 14px 12px;box-shadow:0 14px 40px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:8px;transition:left .25s ease,top .25s ease}
-.guia-globo::before{content:'';position:absolute;left:var(--ax,50%);width:16px;height:16px;background:var(--ink);transform:translateX(-50%) rotate(45deg);border-radius:3px}
+.guia-globo{position:fixed;pointer-events:auto;width:min(330px,calc(100vw - 24px));background:var(--globo);color:var(--sobre);border-radius:20px;padding:12px 14px 12px;box-shadow:0 14px 40px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:8px;transition:left .25s ease,top .25s ease}
+.guia-globo::before{content:'';position:absolute;left:var(--ax,50%);width:16px;height:16px;background:var(--globo);transform:translateX(-50%) rotate(45deg);border-radius:3px}
 .guia-globo.abajo::before{top:-6px}
 .guia-globo.arriba::before{bottom:-6px}
 .guia-globo.centro::before{display:none}
@@ -433,7 +473,7 @@ body.simple .vista{padding-bottom:78px}
 .s-efe span{display:flex;flex-direction:column;gap:2px}
 .s-efe small{font-size:13px;font-weight:700}
 .s-efe b{font-size:26px;font-weight:900;color:#fff}
-.s-efe em{font-style:normal;font-size:13px;font-weight:800;background:rgba(255,255,255,.12);padding:8px 12px;border-radius:12px;white-space:nowrap}
+.s-efe em{font-style:normal;font-size:13px;font-weight:800;background:var(--borde);padding:8px 12px;border-radius:12px;white-space:nowrap}
 .deuda{display:flex;align-items:center;justify-content:space-between;gap:12px;border-radius:22px;padding:16px 18px;background:rgba(255,181,71,.14);border:1px solid rgba(255,181,71,.4)}
 .deuda span{display:flex;flex-direction:column;gap:2px;min-width:0}
 .deuda small{font-size:13px;font-weight:700;color:var(--amber)}
@@ -450,23 +490,23 @@ body.simple .vista{padding-bottom:78px}
 .f-tit{font-size:15px;font-weight:800;color:var(--lilac);display:flex;align-items:center;gap:8px;margin-top:6px}
 .f-preg{font-size:28px;font-weight:900;line-height:1.2;margin:0}
 .f-ayuda{font-size:16px;color:var(--soft);font-weight:600;margin:-4px 0 0;line-height:1.4}
-.f-num,.f-txt{width:100%;border:2px solid var(--violet2);background:rgba(11,9,22,.5);color:var(--ink);border-radius:20px;padding:16px 18px;font-weight:900}
+.f-num,.f-txt{width:100%;border:2px solid var(--violet2);background:var(--campo);color:var(--ink);border-radius:20px;padding:16px 18px;font-weight:900}
 .f-num{font-size:38px}
 .f-txt{font-size:22px;font-weight:700}
 .f-num:focus,.f-txt:focus{outline:none;box-shadow:0 0 0 4px rgba(124,77,255,.35)}
 .f-ops{display:flex;flex-direction:column;gap:12px}
 .f-grilla{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.f-op{border:2px solid rgba(255,255,255,.12);background:var(--card);color:var(--ink);border-radius:20px;padding:18px 16px;font-size:20px;font-weight:800;text-align:left;min-height:68px;display:flex;align-items:center;gap:12px}
+.f-op{border:2px solid var(--borde);background:var(--card);color:var(--ink);border-radius:20px;padding:18px 16px;font-size:20px;font-weight:800;text-align:left;min-height:68px;display:flex;align-items:center;gap:12px}
 .f-grilla .f-op{font-size:17px;padding:14px 12px;min-height:76px;justify-content:center;text-align:center}
 .f-op[aria-pressed="true"]{border-color:var(--violet2);background:rgba(124,77,255,.28)}
 .f-sig{font-size:20px;min-height:64px;border-radius:20px}
-.f-error{background:rgba(255,107,129,.16);color:#FFB3BF;border-radius:14px;padding:12px 14px;font-size:16px;font-weight:800}
+.f-error{background:rgba(255,107,129,.16);color:var(--errtxt);border-radius:14px;padding:12px 14px;font-size:16px;font-weight:800}
 .f-res{background:var(--card);border-radius:22px;padding:6px 18px}
 .f-res .fila-p{font-size:17px;padding:14px 0}
 .f-res .fila-p b{font-size:18px}
 .f-fecha{border:0;background:transparent;color:var(--lilac);font-weight:800;font-size:16px;text-decoration:underline;padding:6px;align-self:center}
 /* Elegir modo */
-.modo-op{display:flex;flex-direction:column;align-items:flex-start;gap:6px;width:100%;border:2px solid rgba(255,255,255,.14);border-radius:22px;padding:18px;background:var(--card2);color:var(--ink);text-align:left}
+.modo-op{display:flex;flex-direction:column;align-items:flex-start;gap:6px;width:100%;border:2px solid var(--borde);border-radius:22px;padding:18px;background:var(--card2);color:var(--ink);text-align:left}
 .modo-op b{font-size:21px;font-weight:900}
 .modo-op small{font-size:15px;font-weight:600;color:var(--soft);line-height:1.35}
 .modo-op.sim{border-color:var(--violet2);background:rgba(124,77,255,.22)}
@@ -474,7 +514,7 @@ body.simple .vista{padding-bottom:78px}
 /* ================= Actualización 8: campo de plata (estilo Ualá) ================= */
 .plata{position:relative}
 .plata-in{position:absolute;inset:0;width:100%;height:100%;opacity:0;border:0;font-size:16px;caret-color:transparent;cursor:text}
-.plata-ver{display:flex;align-items:center;min-height:50px;border:1px solid rgba(255,255,255,.12);background:rgba(11,9,22,.5);border-radius:14px;padding:10px 12px;font-size:21px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden}
+.plata-ver{display:flex;align-items:center;min-height:50px;border:1px solid var(--borde);background:var(--campo);border-radius:14px;padding:10px 12px;font-size:21px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden}
 .plata-ver sup{font-size:.55em;position:relative;top:-.15em;vertical-align:super;margin-left:1px;font-weight:800}
 .pv{display:inline-flex;align-items:flex-start}
 .pv.pv-vacio{color:var(--dim)}
@@ -485,8 +525,8 @@ body.simple .vista{padding-bottom:78px}
 .plata.efe .plata-ver{border-color:var(--teal2);font-size:28px}
 
 /* Gastos que Google rechazó */
-.esperando.mal{color:#FFB3BF;background:rgba(255,107,129,.16)}
-.sync.mal{background:rgba(255,107,129,.16);color:#FFB3BF}
+.esperando.mal{color:var(--errtxt);background:rgba(255,107,129,.16)}
+.sync.mal{background:rgba(255,107,129,.16);color:var(--errtxt)}
 </style>
 </head>
 <body>
@@ -568,7 +608,7 @@ body.simple .vista{padding-bottom:78px}
    ========================================================= */
 const API = window.BILLETERA_API || '';
 // Fecha y hora de esta versión (se muestra una vez cuando alguien abre la app actualizada)
-const APP_VERSION = '2026-10-30T22:00';
+const APP_VERSION = '2026-10-30T22:30';
 const COLORES = ['#9B6BFF', '#F05BB5', '#3FD6C6', '#FFB547', '#6FA8FF', '#FF8A5B', '#B5E36B', '#D7C8FF'];
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 const LISTAS_BASE = {
@@ -964,17 +1004,17 @@ function textoPatron(extra) {
 }
 function pintarPatron(error) {
   const svg = $('patronSvg');
-  const col = error ? '#FF6B81' : '#B79CFF';
+  const col = error ? 'var(--red)' : 'var(--c3)';
   let h = '';
   if (P.trazo.length) {
     const pts = P.trazo.map(i => PUNTOS[i].x + ',' + PUNTOS[i].y);
     if (P.dibujando && P.pos) pts.push(P.pos.x + ',' + P.pos.y);
-    h += `<polyline points="${pts.join(' ')}" fill="none" stroke="${col}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>`;
+    h += `<polyline points="${pts.join(' ')}" fill="none" style="stroke:${col}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>`;
   }
   PUNTOS.forEach((p, i) => {
     const on = P.trazo.includes(i);
     h += `<circle cx="${p.x}" cy="${p.y}" r="30" fill="${on ? 'rgba(124,77,255,.25)' : 'transparent'}"/>`;
-    h += `<circle cx="${p.x}" cy="${p.y}" r="${on ? 13 : 9}" fill="${on ? col : '#4A4170'}"/>`;
+    h += `<circle cx="${p.x}" cy="${p.y}" r="${on ? 13 : 9}" style="fill:${on ? col : 'var(--patpunto)'}"/>`;
   });
   svg.innerHTML = h;
   svg.classList.toggle('puntos-error', !!error);
@@ -1051,6 +1091,8 @@ const IC = {
   cal: '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',
   expandir: '<path d="M7 10l5 5 5-5"/>',
   lapiz: '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M14 6l4 4"/>',
+  letra: '<path d="M3 18l5-12 5 12M4.8 14h6.4"/><path d="M14 18l3.5-8 3.5 8M15.1 15.5h4.8"/>',
+  camara: '<path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.6l1.4-2h5l1.4 2h1.6A2.5 2.5 0 0 1 20 8.5v8A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5z"/><circle cx="12" cy="12.5" r="3.5"/>',
   enviar: '<path d="M4 12l16-8-6 16-2.5-6.5z"/><path d="M11.5 13.5L20 4"/>',
   robot: '<rect x="5" y="8" width="14" height="11" rx="3.5"/><path d="M12 4.5V8"/><circle cx="12" cy="3.6" r="1.1" fill="currentColor"/><circle cx="9.5" cy="13" r="1.3" fill="currentColor" stroke="none"/><circle cx="14.5" cy="13" r="1.3" fill="currentColor" stroke="none"/><path d="M10 16.3c1.2.8 2.8.8 4 0"/><path d="M3 12.5v2.5M21 12.5v2.5"/>',
   info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>',
@@ -1138,12 +1180,12 @@ function anillo(id, items, total, o) {
     ac += largo;
   });
   const L = String(o.valor).length, grande = L > 15 ? 17 : L > 13 ? 20 : L > 11 ? 23 : 27;
-  const chico = o.chico ? `<g class="cc-chico"><text x="${cx}" y="${cx - 4}" text-anchor="middle" font-size="18" font-weight="700" fill="#A49CC4">${esc(o.chico[0])}</text><text x="${cx}" y="${cx + 22}" text-anchor="middle" font-size="22" font-weight="800" fill="#F4F1FF">${esc(o.chico[1])}</text></g>` : '';
+  const chico = o.chico ? `<g class="cc-chico"><text x="${cx}" y="${cx - 4}" text-anchor="middle" font-size="18" font-weight="700" style="fill:var(--muted)">${esc(o.chico[0])}</text><text x="${cx}" y="${cx + 22}" text-anchor="middle" font-size="22" font-weight="800" style="fill:var(--ink)">${esc(o.chico[1])}</text></g>` : '';
   return `<svg data-graf="${id}" data-c="${C}" width="${tam}" height="${tam}" viewBox="0 0 ${tam} ${tam}" role="img" aria-label="Gráfico por categoría">
-    <circle class="base" cx="${cx}" cy="${cx}" r="${R}" fill="none" stroke="#241D3F" stroke-width="${g}"/>${total ? arcos : ''}
-    <g class="cc-grande"><text class="c1" x="${cx}" y="${cx - 12}" text-anchor="middle" font-size="13" font-weight="700" fill="#A49CC4">${esc(o.arriba)}</text>
-    <text class="c2" x="${cx}" y="${cx + 16}" text-anchor="middle" font-size="${grande}" font-weight="900" fill="#F4F1FF">${esc(o.valor)}</text>
-    <text class="c3" x="${cx}" y="${cx + 38}" text-anchor="middle" font-size="12" font-weight="700" fill="#B79CFF">${esc(o.abajo)}</text></g>${chico}</svg>`;
+    <circle class="base" cx="${cx}" cy="${cx}" r="${R}" fill="none" style="stroke:var(--card2)" stroke-width="${g}"/>${total ? arcos : ''}
+    <g class="cc-grande"><text class="c1" x="${cx}" y="${cx - 12}" text-anchor="middle" font-size="13" font-weight="700" style="fill:var(--muted)">${esc(o.arriba)}</text>
+    <text class="c2" x="${cx}" y="${cx + 16}" text-anchor="middle" font-size="${grande}" font-weight="900" style="fill:var(--ink)">${esc(o.valor)}</text>
+    <text class="c3" x="${cx}" y="${cx + 38}" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--c3)">${esc(o.abajo)}</text></g>${chico}</svg>`;
 }
 function legIt(id, [k, v], i, total) {
   return `<button type="button" class="leg-it" data-graf="${id}" data-seg="${i}" aria-pressed="false"><i style="background:${COLORES[i % COLORES.length]}"></i><span class="n">${esc(k)}</span><span class="m">${fmt(v)}</span><b>${Math.round(v / total * 100)}%</b></button>`;
@@ -1193,17 +1235,25 @@ function resaltar(el) {
 function alternarCat() {
   const card = $('tarjCat'); if (!card) return;
   const sv = card.querySelector('.cat-graf svg'), its = [...card.querySelectorAll('.leg-it')];
-  const h0 = card.offsetHeight, r0 = sv.getBoundingClientRect(), p0 = its.map(e => e.getBoundingClientRect());
+  // Se mide cómo se ve AHORA (aunque esté a mitad de una animación), así puede dar la vuelta suave sin trabarse
+  const h0 = card.getBoundingClientRect().height, r0 = sv.getBoundingClientRect(), p0 = its.map(e => e.getBoundingClientRect());
+  // Se limpia la animación anterior para medir bien el tamaño final
+  clearTimeout(alternarCat.t);
+  card.classList.remove('animando'); card.style.height = '';
+  sv.style.transform = ''; sv.style.transformOrigin = '';
+  its.forEach(e => { e.style.transform = ''; e.style.opacity = ''; e.style.transitionDelay = ''; });
   S.catAbierta = !S.catAbierta;
   if (!S.catAbierta) { delete S.resaltes.inicio; aplicarResalte('inicio'); }
   card.classList.toggle('abierta', S.catAbierta);
   card.querySelector('.ayuda-toca').textContent = S.catAbierta ? 'Tocá un color para ver su monto · Tocá la tarjeta para achicar' : 'Tocá para agrandar';
   if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const h1 = card.offsetHeight, r1 = sv.getBoundingClientRect(), p1 = its.map(e => e.getBoundingClientRect());
-  card.style.height = h0 + 'px';
+  // Con letra más grande (zoom) las medidas en pantalla y las de CSS no coinciden: se corrige con z
+  const z = (h1 && card.getBoundingClientRect().height / h1) || 1;
+  card.style.height = (h0 / z) + 'px';
   sv.style.transformOrigin = '0 0';
-  sv.style.transform = `translate(${r0.left - r1.left}px,${r0.top - r1.top}px) scale(${r0.width / r1.width})`;
-  its.forEach((e, i) => { e.style.transform = `translate(${p0[i].left - p1[i].left}px,${p0[i].top - p1[i].top}px)`; e.style.opacity = '0'; });
+  sv.style.transform = `translate(${(r0.left - r1.left) / z}px,${(r0.top - r1.top) / z}px) scale(${r0.width / r1.width})`;
+  its.forEach((e, i) => { e.style.transform = `translate(${(p0[i].left - p1[i].left) / z}px,${(p0[i].top - p1[i].top) / z}px)`; e.style.opacity = '0'; });
   void card.offsetHeight;
   card.classList.add('animando');
   card.style.height = h1 + 'px';
@@ -1220,7 +1270,7 @@ function dona(items, total, tam, grosor, centro) {
     arcos += `<circle cx="${cx}" cy="${cx}" r="${R}" fill="none" stroke="${COLORES[i % COLORES.length]}" stroke-width="${grosor}" stroke-dasharray="${Math.max(largo - gap, 0.01)} ${C}" stroke-dashoffset="${-ac}" transform="rotate(-90 ${cx} ${cx})"/>`;
     ac += largo;
   });
-  return `<svg width="${tam}" height="${tam}" viewBox="0 0 ${tam} ${tam}" role="img" aria-label="Gráfico por categoría"><circle cx="${cx}" cy="${cx}" r="${R}" fill="none" stroke="#241D3F" stroke-width="${grosor}"/>${total ? arcos : ''}${centro || ''}</svg>`;
+  return `<svg width="${tam}" height="${tam}" viewBox="0 0 ${tam} ${tam}" role="img" aria-label="Gráfico por categoría"><circle cx="${cx}" cy="${cx}" r="${R}" fill="none" style="stroke:var(--card2)" stroke-width="${grosor}"/>${total ? arcos : ''}${centro || ''}</svg>`;
 }
 function agrupar(pares) {
   const m = {}; pares.forEach(([k, v]) => { if (v > 0) m[k] = (m[k] || 0) + v; });
@@ -1404,7 +1454,7 @@ function vPerfil() {
     <div class="fila-p"><span>Usuario</span><b>${esc(y.usuario)}</b></div>
     <div class="fila-p"><span>Última vez subido</span><b>${esc(ult)}</b></div>
     <div class="fila-p"><span>Gastos sin subir</span><b>${S.cola.length}</b></div>
-    ${S.rech.length ? `<div class="fila-p"><span>Con error (en rojo)</span><b style="color:#FFB3BF">${S.rech.length}</b></div>` : ''}
+    ${S.rech.length ? `<div class="fila-p"><span>Con error (en rojo)</span><b style="color:var(--errtxt)">${S.rech.length}</b></div>` : ''}
     <div class="fila-p"><span>Versión de la app</span><b>${esc(textoVersion())}</b></div>
   </section>
   <button class="btn btn-sec" type="button" id="btnSyncGrande" data-acc="sync" ${S.sincronizando ? 'disabled' : ''}>${svg('nube', 18, 2.2)}${S.sincronizando ? 'Subiendo…' : 'Subir y actualizar ahora'}</button>
@@ -1425,7 +1475,7 @@ function vPerfil() {
   </section>` : ''}
 
   ${esSimple() ? '' : `<button class="interruptor" type="button" role="switch" data-acc="ayudanteOnOff" aria-checked="${LS.get('bd_ayudante', true) !== false}"><span><b>Mostrar ayudante 🤖</b><small>El robotito que te guía paso a paso</small></span><span class="switch" aria-hidden="true"></span></button>`}
-  <button class="interruptor" type="button" role="switch" data-acc="letra" aria-checked="${!!LS.get('bd_letra', false)}"><span><b>Letra grande</b><small>Agranda toda la app en este celular</small></span><span class="switch" aria-hidden="true"></span></button>
+  <button class="interruptor" type="button" data-acc="apariencia"><span><b>Apariencia</b><small>Tamaño y tipo de letra · Modo claro u oscuro</small></span>${svg('der', 20, 2.2)}</button>
   <button class="btn btn-sec" type="button" data-acc="cambiarPatron">Cambiar mi patrón</button>
   <button class="btn btn-ghost" type="button" data-acc="salir">Cerrar sesión</button>`;
 }
@@ -1481,7 +1531,7 @@ function pintarFormPersonal() {
     ${bannerRech(f.id)}
     ${S.yo.admin && !f.editando ? selNegocio(f.negocio) : ''}
     <div class="campo">¿De dónde salió la plata?<div class="segm">${['Negocio (MercadoLibre)', 'Personal'].map(o => `<button type="button" data-set="origen" data-val="${esc(o)}" aria-pressed="${f.origen === o}">${esc(o)}</button>`).join('')}</div></div>
-    ${f.origen === 'Negocio (MercadoLibre)' ? `<button class="interruptor" type="button" role="switch" data-set="devolver" data-val="${f.devolver === 'sí' ? '' : 'sí'}" aria-checked="${f.devolver === 'sí'}" style="background:rgba(11,9,22,.45);padding:12px 14px"><span><b style="font-size:15px">Lo voy a devolver</b><small>Queda anotado lo que le debés al negocio</small></span><span class="switch" aria-hidden="true"></span></button>` : ''}
+    ${f.origen === 'Negocio (MercadoLibre)' ? `<button class="interruptor" type="button" role="switch" data-set="devolver" data-val="${f.devolver === 'sí' ? '' : 'sí'}" aria-checked="${f.devolver === 'sí'}" style="background:var(--campo);padding:12px 14px"><span><b style="font-size:15px">Lo voy a devolver</b><small>Queda anotado lo que le debés al negocio</small></span><span class="switch" aria-hidden="true"></span></button>` : ''}
     <div class="campo">Categoría<div class="grid3">${cats.map(c => `<button type="button" class="chip" data-set="categoria" data-val="${esc(c)}" aria-pressed="${f.categoria === c}">${esc(c)}</button>`).join('')}</div></div>
     ${campoFecha(f.fecha)}
     <div class="campo"><label for="fMonto">Monto</label>${plataHTML('fMonto', f.monto, 'data-campo="monto"')}</div>
@@ -1858,9 +1908,13 @@ document.addEventListener('click', async ev => {
     guiaMenu: abrirAyudante,
     abrirIA: () => abrirIA(),
     iaEnviar: () => enviarIA(),
+    iaFoto: () => { const f = $('iaArchivo'); if (f) f.click(); },
+    iaQuitarFoto: quitarFotoIA,
     iaSug: () => enviarIA(t.dataset.txt),
     iaGuia: () => irAccionIA(t.dataset.g),
-    letra: () => { const on = !LS.get('bd_letra', false); LS.set('bd_letra', on); document.body.classList.toggle('grande', on); t.setAttribute('aria-checked', on); avisar(on ? 'Letra grande activada' : 'Letra normal'); },
+    apariencia: abrirApariencia,
+    apFuente: () => { LS.set('bd_fuente', t.dataset.f); aplicarApariencia(); t.parentNode.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b === t)); },
+    apTema: () => { LS.set('bd_tema', t.dataset.t); aplicarApariencia(); t.parentNode.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b === t)); },
     saltarInicial: () => { const n = S.form.negocio; LS.set('bd_sininicial_' + n, true); limpiarModal(); formNegocio(null, 'Inversión', n); },
     ajustar: () => { const n = S.yo.admin ? S.filtro : S.yo.negocio; if (!n) return avisar('Elegí un negocio arriba para ajustar su efectivo.'); formAjuste(n, false); },
     borrar: () => { leerCampos(); S.form.confirmarBorrar = true; refrescarForm(); },
@@ -2765,10 +2819,13 @@ const GUIAS = {
       { el: Q('#contenido .mini > div:nth-child(2)'), txt: '<b>No reversible</b>: gastos que <b>no vuelven</b>.<br>Pasero, colectivo, chalana, comida del viaje, la comisión del cambio…', modo: 'listo', btn: 'Entendido' }]
   },
   ajustes: {
-    titulo: 'Letra grande y modo simple', antes: () => { if (S.vista !== 'perfil') irA('perfil'); },
+    titulo: 'Apariencia y modo simple', antes: () => { if (S.vista !== 'perfil') irA('perfil'); },
     pasos: [
-      { el: Q('#contenido [data-acc=letra]'), txt: '<b>Letra grande</b>: agranda toda la app en este celular. Prendelo o apagalo cuando quieras.', modo: 'listo', btn: 'Siguiente' },
-      { el: Q('#contenido [data-acc=modoOnOff]'), txt: '<b>Modo simple</b>: todo más grande y <b>una pregunta por pantalla</b>. Ideal si la app te resulta difícil.', modo: 'listo', btn: 'Entendido' }]
+      { el: Q('#contenido [data-acc=modoOnOff]'), txt: '<b>Modo simple</b>: todo más grande y <b>una pregunta por pantalla</b>. Ideal si la app te resulta difícil.', modo: 'listo', btn: 'Siguiente' },
+      { el: Q('#contenido [data-acc=apariencia]'), txt: 'Elegí <b>Apariencia</b>', valido: '#contenido [data-acc=apariencia]' },
+      { el: cerca('#apTam', '.campo'), txt: 'Mové la barra para cambiar el <b>tamaño de la letra</b>. Arriba ves cómo queda.', modo: 'listo', btn: 'Siguiente' },
+      { el: Q('#modalIn .ap-fuentes'), txt: 'Elegí el <b>tipo de letra</b> que leas mejor.', modo: 'listo', btn: 'Siguiente' },
+      { el: cerca('#modalIn [data-acc=apTema]', '.segm'), txt: '<b>Oscuro</b>, <b>Claro</b> o <b>Automático</b> (sigue al celular: claro de día, oscuro de noche).', modo: 'listo', btn: 'Entendido' }]
   },
   recorrido: {
     titulo: 'Recorrido', antes: () => { if (S.vista !== 'inicio') irA('inicio'); },
@@ -2779,7 +2836,7 @@ const GUIAS = {
       { el: Q('#btnMas'), txt: 'Con el <b>+</b> cargás un gasto, una compra, un cambio o plata del negocio que usaste o devolviste', modo: 'listo', btn: 'Siguiente' },
       { el: Q('nav [data-ir=personal]'), txt: '<b>Personal</b>: tus gastos de casa, comida, salud…', modo: 'listo', btn: 'Siguiente' },
       { el: Q('nav [data-ir=negocio]'), txt: '<b>Negocio</b>: compras, cambios y el efectivo', modo: 'listo', btn: 'Siguiente' },
-      { el: Q('nav [data-ir=perfil]'), txt: '<b>Perfil</b>: Excel, letra grande, modo simple y más', modo: 'listo', btn: 'Siguiente' },
+      { el: Q('nav [data-ir=perfil]'), txt: '<b>Perfil</b>: Excel, tamaño de letra, modo claro, modo simple y más', modo: 'listo', btn: 'Siguiente' },
       { el: Q('#robot'), txt: 'Si tenés una duda, usá el ícono 🤖: tiene guías paso a paso y la <b>IA</b>, que te responde como en una charla', modo: 'listo', btn: 'Terminar', largo: true }]
   }
 };
@@ -2816,7 +2873,7 @@ function abrirAyudante() {
     ${op('excel', 'Descargar el Excel', 'Por mes o por viaje', 'recibo')}
     ${sec('La app')}
     ${op('tipos', '¿Qué es Recuperable y No reversible?', 'Los dos tipos de gasto del negocio', 'info')}
-    ${op('ajustes', 'Letra grande y modo simple', 'Para verla más cómoda', 'info')}
+    ${op('ajustes', 'Letra, modo claro y modo simple', 'Para verla más cómoda', 'letra')}
     ${op('recorrido', 'Recorrido por la app', 'Cada parte, de a una', 'robot')}`);
 }
 function saludoRobot() {
@@ -2954,6 +3011,119 @@ $('guiaSaltar').onclick = () => { const p = pasoActual(); if (p) siguientePaso()
 $('guiaX').onclick = () => terminarGuia('Guía cerrada. El ícono 🤖 queda abajo a la derecha', false);
 
 /* =========================================================
+   Apariencia: tamaño de letra, tipo de letra y modo claro / oscuro (se guarda en cada celular)
+   ========================================================= */
+const TAMANOS = [[0.9, 'Chica'], [1, 'Normal'], [1.1, 'Mediana'], [1.2, 'Grande'], [1.32, 'Muy grande'], [1.45, 'Enorme']];
+const FUENTES = {
+  urbanist: { nombre: 'Moderna', fam: "'Urbanist'", url: 'Urbanist:wght@500;600;700;800;900' },
+  atkinson: { nombre: 'Muy clara', fam: "'Atkinson Hyperlegible'", url: 'Atkinson+Hyperlegible:wght@400;700' },
+  nunito: { nombre: 'Redondeada', fam: "'Nunito'", url: 'Nunito:wght@500;600;700;800;900' }
+};
+function tamActual() {
+  let i = LS.get('bd_tam', null);
+  if (i === null) i = LS.get('bd_letra', false) ? 3 : 1; // quien tenía "Letra grande" prendida arranca en Grande
+  return Math.min(Math.max(Number(i) || 0, 0), TAMANOS.length - 1);
+}
+function cargarFuente(k) {
+  const f = FUENTES[k]; if (!f || k === 'urbanist' || document.getElementById('fuente_' + k)) return;
+  const l = document.createElement('link'); l.id = 'fuente_' + k; l.rel = 'stylesheet';
+  l.href = 'https://fonts.googleapis.com/css2?family=' + f.url + '&display=swap';
+  document.head.appendChild(l);
+}
+const temaClaroSistema = window.matchMedia ? matchMedia('(prefers-color-scheme: light)') : null;
+function aplicarApariencia() {
+  const r = document.documentElement, z = TAMANOS[tamActual()][0];
+  r.style.setProperty('--zoom', z);
+  r.style.setProperty('--zoomnav', Math.round((1 + (z - 1) * 0.6) * 100) / 100);
+  const fk = FUENTES[LS.get('bd_fuente', 'urbanist')] ? LS.get('bd_fuente', 'urbanist') : 'urbanist';
+  cargarFuente(fk);
+  r.style.setProperty('--font', FUENTES[fk].fam + ", system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif");
+  const tema = LS.get('bd_tema', 'oscuro');
+  const claro = tema === 'claro' || (tema === 'auto' && !!(temaClaroSistema && temaClaroSistema.matches));
+  r.classList.toggle('claro', claro);
+  const m = document.querySelector('meta[name=theme-color]'); if (m) m.content = claro ? '#F5F1FF' : '#0E0B1A';
+}
+if (temaClaroSistema && temaClaroSistema.addEventListener) temaClaroSistema.addEventListener('change', () => { if (LS.get('bd_tema', 'oscuro') === 'auto') aplicarApariencia(); });
+function abrirApariencia() {
+  Object.keys(FUENTES).forEach(cargarFuente);
+  const ti = tamActual(), fk = LS.get('bd_fuente', 'urbanist'), tema = LS.get('bd_tema', 'oscuro');
+  abrirModal(`${cab('Apariencia', 'var(--grad)', 'letra')}
+    <div class="ap-ejemplo"><small>Ejemplo de texto</small><p>Cambié <b>$ 500.000,00</b> en Bermejo y compré mercadería para vender.</p></div>
+    <div class="campo"><span>Tamaño de letra: <b id="apTamTxt">${TAMANOS[ti][1]}</b></span>
+      <div class="ap-tam"><span class="a1" aria-hidden="true">A</span><input type="range" id="apTam" min="0" max="${TAMANOS.length - 1}" step="1" value="${ti}" aria-label="Tamaño de letra"><span class="a2" aria-hidden="true">A</span></div></div>
+    <div class="campo">Tipo de letra<div class="ap-fuentes">${Object.entries(FUENTES).map(([k, f]) => `<button type="button" data-acc="apFuente" data-f="${k}" aria-pressed="${fk === k}" style="font-family:${f.fam},system-ui,sans-serif"><b>Aa</b><small>${f.nombre}</small></button>`).join('')}</div></div>
+    <div class="campo">Modo<div class="segm">${[['oscuro', '🌙 Oscuro'], ['claro', '☀️ Claro'], ['auto', 'Automático']].map(([v, t]) => `<button type="button" data-acc="apTema" data-t="${v}" aria-pressed="${tema === v}">${t}</button>`).join('')}</div>
+      <small style="font-weight:600;color:var(--muted);font-size:12.5px">Automático: claro de día y oscuro de noche, igual que tu celular.</small></div>
+    <p class="ayuda" style="margin:0;font-size:13px">Se guarda en este celular. Un tipo de letra nuevo se descarga la primera vez con internet.</p>
+    <button class="btn btn-grad" type="button" data-acc="cerrar">Listo</button>`);
+}
+document.addEventListener('input', ev => {
+  if (ev.target.id !== 'apTam') return;
+  LS.set('bd_tam', Number(ev.target.value)); aplicarApariencia();
+  const l = $('apTamTxt'); if (l) l.textContent = TAMANOS[tamActual()][1];
+});
+
+/* =========================================================
+   Teclado del celular
+   - La tecla "→" pasa al campo siguiente; en el último, esconde el teclado.
+   - Al esconder el teclado con "⌄", Android a veces escribe la tecla que pasa por debajo
+     del dedo mientras baja (el "7 fantasma"). La app ignora cualquier tecla en ese instante.
+   ========================================================= */
+const TEC = { maxAlto: 0, abierto: false, cerrado: 0, ult: null };
+function camposDe(cont) {
+  return [...cont.querySelectorAll('input:not([type=hidden]):not([type=file]):not([disabled]):not([readonly])')].filter(e => e.getClientRects().length);
+}
+document.addEventListener('focusin', ev => {
+  const el = ev.target;
+  if (!el.matches || !el.matches('#modalIn input')) return;
+  const lista = camposDe($('modalIn'));
+  el.setAttribute('enterkeyhint', lista.indexOf(el) < lista.length - 1 ? 'next' : 'done');
+});
+document.addEventListener('keydown', ev => {
+  if (ev.key !== 'Enter' || ev.isComposing) return;
+  const el = ev.target;
+  if (!el.matches) return;
+  if (el.id === 'buscarTodos') { ev.preventDefault(); return el.blur(); }
+  if (!el.matches('#modalIn input') || el.id === 'fIn') return;
+  ev.preventDefault();
+  const lista = camposDe($('modalIn')), i = lista.indexOf(el);
+  if (i >= 0 && i < lista.length - 1) { lista[i + 1].focus(); if (lista[i + 1].classList.contains('plata-in')) { const L = lista[i + 1].value.length; try { lista[i + 1].setSelectionRange(L, L); } catch (e) {} } }
+  else el.blur();
+});
+// Antes de cada tecla: si el teclado se acaba de esconder, se ignora; si no, se guarda cómo estaba el campo
+document.addEventListener('beforeinput', ev => {
+  const el = ev.target;
+  if (!el.matches || !el.matches('input,textarea')) return;
+  if (performance.now() - TEC.cerrado < 600) { ev.preventDefault(); return; }
+  TEC.ult = { el, valor: el.value, t: performance.now() };
+}, true);
+function tecladoSeCerro() {
+  const ahora = performance.now();
+  TEC.cerrado = ahora;
+  const el = document.activeElement;
+  if (!el || !el.matches || !el.matches('input,textarea')) return;
+  // Una tecla que llegó justo antes de que termine de bajar el teclado: se deshace
+  if (TEC.ult && TEC.ult.el === el && ahora - TEC.ult.t < 450 && el.value !== TEC.ult.valor) {
+    el.value = TEC.ult.valor;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+  TEC.ult = null;
+  el.blur();
+}
+if (window.visualViewport) {
+  const medir = () => {
+    const h = visualViewport.height;
+    if (h > TEC.maxAlto) TEC.maxAlto = h;
+    const abierto = h < TEC.maxAlto - 150;
+    if (TEC.abierto && !abierto) tecladoSeCerro();
+    TEC.abierto = abierto;
+  };
+  visualViewport.addEventListener('resize', medir);
+  window.addEventListener('orientationchange', () => { TEC.maxAlto = 0; TEC.abierto = false; });
+  medir();
+}
+
+/* =========================================================
    IA: charla con Gemini (a través del cerebro de Google, que guarda la clave)
    ========================================================= */
 // Manual de la app para la IA. REGLA: cada actualización de la app pone al día este manual y las guías.
@@ -2965,7 +3135,7 @@ const MANUAL_IA = `CÓMO RESPONDER
 - Montos siempre así: $ 1.234,56. Para sumas usá los RESÚMENES POR MES; si hace falta, sumá con cuidado los MOVIMIENTOS y mostrá de dónde sale.
 - Vos no podés cargar, cambiar ni borrar nada: explicá cómo se hace en la app.
 - Si la respuesta es cómo hacer algo en la app, terminá con UNA etiqueta (sola, en el último renglón) de esta lista, la que corresponda; la app la convierte en "Ver cómo se hace". No la nombres en el texto:
-  [[guia:cambio]] cambio de plata · [[guia:compra]] compra de mercadería · [[guia:pasero]] pasaje, pasero, chalana, comida del viaje · [[guia:personal]] gasto personal con su plata · [[guia:usar]] usé plata del negocio · [[guia:devolver]] devolver plata al negocio · [[guia:contar]] contar o ajustar el efectivo · [[guia:efectivo]] qué es el efectivo disponible · [[guia:corregir]] corregir o borrar · [[guia:cuanto]] ver cuánto gasté · [[guia:todos]] ver todos los movimientos · [[guia:excel]] descargar el Excel · [[guia:tipos]] qué es recuperable y no reversible · [[guia:ajustes]] letra grande y modo simple · [[guia:recorrido]] recorrido por la app
+  [[guia:cambio]] cambio de plata · [[guia:compra]] compra de mercadería · [[guia:pasero]] pasaje, pasero, chalana, comida del viaje · [[guia:personal]] gasto personal con su plata · [[guia:usar]] usé plata del negocio · [[guia:devolver]] devolver plata al negocio · [[guia:contar]] contar o ajustar el efectivo · [[guia:efectivo]] qué es el efectivo disponible · [[guia:corregir]] corregir o borrar · [[guia:cuanto]] ver cuánto gasté · [[guia:todos]] ver todos los movimientos · [[guia:excel]] descargar el Excel · [[guia:tipos]] qué es recuperable y no reversible · [[guia:ajustes]] tamaño o tipo de letra, modo claro/oscuro y modo simple · [[guia:recorrido]] recorrido por la app
 - Temas fuera de la app (impuestos, monotributo, precios, consejos de plata): decí con amabilidad que solo ayudás con la Billetera.
 
 QUÉ ES LA APP
@@ -2975,6 +3145,10 @@ Billetera Digital anota los gastos de la familia: los personales y los del negoc
 - Los montos se escriben como en Ualá: los números entran por la derecha y los dos últimos son los centavos. Para $ 500.000,00 se escribe 50000000 (con los dos ceros de los centavos). Si escribe 500000 queda $ 5.000,00.
 - Si un movimiento aparece en rojo, Google no lo aceptó: hay que abrirlo y corregirlo.
 - Hay dos modos; se cambia en **Perfil** → **Modo simple** (prender o apagar).
+- **Perfil** → **Apariencia**: tamaño de la letra (barra de Chica a Enorme), tipo de letra (Moderna, Muy clara, Redondeada) y modo **Oscuro**, **Claro** o **Automático** (sigue al celular). Se guarda en cada celular.
+- Teclado: la tecla → del teclado pasa al campo siguiente; en el último, lo esconde. Si al esconder el teclado se escribía un número solo, la app ahora lo ignora.
+- En esta charla se puede mandar una **foto o captura** con el ícono 📷. Si te mandan una foto, describí lo que ves que tenga que ver con la app o con sus gastos (por ejemplo un comprobante o una pantalla con error) y explicá cómo cargarlo o resolverlo. No podés cargar nada vos.
+- Cada persona ve todo lo de su negocio, aunque lo haya cargado otro (por ejemplo, el admin), y lo puede corregir.
 
 MODO SIMPLE (una pregunta por pantalla)
 Inicio: arriba el saludo y el círculo con las iniciales (abre el Perfil). Si se debe plata al negocio, aparece "Le debés al negocio $ X" con **Devolver**. Después "Efectivo del negocio" con **Contar**. Dos opciones grandes: **🧳 Negocio - Compras** y **🏠 Gastos personales**. Abajo, **Ver lo que cargué**. El ícono 🤖 abre esta charla.
@@ -2998,7 +3172,7 @@ Barra de abajo: **Inicio**, **Personal**, **+** (en el medio), **Negocio**, **Pe
   · Devolución: cuánto, cómo (**En efectivo** / **Transferencia**) y nota opcional.
 - **Negocio**: Mes / Semana / Día, **Recuperable**, **No reversible**, **Efectivo disponible** (elegirlo permite ajustarlo) y los movimientos. Se puede ver por viaje.
 - **Personal**: los gastos personales, mes por mes (elegí el mes para ver otro).
-- **Perfil**: datos de la cuenta, **Versión de la app**, **Subir y actualizar ahora**, **Modo simple**, **Descargar en Excel** (por mes o por viaje), **Cuentas de la familia** (solo el admin), **Mostrar ayudante 🤖**, **Letra grande**, **Cambiar mi patrón**, **Cerrar sesión**.
+- **Perfil**: datos de la cuenta, **Versión de la app**, **Subir y actualizar ahora**, **Modo simple**, **Descargar en Excel** (por mes o por viaje), **Cuentas de la familia** (solo el admin), **Mostrar ayudante 🤖**, **Apariencia** (letra y modo claro u oscuro), **Cambiar mi patrón**, **Cerrar sesión**.
 - Para corregir: abrir el movimiento → lápiz ✏️ → cambiar → **Guardar cambios**. Para borrar: **Borrar este gasto**, abajo de todo.
 
 CONCEPTOS
@@ -3019,7 +3193,7 @@ const IA_ACC = {
   cuanto: { guia: 'cuanto', vista: 'lista' }, todos: { guia: 'todos', vista: 'lista' }, excel: { guia: 'excel' }, tipos: { guia: 'tipos' },
   ajustes: { guia: 'ajustes', vista: 'perfil' }, recorrido: { guia: 'recorrido' }
 };
-const IA = { msgs: [], cargando: false };
+const IA = { msgs: [], cargando: false, img: '', imgUrl: '' };
 
 // Lo que la IA sabe de la persona: lo mismo que ve en la app
 function contextoIA() {
@@ -3056,10 +3230,13 @@ function contextoIA() {
     });
   });
   const orden = (a, b) => String(b.fecha).localeCompare(String(a.fecha));
-  L.push('\nMOVIMIENTOS PERSONALES (más nuevo primero): fecha | negocio | cargó | categoría | detalle | plata de | pago | monto | a devolver');
-  S.personal.slice().sort(orden).slice(0, 300).forEach(f => L.push([f.fecha, f.negocio, f.usuario || '', f.categoria, f.descripcion || '-', f.origen === 'Personal' ? 'propia' : 'del negocio', f.pago, fmt(f.monto), f.devolver === 'sí' ? 'sí' : 'no'].join(' | ')));
-  L.push('\nMOVIMIENTOS DEL NEGOCIO (más nuevo primero): fecha | negocio | cargó | viaje | tipo | categoría | detalle | monto | pago | extra | efectivo +/-');
-  S.negocio.slice().sort(orden).slice(0, 300).forEach(f => {
+  // Movimientos con detalle: solo los últimos 3 meses (para que la IA responda rápido). Los resúmenes de arriba cubren todo el año.
+  const d3 = new Date(); d3.setMonth(d3.getMonth() - 3); const desde = aISO(d3);
+  const recientes = arr => arr.filter(f => String(f.fecha) >= desde).sort(orden).slice(0, 150);
+  L.push('\nMOVIMIENTOS PERSONALES DE LOS ÚLTIMOS 3 MESES (más nuevo primero; lo anterior está solo en los resúmenes): fecha | negocio | cargó | categoría | detalle | plata de | pago | monto | a devolver');
+  recientes(S.personal).forEach(f => L.push([f.fecha, f.negocio, f.usuario || '', f.categoria, f.descripcion || '-', f.origen === 'Personal' ? 'propia' : 'del negocio', f.pago, fmt(f.monto), f.devolver === 'sí' ? 'sí' : 'no'].join(' | ')));
+  L.push('\nMOVIMIENTOS DEL NEGOCIO DE LOS ÚLTIMOS 3 MESES (más nuevo primero): fecha | negocio | cargó | viaje | tipo | categoría | detalle | monto | pago | extra | efectivo +/-');
+  recientes(S.negocio).forEach(f => {
     let extra = '';
     if (f.tipo === 'Inversión') extra = `${f.unidades} unidades a ${fmt(f.costoUnit)}` + (Number(f.recargo) ? `, recargo ${fmt(f.recargo)}` : '');
     else if (f.tipo === 'Cambio') extra = `${pct(f.pctCambio)}, comisión ${fmt(f.comision)} ${f.pago === 'Efectivo' ? 'pagada en efectivo' : 'descontada'}, efectivo recibido ${fmt(f.recibido)}`;
@@ -3073,10 +3250,11 @@ function contextoIA() {
 
 function abrirIA() {
   if (GUIA.activa) return;
-  IA.msgs = []; IA.cargando = false;
+  IA.msgs = []; IA.cargando = false; IA.img = ''; IA.imgUrl = '';
   abrirModal(`<div class="v-cab"><span class="ic" style="background:var(--grad)">${svg('robot', 20)}</span><b>Preguntale a la IA</b><button class="cerrar" type="button" data-acc="cerrar" aria-label="Cerrar">${svg('x', 18, 2.2)}</button></div>
     <div class="ia-msgs" id="iaMsgs" aria-live="polite"></div>
-    <div class="ia-escribir"><textarea id="iaIn" rows="1" maxlength="600" placeholder="Escribí tu pregunta…" enterkeyhint="send" aria-label="Tu pregunta"></textarea>
+    <div class="ia-adj" id="iaAdj" hidden></div>
+    <div class="ia-escribir"><button type="button" class="ia-foto" data-acc="iaFoto" aria-label="Agregar una foto o captura">${svg('camara', 22, 2)}</button><input type="file" id="iaArchivo" accept="image/*" hidden><textarea id="iaIn" rows="1" maxlength="600" placeholder="Escribí tu pregunta…" enterkeyhint="send" aria-label="Tu pregunta"></textarea>
     <button type="button" class="ia-enviar" data-acc="iaEnviar" aria-label="Enviar">${svg('enviar', 22, 2.2)}</button></div>`, 'chat');
   ajustarChat();
   pintarIA();
@@ -3093,7 +3271,7 @@ function pintarIA() {
   let h = `<div class="ia-b ia">¡Hola, ${esc(nombre)}! Preguntame lo que quieras sobre la app o sobre tus gastos.${navigator.onLine ? '' : '<br><br>⚠️ Ahora <b>no hay internet</b>: la IA funciona solo con señal.'}</div>`;
   if (!IA.msgs.length) h += `<div class="ia-sug">${sug.map(s => `<button type="button" data-acc="iaSug" data-txt="${esc(s)}">${esc(s)}</button>`).join('')}</div>`;
   IA.msgs.forEach(m => {
-    if (m.rol === 'yo') h += `<div class="ia-b yo">${esc(m.txt).replace(/\n/g, '<br>')}</div>`;
+    if (m.rol === 'yo') h += `<div class="ia-b yo">${m.imgUrl ? `<img class="ia-img" src="${m.imgUrl}" alt="Foto que mandaste">` : ''}${esc(m.txt).replace(/\n/g, '<br>')}</div>`;
     else if (m.rol === 'error') h += `<div class="ia-b ia error">${esc(m.txt)}</div>`;
     else {
       const acc = (m.txt.match(/\[\[guia:([a-z]+)\]\]/) || [])[1];
@@ -3110,12 +3288,15 @@ function pintarIA() {
 async function enviarIA(texto) {
   const inp = $('iaIn');
   const txt = String(texto != null ? texto : (inp ? inp.value : '')).trim();
-  if (!txt || IA.cargando) return;
+  if ((!txt && !IA.img) || IA.cargando) return;
   if (inp && texto == null) { inp.value = ''; inp.style.height = ''; }
-  IA.msgs.push({ rol: 'yo', txt });
+  IA.msgs.push({ rol: 'yo', txt, img: IA.img, imgUrl: IA.imgUrl });
+  quitarFotoIA();
   if (!navigator.onLine) { IA.msgs.push({ rol: 'error', txt: 'No hay internet. La IA funciona solo con señal: probá cuando tengas conexión.' }); return pintarIA(); }
   IA.cargando = true; pintarIA();
-  const mensajes = IA.msgs.filter(m => m.rol !== 'error').slice(-14).map(m => ({ rol: m.rol === 'yo' ? 'user' : 'ia', txt: m.txt }));
+  // Las fotos viajan solo en los 2 mensajes más nuevos que tengan (para que sea liviano)
+  const conFoto = IA.msgs.filter(m => m.img).slice(-2);
+  const mensajes = IA.msgs.filter(m => m.rol !== 'error').slice(-14).map(m => ({ rol: m.rol === 'yo' ? 'user' : 'ia', txt: m.txt, img: conFoto.includes(m) ? m.img : undefined }));
   try {
     const r = await api({ accion: 'ia', token: S.token, mensajes, manual: MANUAL_IA, contexto: contextoIA() });
     IA.msgs.push({ rol: 'ia', txt: String(r.respuesta || '') });
@@ -3126,6 +3307,25 @@ async function enviarIA(texto) {
   IA.cargando = false;
   if ($('iaMsgs')) pintarIA();
 }
+// Foto: se achica a 1280 px como máximo y se manda como JPEG (liviano)
+async function fotoElegida(file) {
+  if (!file || !/^image\//.test(file.type)) return;
+  try {
+    const url = URL.createObjectURL(file);
+    const im = await new Promise((ok, mal) => { const i = new Image(); i.onload = () => ok(i); i.onerror = mal; i.src = url; });
+    const k = Math.min(1, 1280 / Math.max(im.naturalWidth, im.naturalHeight));
+    const c = document.createElement('canvas'); c.width = Math.round(im.naturalWidth * k); c.height = Math.round(im.naturalHeight * k);
+    const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(im, 0, 0, c.width, c.height);
+    URL.revokeObjectURL(url);
+    const dataUrl = c.toDataURL('image/jpeg', 0.8);
+    IA.img = dataUrl.split(',')[1]; IA.imgUrl = dataUrl;
+    const a = $('iaAdj');
+    if (a) { a.innerHTML = `<img src="${dataUrl}" alt="Foto elegida"><span>Foto lista para mandar. Escribí tu pregunta (o mandala así).</span><button type="button" class="cerrar" data-acc="iaQuitarFoto" aria-label="Quitar la foto">${svg('x', 16, 2.4)}</button>`; a.hidden = false; }
+    const i = $('iaIn'); if (i) i.focus();
+  } catch (e) { avisar('No pude abrir esa foto. Probá con otra.'); }
+}
+function quitarFotoIA() { IA.img = ''; IA.imgUrl = ''; const a = $('iaAdj'); if (a) { a.hidden = true; a.innerHTML = ''; } const f = $('iaArchivo'); if (f) f.value = ''; }
+document.addEventListener('change', ev => { if (ev.target.id === 'iaArchivo') fotoElegida(ev.target.files && ev.target.files[0]); });
 function irAccionIA(id) {
   const a = IA_ACC[id]; if (!a) return;
   cerrarModal();
@@ -3170,7 +3370,7 @@ $('robotGlobo').onclick = () => { cerrarGlobito(); abrirAyudante(); };
    Arranque
    ========================================================= */
 (function arrancar() {
-  document.body.classList.toggle('grande', !!LS.get('bd_letra', false));
+  aplicarApariencia();
   mostrarNovedad();
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(r => r.update()).catch(() => {});
   const ses = LS.get('bd_sesion', null);
