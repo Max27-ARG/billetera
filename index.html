@@ -27,7 +27,8 @@
   --safe-t:env(safe-area-inset-top,0px); --safe-b:env(safe-area-inset-bottom,0px);
   --campo:rgba(11,9,22,.5); --campo2:rgba(11,9,22,.3); --borde:rgba(255,255,255,.13); --sutil:rgba(255,255,255,.07);
   --errtxt:#FFB3BF; --vidrio:rgba(34,27,60,.72); --chatbg:rgba(26,21,48,.96); --velo:rgba(8,6,16,.55); --login1:#2A1650;
-  --sobre:#1A1530; --globo:var(--ink); --acento:var(--lilac); --c3:#B79CFF; --patpunto:#4A4170;
+  --sobre:#1A1530; --globo:var(--ink); --acento:var(--lilac);
+  --toque1:rgba(196,170,255,.40); --toque2:rgba(155,107,255,.20); --toque3:rgba(124,77,255,.06); --toque4:rgba(155,107,255,.22); --c3:#B79CFF; --patpunto:#4A4170;
   color-scheme:dark;
 }
 /* ---------- Modo claro: fondo claro teñido de lila ---------- */
@@ -44,7 +45,8 @@ html.claro{
   --amber:#A86300; --red:#D2304D;
   --campo:#FFFFFF; --campo2:rgba(255,255,255,.75); --borde:rgba(70,40,150,.16); --sutil:rgba(70,40,150,.07);
   --errtxt:#B8173F; --vidrio:rgba(255,255,255,.9); --chatbg:#FBF9FF; --velo:rgba(45,25,100,.32); --login1:#E2D5FF;
-  --sobre:#1F1739; --globo:#FFFFFF; --acento:#5B2FD6; --c3:#7C4DFF; --patpunto:#CFC3F0;
+  --sobre:#1F1739; --globo:#FFFFFF; --acento:#5B2FD6;
+  --toque1:rgba(124,77,255,.26); --toque2:rgba(124,77,255,.13); --toque3:rgba(124,77,255,.05); --toque4:rgba(124,77,255,.16); --c3:#7C4DFF; --patpunto:#CFC3F0;
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -233,11 +235,11 @@ html,body{overscroll-behavior:none}
 body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 input,textarea{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
 
-/* Animación al tocar: se hunde, bordes un toque más oscuros y una luz donde está el dedo */
+/* Animación al tocar: se hunde, se tiñe de lila suave (nunca gris) y una luz donde está el dedo */
 button{position:relative;overflow:hidden;transition:scale .14s ease;-webkit-tap-highlight-color:transparent}
 button::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .2s ease;
-  background:radial-gradient(circle at var(--x,50%) var(--y,50%),rgba(196,170,255,.42) 0,rgba(155,107,255,.20) 34px,rgba(124,77,255,0) 80px),
-             radial-gradient(farthest-side,rgba(0,0,0,0) 55%,rgba(0,0,0,.30) 100%)}
+  background:radial-gradient(circle at var(--x,50%) var(--y,50%),var(--toque1) 0,var(--toque2) 34px,rgba(124,77,255,0) 80px),
+             radial-gradient(farthest-side,var(--toque3) 0,var(--toque4) 100%)}
 button.toque{scale:.965}
 button.toque::after{opacity:1;transition:opacity .04s}
 button.toque-fuera::after{opacity:.5;transition:opacity .12s}
@@ -608,7 +610,7 @@ body.simple .vista{padding-bottom:78px}
    ========================================================= */
 const API = window.BILLETERA_API || '';
 // Fecha y hora de esta versión (se muestra una vez cuando alguien abre la app actualizada)
-const APP_VERSION = '2026-10-30T22:30';
+const APP_VERSION = '2026-10-30T22:45';
 const COLORES = ['#9B6BFF', '#F05BB5', '#3FD6C6', '#FFB547', '#6FA8FF', '#FF8A5B', '#B5E36B', '#D7C8FF'];
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 const LISTAS_BASE = {
