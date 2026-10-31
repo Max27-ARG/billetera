@@ -10,8 +10,77 @@
   "background_color": "#0E0B1A",
   "theme_color": "#0E0B1A",
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Cambié plata",
+      "short_name": "Cambié plata",
+      "description": "Cargar un cambio a efectivo",
+      "url": "./?accion=cambio",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Compré mercadería",
+      "short_name": "Mercadería",
+      "description": "Cargar una compra de mercadería",
+      "url": "./?accion=compra",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Gastos del viaje",
+      "short_name": "Gastos del viaje",
+      "description": "Cargar un gasto del viaje",
+      "url": "./?accion=viaje",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Gasté con mi plata",
+      "short_name": "Gasto personal",
+      "description": "Cargar un gasto personal",
+      "url": "./?accion=personal",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
   ]
 }

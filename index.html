@@ -27,7 +27,7 @@
   --safe-t:env(safe-area-inset-top,0px); --safe-b:env(safe-area-inset-bottom,0px);
   --campo:rgba(11,9,22,.5); --campo2:rgba(11,9,22,.3); --borde:rgba(255,255,255,.13); --sutil:rgba(255,255,255,.07);
   --errtxt:#FFB3BF; --vidrio:rgba(34,27,60,.72); --chatbg:rgba(26,21,48,.96); --velo:rgba(8,6,16,.55); --login1:#2A1650;
-  --sobre:#1A1530; --globo:var(--ink); --acento:var(--lilac);
+  --sobre:#1A1530; --globo:var(--ink); --acento:var(--lilac); --naranja:#F0A04B;
   --toque1:rgba(196,170,255,.40); --toque2:rgba(155,107,255,.20); --toque3:rgba(124,77,255,.06); --toque4:rgba(155,107,255,.22); --c3:#B79CFF; --patpunto:#4A4170;
   color-scheme:dark;
 }
@@ -45,7 +45,7 @@ html.claro{
   --amber:#A86300; --red:#D2304D;
   --campo:#FFFFFF; --campo2:rgba(255,255,255,.75); --borde:rgba(70,40,150,.16); --sutil:rgba(70,40,150,.07);
   --errtxt:#B8173F; --vidrio:rgba(255,255,255,.9); --chatbg:#FBF9FF; --velo:rgba(45,25,100,.32); --login1:#E2D5FF;
-  --sobre:#1F1739; --globo:#FFFFFF; --acento:#5B2FD6;
+  --sobre:#1F1739; --globo:#FFFFFF; --acento:#5B2FD6; --naranja:#B5651D;
   --toque1:rgba(124,77,255,.26); --toque2:rgba(124,77,255,.13); --toque3:rgba(124,77,255,.05); --toque4:rgba(124,77,255,.16); --c3:#7C4DFF; --patpunto:#CFC3F0;
   color-scheme:light;
 }
@@ -150,6 +150,26 @@ button{cursor:pointer}
 .anillo{display:flex;justify-content:center}
 .cats{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:8px}
+.mini.cuatro{grid-template-columns:1fr 1fr}
+.ojo-montos{flex:none;width:40px;height:40px;border-radius:13px;border:0;background:var(--sutil);color:var(--soft);display:flex;align-items:center;justify-content:center;margin-left:auto}
+.ojo-montos[aria-pressed="true"]{color:var(--acento);background:rgba(124,77,255,.18)}
+.ojo-montos+.sync{margin-left:0}
+/* Lo de siempre */
+.rapidos{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--muted)}
+.rapidos button{border:1px solid rgba(124,77,255,.45);background:rgba(124,77,255,.14);color:var(--acento);border-radius:14px;padding:8px 12px;font-weight:800;font-size:14px}
+.f-rapidos{margin-top:-4px}.f-rapidos button{font-size:17px;padding:11px 15px;border-radius:16px}
+/* Comparación con el mes anterior */
+.comp{display:flex;flex-direction:column;gap:12px}
+.comp p{margin:0;font-size:15px;font-weight:700;color:var(--soft)}
+.comp p b.menos{color:var(--teal2)}.comp p b.mas{color:var(--pink)}
+.barras{display:flex;align-items:flex-end;gap:10px;height:110px}
+.barras div{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.barras i{display:block;width:100%;max-width:34px;border-radius:9px 9px 4px 4px;background:var(--card3);min-height:4px}
+.barras div.actual i{background:var(--grad)}
+.barras small{font-size:11.5px;font-weight:800;color:var(--muted);text-transform:capitalize}
+.barras div.actual small{color:var(--acento)}
+.ver-app{display:flex;flex-direction:column;align-items:flex-end;line-height:1.2}.ver-app small{font-size:11.5px;color:var(--muted);font-weight:600}
+.ver-nueva{display:flex;flex-direction:column;line-height:1.25}.ver-nueva small{font-size:11.5px;opacity:.85;font-weight:600}
 .mini>*{background:var(--card);border-radius:18px;padding:12px;display:flex;flex-direction:column;gap:3px;min-width:0;border:0;text-align:left;color:var(--ink)}
 .mini span{font-size:11px;font-weight:700;color:var(--muted)}
 .mini b{font-size:16px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -416,6 +436,16 @@ button.avatar{border:0;padding:0}
 .ia-b.error{background:rgba(255,92,122,.16);color:var(--errtxt)}
 .ia-b.ia b{color:var(--ink)}
 .ia-ver{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;margin-top:10px;padding:11px 12px;border:0;border-radius:14px;background:var(--grad);color:#fff;font-weight:800;font-size:15px}
+.ia-carga{margin-top:10px;background:var(--campo);border:1px solid var(--borde);border-radius:16px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.ia-carga.ok{border-color:var(--teal2)}
+.ia-carga.mal{color:var(--errtxt);font-weight:700;font-size:14px}
+.ia-carga-tit{font-weight:900;font-size:15px;margin-bottom:4px}
+.ia-carga .fila-p{font-size:13.5px;padding:7px 0}
+.ia-carga-av{margin-top:6px;font-size:13px;font-weight:700;color:var(--amber)}
+.ia-carga-listo{margin-top:8px;font-weight:900;color:var(--teal2);text-align:center}
+.ia-carga-bot{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.ia-carga-bot .ia-ver{margin:0}.ia-carga-bot .btn{padding:11px;font-size:15px}
+.ia-ver:disabled{opacity:.45}
 .ia-sug{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
 .ia-sug button{border:1px solid rgba(201,184,255,.35);background:rgba(124,77,255,.14);color:var(--lilac);border-radius:16px;padding:9px 13px;font-size:15px;font-weight:700;text-align:left}
 .escribiendo{display:flex;gap:5px;padding:15px 16px}
@@ -557,7 +587,7 @@ body.simple .vista{padding-bottom:78px}
     <form id="formCrear" class="login-box" novalidate hidden>
       <label class="campo" for="cNombre">Nombre y apellido<input id="cNombre" autocomplete="name"></label>
       <div id="cNegocioBox"></div>
-      <label class="campo" for="cUsuario">Usuario<input id="cUsuario" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="Ej: rina"></label>
+      <label class="campo" for="cUsuario">Usuario<input id="cUsuario" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="Tu nombre de usuario"></label>
       <div class="campo"><label for="cClave">Contraseña</label><div class="clave"><input id="cClave" type="password" autocomplete="new-password" placeholder="Mínimo 6 caracteres"><button type="button" class="ojo" data-ojo="cClave,cClave2" aria-label="Mostrar las contraseñas" aria-pressed="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
       <label class="campo" for="cClave2">Repetí la contraseña<input id="cClave2" type="password" autocomplete="new-password"></label>
       <div class="error" id="cError" hidden></div>
@@ -610,14 +640,17 @@ body.simple .vista{padding-bottom:78px}
    ========================================================= */
 const API = window.BILLETERA_API || '';
 // Fecha y hora de esta versión (se muestra una vez cuando alguien abre la app actualizada)
-const APP_VERSION = '2026-10-30T22:45';
+// Versión: MAYOR.MENOR.ARREGLO (arreglo → sube el último; algo nuevo → el del medio; cambio enorme → el primero)
+const APP_SERIE = '1.10.0', APP_FECHA = '2026-10-31';
+const APP_VERSION = APP_SERIE;
 const COLORES = ['#9B6BFF', '#F05BB5', '#3FD6C6', '#FFB547', '#6FA8FF', '#FF8A5B', '#B5E36B', '#D7C8FF'];
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 const LISTAS_BASE = {
   'Negocios': ['AEM - DigyStore', 'BazarFreddy', 'RinaMultiventas', 'FernandoDeals'],
   'Categorías personales': ['Casa (luz, gas, agua)', 'Comida', 'Salud', 'Transporte', 'Ropa', 'Educación', 'Salidas', 'Otros'],
   'Categorías no reversibles': ['Insumos', 'Sueldo', 'Interés/Gastos', 'Otros'],
-  'Descripciones rápidas': ['Colectivo ida y vuelta', 'Chalana ida', 'Chalana vuelta', 'Pasero', 'Comida/bebidas', 'Baño', 'Bodega/baúl colectivo']
+  'Descripciones rápidas': ['Colectivo ida y vuelta', 'Chalana ida', 'Chalana vuelta', 'Pasero', 'Comida/bebidas', 'Baño', 'Bodega/baúl colectivo'],
+  'Categorías gastos generales': ['Mercado Envíos FULL', 'Correo y envíos', 'Publicidad', 'Contadora', 'Monotributo / IIBB', 'Sueldo', 'Insumos (embalaje)', 'Otros']
 };
 const S = {
   token: '', yo: null, listas: LISTAS_BASE, personal: [], negocio: [], pendientes: 0, ultimaSync: 0,
@@ -626,7 +659,11 @@ const S = {
 };
 const $ = id => document.getElementById(id);
 const pesos = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 2 });
-const fmt = n => pesos.format(Math.round((Number(n) || 0) * 100) / 100);
+const fmtReal = n => pesos.format(Math.round((Number(n) || 0) * 100) / 100);
+// Ojito: con los montos ocultos se ven "$ •••••", salvo mientras cargás o corregís algo
+let OCULTO = false;
+try { OCULTO = JSON.parse(localStorage.getItem('bd_ocultar') || 'false') === true; } catch (e) {}
+const fmt = n => OCULTO && !(typeof S !== 'undefined' && (S.vista === 'flujo' || S.form)) ? '$ •••••' : fmtReal(n);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 /* ---------- Guardado en el celular ---------- */
@@ -768,6 +805,9 @@ function calcNegocio(d, previo) {
       else { f.recibido = r2(d.monto - f.comision); f.movEfectivo = f.recibido; }
     }
     f.gastoReal = f.comision;
+  } else if (d.tipo === 'Gasto general') {
+    f.viaje = ''; f.categoria = d.categoria; f.descripcion = d.descripcion || ''; f.monto = d.monto; f.pago = d.pago;
+    f.gastoReal = d.monto; f.movEfectivo = d.pago === 'Efectivo' ? -d.monto : 0;
   } else if (d.tipo === 'Devolución') {
     f.categoria = 'Devolución'; f.descripcion = (d.nota || '').trim() || 'Devolución al negocio';
     f.monto = d.monto; f.pago = d.pago === 'Transferencia' ? 'Transferencia' : 'Efectivo'; f.movEfectivo = f.pago === 'Efectivo' ? d.monto : 0;
@@ -785,6 +825,7 @@ function partesNegocio(f) {
   const out = [];
   if (f.tipo === 'Inversión') { out.push(['Productos', Number(f.monto) || 0, 'rec']); if (Number(f.recargo)) out.push(['Interés/Gastos', Number(f.recargo), 'no']); }
   else if (f.tipo === 'No reversible') out.push([f.categoria, Number(f.gastoReal) || 0, 'no']);
+  else if (f.tipo === 'Gasto general') out.push([f.categoria, Number(f.gastoReal) || 0, 'gen']);
   else if (f.tipo === 'Cambio') out.push(['Interés/Gastos', Number(f.comision) || 0, 'no']);
   return out;
 }
@@ -1065,7 +1106,7 @@ function bienvenida() {
   LS.set('bd_version_vista', APP_VERSION); mostrarNovedad();
   $('bvNombre').textContent = primerNombre(S.yo.nombre);
   mostrar('bienvenida');
-  setTimeout(() => { mostrar('app'); S.vista = 'inicio'; S.flujo = null; aplicarModo(); render(); sincronizar(); if (!modoActual()) elegirModo(); else saludoRobot(); }, 1600);
+  setTimeout(() => { mostrar('app'); S.vista = 'inicio'; S.flujo = null; aplicarModo(); render(); sincronizar(); if (!modoActual()) elegirModo(); else if (!accesoDirecto()) saludoRobot(); }, 1600);
 }
 
 /* =========================================================
@@ -1095,6 +1136,8 @@ const IC = {
   lapiz: '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M14 6l4 4"/>',
   letra: '<path d="M3 18l5-12 5 12M4.8 14h6.4"/><path d="M14 18l3.5-8 3.5 8M15.1 15.5h4.8"/>',
   camara: '<path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.6l1.4-2h5l1.4 2h1.6A2.5 2.5 0 0 1 20 8.5v8A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5z"/><circle cx="12" cy="12.5" r="3.5"/>',
+  ojo: '<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>',
+  ojoNo: '<path d="M3 3l18 18"/><path d="M10.6 6.1A9.6 9.6 0 0 1 12 6c6 0 9.5 6 9.5 6a17 17 0 0 1-3 3.7M6.3 7.6C3.9 9.4 2.5 12 2.5 12S6 18 12 18c1.6 0 3-.4 4.2-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>',
   enviar: '<path d="M4 12l16-8-6 16-2.5-6.5z"/><path d="M11.5 13.5L20 4"/>',
   robot: '<rect x="5" y="8" width="14" height="11" rx="3.5"/><path d="M12 4.5V8"/><circle cx="12" cy="3.6" r="1.1" fill="currentColor"/><circle cx="9.5" cy="13" r="1.3" fill="currentColor" stroke="none"/><circle cx="14.5" cy="13" r="1.3" fill="currentColor" stroke="none"/><path d="M10 16.3c1.2.8 2.8.8 4 0"/><path d="M3 12.5v2.5M21 12.5v2.5"/>',
   info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>',
@@ -1105,6 +1148,7 @@ const svg = (n, s = 20, w = 1.9) => `<svg width="${s}" height="${s}" viewBox="0 
 function icoDe(f, hojaN) {
   if (hojaN) {
     if (f.tipo === 'Inversión') return 'prod'; if (f.tipo === 'Cambio') return 'cambio'; if (f.tipo === 'Ajuste' || f.tipo === 'Devolución') return 'billetera';
+    if (f.tipo === 'Gasto general') return 'recibo';
     const c = (f.categoria || '').toLowerCase();
     if (c.includes('sueldo') || /comida|bebida/.test((f.descripcion || '').toLowerCase())) return 'comida';
     if (c.includes('insumo')) return /colectivo|chalana|pasero|bodega/.test((f.descripcion || '').toLowerCase()) ? 'bus' : 'bolsa';
@@ -1288,7 +1332,8 @@ function filaMov(f, hojaN) {
   const pend = rechDe(f.id) ? '<span class="esperando mal">no se pudo subir</span>' : enCola(f.id) ? '<span class="esperando">sin subir</span>' : '';
   let titulo, detalle, monto, pos = false;
   if (hojaN) {
-    if (f.tipo === 'Cambio') { const nota = notaCambio(f); titulo = 'Cambio a efectivo'; detalle = `${nota ? nota + ' · ' : ''}${fmt(f.monto)} al ${pct(f.pctCambio)}${f.pago === 'Efectivo' && Number(f.comision) ? ' · comisión en efectivo' : ''}`; monto = '+' + fmt(f.recibido); pos = true; }
+    if (f.tipo === 'Cambio') { const nota = notaCambio(f); titulo = 'Cambio a efectivo'; detalle = `${nota ? nota + ' · ' : ''}${fmt(f.monto)} ${Number(f.comision) ? 'al ' + pct(f.pctCambio) + (f.pago === 'Efectivo' ? ' · comisión en efectivo' : '') : 'sin comisión'}${f.viaje ? '' : ' · Otro lugar'}`; monto = '+' + fmt(f.recibido); pos = true; }
+    else if (f.tipo === 'Gasto general') { titulo = f.descripcion || f.categoria; detalle = `${f.descripcion ? f.categoria + ' · ' : ''}Gasto general · ${f.pago}`; monto = '-' + fmt(f.gastoReal); }
     else if (f.tipo === 'Devolución') { titulo = 'Devolución al negocio'; detalle = (f.descripcion !== 'Devolución al negocio' ? f.descripcion + ' · ' : '') + (f.pago === 'Transferencia' ? 'Volvió por transferencia' : 'Entró al efectivo'); monto = '+' + fmt(f.monto); pos = true; }
     else if (f.tipo === 'Ajuste') { titulo = f.descripcion; detalle = 'Efectivo contado: ' + fmt(f.monto); monto = (f.movEfectivo >= 0 ? '+' : '-') + fmt(Math.abs(f.movEfectivo)); pos = f.movEfectivo >= 0; }
     else if (f.tipo === 'Inversión') { titulo = `${f.descripcion} × ${f.unidades}`; detalle = `Productos · ${f.pago}${f.recargo ? ' + ' + pct(f.pctRecargo) : ''}`; monto = '-' + fmt(totalNegocio(f)); }
@@ -1300,7 +1345,7 @@ function filaMov(f, hojaN) {
     monto = '-' + fmt(f.monto);
   }
   const quien = S.yo.admin && S.filtro === '' ? ' · ' + f.negocio : '';
-  const col = hojaN ? (['Cambio', 'Ajuste', 'Devolución'].includes(f.tipo) ? 'var(--teal2)' : 'var(--violet2)') : 'var(--pink)';
+  const col = hojaN ? (['Cambio', 'Ajuste', 'Devolución'].includes(f.tipo) ? 'var(--teal2)' : f.tipo === 'Gasto general' ? 'var(--naranja)' : 'var(--violet2)') : 'var(--pink)';
   return `<button class="mov" type="button" data-editar="${hojaN ? 'negocio' : 'personal'}:${esc(f.id)}">
     <span class="ico" style="color:${col}">${svg(icoDe(f, hojaN), 21)}</span>
     <span class="txt"><b>${esc(titulo)}${pend}</b><small>${fCorta(f.fecha)} · ${esc(detalle)}${esc(quien)}</small></span>
@@ -1324,6 +1369,7 @@ function vInicio() {
   <div class="cabecera">
     <button type="button" class="avatar" data-ir2="perfil" aria-label="Ir a mi perfil">${esc(iniciales(S.yo.nombre))}</button>
     <div class="saludo"><small>Hola,</small><b>${esc(S.yo.nombre)}</b></div>
+    <button type="button" class="ojo-montos" data-acc="ocultarMontos" aria-label="${OCULTO ? 'Mostrar los montos' : 'Ocultar los montos'}" aria-pressed="${OCULTO}">${svg(OCULTO ? 'ojoNo' : 'ojo', 20, 2)}</button>
     ${chipSync()}
   </div>
   ${filtroNegocios()}
@@ -1333,6 +1379,7 @@ function vInicio() {
     <div class="sub"><div><span>Compras y negocio</span><b>${fmt(tNeg)}</b></div><div><span>Gasto personal</span><b>${fmt(tPer)}</b></div></div>
   </section>
   ${tarjetasDeuda()}
+  ${tarjComparacion()}
   ${total ? `<section class="tarj tarj-cat${S.catAbierta ? ' abierta' : ''}" id="tarjCat" aria-label="Por categoría. Tocá para ${S.catAbierta ? 'achicar' : 'agrandar'}">
     <h2>Por categoría <span class="expandir" aria-hidden="true">${svg('expandir', 20, 2.6)}</span></h2>
     <div class="cat-cuerpo">
@@ -1351,9 +1398,10 @@ function tarjetasDeuda() {
   const negs = S.yo.admin ? (S.filtro ? [S.filtro] : (S.listas['Negocios'] || [])) : [S.yo.negocio];
   return negs.map(n => [n, deudaDe(n)]).filter(x => x[1] > 0).map(([n, d]) => `<div class="deuda"><span><small>${S.yo.admin && n !== S.yo.negocio ? esc(n) + ' le debe al negocio' : 'Le debés al negocio'}</small><b>${fmt(d)}</b></span><button type="button" data-devolver="${esc(n)}">Devolver</button></div>`).join('');
 }
-function formDevolucion(neg, fila) {
+function formDevolucion(neg, fila, pre) {
   const deuda = deudaDe(neg) + (fila ? Number(fila.monto) || 0 : 0);
   S.form = { hoja: 'devolucion', id: fila ? fila.id : nuevoId(), editando: !!fila, negocio: neg, monto: fila ? String(fila.monto) : String(deudaDe(neg) || ''), nota: fila && fila.descripcion !== 'Devolución al negocio' ? fila.descripcion : '', fecha: fila ? fila.fecha : hoy(), pago: fila && fila.pago === 'Transferencia' ? 'Transferencia' : 'Efectivo', confirmarBorrar: false };
+  if (pre) Object.assign(S.form, pre);
   abrirModal(`${cab(fila ? 'Editar devolución' : 'Devolver al negocio', 'var(--teal)', 'billetera')}
     <p class="ayuda" style="margin:0;font-size:14px">${neg !== S.yo.negocio ? esc(neg) + ' le debe' : 'Le debés'} al negocio <b>${fmt(deuda)}</b>. Si devolviste una parte, cambiá el monto.</p>
     <div class="campo"><label for="fMonto">¿Cuánto devolviste?</label>${plataHTML('fMonto', S.form.monto, 'data-campo="monto"')}</div>
@@ -1401,10 +1449,12 @@ function vSeccion(cual) {
     items = agrupar(partes.map(p => [p[0], p[1]]));
     const rec = partes.filter(p => p[2] === 'rec').reduce((s, p) => s + p[1], 0);
     const no = partes.filter(p => p[2] === 'no').reduce((s, p) => s + p[1], 0);
-    total = rec + no;
+    const gen = partes.filter(p => p[2] === 'gen').reduce((s, p) => s + p[1], 0);
+    total = rec + no + gen;
     const negEf = S.yo.admin ? S.filtro : S.yo.negocio;
     const ef = negEf ? efectivoDe(negEf) : (S.listas['Negocios'] || []).reduce((s, n) => s + efectivoDe(n), 0);
-    mini = `<div class="mini"><div><span>Recuperable</span><b>${fmt(rec)}</b></div><div><span>No reversible</span><b>${fmt(no)}</b></div>
+    mini = `<div class="mini cuatro"><div><span>Recuperable</span><b>${fmt(rec)}</b></div><div><span>No reversible (viajes)</span><b>${fmt(no)}</b></div>
+      <div class="gen"><span>Gastos generales</span><b>${fmt(gen)}</b></div>
       <button type="button" class="efe" data-acc="ajustar"><span>Efectivo disponible</span><b>${fmt(ef)}</b><small>${negEf ? 'Tocá para ajustar' : 'Todos los negocios'}</small></button></div>`;
   } else {
     items = agrupar(filas.map(f => [f.categoria, Number(f.monto) || 0]));
@@ -1457,18 +1507,19 @@ function vPerfil() {
     <div class="fila-p"><span>Última vez subido</span><b>${esc(ult)}</b></div>
     <div class="fila-p"><span>Gastos sin subir</span><b>${S.cola.length}</b></div>
     ${S.rech.length ? `<div class="fila-p"><span>Con error (en rojo)</span><b style="color:var(--errtxt)">${S.rech.length}</b></div>` : ''}
-    <div class="fila-p"><span>Versión de la app</span><b>${esc(textoVersion())}</b></div>
+    <div class="fila-p"><span>Versión de la app</span><span class="ver-app"><b>${esc(APP_SERIE)}</b><small>${esc(fechaVersion())}</small></span></div>
   </section>
   <button class="btn btn-sec" type="button" id="btnSyncGrande" data-acc="sync" ${S.sincronizando ? 'disabled' : ''}>${svg('nube', 18, 2.2)}${S.sincronizando ? 'Subiendo…' : 'Subir y actualizar ahora'}</button>
 
   <button class="interruptor" type="button" role="switch" data-acc="modoOnOff" aria-checked="${esSimple()}"><span><b>Modo simple</b><small>Todo más grande y una pregunta por pantalla</small></span><span class="switch" aria-hidden="true"></span></button>
   ${esSimple() ? '' : `<section class="tarj" style="display:flex;flex-direction:column;gap:12px">
-    <h2 style="margin:0">Descargar en Excel</h2>
-    <p class="ayuda" style="margin:0">Con las mismas columnas que tu Excel de Gastos de viaje y compras, para copiar y pegar.</p>
+    <h2 style="margin:0">Descargar resumen</h2>
+    <p class="ayuda" style="margin:0">En Excel, con las mismas columnas que tus planillas, o en PDF, listo para guardar o compartir.</p>
     <div class="segm" role="group"><button type="button" data-exp="mes" aria-pressed="${!S.expViaje}">Por mes</button><button type="button" data-exp="viaje" aria-pressed="${!!S.expViaje}" ${viajes.length ? '' : 'disabled'}>Por viaje</button></div>
     ${ddHTML('ddExp', S.expViaje ? 'Viaje' : 'Mes', opExp, valorExport(), v => { S.expVal = v; render(); })}
     ${y.admin ? ddHTML('ddExpNeg', 'Negocio', [['', 'Todos los negocios'], ...(S.listas['Negocios'] || []).map(n => [n, n])], S.expNeg || '', v => { S.expNeg = v; render(); }) : ''}
     <button class="btn btn-grad" type="button" data-acc="exportar">Descargar Excel</button>
+    <button class="btn btn-sec" type="button" data-acc="verPDF">${svg('recibo', 18, 2.2)} Descargar resumen PDF</button>
   </section>`}
 
   ${y.admin ? `<section class="tarj" style="display:flex;flex-direction:column;gap:10px">
@@ -1514,9 +1565,14 @@ const cab = (titulo, color, icono) => `<div class="v-cab"><span class="ic" style
 
 function elegirTipo() {
   const neg = S.filtro || S.yo.negocio, deuda = deudaDe(neg);
+  const op = (nuevo, icono, titulo, sub, fondo) => `<button class="opcion" type="button" data-nuevo="${nuevo}" style="background:${fondo}"><span class="oi">${svg(icono, 24)}</span><span><b>${titulo}</b><small>${sub}</small></span>${svg('der', 20, 2.2)}</button>`;
   abrirModal(`${cab('¿Qué querés cargar?', 'var(--card3)', 'recibo')}
-    <button class="opcion" type="button" data-nuevo="negocio" style="background:linear-gradient(135deg,#7C4DFF,#9E4BE6)"><span class="oi">${svg('caja', 24)}</span><span><b>Compras y negocio</b><small>Mercadería e insumos</small></span>${svg('der', 20, 2.2)}</button>
-    <button class="opcion" type="button" data-nuevo="personal" style="background:linear-gradient(135deg,#C23A8C,#E040A0)"><span class="oi">${svg('user', 24)}</span><span><b>Gasto personal</b><small>Casa, comida, salud</small></span>${svg('der', 20, 2.2)}</button>
+    <div class="ay-sec">Negocio</div>
+    ${op('viaje', 'caja', 'Viajes', 'Compras y gastos del viaje', 'linear-gradient(135deg,#7C4DFF,#9E4BE6)')}
+    ${op('general', 'recibo', 'Gastos generales', 'Gastos del negocio fuera de viajes', 'linear-gradient(135deg,#B8661F,#D9862B)')}
+    ${op('cambio', 'cambio', 'Cambio a efectivo', 'Transferencia por efectivo', 'linear-gradient(135deg,#1F9E95,#2B7F9E)')}
+    <div class="ay-sec">Personal</div>
+    ${op('personal', 'user', 'Gasto personal', 'Gastos propios del día a día', 'linear-gradient(135deg,#C23A8C,#E040A0)')}
     <button class="opcion chica" type="button" data-acc="plataNegocio" style="background:var(--card3)"><span class="oi">${svg('billetera', 21)}</span><span><b>Plata del negocio</b><small>Usarla para algo personal, o devolverla${deuda > 0 ? ' · se debe ' + fmt(deuda) : ''}</small></span>${svg('der', 18, 2.2)}</button>`);
 }
 
@@ -1536,8 +1592,8 @@ function pintarFormPersonal() {
     ${f.origen === 'Negocio (MercadoLibre)' ? `<button class="interruptor" type="button" role="switch" data-set="devolver" data-val="${f.devolver === 'sí' ? '' : 'sí'}" aria-checked="${f.devolver === 'sí'}" style="background:var(--campo);padding:12px 14px"><span><b style="font-size:15px">Lo voy a devolver</b><small>Queda anotado lo que le debés al negocio</small></span><span class="switch" aria-hidden="true"></span></button>` : ''}
     <div class="campo">Categoría<div class="grid3">${cats.map(c => `<button type="button" class="chip" data-set="categoria" data-val="${esc(c)}" aria-pressed="${f.categoria === c}">${esc(c)}</button>`).join('')}</div></div>
     ${campoFecha(f.fecha)}
-    <div class="campo"><label for="fMonto">Monto</label>${plataHTML('fMonto', f.monto, 'data-campo="monto"')}</div>
-    <label class="campo" for="fDesc">Descripción (opcional)<input id="fDesc" value="${esc(f.descripcion)}" data-campo="descripcion" placeholder="Ej: Factura de luz"></label>
+    <div class="campo"><label for="fMonto">Monto</label>${plataHTML('fMonto', f.monto, 'data-campo="monto"')}</div>${rapidosHTML(rapidosForm(f))}
+    <label class="campo" for="fDesc">Descripción (opcional)<input id="fDesc" value="${esc(f.descripcion)}" data-campo="descripcion" placeholder="Agregá un detalle si querés"></label>
     <div class="campo">Pago<div class="segm">${['Efectivo', 'Transferencia'].map(o => `<button type="button" data-set="pago" data-val="${o}" aria-pressed="${f.pago === o}">${o}</button>`).join('')}</div></div>
     <div class="error" id="fError" hidden></div>
     <button class="btn btn-grad" type="button" data-acc="guardarPersonal" style="background:linear-gradient(135deg,#E040A0,#7C4DFF)">${f.editando ? 'Guardar cambios' : 'Guardar gasto'}</button>
@@ -1575,15 +1631,19 @@ function guardarPersonal() {
 function errorForm(t) { const e = $('fError'); if (e) { e.textContent = t; e.hidden = false; e.scrollIntoView({ block: 'nearest' }); } }
 
 /* ---------- Compras y negocio ---------- */
-function formNegocio(fila, tipo, neg) {
+const grupoDe = tipo => tipo === 'Cambio' ? 'cambio' : tipo === 'Gasto general' ? 'general' : 'viaje';
+function formNegocio(fila, tipo, neg, pedirIni) {
   const negocio = fila ? fila.negocio : (neg || S.filtro || S.yo.negocio);
   const ultimoViaje = LS.get('bd_viaje_' + S.yo.usuario, '');
   S.form = { hoja: 'negocio', id: fila ? fila.id : nuevoId(), editando: !!fila, negocio, tipo: fila ? fila.tipo : (tipo || 'Inversión'),
     fecha: fila ? fila.fecha : hoy(), viaje: fila ? fila.viaje : (viajesDe(negocio).includes(ultimoViaje) ? ultimoViaje : ''), viajeNuevo: false,
     descripcion: fila ? fila.descripcion : '', categoria: fila ? fila.categoria : '', unidades: fila ? String(fila.unidades || '') : '',
     monto: fila ? String(fila.monto || '') : '', pago: fila ? fila.pago : 'Transferencia', pctRecargo: fila ? String(fila.pctRecargo || '') : '',
-    pctCambio: fila ? String(fila.pctCambio || '') : '', pagoComision: fila && fila.tipo === 'Cambio' && fila.pago === 'Efectivo' ? 'Efectivo' : 'Transferencia', nota: fila && fila.tipo === 'Cambio' ? notaCambio(fila) : '', abierto: '', confirmarBorrar: false, permitirSinEfectivo: false };
-  if (!fila && !tipo && necesitaInicial(negocio)) return formAjuste(negocio, true);
+    pctCambio: fila ? String(fila.pctCambio || '') : '', pagoComision: fila && fila.tipo === 'Cambio' && fila.pago === 'Efectivo' ? 'Efectivo' : 'Transferencia', nota: fila && fila.tipo === 'Cambio' ? notaCambio(fila) : '',
+    lugar: fila && fila.tipo === 'Cambio' && !fila.viaje ? 'Otro' : 'Bermejo', abierto: '', confirmarBorrar: false, permitirSinEfectivo: false };
+  if (!fila && S.form.tipo === 'Gasto general') S.form.viaje = '';
+  // Efectivo inicial: solo la primera vez, y no para gastos generales
+  if (!fila && pedirIni && S.form.tipo !== 'Gasto general' && necesitaInicial(negocio)) { S.tipoTras = S.form.tipo; return formAjuste(negocio, true); }
   pintarFormNegocio();
 }
 function necesitaInicial(negocio) {
@@ -1591,14 +1651,15 @@ function necesitaInicial(negocio) {
 }
 function pintarFormNegocio() {
   const f = S.form;
-  const tabs = [['Inversión', 'Inversión', 'se recupera'], ['No reversible', 'No reversible', 'no vuelve'], ['Cambio', 'Cambio', 'a efectivo']];
-  const color = f.tipo === 'Cambio' ? 'var(--teal)' : 'var(--violet)';
+  const tabs = [['Inversión', 'Inversión', 'se recupera'], ['No reversible', 'No reversible', 'no vuelve']];
+  const grupo = grupoDe(f.tipo);
+  const color = grupo === 'cambio' ? 'var(--teal)' : grupo === 'general' ? '#C97A2B' : 'var(--violet)';
   let cuerpo = '';
   const viajes = viajesDe(f.negocio);
   if (f.viaje && !viajes.includes(f.viaje)) viajes.unshift(f.viaje);
   const campoViaje = f.viajeNuevo
-    ? `<label class="campo" for="fViaje">Viaje nuevo<input id="fViaje" data-campo="viaje" value="${esc(f.viaje)}" placeholder="Ej: Bermejo ${fCorta(hoy())}"></label>`
-    : ddHTML('ddViaje', 'Viaje', [['', 'Sin viaje'], ...viajes.map(v => [v, v]), ['__nuevo', '+ Nuevo viaje…']], f.viaje || '', v => {
+    ? `<label class="campo" for="fViaje">Viaje nuevo<input id="fViaje" data-campo="viaje" value="${esc(f.viaje)}" placeholder="Nombre del viaje"></label>`
+    : ddHTML('ddViaje', 'Viaje', [['', f.tipo === 'Cambio' ? 'Bermejo ' + fCorta(f.fecha) + ' (viaje del día)' : 'Sin viaje'], ...viajes.map(v => [v, v]), ['__nuevo', '+ Nuevo viaje…']], f.viaje || '', v => {
         leerCampos();
         if (v === '__nuevo') { S.form.viajeNuevo = true; S.form.viaje = 'Bermejo ' + fCorta(hoy()); } else S.form.viaje = v;
         pintarFormNegocio();
@@ -1610,12 +1671,12 @@ function pintarFormNegocio() {
   if (f.tipo === 'Inversión') {
     cuerpo = `${fechaViaje}
       <div class="campo">Categoría<div class="fijo">Productos ${svg('candado', 16, 2)}</div></div>
-      <label class="campo" for="fDesc">Producto<input id="fDesc" data-campo="descripcion" value="${esc(f.descripcion)}" placeholder="Ej: Tazas con calentador"></label>
+      <label class="campo" for="fDesc">Producto<input id="fDesc" data-campo="descripcion" value="${esc(f.descripcion)}" placeholder="Nombre del producto"></label>
       <div class="dos"><label class="campo" for="fUn">Unidades<input id="fUn" inputmode="decimal" data-campo="unidades" value="${esc(f.unidades)}" placeholder="0"></label>
         <div class="campo"><label for="fMonto">Costo total</label>${plataHTML('fMonto', f.monto, 'data-campo="monto"')}</div></div>
       <span class="ayuda" id="calcA">${c.a}</span>
       ${pagoSeg}
-      ${f.pago === 'Transferencia' ? `<label class="campo" for="fPct">% recargo de la tienda (si te cobran)<input id="fPct" inputmode="decimal" data-campo="pctRecargo" value="${esc(f.pctRecargo)}" placeholder="Ej: 3"></label>` : ''}
+      ${f.pago === 'Transferencia' ? `<label class="campo" for="fPct">% recargo de la tienda (si te cobran)<input id="fPct" inputmode="decimal" data-campo="pctRecargo" value="${esc(f.pctRecargo)}" placeholder="0"></label>` : ''}
       <div id="calcB">${c.b}</div>`;
   } else if (f.tipo === 'No reversible') {
     const cats = S.listas['Categorías no reversibles'] || [], descs = S.listas['Descripciones rápidas'] || [];
@@ -1628,20 +1689,30 @@ function pintarFormNegocio() {
         <div class="combo"><input id="fDesc" data-campo="descripcion" value="${esc(f.descripcion)}" placeholder="Escribí o elegí de la lista"><button type="button" data-abrir="desc" aria-label="Ver descripciones comunes" aria-expanded="${f.abierto === 'desc'}">${svg(f.abierto === 'desc' ? 'arriba' : 'abajo', 18, 2.4)}</button></div>
         ${f.abierto === 'desc' ? `<div class="dd-lista" role="listbox">${descs.map(c => `<button type="button" role="option" aria-selected="${c === f.descripcion}" data-set="descripcion" data-val="${esc(c)}">${esc(c)}${c === f.descripcion ? svg('tilde', 16, 2.6) : ''}</button>`).join('')}</div>` : ''}
       </div></div>
-      <div class="campo"><label for="fMonto">Monto</label>${plataHTML('fMonto', f.monto, 'data-campo="monto"')}</div>
+      <div class="campo"><label for="fMonto">Monto</label>${plataHTML('fMonto', f.monto, 'data-campo="monto"')}</div>${rapidosHTML(rapidosForm(f))}
+      ${pagoSeg}
+      <div id="calcB">${c.b}</div>`;
+  } else if (f.tipo === 'Gasto general') {
+    const cats = S.listas['Categorías gastos generales'] || LISTAS_BASE['Categorías gastos generales'];
+    cuerpo = `<div class="campo">Categoría<div class="grid3">${cats.map(c => `<button type="button" class="chip" data-set="categoria" data-val="${esc(c)}" aria-pressed="${f.categoria === c}">${esc(c)}</button>`).join('')}</div></div>
+      ${campoFecha(f.fecha)}
+      <div class="campo"><label for="fMonto">Monto</label>${plataHTML('fMonto', f.monto, 'data-campo="monto"')}</div>${rapidosHTML(rapidosForm(f))}
+      <label class="campo" for="fDesc">Detalle (opcional)<input id="fDesc" data-campo="descripcion" value="${esc(f.descripcion)}" maxlength="120" placeholder="Agregá un detalle si querés"></label>
       ${pagoSeg}
       <div id="calcB">${c.b}</div>`;
   } else {
-    cuerpo = `<p class="ayuda" style="margin:0">Cargalo cuando pasás plata por transferencia y te la dan en efectivo.</p>
-      ${fechaViaje}
+    const lugarSeg = `<div class="campo">Lugar<div class="segm">${[['Bermejo', 'Bermejo'], ['Otro', 'Otro lugar']].map(([v, t]) => `<button type="button" data-set="lugar" data-val="${v}" aria-pressed="${(f.lugar || 'Bermejo') === v}">${t}</button>`).join('')}</div></div>`;
+    cuerpo = `<p class="ayuda" style="margin:0">Cuando pasás plata por transferencia y te la dan en efectivo.</p>
+      ${lugarSeg}
+      ${f.lugar === 'Otro' ? campoFecha(f.fecha) : fechaViaje}
       <div class="campo"><label for="fMonto">Transferiste</label>${plataHTML('fMonto', f.monto, 'data-campo="monto"')}</div>
-      <label class="campo" for="fPctC">% del cambio<input id="fPctC" inputmode="decimal" data-campo="pctCambio" value="${esc(f.pctCambio)}" placeholder="Ej: 1"></label>
+      <label class="campo" for="fPctC">% del cambio<input id="fPctC" inputmode="decimal" data-campo="pctCambio" value="${esc(f.pctCambio)}" placeholder="0"></label>
       <div class="campo">¿Cómo pagaste la comisión?<div class="segm">${[['Efectivo', 'En efectivo', 'recibís todo'], ['Transferencia', 'Descontada', 'recibís menos']].map(([v, t, sub]) => `<button type="button" data-set="pagoComision" data-val="${v}" aria-pressed="${f.pagoComision === v}">${t}<small>${sub}</small></button>`).join('')}</div></div>
       <label class="campo" for="fNota">Nota (opcional)<input id="fNota" data-campo="nota" value="${esc(f.nota)}" maxlength="80" placeholder="Agregá un detalle si querés"></label>
       <div id="calcB">${c.b}</div>`;
   }
-  abrirModal(`${cab(f.editando ? 'Editar' : 'Compras y negocio', color, f.tipo === 'Cambio' ? 'cambio' : 'caja')}
-    ${f.editando ? '' : `<div class="segm" role="group" aria-label="Tipo">${tabs.map(([v, t, s]) => `<button type="button" data-set="tipo" data-val="${v}" aria-pressed="${f.tipo === v}">${t}<small>${s}</small></button>`).join('')}</div>`}
+  abrirModal(`${cab(f.editando ? 'Editar' : { viaje: 'Viajes', general: 'Gastos generales', cambio: 'Cambio a efectivo' }[grupo], color, grupo === 'cambio' ? 'cambio' : grupo === 'general' ? 'recibo' : 'caja')}
+    ${f.editando || grupo !== 'viaje' ? '' : `<div class="segm" role="group" aria-label="Tipo">${tabs.map(([v, t, s]) => `<button type="button" data-set="tipo" data-val="${v}" aria-pressed="${f.tipo === v}">${t}<small>${s}</small></button>`).join('')}</div>`}
     ${bannerRech(f.id)}
     ${S.yo.admin && !f.editando ? selNegocio(f.negocio) : ''}
     ${cuerpo}
@@ -1658,7 +1729,7 @@ function calcForm(f) {
     return { a: total > 0 && un > 0 ? 'Sale a ' + fmt(total / un) + ' por unidad' : 'Poné el total que pagaste por todo.',
       b: `${f.pago === 'Efectivo' ? notaEfectivo(ef, total) : ''}<div class="caja" style="margin-top:${f.pago === 'Efectivo' ? 13 : 0}px"><div><span>Productos</span><span>${fmt(total)}</span></div>${rec ? `<div><span>Recargo (${pct}%)</span><span>${fmt(rec)}</span></div>` : ''}<div class="t"><span>Total pagado</span><b>${fmt(total + rec)}</b></div></div>` };
   }
-  if (f.tipo === 'No reversible') return { b: f.pago === 'Efectivo' ? notaEfectivo(ef, num(f.monto)) : '' };
+  if (f.tipo === 'No reversible' || f.tipo === 'Gasto general') return { b: f.pago === 'Efectivo' ? notaEfectivo(ef, num(f.monto)) : '' };
   const m = num(f.monto) > 0 ? num(f.monto) : 0, pc = num(f.pctCambio);
   const com = m > 0 && pc >= 0 ? r2(m * pc / 100) : 0, efe = f.pagoComision === 'Efectivo', rec = efe ? m : r2(m - com);
   return { b: `<div class="caja"><div><span>Comisión (cuenta como gasto)</span><span style="color:#FFB3D9;font-weight:800">-${fmt(com)}</span></div>${efe && com ? `<div><span>La pagás en efectivo</span><span>${fmt(com)}</span></div>` : ''}<div class="t"><span>Efectivo que recibís</span><b>${fmt(rec)}</b></div></div>
@@ -1686,7 +1757,14 @@ function guardarNegocio() {
     if (!d.categoria) return errorForm('Elegí una categoría.');
     if (!(d.monto > 0)) return errorForm('Poné el monto.');
     if (d.pago === 'Efectivo') saleEfectivo = d.monto;
+  } else if (f.tipo === 'Gasto general') {
+    d.categoria = f.categoria; d.descripcion = (f.descripcion || '').trim(); d.monto = num(f.monto); d.pago = f.pago; d.viaje = '';
+    if (!d.categoria) return errorForm('Elegí una categoría.');
+    if (!(d.monto > 0)) return errorForm('Poné el monto.');
+    if (d.pago === 'Efectivo') saleEfectivo = d.monto;
   } else {
+    // Cambio: en Bermejo va dentro del viaje (si no hay, se arma el del día); en otro lugar, sin viaje
+    d.viaje = f.lugar === 'Otro' ? '' : (d.viaje || 'Bermejo ' + fCorta(f.fecha));
     d.monto = num(f.monto); d.pctCambio = num(f.pctCambio || '0'); d.nota = (f.nota || '').trim(); d.pagoComision = f.pagoComision === 'Efectivo' ? 'Efectivo' : 'Transferencia';
     if (!(d.monto > 0)) return errorForm('Poné cuánto transferiste.');
     if (!(d.pctCambio >= 0 && d.pctCambio <= 100)) return errorForm('Revisá el % del cambio.');
@@ -1734,7 +1812,7 @@ function guardarAjuste() {
   encolar({ tipo: 'guardar', hoja: 'negocio', id: nuevoId(), datos: { negocio: f.negocio, tipo: 'Ajuste', fecha: hoy(), viaje: '', monto, inicial: !!f.inicial } });
   avisar('Efectivo actualizado');
   const volver = S.formGuardado; S.formGuardado = null;
-  if (f.inicial) { limpiarModal(); formNegocio(null, 'Inversión', f.negocio); return; }
+  if (f.inicial) { limpiarModal(); formNegocio(null, S.tipoTras || 'Inversión', f.negocio); return; }
   if (volver) { S.form = volver; pintarFormNegocio(); return; }
   cerrarModal();
 }
@@ -1762,31 +1840,38 @@ async function exportar(btn) {
   const N = S.negocio.filter(filtra).sort((a, b) => a.fecha.localeCompare(b.fecha));
   const Pp = porViaje ? [] : S.personal.filter(f => (!neg || f.negocio === neg) && String(f.fecha).slice(0, 7) === val).sort((a, b) => a.fecha.localeCompare(b.fecha));
   const negs = neg ? [neg] : (S.listas['Negocios'] || []);
-  const resumen = [['Negocio', 'Inversión (recuperable)', 'Insumos', 'Sueldo', 'Interés/Gastos', 'Otros', 'Subtotal no reversible', 'TOTAL', 'Gastos personales', 'De esos, con plata del negocio']];
+  const resumen = [['Negocio', 'Inversión (recuperable)', 'Insumos', 'Sueldo', 'Interés/Gastos', 'Otros', 'Subtotal no reversible', 'Gastos generales', 'TOTAL', 'Gastos personales', 'De esos, con plata del negocio']];
   negs.forEach(n => {
     const fs = N.filter(f => f.negocio === n), partes = fs.flatMap(partesNegocio);
     const suma = c => partes.filter(p => p[0] === c).reduce((s, p) => s + p[1], 0);
-    const inv = suma('Productos'), ins = suma('Insumos'), su = suma('Sueldo'), it = suma('Interés/Gastos');
+    const inv = suma('Productos');
     const no = partes.filter(p => p[2] === 'no').reduce((s, p) => s + p[1], 0);
+    const gen = partes.filter(p => p[2] === 'gen').reduce((s, p) => s + p[1], 0);
     const pn = Pp.filter(f => f.negocio === n);
-    resumen.push([n, inv, ins, su, it, r2(no - ins - su - it), no, inv + no, pn.reduce((s, f) => s + Number(f.monto), 0), pn.filter(f => f.origen !== 'Personal').reduce((s, f) => s + Number(f.monto), 0)]);
+    // ins/su: solo de los viajes (lo de gastos generales va en su propia columna)
+    const sumaNo = c => partes.filter(p => p[2] === 'no' && p[0] === c).reduce((s, p) => s + p[1], 0);
+    const ins2 = sumaNo('Insumos'), su2 = sumaNo('Sueldo'), it2 = sumaNo('Interés/Gastos');
+    resumen.push([n, inv, ins2, su2, it2, r2(no - ins2 - su2 - it2), no, gen, inv + no + gen, pn.reduce((s, f) => s + Number(f.monto), 0), pn.filter(f => f.origen !== 'Personal').reduce((s, f) => s + Number(f.monto), 0)]);
   });
   const inv = [['Fecha', 'Negocio', 'Viaje', 'Descripción (producto)', 'Unidades', 'Precio de costo unitario', 'Precio de costo total', 'Pago', '% recargo', 'Recargo $']]
     .concat(N.filter(f => f.tipo === 'Inversión').map(f => [f.fecha, f.negocio, f.viaje, f.descripcion, Number(f.unidades), Number(f.costoUnit), Number(f.monto), f.pago, f.pctRecargo === '' ? '' : Number(f.pctRecargo), Number(f.recargo) || '']));
   const nor = [['Fecha', 'Negocio', 'Viaje', 'Categoría', 'Descripción', 'Pago', 'Gasto real']]
     .concat(N.filter(f => f.tipo === 'No reversible').map(f => [f.fecha, f.negocio, f.viaje, f.categoria, f.descripcion, f.pago, Number(f.gastoReal)]));
-  const cam = [['Fecha', 'Negocio', 'Viaje', 'Nota', 'Transferido', '% del cambio', 'Comisión (gasto real)', 'Comisión pagada con', 'Efectivo recibido']]
-    .concat(N.filter(f => f.tipo === 'Cambio').map(f => [f.fecha, f.negocio, f.viaje, notaCambio(f), Number(f.monto), Number(f.pctCambio), Number(f.comision), Number(f.comision) ? (f.pago === 'Efectivo' ? 'Efectivo' : 'Descontada') : '', Number(f.recibido)]));
+  const gral = [['Fecha', 'Negocio', 'Categoría', 'Descripción', 'Pago', 'Monto']]
+    .concat(N.filter(f => f.tipo === 'Gasto general').map(f => [f.fecha, f.negocio, f.categoria, f.descripcion, f.pago, Number(f.gastoReal)]));
+  const cam = [['Fecha', 'Negocio', 'Lugar', 'Viaje', 'Nota', 'Transferido', '% del cambio', 'Comisión (gasto real)', 'Comisión pagada con', 'Efectivo recibido']]
+    .concat(N.filter(f => f.tipo === 'Cambio').map(f => [f.fecha, f.negocio, f.viaje ? 'Bermejo' : 'Otro lugar', f.viaje, notaCambio(f), Number(f.monto), Number(f.pctCambio), Number(f.comision), Number(f.comision) ? (f.pago === 'Efectivo' ? 'Efectivo' : 'Descontada') : '', Number(f.recibido)]));
   const per = [['Fecha', 'Negocio', 'Origen de la plata', 'Categoría', 'Descripción', 'Pago', 'Monto', 'A devolver']]
     .concat(Pp.map(f => [f.fecha, f.negocio, f.origen, f.categoria, f.descripcion, f.pago, Number(f.monto), f.devolver === 'sí' ? 'Sí' : '']));
   const dev = [['Fecha', 'Negocio', 'Nota', 'Cómo se devolvió', 'Devuelto']]
     .concat(N.filter(f => f.tipo === 'Devolución').map(f => [f.fecha, f.negocio, f.descripcion !== 'Devolución al negocio' ? f.descripcion : '', f.pago === 'Transferencia' ? 'Transferencia' : 'Efectivo', Number(f.monto)]));
   const wb = XLSX.utils.book_new();
   const hoja = (aoa, nombre, anchos) => { const ws = XLSX.utils.aoa_to_sheet(aoa); ws['!cols'] = anchos.map(w => ({ wch: w })); XLSX.utils.book_append_sheet(wb, ws, nombre); };
-  hoja(resumen, 'Resumen', [20, 14, 12, 12, 14, 12, 16, 14, 16, 18]);
+  hoja(resumen, 'Resumen', [20, 14, 12, 12, 14, 12, 16, 16, 14, 16, 18]);
   hoja(inv, 'Inversiones', [12, 18, 16, 30, 10, 14, 14, 14, 10, 12]);
   hoja(nor, 'No reversibles', [12, 18, 16, 16, 26, 14, 12]);
-  hoja(cam, 'Cambios', [12, 18, 16, 24, 14, 12, 18, 18, 16]);
+  if (gral.length > 1) hoja(gral, 'Gastos generales', [12, 18, 22, 28, 14, 14]);
+  hoja(cam, 'Cambios', [12, 18, 12, 16, 24, 14, 12, 18, 18, 16]);
   if (!porViaje) hoja(per, 'Personal', [12, 18, 22, 22, 26, 14, 12, 12]);
   if (dev.length > 1) hoja(dev, 'Devoluciones', [12, 18, 26, 18, 14]);
   const nombre = 'Billetera_' + (neg || 'Todos').replace(/[^A-Za-z0-9]+/g, '-') + '_' + val.replace(/[^A-Za-z0-9]+/g, '-') + '.xlsx';
@@ -1839,6 +1924,7 @@ document.addEventListener('click', async ev => {
   if (ds.menu) { S.menu = ds.menu; return irA('menu'); }
   if (ds.flujo) return iniciarFlujo(ds.flujo, S.vista === 'menu' ? { menu: S.menu } : null);
   if (ds.fop !== undefined) return elegirOpcionFlujo(ds.fop);
+  if (ds.rapido) return usarRapido(ds.rapido);
   if (ds.devolver) { if (!(deudaDe(ds.devolver) > 0)) return sinDeuda(ds.devolver); return esSimple() ? iniciarFlujo('devolver') : formDevolucion(ds.devolver); }
   if (ds.nuevo2 === 'volver') return elegirTipo();
   if (ds.modo) { cerrarModal(); setModo(ds.modo); saludoRobot(); return; }
@@ -1847,7 +1933,7 @@ document.addEventListener('click', async ev => {
   if (ds.per) { S.per = { tipo: ds.per, ref: hoy() }; return render(); }
   if (ds.mover) { S.per = moverPer(S.per, Number(ds.mover)); return render(); }
   if (ds.exp) { S.expViaje = ds.exp === 'viaje'; S.expVal = ''; return render(); }
-  if (ds.nuevo) { limpiarModal(); return ds.nuevo === 'negocio' ? formNegocio(null) : formPersonal(null); }
+  if (ds.nuevo) { limpiarModal(); return ds.nuevo === 'personal' ? formPersonal(null) : formNegocio(null, { viaje: 'Inversión', negocio: 'Inversión', general: 'Gasto general', cambio: 'Cambio' }[ds.nuevo], null, true); }
   if (ds.editar) {
     const [h, id] = ds.editar.split(':');
     const fila = (h === 'negocio' ? S.negocio : S.personal).find(f => f.id === id);
@@ -1884,6 +1970,7 @@ document.addEventListener('click', async ev => {
     fAtras: atrasFlujo,
     fSalir: () => { S.flujo = null; irA('inicio'); avisar('No se guardó nada'); },
     fGuardar: guardarFlujo,
+    fLugar: () => { S.flujo.d.lugar = S.flujo.d.lugar === 'Otro' ? 'Bermejo' : 'Otro'; render(); },
     fFecha: () => abrirCal(S.flujo.d.fecha || hoy(), v => { S.flujo.d.fecha = v; render(); }),
     fAvCambio: () => sublujoEfectivo('cambio'),
     fAvContar: () => sublujoEfectivo('contar'),
@@ -1910,14 +1997,18 @@ document.addEventListener('click', async ev => {
     guiaMenu: abrirAyudante,
     abrirIA: () => abrirIA(),
     iaEnviar: () => enviarIA(),
+    iaGuardar: () => guardarCarga(t.dataset.i),
+    iaCorregir: () => corregirCarga(t.dataset.i),
     iaFoto: () => { const f = $('iaArchivo'); if (f) f.click(); },
     iaQuitarFoto: quitarFotoIA,
     iaSug: () => enviarIA(t.dataset.txt),
     iaGuia: () => irAccionIA(t.dataset.g),
     apariencia: abrirApariencia,
+    ocultarMontos: () => { OCULTO = !OCULTO; LS.set('bd_ocultar', OCULTO); render(); avisar(OCULTO ? 'Montos ocultos' : 'Montos visibles'); },
+    verPDF: () => exportarPDF(t),
     apFuente: () => { LS.set('bd_fuente', t.dataset.f); aplicarApariencia(); t.parentNode.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b === t)); },
     apTema: () => { LS.set('bd_tema', t.dataset.t); aplicarApariencia(); t.parentNode.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b === t)); },
-    saltarInicial: () => { const n = S.form.negocio; LS.set('bd_sininicial_' + n, true); limpiarModal(); formNegocio(null, 'Inversión', n); },
+    saltarInicial: () => { const n = S.form.negocio; LS.set('bd_sininicial_' + n, true); limpiarModal(); formNegocio(null, S.tipoTras || 'Inversión', n); },
     ajustar: () => { const n = S.yo.admin ? S.filtro : S.yo.negocio; if (!n) return avisar('Elegí un negocio arriba para ajustar su efectivo.'); formAjuste(n, false); },
     borrar: () => { leerCampos(); S.form.confirmarBorrar = true; refrescarForm(); },
     noBorrar: () => { S.form.confirmarBorrar = false; refrescarForm(); },
@@ -2106,13 +2197,13 @@ function pintarCalGrilla() {
    Todos los movimientos: lista por día, buscador y filtros
    ========================================================= */
 const norm = t => String(t == null ? '' : t).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-const FILTROS_TIPO = [['todos', 'Todos'], ['personal', 'Personal'], ['Inversión', 'Compras'], ['No reversible', 'No reversible'], ['Cambio', 'Cambios'], ['Efectivo', 'Efectivo'], ['Transferencia', 'Transferencia']];
+const FILTROS_TIPO = [['todos', 'Todos'], ['personal', 'Personal'], ['Inversión', 'Compras'], ['No reversible', 'No reversible'], ['Gasto general', 'Gastos generales'], ['Cambio', 'Cambios'], ['Efectivo', 'Efectivo'], ['Transferencia', 'Transferencia']];
 function filasTodos() {
   const q = norm(S.busca || '').trim(), ft = S.ftipo || 'todos';
   const l = [...datosFiltrados(S.personal).map(f => Object.assign({ _n: false }, f)), ...datosFiltrados(S.negocio).map(f => Object.assign({ _n: true }, f))];
   return ordenar(l.filter(f => {
     if (ft === 'personal' && f._n) return false;
-    if (['Inversión', 'No reversible', 'Cambio'].includes(ft) && (!f._n || f.tipo !== ft)) return false;
+    if (['Inversión', 'No reversible', 'Gasto general', 'Cambio'].includes(ft) && (!f._n || f.tipo !== ft)) return false;
     if ((ft === 'Efectivo' || ft === 'Transferencia') && f.pago !== ft) return false;
     if (q) {
       const txt = norm([f.descripcion, f.categoria, f.viaje, f.negocio, f.tipo, f.origen, f.pago, f.monto, fmt(f.monto), fCorta(f.fecha)].join(' '));
@@ -2143,7 +2234,7 @@ function vTodos() {
   return `
   <div class="titulo-todos"><button type="button" class="volver" data-acc="volverInicio" aria-label="Volver a Inicio">${svg('izq', 20, 2.4)}</button><h1>Todos los movimientos</h1></div>
   ${filtroNegocios()}
-  <label class="buscar">${svg('lupa', 18, 2.2)}<input id="buscarTodos" type="search" placeholder="Buscar (ej: chalana, tazas, 5000)" value="${esc(S.busca || '')}" autocomplete="off" enterkeyhint="search" aria-label="Buscar movimientos"></label>
+  <label class="buscar">${svg('lupa', 18, 2.2)}<input id="buscarTodos" type="search" placeholder="Buscar por palabra o monto" value="${esc(S.busca || '')}" autocomplete="off" enterkeyhint="search" aria-label="Buscar movimientos"></label>
   <div class="filtro-tipo" role="group" aria-label="Filtrar">${FILTROS_TIPO.map(([v, t]) => `<button type="button" data-ftipo="${v}" aria-pressed="${(S.ftipo || 'todos') === v}">${t}</button>`).join('')}</div>
   <div id="listaTodos" style="display:flex;flex-direction:column;gap:12px">${htmlListaTodos()}</div>`;
 }
@@ -2170,6 +2261,10 @@ function verDetalle(h, f) {
     add('Comisión (cuenta como gasto)', fmt(f.comision));
     if (Number(f.comision)) add('La comisión se pagó', f.pago === 'Efectivo' ? 'En efectivo' : 'Descontada de la transferencia');
     add('Efectivo recibido', fmt(f.recibido));
+    add('Lugar', f.viaje ? 'Bermejo' : 'Otro lugar');
+  } else if (esN && f.tipo === 'Gasto general') {
+    titulo = f.descripcion || f.categoria; monto = f.gastoReal;
+    add('Tipo', 'Gasto general del negocio'); add('Categoría', f.categoria); add('Detalle', f.descripcion); add('Pago', f.pago);
   } else if (esN && f.tipo === 'Devolución') {
     titulo = 'Devolución al negocio'; monto = f.monto; signo = '+';
     add('Tipo', 'Devolución al negocio'); if (f.descripcion !== 'Devolución al negocio') add('Nota', f.descripcion);
@@ -2187,10 +2282,11 @@ function verDetalle(h, f) {
   const d = aFecha(f.fecha);
   add('Fecha', DIAS[d.getDay()][0].toUpperCase() + DIAS[d.getDay()].slice(1) + ' ' + d.getDate() + ' de ' + MESES[d.getMonth()] + ' ' + d.getFullYear());
   add('Negocio', f.negocio);
+  if (f.cargado) { const c = new Date(f.cargado); if (!isNaN(c)) add('Cargado a las', String(c.getHours()).padStart(2, '0') + ':' + String(c.getMinutes()).padStart(2, '0') + ' h'); }
   if (S.yo.admin) add('Cargado por', f.usuario);
   limpiarModal();
   S.detalle = { h, id: f.id };
-  const col = esN ? (['Cambio', 'Ajuste', 'Devolución'].includes(f.tipo) ? 'var(--teal)' : 'var(--violet)') : 'var(--fuchsia)';
+  const col = esN ? (['Cambio', 'Ajuste', 'Devolución'].includes(f.tipo) ? 'var(--teal)' : f.tipo === 'Gasto general' ? '#C97A2B' : 'var(--violet)') : 'var(--fuchsia)';
   abrirModal(`<div class="v-cab"><span class="ic" style="background:${col}">${svg(icoDe(f, esN), 20)}</span><b>Detalle</b>
       ${esSimple() ? '' : `<button class="cerrar" type="button" data-acc="editarDetalle" aria-label="Editar">${svg('lapiz', 19, 2.1)}</button>`}
       <button class="cerrar" type="button" data-acc="cerrar" aria-label="Cerrar">${svg('x', 18, 2.2)}</button></div>
@@ -2387,11 +2483,8 @@ function verErrores() {
 /* =========================================================
    Versión nueva
    ========================================================= */
-function textoVersion() {
-  const [f, h] = APP_VERSION.split('T');
-  const d = aFecha(f);
-  return d.getDate() + ' ' + MESES[d.getMonth()].slice(0, 3) + ' ' + d.getFullYear() + ', ' + h;
-}
+function textoVersion() { return 'Versión ' + APP_SERIE; }
+function fechaVersion() { const d = aFecha(APP_FECHA); return d.getDate() + ' ' + MESES[d.getMonth()].slice(0, 3) + ' ' + d.getFullYear(); }
 function mostrarNovedad() {
   const vista = LS.get('bd_version_vista', '');
   if (!vista && !LS.get('bd_ultimo_usuario', '')) LS.set('bd_version_vista', APP_VERSION); // instalación nueva: no hay "versión nueva"
@@ -2399,7 +2492,7 @@ function mostrarNovedad() {
   ['novLogin', 'novPatron'].forEach(id => {
     const el = $(id);
     el.hidden = !ver;
-    if (ver) el.innerHTML = `${svg('chispa', 20, 1.9)}<span><b>Versión nueva</b> · ${esc(textoVersion())}</span>`;
+    if (ver) el.innerHTML = `${svg('chispa', 20, 1.9)}<span class="ver-nueva"><b>Versión nueva · ${esc(APP_SERIE)}</b><small>${esc(fechaVersion())}</small></span>`;
   });
 }
 
@@ -2419,12 +2512,13 @@ function vSimple() {
   <div class="s-cab">
     <button type="button" class="avatar" data-ir2="perfil" aria-label="Mi perfil">${esc(iniciales(S.yo.nombre))}</button>
     <div class="saludo"><small>Hola,</small><b>${esc(primerNombre(S.yo.nombre))}</b></div>
+    <button type="button" class="ojo-montos" data-acc="ocultarMontos" aria-label="${OCULTO ? 'Mostrar los montos' : 'Ocultar los montos'}" aria-pressed="${OCULTO}">${svg(OCULTO ? 'ojoNo' : 'ojo', 20, 2)}</button>
     ${chipSync()}
   </div>
   ${deuda > 0 ? `<div class="deuda"><span><small>Le debés al negocio</small><b>${fmt(deuda)}</b></span><button type="button" data-devolver="${esc(neg)}">Devolver</button></div>` : ''}
   <button type="button" class="s-efe" data-flujo="contar"><span><small>Efectivo del negocio</small><b>${fmt(ef)}</b></span><em>Contar</em></button>
-  <button type="button" class="s-grande" data-menu="negocio" style="background:linear-gradient(135deg,#7C4DFF,#B347D9);min-height:120px"><span class="oi" aria-hidden="true">🧳</span><span class="tx"><b>Negocio - Compras</b><small>Cambio de plata, mercadería, pasajes y paseros</small></span>${svg('der', 24, 2.4)}</button>
-  <button type="button" class="s-grande" data-menu="personal" style="background:linear-gradient(135deg,#B8661F,#E040A0);min-height:120px"><span class="oi" aria-hidden="true">🏠</span><span class="tx"><b>Gastos personales</b><small>Lo tuyo, y usar o devolver plata del negocio</small></span>${svg('der', 24, 2.4)}</button>
+  <button type="button" class="s-grande" data-menu="negocio" style="background:linear-gradient(135deg,#7C4DFF,#B347D9);min-height:120px"><span class="oi" aria-hidden="true">🧳</span><span class="tx"><b>Negocio - Compras</b><small>Viajes, compras, cambios y gastos del negocio</small></span>${svg('der', 24, 2.4)}</button>
+  <button type="button" class="s-grande" data-menu="personal" style="background:linear-gradient(135deg,#B8661F,#E040A0);min-height:120px"><span class="oi" aria-hidden="true">🏠</span><span class="tx"><b>Gastos personales</b><small>Tus gastos y la plata del negocio que usaste o devolviste</small></span>${svg('der', 24, 2.4)}</button>
   <button type="button" class="btn btn-sec s-ver" data-ir2="lista">${svg('recibo', 22, 2)} Ver lo que cargué</button>`;
 }
 function vMenuSimple() {
@@ -2437,8 +2531,9 @@ function vMenuSimple() {
   ${negocio ? `
     ${boton('cambio', '💱', 'Cambié plata', 'Me dieron efectivo por transferencia', 'linear-gradient(135deg,#1F9E95,#2B7F9E)')}
     ${boton('compra', '🛒', 'Compré mercadería', 'Productos para vender', 'linear-gradient(135deg,#7C4DFF,#9E4BE6)')}
-    ${boton('viaje', '🚌', 'Pagué pasaje, pasero o comida', 'Gastos del viaje', 'linear-gradient(135deg,#C23A8C,#E040A0)')}` : `
-    ${boton('personal', '👛', 'Gasté con mi plata', 'Casa, comida, salud…', 'linear-gradient(135deg,#B8661F,#D9862B)')}
+    ${boton('viaje', '🚌', 'Gastos del viaje', 'Lo que pagaste durante el viaje', 'linear-gradient(135deg,#C23A8C,#E040A0)')}
+    ${boton('general', '🧾', 'Otro gasto del negocio', 'Gastos del negocio fuera de viajes', 'linear-gradient(135deg,#B8661F,#D9862B)')}` : `
+    ${boton('personal', '👛', 'Gasté con mi plata', 'Gastos propios del día a día', 'linear-gradient(135deg,#B8661F,#D9862B)')}
     ${boton('usar', '↩️', 'Usé plata del negocio', 'Para pagar algo mío', 'linear-gradient(135deg,#C23A8C,#E040A0)')}
     ${boton('devolver', '💵', 'Devolví plata al negocio', deuda > 0 ? 'Le debés ' + fmt(deuda) : 'Ahora no le debés nada', 'linear-gradient(135deg,#1F9E95,#2B7F9E)')}`}`;
 }
@@ -2454,27 +2549,34 @@ const P_PAG = { k: 'pago', t: 'ops', preg: '¿Cómo pagaste?', ops: () => [['Efe
 const FLUJOS = {
   cambio: { titulo: 'Cambié plata', emoji: '💱', pasos: [P_INI,
     { k: 'monto', t: 'num', preg: '¿Cuánto transferiste?' },
-    { k: 'pct', t: 'num', preg: '¿Qué porcentaje te cobraron?', ayuda: 'Por ejemplo: 1. Si no te cobraron nada, poné 0.', sinPesos: true, cero: true, valid: d => num(d.pct) <= 100 || 'Revisá el porcentaje.' },
+    { k: 'pct', t: 'num', preg: '¿Qué porcentaje te cobraron?', ayuda: 'Si no te cobraron nada, poné 0.', sinPesos: true, cero: true, valid: d => num(d.pct) <= 100 || 'Revisá el porcentaje.' },
     { k: 'comision', t: 'ops', preg: d => '¿Cómo pagaste la comisión de ' + fmt(r2(num(d.monto) * num(d.pct) / 100)) + '?', si: fl => num(fl.d.pct) > 0, ops: () => [['Efectivo', '💵 En efectivo (me dieron todo)'], ['Descuento', '📱 Me la descontaron (me dieron menos)']] },
+    { k: 'nota', t: 'texto', preg: '¿Querés anotar algo?', ayuda: 'No es obligatorio', ej: 'Una nota corta', opcional: true },
     { t: 'resumen' }] },
   compra: { titulo: 'Compré mercadería', emoji: '🛒', pasos: [P_INI,
-    { k: 'descripcion', t: 'texto', preg: '¿Qué compraste?', ej: 'Ej: tazas, termos…' },
+    { k: 'descripcion', t: 'texto', preg: '¿Qué compraste?', ej: 'Nombre del producto' },
     { k: 'unidades', t: 'num', preg: '¿Cuántas unidades?', sinPesos: true },
     { k: 'monto', t: 'num', preg: '¿Cuánto pagaste en total?', ayuda: 'Por todo junto, no por cada una' },
     P_PAG,
     { k: 'extra', t: 'ops', preg: '¿Te cobraron algo extra por pagar con transferencia?', ops: () => [['No', 'No'], ['Sí', 'Sí, un recargo']], si: fl => fl.d.pago === 'Transferencia' },
-    { k: 'pct', t: 'num', preg: '¿Qué porcentaje te cobraron?', ayuda: 'Por ejemplo: 3', sinPesos: true, si: fl => fl.d.pago === 'Transferencia' && fl.d.extra === 'Sí', valid: d => num(d.pct) <= 100 || 'Revisá el porcentaje.' },
+    { k: 'pct', t: 'num', preg: '¿Qué porcentaje te cobraron?', ayuda: 'El porcentaje que te sumaron', sinPesos: true, si: fl => fl.d.pago === 'Transferencia' && fl.d.extra === 'Sí', valid: d => num(d.pct) <= 100 || 'Revisá el porcentaje.' },
     { t: 'resumen' }] },
-  viaje: { titulo: 'Pagué pasaje, pasero o comida', emoji: '🚌', pasos: [P_INI,
+  viaje: { titulo: 'Gastos del viaje', emoji: '🚌', pasos: [P_INI,
     { k: 'que', t: 'grilla', preg: '¿Qué pagaste?', ops: () => [...(S.listas['Descripciones rápidas'] || []).map(x => [x, x]), ['Otra cosa', '✏️ Otra cosa']] },
     { k: 'otro', t: 'texto', preg: '¿Qué fue?', ej: 'Escribilo corto', si: fl => fl.d.que === 'Otra cosa' },
     { k: 'monto', t: 'num', preg: '¿Cuánto pagaste?' },
     P_PAG, { t: 'resumen' }] },
+  general: { titulo: 'Otro gasto del negocio', emoji: '🧾', pasos: [
+    { k: 'categoria', t: 'grilla', preg: '¿Qué pagaste?', ops: () => (S.listas['Categorías gastos generales'] || LISTAS_BASE['Categorías gastos generales']).map(x => [x, x]) },
+    { k: 'monto', t: 'num', preg: '¿Cuánto pagaste?' },
+    P_PAG,
+    { k: 'descripcion', t: 'texto', preg: '¿Querés anotar un detalle?', ayuda: 'No es obligatorio', ej: 'Una nota corta', opcional: true },
+    { t: 'resumen' }] },
   personal: { titulo: 'Gasté con mi plata', emoji: '👛', pasos: [
     { k: 'categoria', t: 'grilla', preg: '¿En qué gastaste?', ops: () => (S.listas['Categorías personales'] || []).map(x => [x, x]) },
     { k: 'monto', t: 'num', preg: '¿Cuánto gastaste?' },
     P_PAG,
-    { k: 'descripcion', t: 'texto', preg: '¿Querés anotar qué fue?', ayuda: 'No es obligatorio', ej: 'Ej: factura de luz', opcional: true },
+    { k: 'descripcion', t: 'texto', preg: '¿Querés anotar qué fue?', ayuda: 'No es obligatorio', ej: 'Una nota corta', opcional: true },
     { t: 'resumen' }] },
   usar: { titulo: 'Usé plata del negocio', emoji: '↩️', pasos: [
     { k: 'categoria', t: 'grilla', preg: '¿Para qué la usaste?', ops: () => (S.listas['Categorías personales'] || []).map(x => [x, x]) },
@@ -2484,7 +2586,7 @@ const FLUJOS = {
     { k: 'parte', t: 'num', preg: '¿Cuánto devolviste?', ayuda: 'El resto queda como deuda con el negocio', si: fl => !fl.editId && fl.d.devuelto === 'Parte', valid: d => num(d.parte) < num(d.monto) || 'Tiene que ser menos de lo que usaste (si devolviste todo, volvé y elegí "Sí, toda").' },
     Object.assign({ k: 'pagoDev', t: 'ops', preg: '¿Cómo la devolviste?', ops: () => [['Efectivo', '💵 En efectivo'], ['Transferencia', '📱 Por transferencia']] }, { si: fl => !fl.editId && (fl.d.devuelto === 'Toda' || fl.d.devuelto === 'Parte') }),
     { k: 'devolver', t: 'ops', preg: '¿La vas a devolver al negocio?', si: fl => !!fl.editId, ops: () => [['sí', '↩️ Sí, la devuelvo'], ['', '🚫 No']] },
-    { k: 'descripcion', t: 'texto', preg: '¿Querés anotar qué pagaste?', ayuda: 'No es obligatorio', ej: 'Ej: internet, luz…', opcional: true },
+    { k: 'descripcion', t: 'texto', preg: '¿Querés anotar qué pagaste?', ayuda: 'No es obligatorio', ej: 'Una nota corta', opcional: true },
     { t: 'resumen' }] },
   devolver: { titulo: 'Devolver al negocio', emoji: '↩️', pasos: [
     { k: 'monto', t: 'num', preg: '¿Cuánto devolviste al negocio?', ayuda: () => 'Le debés ' + fmt(deudaDe(S.flujo.negocio) + (S.flujo.editId ? num(S.flujo.orig) || 0 : 0)) + '. Si devolviste una parte, cambiá el número.' },
@@ -2514,7 +2616,7 @@ function vFlujo() {
   let cuerpo = '';
   if (p.t === 'num' || p.t === 'texto') {
     cuerpo = `<h1 class="f-preg">${esc(txt(p.preg))}</h1>${p.ayuda ? `<p class="f-ayuda">${esc(txt(p.ayuda))}</p>` : ''}
-      ${p.t === 'num' && !p.sinPesos ? plataHTML('fIn', d[p.k], `aria-label="${esc(txt(p.preg))}"`, 'grande') : `<input id="fIn" class="${p.t === 'num' ? 'f-num' : 'f-txt'}" ${p.t === 'num' ? 'inputmode="decimal"' : 'enterkeyhint="next"'} autocomplete="off" value="${esc(d[p.k] || '')}" placeholder="${p.t === 'num' ? (p.sinPesos ? '0' : '$ 0') : esc(p.ej || '')}" aria-label="${esc(txt(p.preg))}">`}
+      ${p.t === 'num' && !p.sinPesos ? plataHTML('fIn', d[p.k], `aria-label="${esc(txt(p.preg))}"`, 'grande') + rapidosHTML(rapidosFlujo(fl, p), true) : `<input id="fIn" class="${p.t === 'num' ? 'f-num' : 'f-txt'}" ${p.t === 'num' ? 'inputmode="decimal"' : 'enterkeyhint="next"'} autocomplete="off" value="${esc(d[p.k] || '')}" placeholder="${p.t === 'num' ? (p.sinPesos ? '0' : '$ 0') : esc(p.ej || '')}" aria-label="${esc(txt(p.preg))}">`}
       <div class="f-error" id="fErr" hidden></div>
       <button class="btn btn-grad f-sig" type="button" data-acc="fSig">Siguiente ›</button>
       ${p.opcional ? `<button class="btn btn-ghost" type="button" data-acc="fSig" style="font-size:16px">Saltar</button>` : ''}`;
@@ -2530,13 +2632,26 @@ function vFlujo() {
   ${cuerpo}`;
 }
 function resumenFlujo() {
-  const fl = S.flujo, d = fl.d, filas = [], add = (k, v) => filas.push([k, v]);
+  const fl = S.flujo, d = fl.d, filas = filasFlujo(fl);
+  return `<h1 class="f-preg">¿Está todo bien?</h1>
+    <div class="f-res">${filas.map(([k, v]) => `<div class="fila-p"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('')}</div>
+    ${fl.tipo !== 'contar' ? `<button type="button" class="f-fecha" data-acc="fFecha">¿Fue otro día?</button>` : ''}
+    ${fl.tipo === 'cambio' ? `<button type="button" class="f-fecha" data-acc="fLugar">${d.lugar === 'Otro' ? '¿Fue en Bermejo?' : '¿Fue en otro lugar?'}</button>` : ''}
+    <button class="btn btn-grad f-sig" type="button" data-acc="fGuardar">Guardar ✓</button>`;
+}
+function filasFlujo(fl) {
+  const d = fl.d, filas = [], add = (k, v) => filas.push([k, v]);
   const fecha = d.fecha || hoy(), fd = aFecha(fecha);
   if (fl.tipo === 'cambio') {
     const m = num(d.monto), pc = num(d.pct) || 0, c = r2(m * pc / 100), efe = d.comision === 'Efectivo' && c > 0;
     add('Transferiste', fmt(m)); add('Comisión', pct(pc) + ' = ' + fmt(c));
     if (c > 0) add('La comisión', efe ? 'La pagaste en efectivo' : 'Te la descontaron');
     add('Te dieron en efectivo', fmt(efe ? m : m - c));
+    add('Lugar', d.lugar === 'Otro' ? 'Otro lugar' : 'Bermejo');
+    if ((d.nota || '').trim()) add('Nota', d.nota.trim());
+  } else if (fl.tipo === 'general') {
+    add('Pagaste', d.categoria); add('Monto', fmt(num(d.monto))); add('Pago', d.pago);
+    if (d.descripcion) add('Detalle', d.descripcion);
   } else if (fl.tipo === 'compra') {
     const m = num(d.monto), u = num(d.unidades);
     add('Compraste', d.descripcion); add('Unidades', u); add('Pagaste en total', fmt(m)); add('Cada una sale', fmt(m / u)); add('Pago', d.pago);
@@ -2564,10 +2679,7 @@ function resumenFlujo() {
   if (fl.pedirInicial) add('Efectivo antes de empezar', fmt(num(d.inicial)));
   const fechaTxt = fecha === hoy() ? 'Hoy' : fecha === ayer() ? 'Ayer' : DIAS[fd.getDay()][0].toUpperCase() + DIAS[fd.getDay()].slice(1);
   add('Fecha', fechaTxt + ', ' + fd.getDate() + ' de ' + MESES[fd.getMonth()]);
-  return `<h1 class="f-preg">¿Está todo bien?</h1>
-    <div class="f-res">${filas.map(([k, v]) => `<div class="fila-p"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('')}</div>
-    ${fl.tipo !== 'contar' ? `<button type="button" class="f-fecha" data-acc="fFecha">¿Fue otro día?</button>` : ''}
-    <button class="btn btn-grad f-sig" type="button" data-acc="fGuardar">Guardar ✓</button>`;
+  return filas;
 }
 function errFlujo(t) { const e = $('fErr'); if (e) { e.textContent = t; e.hidden = false; } const i = $('fIn'); if (i) i.focus(); }
 function siguienteFlujo() {
@@ -2601,14 +2713,17 @@ function atrasFlujo() {
   else { const m = fl.menu; S.flujo = null; if (m) { S.menu = m; irA('menu'); } else irA('inicio'); }
 }
 const catDeViaje = q => /comida|bebida/i.test(q) ? 'Sueldo' : q === 'Otra cosa' ? 'Otros' : 'Insumos';
-function guardarFlujo() {
-  const fl = S.flujo, d = fl.d, neg = fl.negocio, fecha = d.fecha || hoy();
-  const id = fl.editId || nuevoId();
-  const viaje = fl.editId && fl.viajeOrig && fl.fechaOrig === fecha ? fl.viajeOrig : 'Bermejo ' + fCorta(fecha);
+// Arma lo que se manda a Google a partir de las respuestas (lo usan el paso a paso y la IA)
+function opDeFlujo(fl) {
+  const d = fl.d, neg = fl.negocio, fecha = d.fecha || hoy();
+  const viaje = fl.editId && fl.viajeOrig && fl.fechaOrig === fecha ? fl.viajeOrig : 'Bermejo ' + fCorta(fecha); // nombre automático del viaje (se mantiene)
   let op = null, saleEfectivo = 0;
   if (fl.tipo === 'cambio') {
     const m = num(d.monto), pc = num(d.pct) || 0;
-    op = { hoja: 'negocio', datos: { negocio: neg, tipo: 'Cambio', fecha, viaje, monto: m, pctCambio: pc, pagoComision: d.comision === 'Efectivo' && pc > 0 ? 'Efectivo' : 'Transferencia', nota: fl.nota || '' } };
+    op = { hoja: 'negocio', datos: { negocio: neg, tipo: 'Cambio', fecha, viaje: d.lugar === 'Otro' ? '' : viaje, monto: m, pctCambio: pc, pagoComision: d.comision === 'Efectivo' && pc > 0 ? 'Efectivo' : 'Transferencia', nota: (d.nota || '').trim() } };
+  } else if (fl.tipo === 'general') {
+    op = { hoja: 'negocio', datos: { negocio: neg, tipo: 'Gasto general', fecha, viaje: '', categoria: d.categoria, descripcion: (d.descripcion || '').trim(), monto: num(d.monto), pago: d.pago } };
+    if (d.pago === 'Efectivo') saleEfectivo = num(d.monto);
   } else if (fl.tipo === 'compra') {
     const recargo = d.pago === 'Transferencia' && d.extra === 'Sí';
     op = { hoja: 'negocio', datos: { negocio: neg, tipo: 'Inversión', fecha, viaje, descripcion: d.descripcion, unidades: num(d.unidades), monto: num(d.monto), pago: d.pago, pctRecargo: recargo ? num(d.pct) : '' } };
@@ -2629,6 +2744,12 @@ function guardarFlujo() {
   } else if (fl.tipo === 'contar') {
     op = { hoja: 'negocio', datos: { negocio: neg, tipo: 'Ajuste', fecha: hoy(), viaje: '', monto: num(d.monto), inicial: false } };
   }
+  return { op, saleEfectivo };
+}
+function guardarFlujo() {
+  const fl = S.flujo, d = fl.d, neg = fl.negocio;
+  const id = fl.editId || nuevoId();
+  const { op, saleEfectivo } = opDeFlujo(fl);
   // ¿Alcanza el efectivo?
   if (saleEfectivo && !fl.sinControl) {
     const ef = (fl.pedirInicial ? num(d.inicial) : 0) + efectivoDe(neg, fl.editId || null);
@@ -2678,7 +2799,8 @@ function corregirSimple() {
   if (det.h === 'personal') return iniciarFlujo(f.origen === 'Personal' ? 'personal' : 'usar', Object.assign(base, { d: { fecha: f.fecha, categoria: f.categoria, monto: s(f.monto), pago: f.pago, devolver: f.devolver === 'sí' ? 'sí' : '', descripcion: f.descripcion || '' } }));
   if (f.tipo === 'Inversión') return iniciarFlujo('compra', Object.assign(base, { d: { fecha: f.fecha, descripcion: f.descripcion, unidades: s(f.unidades), monto: s(f.monto), pago: f.pago, extra: f.pctRecargo !== '' && f.pctRecargo != null && Number(f.recargo) ? 'Sí' : 'No', pct: s(f.pctRecargo) } }));
   if (f.tipo === 'No reversible') { const enLista = (S.listas['Descripciones rápidas'] || []).includes(f.descripcion); return iniciarFlujo('viaje', Object.assign(base, { d: { fecha: f.fecha, que: enLista ? f.descripcion : 'Otra cosa', otro: enLista ? '' : (f.descripcion || f.categoria), monto: s(f.monto), pago: f.pago } })); }
-  if (f.tipo === 'Cambio') return iniciarFlujo('cambio', Object.assign(base, { nota: notaCambio(f), d: { fecha: f.fecha, monto: s(f.monto), pct: s(f.pctCambio), comision: f.pago === 'Efectivo' ? 'Efectivo' : 'Descuento' } }));
+  if (f.tipo === 'Cambio') return iniciarFlujo('cambio', Object.assign(base, { d: { fecha: f.fecha, monto: s(f.monto), pct: s(f.pctCambio), comision: f.pago === 'Efectivo' ? 'Efectivo' : 'Descuento', lugar: f.viaje ? 'Bermejo' : 'Otro', nota: notaCambio(f) } }));
+  if (f.tipo === 'Gasto general') return iniciarFlujo('general', Object.assign(base, { d: { fecha: f.fecha, categoria: f.categoria, monto: s(f.monto), pago: f.pago, descripcion: f.descripcion || '' } }));
   if (f.tipo === 'Devolución') return iniciarFlujo('devolver', Object.assign(base, { orig: s(f.monto), nota: f.descripcion !== 'Devolución al negocio' ? f.descripcion : '', d: { fecha: f.fecha, monto: s(f.monto), pagoDev: f.pago === 'Transferencia' ? 'Transferencia' : 'Efectivo' } }));
 }
 
@@ -2693,7 +2815,9 @@ const tabActiva = val => { const b = document.querySelector(`#modalIn [data-set=
 // Pasos que se repiten
 const P_MAS = { el: Q('#btnMas'), txt: 'Tocá el <b>+</b>' };
 const P_PLATA = { el: Q('#modalIn [data-acc=plataNegocio]'), txt: 'Elegí <b>Plata del negocio</b>' };
-const P_NEG = { el: Q('#modalIn [data-nuevo=negocio]'), txt: 'Tocá <b>Compras y negocio</b>' };
+const P_NEG = { el: Q('#modalIn [data-nuevo=viaje]'), txt: 'Elegí <b>Viajes</b>' };
+const P_CAM = { el: Q('#modalIn [data-nuevo=cambio]'), txt: 'Elegí <b>Cambio a efectivo</b>' };
+const P_GEN = { el: Q('#modalIn [data-nuevo=general]'), txt: 'Elegí <b>Gastos generales</b>' };
 const P_INI1 = { si: () => !!$('fAj'), el: Q('#fAj'), txt: 'Primero: ¿cuánta <b>plata en efectivo</b> del negocio tenés en la mano? Escribila (puede ser 0)', modo: 'listo', req: true };
 const P_INI2 = { si: () => !!$('fAj'), el: Q('#modalIn [data-acc=guardarAjuste]'), txt: 'Tocá <b>Guardar efectivo</b>' };
 const pTab = (val, nombre) => ({ si: () => !tabActiva(val), el: Q(`#modalIn [data-set=tipo][data-val="${val}"]`), txt: `Tocá <b>${nombre}</b>` });
@@ -2707,8 +2831,10 @@ const GUIAS = {
   cambio: {
     titulo: 'Cambio a efectivo', tarea: true,
     atajo: () => abrirFormGuia('Cambio'),
-    camino: [P_MAS, P_NEG],
-    pasos: [P_INI1, P_INI2, pTab('Cambio', 'Cambio'), P_VIAJE, P_VIAJE2,
+    camino: [P_MAS, P_CAM],
+    pasos: [P_INI1, P_INI2,
+      { el: cerca('#modalIn [data-set=lugar]', '.segm'), txt: '¿Dónde fue el cambio?<br><b>Bermejo</b> ya está marcado. Si fue en otro lugar, elegí <b>Otro lugar</b>.', modo: 'listo', valido: '#modalIn [data-set=lugar]' },
+      P_VIAJE, P_VIAJE2,
       pCampo('fMonto', '¿Cuánto <b>transferiste</b>?'),
       pCampo('fPctC', '¿Qué <b>%</b> te cobraron?<br>(si no te cobraron, 0)', { req: false }),
       { el: cerca('#modalIn [data-set=pagoComision]', '.segm'), txt: 'La comisión: ¿la pagaste <b>en efectivo</b> o te la <b>descontaron</b>?', modo: 'listo', valido: '#modalIn [data-set=pagoComision]' },
@@ -2725,14 +2851,25 @@ const GUIAS = {
       P_PAGO, pGuardar('guardarNegocio', 'Tocá <b>Guardar compra</b> ✓')]
   },
   noreversible: {
-    titulo: 'Pasero, colectivo…', tarea: true,
+    titulo: 'Gastos del viaje', tarea: true,
     atajo: () => abrirFormGuia('No reversible'),
     camino: [P_MAS, P_NEG],
     pasos: [P_INI1, P_INI2, pTab('No reversible', 'No reversible'), P_VIAJE, P_VIAJE2,
-      { el: cerca('#modalIn [data-abrir=cat]', '.dd'), txt: 'Elegí la <b>categoría</b><br>(colectivo y pasero van en <b>Insumos</b>)', valido: '#modalIn [data-set=categoria]' },
+      { el: cerca('#modalIn [data-abrir=cat]', '.dd'), txt: 'Elegí la <b>categoría</b>', valido: '#modalIn [data-set=categoria]' },
       { el: cerca('#modalIn .combo', '.dd'), txt: 'Tocá la <b>flechita</b> y elegí<br>(o escribilo)', modo: 'listo', valido: '#modalIn [data-set=descripcion]' },
       pCampo('fMonto', '¿Cuánto <b>pagaste</b>?'),
       P_PAGO, pGuardar('guardarNegocio', 'Tocá <b>Guardar gasto</b> ✓')]
+  },
+  general: {
+    titulo: 'Gastos generales', tarea: true,
+    atajo: () => abrirFormGuia('Gasto general'),
+    camino: [P_MAS, P_GEN],
+    pasos: [
+      { el: cerca('#modalIn [data-set=categoria]', '.grid3'), txt: 'Elegí la <b>categoría</b> del gasto', valido: '#modalIn [data-set=categoria]' },
+      { el: cerca('#modalIn [data-cal=abrir]', '.fecha-fila'), txt: '¿Fue <b>hoy</b>? Entonces no cambies nada.<br>Si fue otro día, elegí <b>Ayer</b> o la fecha.', modo: 'listo' },
+      pCampo('fMonto', '¿Cuánto <b>pagaste</b>?'),
+      pCampo('fDesc', 'Si querés, anotá un <b>detalle</b>.<br>No es obligatorio.', { req: false, opcional: true }),
+      P_PAGO, pGuardar('guardarNegocio', 'Elegí <b>Guardar gasto</b> ✓')]
   },
   personal: {
     titulo: 'Gasto personal', tarea: true, largo: true,
@@ -2743,7 +2880,7 @@ const GUIAS = {
       { el: cerca('#modalIn [data-set=categoria]', '.grid3'), txt: 'Elegí <b>en qué gastaste</b>: casa, comida, salud…', valido: '#modalIn [data-set=categoria]' },
       { el: cerca('#modalIn [data-cal=abrir]', '.fecha-fila'), txt: '¿Fue <b>hoy</b>? Entonces no toques nada.<br>Si fue otro día, tocá <b>Ayer</b> o la fecha.', modo: 'listo' },
       pCampo('fMonto', '¿Cuánto <b>gastaste</b>?'),
-      pCampo('fDesc', 'Si querés, anotá un <b>detalle</b>, por ejemplo qué compraste.<br>No es obligatorio.', { req: false, opcional: true }),
+      pCampo('fDesc', 'Si querés, anotá un <b>detalle</b>.<br>No es obligatorio.', { req: false, opcional: true }),
       P_PAGO, pGuardar('guardarPersonal', 'Tocá <b>Guardar gasto</b> ✓')]
   },
   corregir: {
@@ -2803,7 +2940,7 @@ const GUIAS = {
     requiere: () => document.querySelector('#contenido [data-ir2=todos]') ? '' : 'Todavía no hay movimientos cargados.',
     pasos: [
       { el: Q('#contenido [data-ir2=todos]'), txt: 'Elegí <b>Consultar todos</b>', valido: '#contenido [data-ir2=todos]' },
-      { el: Q('#contenido .buscar'), txt: 'Acá podés <b>buscar</b> por palabra o por monto.<br>Por ejemplo: chalana, tazas o 5000.', modo: 'listo', btn: 'Siguiente' },
+      { el: Q('#contenido .buscar'), txt: 'Acá podés <b>buscar</b> por palabra o por monto.', modo: 'listo', btn: 'Siguiente' },
       { el: Q('#contenido .filtro-tipo'), txt: 'Con estos filtros ves <b>solo un tipo</b>: personal, compras, cambios, efectivo o transferencia.', modo: 'listo', btn: 'Siguiente' },
       { el: Q('#listaTodos'), txt: 'Elegí cualquier movimiento para ver el <b>detalle</b>. Ahí también está el lápiz ✏️ para corregirlo.', modo: 'listo', btn: 'Entendido' }]
   },
@@ -2815,10 +2952,11 @@ const GUIAS = {
       { el: Q('#contenido [data-acc=exportar]'), txt: 'Elegí <b>Descargar Excel</b>.<br>El archivo queda en las <b>Descargas</b> del celular.', valido: '#contenido [data-acc=exportar]' }]
   },
   tipos: {
-    titulo: 'Recuperable y No reversible', antes: () => { if (S.vista !== 'negocio') irA('negocio'); },
+    titulo: 'Tipos de gasto del negocio', antes: () => { if (S.vista !== 'negocio') irA('negocio'); },
     pasos: [
       { el: Q('#contenido .mini > div:nth-child(1)'), txt: '<b>Recuperable</b>: lo que compraste <b>para vender</b> (mercadería).<br>Esa plata vuelve cuando vendés.', modo: 'listo', btn: 'Siguiente' },
-      { el: Q('#contenido .mini > div:nth-child(2)'), txt: '<b>No reversible</b>: gastos que <b>no vuelven</b>.<br>Pasero, colectivo, chalana, comida del viaje, la comisión del cambio…', modo: 'listo', btn: 'Entendido' }]
+      { el: Q('#contenido .mini > div:nth-child(2)'), txt: '<b>No reversible</b>: los gastos de los <b>viajes</b> que no vuelven: pasajes, comida, la comisión del cambio…', modo: 'listo', btn: 'Siguiente' },
+      { el: Q('#contenido .mini > div:nth-child(3)'), txt: '<b>Gastos generales</b>: los gastos del negocio <b>fuera de los viajes</b>, como envíos o impuestos.', modo: 'listo', btn: 'Entendido' }]
   },
   ajustes: {
     titulo: 'Apariencia y modo simple', antes: () => { if (S.vista !== 'perfil') irA('perfil'); },
@@ -2843,8 +2981,7 @@ const GUIAS = {
   }
 };
 function abrirFormGuia(tipo) {
-  limpiarModal(); formNegocio(null);
-  if (S.form && S.form.hoja === 'negocio') { S.form.tipo = tipo; pintarFormNegocio(); }
+  limpiarModal(); formNegocio(null, tipo);
 }
 const GUIA = { activa: false, nombre: '', pasos: [], i: -1, falta: 0, raf: 0, n: 0 };
 function pintarRobot() {
@@ -2858,12 +2995,13 @@ function abrirAyudante() {
   const sec = t => `<div class="ay-sec">${t}</div>`;
   abrirModal(`${cab('¿En qué te ayudo?', 'var(--grad)', 'robot')}
     <button class="opcion ia-op" type="button" data-acc="abrirIA"><span class="oi">💬</span><span><b>Preguntale a la IA</b><small>Escribí tu duda como en una charla</small></span>${svg('der', 20, 2.2)}</button>
-    ${sec('En Bermejo')}
-    ${op('cambio', 'Cambio a efectivo', 'Lo primero al llegar', 'cambio')}
+    ${sec('Negocio')}
     ${op('compra', 'Compra de productos', 'Mercadería para vender', 'prod')}
-    ${op('noreversible', 'Pasero, colectivo…', 'Chalana, comida, baño…', 'bus')}
+    ${op('noreversible', 'Gastos del viaje', 'Lo que pagaste durante el viaje', 'bus')}
+    ${op('general', 'Gastos generales', 'Gastos del negocio fuera de viajes', 'recibo')}
+    ${op('cambio', 'Cambio a efectivo', 'Transferencia por efectivo', 'cambio')}
     ${sec('Gastos personales y plata del negocio')}
-    ${op('personal', 'Cargar un gasto personal', 'Casa, comida, salud…', 'user')}
+    ${op('personal', 'Cargar un gasto personal', 'Gastos propios del día a día', 'user')}
     ${op('usar', 'Usé plata del negocio', 'Para algo personal', 'user')}
     ${op('devolver', 'Devolví plata al negocio', 'En efectivo o por transferencia', 'billetera')}
     ${op('contar', 'Contar o ajustar el efectivo', 'Si no coincide con lo que tenés', 'billetera')}
@@ -2872,9 +3010,9 @@ function abrirAyudante() {
     ${op('cuanto', 'Cuánto gasté', 'Este mes y los anteriores', 'recibo')}
     ${op('todos', 'Ver todos los movimientos', 'Buscar y filtrar', 'lupa')}
     ${op('corregir', 'Corregir o borrar', 'Si te equivocaste', 'lapiz')}
-    ${op('excel', 'Descargar el Excel', 'Por mes o por viaje', 'recibo')}
+    ${op('excel', 'Descargar Excel o PDF', 'Por mes o por viaje', 'recibo')}
     ${sec('La app')}
-    ${op('tipos', '¿Qué es Recuperable y No reversible?', 'Los dos tipos de gasto del negocio', 'info')}
+    ${op('tipos', 'Recuperable, No reversible y Gastos generales', 'Los tipos de gasto del negocio', 'info')}
     ${op('ajustes', 'Letra, modo claro y modo simple', 'Para verla más cómoda', 'letra')}
     ${op('recorrido', 'Recorrido por la app', 'Cada parte, de a una', 'robot')}`);
 }
@@ -3012,6 +3150,141 @@ function guiaPermite(t) {
 $('guiaSaltar').onclick = () => { const p = pasoActual(); if (p) siguientePaso(); };
 $('guiaX').onclick = () => terminarGuia('Guía cerrada. El ícono 🤖 queda abajo a la derecha', false);
 
+/* ---------- Comparación con el mes anterior (solo modo completo) ---------- */
+function totalMes(ym) {
+  const per = datosFiltrados(S.personal).filter(f => String(f.fecha).slice(0, 7) === ym).reduce((s, f) => s + (Number(f.monto) || 0), 0);
+  const neg = datosFiltrados(S.negocio).filter(f => String(f.fecha).slice(0, 7) === ym).reduce((s, f) => s + totalNegocio(f), 0);
+  return r2(per + neg);
+}
+function mesesAtras(n) { const d = aFecha(hoy()); d.setDate(1); d.setMonth(d.getMonth() - n); return aISO(d).slice(0, 7); }
+function tarjComparacion() {
+  const meses = [5, 4, 3, 2, 1, 0].map(mesesAtras), tot = meses.map(totalMes);
+  if (!tot.some(v => v > 0)) return '';
+  const act = tot[5], ant = tot[4], nomAnt = MESES[Number(meses[4].slice(5)) - 1];
+  let txt;
+  if (!ant) txt = `No hay gastos en ${nomAnt} para comparar.`;
+  else {
+    const dif = Math.round((act - ant) / ant * 100);
+    txt = dif === 0 ? `Vas gastando <b>lo mismo</b> que en ${nomAnt}.` : `Vas gastando <b class="${dif < 0 ? 'menos' : 'mas'}">${Math.abs(dif)}% ${dif < 0 ? 'menos' : 'más'}</b> que en ${nomAnt}.`;
+  }
+  const max = Math.max(...tot, 1);
+  return `<section class="tarj comp"><h2 style="margin:0">Comparado con ${nomAnt}</h2><p>${txt}</p>
+    <div class="barras" role="img" aria-label="Gastos de los últimos 6 meses">${meses.map((m, i) => `<div class="${i === 5 ? 'actual' : ''}" title="${MESES[Number(m.slice(5)) - 1]}: ${fmt(tot[i])}"><i style="height:${Math.max(4, Math.round(tot[i] / max * 86))}px"></i><small>${MESES[Number(m.slice(5)) - 1].slice(0, 3)}</small></div>`).join('')}</div></section>`;
+}
+
+/* ---------- "Lo de siempre": los últimos montos que usaste para lo mismo ---------- */
+function montosPrevios(hoja, prueba, negocio) {
+  const l = (hoja === 'personal' ? S.personal : S.negocio).filter(f => f.negocio === negocio && prueba(f))
+    .sort((a, b) => (String(b.fecha) + (b.cargado || '')).localeCompare(String(a.fecha) + (a.cargado || '')));
+  const out = [];
+  for (const f of l) { const m = r2(Number(f.monto) || 0); if (m > 0 && !out.includes(m)) out.push(m); if (out.length >= 3) break; }
+  return out;
+}
+function rapidosHTML(montos, grande) {
+  if (!montos.length) return '';
+  return `<div class="rapidos${grande ? ' f-rapidos' : ''}"><span>Lo de siempre:</span>${montos.map(m => `<button type="button" data-rapido="${m}">${fmtReal(m)}</button>`).join('')}</div>`;
+}
+function rapidosFlujo(fl, p) {
+  if (p.k !== 'monto' || fl.editId) return [];
+  const d = fl.d, n = fl.negocio;
+  if (fl.tipo === 'viaje') { const q = d.que === 'Otra cosa' ? (d.otro || '') : d.que; return q ? montosPrevios('negocio', f => f.tipo === 'No reversible' && f.descripcion === q, n) : []; }
+  if (fl.tipo === 'general') return montosPrevios('negocio', f => f.tipo === 'Gasto general' && f.categoria === d.categoria, n);
+  if (fl.tipo === 'personal') return montosPrevios('personal', f => f.origen === 'Personal' && f.categoria === d.categoria, n);
+  if (fl.tipo === 'usar') return montosPrevios('personal', f => f.origen !== 'Personal' && f.categoria === d.categoria, n);
+  return [];
+}
+function rapidosForm(f) {
+  if (!f || f.editando) return [];
+  if (f.hoja === 'negocio' && f.tipo === 'No reversible' && f.descripcion) return montosPrevios('negocio', x => x.tipo === 'No reversible' && x.descripcion === f.descripcion.trim(), f.negocio);
+  if (f.hoja === 'negocio' && f.tipo === 'Gasto general' && f.categoria) return montosPrevios('negocio', x => x.tipo === 'Gasto general' && x.categoria === f.categoria, f.negocio);
+  if (f.hoja === 'personal' && f.categoria) return montosPrevios('personal', x => x.origen === f.origen && x.categoria === f.categoria, f.negocio);
+  return [];
+}
+function usarRapido(v) {
+  const c = String(Math.round(Number(v) * 100));
+  const inp = S.vista === 'flujo' && S.flujo ? $('fIn') : $('fMonto');
+  if (!inp) return;
+  inp.value = c;
+  inp.dispatchEvent(new Event('input', { bubbles: true }));
+  if (S.form && !(S.vista === 'flujo')) { S.form.monto = deCentavos(c); if (S.form.hoja === 'negocio') recalcular(); }
+}
+
+/* ---------- Resumen en PDF ---------- */
+function cargarPDF() {
+  const cargar = src => new Promise((ok, mal) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = () => mal(new Error('Para descargar el PDF la primera vez necesitás internet.')); document.head.appendChild(s); });
+  return (async () => {
+    if (!window.jspdf) await cargar('https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js');
+    if (!window.jspdf.jsPDF.API.autoTable) await cargar('https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js');
+  })();
+}
+async function exportarPDF(btn) {
+  const porViaje = !!S.expViaje, val = valorExport();
+  if (!val) return avisar('No hay nada para descargar todavía.');
+  const neg = S.yo.admin ? (S.expNeg || '') : S.yo.negocio;
+  const listo = cargando(btn, 'Preparando…');
+  try { await cargarPDF(); } catch (e) { listo(); return avisar(e.message); }
+  listo();
+  const enNeg = f => !neg || f.negocio === neg;
+  const delMes = ym => f => enNeg(f) && String(f.fecha).slice(0, 7) === ym;
+  const filtra = porViaje ? (f => enNeg(f) && f.viaje === val) : delMes(val);
+  const N = S.negocio.filter(filtra).sort((a, b) => a.fecha.localeCompare(b.fecha));
+  const P = porViaje ? [] : S.personal.filter(filtra).sort((a, b) => a.fecha.localeCompare(b.fecha));
+  const partes = N.flatMap(partesNegocio), suma = t => r2(partes.filter(p => p[2] === t).reduce((s, p) => s + p[1], 0));
+  const tPer = r2(P.reduce((s, f) => s + (Number(f.monto) || 0), 0)), rec = suma('rec'), no = suma('no'), gen = suma('gen');
+  const total = r2(tPer + rec + no + gen);
+  const titulo = porViaje ? 'Viaje ' + val : MESES[Number(val.slice(5)) - 1].replace(/^./, c => c.toUpperCase()) + ' ' + val.slice(0, 4);
+  const { jsPDF } = window.jspdf, doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const W = doc.internal.pageSize.getWidth(), violeta = [124, 77, 255], oscuro = [31, 23, 57];
+  doc.setFillColor(...violeta); doc.rect(0, 0, W, 30, 'F');
+  doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.text('Resumen · ' + titulo, 14, 14);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(10.5);
+  doc.text((neg || 'Todos los negocios') + '   ·   Billetera Digital   ·   Generado el ' + fCorta(hoy()) + ' ' + hoy().slice(0, 4), 14, 23);
+  doc.setTextColor(...oscuro);
+  let y = 40;
+  const filasTot = [['Gastos personales', fmtReal(tPer)], ['Compras de mercadería (recuperable)', fmtReal(rec)], ['No reversible (viajes)', fmtReal(no)], ['Gastos generales', fmtReal(gen)]];
+  if (porViaje) filasTot.shift();
+  doc.autoTable({ startY: y, head: [['Total', fmtReal(total)]], body: filasTot, theme: 'grid', styles: { fontSize: 11, cellPadding: 3 }, headStyles: { fillColor: oscuro, fontSize: 12.5 }, columnStyles: { 1: { halign: 'right', fontStyle: 'bold' } }, didParseCell: c => { if (c.section === 'head' && c.column.index === 1) c.cell.styles.halign = 'right'; }, margin: { left: 14, right: 14 } });
+  y = doc.lastAutoTable.finalY + 6;
+  if (!porViaje) {
+    const d = aFecha(val + '-01'); d.setMonth(d.getMonth() - 1); const ymAnt = aISO(d).slice(0, 7);
+    const ant = r2(S.personal.filter(delMes(ymAnt)).reduce((s, f) => s + (Number(f.monto) || 0), 0) + S.negocio.filter(delMes(ymAnt)).reduce((s, f) => s + totalNegocio(f), 0));
+    const nomAnt = MESES[Number(ymAnt.slice(5)) - 1];
+    const txt = !ant ? 'No hay gastos en ' + nomAnt + ' para comparar.' : (() => { const dif = Math.round((total - ant) / ant * 100); return dif === 0 ? 'Igual que en ' + nomAnt + ' (' + fmtReal(ant) + ').' : Math.abs(dif) + '% ' + (dif < 0 ? 'menos' : 'más') + ' que en ' + nomAnt + ' (' + fmtReal(ant) + ').'; })();
+    doc.setFontSize(11); doc.setFont('helvetica', 'bold'); const et = 'Comparado con el mes anterior: ', ancho = doc.getTextWidth(et); doc.text(et, 14, y + 4); doc.setFont('helvetica', 'normal'); doc.text(txt, 14 + ancho + 1, y + 4);
+    y += 10;
+  }
+  const cats = agrupar([...P.map(f => [f.categoria + ' (personal)', Number(f.monto) || 0]), ...partes.map(p => [p[0], p[1]])]);
+  if (cats.length) {
+    doc.autoTable({ startY: y, head: [['Por categoría', 'Monto', '%']], body: cats.map(([c, v]) => [c, fmtReal(v), (total ? Math.round(v / total * 100) : 0) + '%']), theme: 'striped', styles: { fontSize: 10.5, cellPadding: 2.5 }, headStyles: { fillColor: violeta }, columnStyles: { 1: { halign: 'right' }, 2: { halign: 'right' } }, margin: { left: 14, right: 14 } });
+    y = doc.lastAutoTable.finalY + 6;
+  }
+  const tipoTxt = f => f._p ? (f.origen === 'Personal' ? 'Personal' : 'Personal (plata del negocio)') : ({ 'Inversión': 'Compra', 'No reversible': 'No reversible', 'Gasto general': 'Gasto general', 'Cambio': 'Cambio a efectivo', 'Ajuste': 'Ajuste de efectivo', 'Devolución': 'Devolución' }[f.tipo] || f.tipo);
+  const detTxt = f => f._p ? [f.categoria, f.descripcion].filter(Boolean).join(' · ') : f.tipo === 'Inversión' ? f.descripcion + ' × ' + f.unidades : f.tipo === 'Cambio' ? fmtReal(f.monto) + (Number(f.comision) ? ' al ' + pct(f.pctCambio) : ' sin comisión') + (f.viaje ? ' · Bermejo' : ' · Otro lugar') : [f.categoria, f.descripcion].filter(Boolean).join(' · ');
+  const montoTxt = f => f._p ? '-' + fmtReal(f.monto) : f.tipo === 'Cambio' ? '+' + fmtReal(f.recibido) : f.tipo === 'Devolución' ? '+' + fmtReal(f.monto) : f.tipo === 'Ajuste' ? (f.movEfectivo >= 0 ? '+' : '-') + fmtReal(Math.abs(f.movEfectivo)) : '-' + fmtReal(totalNegocio(f));
+  const movs = [...P.map(f => Object.assign({ _p: true }, f)), ...N].sort((a, b) => a.fecha.localeCompare(b.fecha));
+  doc.autoTable({ startY: y, head: [['Fecha', 'Tipo', 'Detalle', 'Pago', 'Monto']].concat(), body: movs.map(f => [fCorta(f.fecha), tipoTxt(f), detTxt(f), f.pago || '', montoTxt(f)]), theme: 'striped', styles: { fontSize: 9.5, cellPadding: 2.2 }, headStyles: { fillColor: oscuro }, columnStyles: { 0: { cellWidth: 18 }, 1: { cellWidth: 34 }, 3: { cellWidth: 26 }, 4: { halign: 'right', cellWidth: 30 } }, margin: { left: 14, right: 14 },
+    didDrawPage: () => { doc.setFontSize(8.5); doc.setTextColor(140, 130, 170); doc.text('Billetera Digital · ' + titulo, 14, doc.internal.pageSize.getHeight() - 8); doc.setTextColor(...oscuro); } });
+  const nombre = 'Resumen_' + (porViaje ? val.replace(/\s+/g, '_') : val) + (neg ? '_' + neg.replace(/\W+/g, '') : '') + '.pdf';
+  doc.save(nombre);
+  avisar('PDF descargado');
+}
+
+/* ---------- Accesos directos desde el ícono de la app ---------- */
+function accesoDirecto() {
+  let a = '';
+  try { a = new URLSearchParams(location.search).get('accion') || ''; } catch (e) {}
+  if (!a) return false;
+  try { history.replaceState(history.state, '', location.pathname); } catch (e) {}
+  const mapa = { cambio: ['cambio', 'Cambio'], compra: ['compra', 'Inversión'], viaje: ['viaje', 'No reversible'], personal: ['personal', null] };
+  const m = mapa[a]; if (!m) return false;
+  setTimeout(() => {
+    if (esSimple()) return iniciarFlujo(m[0]);
+    limpiarModal();
+    if (m[1]) formNegocio(null, m[1], null, true); else { formPersonal(null); S.form.origen = 'Personal'; pintarFormPersonal(); }
+  }, 300);
+  return true;
+}
+
 /* =========================================================
    Apariencia: tamaño de letra, tipo de letra y modo claro / oscuro (se guarda en cada celular)
    ========================================================= */
@@ -3050,7 +3323,7 @@ function abrirApariencia() {
   Object.keys(FUENTES).forEach(cargarFuente);
   const ti = tamActual(), fk = LS.get('bd_fuente', 'urbanist'), tema = LS.get('bd_tema', 'oscuro');
   abrirModal(`${cab('Apariencia', 'var(--grad)', 'letra')}
-    <div class="ap-ejemplo"><small>Ejemplo de texto</small><p>Cambié <b>$ 500.000,00</b> en Bermejo y compré mercadería para vender.</p></div>
+    <div class="ap-ejemplo"><small>Ejemplo de texto</small><p>Gastos del mes: <b>$ 500.000,00</b>. Así se van a ver los textos y los montos en la app.</p></div>
     <div class="campo"><span>Tamaño de letra: <b id="apTamTxt">${TAMANOS[ti][1]}</b></span>
       <div class="ap-tam"><span class="a1" aria-hidden="true">A</span><input type="range" id="apTam" min="0" max="${TAMANOS.length - 1}" step="1" value="${ti}" aria-label="Tamaño de letra"><span class="a2" aria-hidden="true">A</span></div></div>
     <div class="campo">Tipo de letra<div class="ap-fuentes">${Object.entries(FUENTES).map(([k, f]) => `<button type="button" data-acc="apFuente" data-f="${k}" aria-pressed="${fk === k}" style="font-family:${f.fam},system-ui,sans-serif"><b>Aa</b><small>${f.nombre}</small></button>`).join('')}</div></div>
@@ -3137,8 +3410,22 @@ const MANUAL_IA = `CÓMO RESPONDER
 - Montos siempre así: $ 1.234,56. Para sumas usá los RESÚMENES POR MES; si hace falta, sumá con cuidado los MOVIMIENTOS y mostrá de dónde sale.
 - Vos no podés cargar, cambiar ni borrar nada: explicá cómo se hace en la app.
 - Si la respuesta es cómo hacer algo en la app, terminá con UNA etiqueta (sola, en el último renglón) de esta lista, la que corresponda; la app la convierte en "Ver cómo se hace". No la nombres en el texto:
-  [[guia:cambio]] cambio de plata · [[guia:compra]] compra de mercadería · [[guia:pasero]] pasaje, pasero, chalana, comida del viaje · [[guia:personal]] gasto personal con su plata · [[guia:usar]] usé plata del negocio · [[guia:devolver]] devolver plata al negocio · [[guia:contar]] contar o ajustar el efectivo · [[guia:efectivo]] qué es el efectivo disponible · [[guia:corregir]] corregir o borrar · [[guia:cuanto]] ver cuánto gasté · [[guia:todos]] ver todos los movimientos · [[guia:excel]] descargar el Excel · [[guia:tipos]] qué es recuperable y no reversible · [[guia:ajustes]] tamaño o tipo de letra, modo claro/oscuro y modo simple · [[guia:recorrido]] recorrido por la app
+  [[guia:cambio]] cambio de plata · [[guia:compra]] compra de mercadería · [[guia:pasero]] gastos del viaje (pasaje, pasero, chalana, comida) · [[guia:general]] gastos generales del negocio (envíos, contadora, monotributo, publicidad…) · [[guia:personal]] gasto personal con su plata · [[guia:usar]] usé plata del negocio · [[guia:devolver]] devolver plata al negocio · [[guia:contar]] contar o ajustar el efectivo · [[guia:efectivo]] qué es el efectivo disponible · [[guia:corregir]] corregir o borrar · [[guia:cuanto]] ver cuánto gasté · [[guia:todos]] ver todos los movimientos · [[guia:excel]] descargar el Excel · [[guia:tipos]] qué es recuperable y no reversible · [[guia:ajustes]] tamaño o tipo de letra, modo claro/oscuro y modo simple · [[guia:recorrido]] recorrido por la app
 - Temas fuera de la app (impuestos, monotributo, precios, consejos de plata): decí con amabilidad que solo ayudás con la Billetera.
+- Si alguien dice que el admin (Enzo) le cargó algo y no le aparece: NO le sugieras cargarlo de nuevo (quedaría dos veces). Decile que abra la app con internet y deslice hacia abajo para actualizar; si sigue sin aparecer, que le avise a Enzo.
+
+CARGAR MOVIMIENTOS DESDE LA CHARLA
+- Si la persona te pide anotar/cargar algo (o manda la foto de un comprobante para cargar), armá la propuesta: una frase corta y, en el último renglón, UNA etiqueta [[cargar:{...}]] con JSON válido (números sin puntos de miles, con punto para decimales). La app muestra una tarjeta con **Guardar** y **Corregir**: vos nunca guardás, la persona confirma.
+- Si falta un dato obligatorio (por ejemplo, si pagó en efectivo o por transferencia), preguntalo antes y no pongas la etiqueta todavía.
+- Formatos ("fecha" es opcional, "aaaa-mm-dd"; si no la dicen, es hoy):
+  · Cambio a efectivo: {"tipo":"cambio","monto":500000,"pct":1,"comision":"Efectivo" o "Descuento","lugar":"Bermejo" u "Otro","nota":""}  (si no le cobraron, pct 0; lugar por defecto Bermejo)
+  · Compra de mercadería: {"tipo":"compra","descripcion":"Tazas","unidades":24,"monto":60000,"pago":"Efectivo" o "Transferencia","pct":0}
+  · Gasto del viaje (pasero, chalana, comida, colectivo…): {"tipo":"viaje","que":"<una de Gastos del viaje o un texto corto>","monto":3000,"pago":"Efectivo"}
+  · Gasto general del negocio (envíos, contadora, monotributo, publicidad…): {"tipo":"general","categoria":"<una de Categorías de gastos generales>","monto":8450,"pago":"Transferencia","descripcion":""}
+  · Gasto personal con su plata: {"tipo":"personal","categoria":"<una de Categorías personales>","monto":15000,"pago":"Efectivo","descripcion":""}
+  · Usó plata del negocio para algo personal: {"tipo":"usar","categoria":"<Categorías personales>","monto":27000,"pago":"Transferencia","devuelto":"Toda" | "Parte" | "Todavia" | "No","parte":20000,"pagoDev":"Efectivo" o "Transferencia","descripcion":""}
+  · Devolvió plata al negocio: {"tipo":"devolver","monto":7000,"pagoDev":"Efectivo" o "Transferencia"}
+- Usá los nombres exactos de las LISTAS DE LA APP que están en los datos.
 
 QUÉ ES LA APP
 Billetera Digital anota los gastos de la familia: los personales y los del negocio de cada uno (sus tiendas de MercadoLibre). Cada persona tiene su negocio. Enzo es el admin: armó la app, ve los datos de todos y aprueba las cuentas nuevas.
@@ -3153,11 +3440,12 @@ Billetera Digital anota los gastos de la familia: los personales y los del negoc
 - Cada persona ve todo lo de su negocio, aunque lo haya cargado otro (por ejemplo, el admin), y lo puede corregir.
 
 MODO SIMPLE (una pregunta por pantalla)
-Inicio: arriba el saludo y el círculo con las iniciales (abre el Perfil). Si se debe plata al negocio, aparece "Le debés al negocio $ X" con **Devolver**. Después "Efectivo del negocio" con **Contar**. Dos opciones grandes: **🧳 Negocio - Compras** y **🏠 Gastos personales**. Abajo, **Ver lo que cargué**. El ícono 🤖 abre esta charla.
+Inicio: arriba el saludo y el círculo con las iniciales (abre el Perfil). Si se debe plata al negocio, aparece "Le debés al negocio $ X" con **Devolver**. Después "Efectivo del negocio" con **Contar**. Dos opciones grandes: **🧳 Negocio - Compras** y **🏠 Gastos personales**. Abajo, **Ver lo que cargué**. El ícono 🤖 abre esta charla. Arriba hay un **ojito** para ocultar los montos.
 - 🧳 Negocio - Compras:
-  · **💱 Cambié plata**: ¿Cuánto transferiste? → ¿Qué porcentaje te cobraron? → ¿Cómo pagaste la comisión? (**En efectivo**: me dieron todo y pagué la comisión con billetes / **Me la descontaron**: me dieron menos) → resumen → **Guardar**.
+  · **💱 Cambié plata**: ¿Cuánto transferiste? → ¿Qué porcentaje te cobraron? → ¿Cómo pagaste la comisión? (**En efectivo**: me dieron todo y pagué la comisión con billetes / **Me la descontaron**: me dieron menos) → nota opcional → resumen → **Guardar**. En el resumen dice "Lugar: Bermejo"; si fue en otro lugar, se elige **¿Fue en otro lugar?**.
   · **🛒 Compré mercadería**: producto, unidades, cuánto pagó en total, cómo pagó.
-  · **🚌 Pagué pasaje, pasero o comida**: qué pagó, cuánto, cómo.
+  · **🚌 Gastos del viaje**: qué pagó (pasaje, pasero, chalana, comida…), cuánto, cómo.
+  · **🧾 Otro gasto del negocio**: gastos del negocio fuera de viajes (envíos, contadora, monotributo, publicidad…): categoría, cuánto, cómo, detalle opcional. Sin viaje.
 - 🏠 Gastos personales:
   · **👛 Gasté con mi plata**: gasto personal pagado con su propia plata.
   · **↩️ Usé plata del negocio**: para qué, cuánto, cómo pagó, ¿ya la devolviste? (Sí, toda / Una parte / Todavía no / No la voy a devolver). Si ya devolvió, pregunta cómo: en efectivo o por transferencia.
@@ -3167,30 +3455,35 @@ Inicio: arriba el saludo y el círculo con las iniciales (abre el Perfil). Si se
 
 MODO COMPLETO
 Barra de abajo: **Inicio**, **Personal**, **+** (en el medio), **Negocio**, **Perfil**. El ícono 🤖 (abajo a la derecha) tiene esta charla y guías paso a paso que iluminan dónde tocar.
-- **Inicio**: cuánto se gastó en el mes (círculo), "Por categoría" (se agranda al elegirla), "Últimos gastos" con **Consultar todos** (buscar por palabra o monto y filtrar por tipo: Personal, Compras, No reversible, Cambios, Efectivo, Transferencia).
-- **+** abre: **Compras y negocio** (pestañas **Inversión**, **No reversible**, **Cambio**), **Gasto personal** y **Plata del negocio** (Usé plata del negocio / Devolví plata al negocio).
-  · Cambio: monto transferido, % y "¿Cómo pagaste la comisión?" (**En efectivo** / **Descontada**).
+- **Inicio**: cuánto se gastó en el mes, "Comparado con <mes anterior>" (cuánto más o menos que el mes pasado y barras de 6 meses), "Por categoría" (se agranda al elegirla), "Últimos gastos" con **Consultar todos** (buscar por palabra o monto y filtrar por tipo: Personal, Compras, No reversible, Gastos generales, Cambios, Efectivo, Transferencia).
+- **+** abre dos grupos. **Negocio**: **Viajes** (pestañas **Inversión** y **No reversible**), **Gastos generales** (categoría, fecha, monto, detalle, pago; sin viaje) y **Cambio a efectivo**. **Personal**: **Gasto personal** y **Plata del negocio** (Usé plata del negocio / Devolví plata al negocio).
+  · Cambio: **Lugar** (**Bermejo**, ya marcado, o **Otro lugar**; en Bermejo queda dentro del viaje del día, en otro lugar sin viaje), monto transferido, % (0 si no cobraron) y "¿Cómo pagaste la comisión?" (**En efectivo** / **Descontada**), nota opcional.
   · Gasto personal: de dónde salió la plata (**Negocio** o **Personal**), categoría, fecha (Hoy, Ayer o calendario), monto, detalle opcional, efectivo o transferencia. Si la plata es del negocio, **Lo voy a devolver** deja anotada la deuda.
   · Devolución: cuánto, cómo (**En efectivo** / **Transferencia**) y nota opcional.
-- **Negocio**: Mes / Semana / Día, **Recuperable**, **No reversible**, **Efectivo disponible** (elegirlo permite ajustarlo) y los movimientos. Se puede ver por viaje.
+- **Negocio**: Mes / Semana / Día, cuatro tarjetas: **Recuperable**, **No reversible (viajes)**, **Gastos generales** y **Efectivo disponible** (elegirlo permite ajustarlo), y los movimientos. Se puede ver por viaje.
 - **Personal**: los gastos personales, mes por mes (elegí el mes para ver otro).
-- **Perfil**: datos de la cuenta, **Versión de la app**, **Subir y actualizar ahora**, **Modo simple**, **Descargar en Excel** (por mes o por viaje), **Cuentas de la familia** (solo el admin), **Mostrar ayudante 🤖**, **Apariencia** (letra y modo claro u oscuro), **Cambiar mi patrón**, **Cerrar sesión**.
+- **Perfil**: datos de la cuenta, **Versión de la app**, **Subir y actualizar ahora**, **Modo simple**, **Descargar resumen** (Excel o **PDF**, por mes o por viaje), **Cuentas de la familia** (solo el admin), **Mostrar ayudante 🤖**, **Apariencia** (letra y modo claro u oscuro), **Cambiar mi patrón**, **Cerrar sesión**.
 - Para corregir: abrir el movimiento → lápiz ✏️ → cambiar → **Guardar cambios**. Para borrar: **Borrar este gasto**, abajo de todo.
 
 CONCEPTOS
 - **Inversión / Recuperable**: mercadería comprada para vender. La plata vuelve cuando se vende. Puede tener un recargo de la tienda si se pagó por transferencia.
 - **No reversible**: gastos que no vuelven: pasero, colectivo, chalana, baño, bodega, comida del viaje, la comisión del cambio. Categorías: Insumos (pasajes, pasero), Sueldo (comida y bebida del viaje), Interés/Gastos (comisiones, recargos), Otros.
-- **Cambio a efectivo**: en Bermejo se transfiere por Mercado Pago a un cambista que da efectivo. La comisión (un %) es un gasto no reversible. Con la comisión en efectivo dan todo lo transferido y la comisión se paga con billetes; descontada, dan menos. En los dos casos el efectivo del negocio sube lo transferido menos la comisión.
+- **Cambio a efectivo**: se transfiere (por ejemplo a un cambista en Bermejo, o a un conocido) y te dan efectivo. Con conocidos muchas veces no hay comisión (0%). La comisión (un %) es un gasto no reversible. Con la comisión en efectivo dan todo lo transferido y la comisión se paga con billetes; descontada, dan menos. En los dos casos el efectivo del negocio sube lo transferido menos la comisión.
 - **Efectivo del negocio / Efectivo disponible**: la plata del negocio que la persona tiene en la mano. Sube con los cambios y las devoluciones en efectivo; baja con lo que se paga en efectivo. Si no coincide con lo que cuenta: **Contar** (simple) o elegir **Efectivo disponible** (completo), escribir lo que tiene y la app corrige la diferencia ("Ajuste de efectivo"). Si al pagar no alcanza el efectivo, la app avisa.
 - **Viaje**: cada ida a Bermejo se anota como "Bermejo" + la fecha (ida y vuelta en el día).
 - **Plata del negocio usada para algo personal**: se carga con **Usé plata del negocio**. Si se va a devolver, queda "Le debés al negocio". Al devolver, baja la deuda: **en efectivo** suma al efectivo del negocio; **por transferencia** vuelve a Mercado Pago y el efectivo no cambia.
 - Si alguien quiere devolver y la app dice que no tiene nada anotado, es porque la plata usada no se cargó con **Usé plata del negocio** (o ya devolvió todo). La app ofrece **Cargarlo ahora**.
-- **Excel**: se descarga desde Perfil (modo completo), por mes o por viaje, y queda en las Descargas del celular.`;
+- **Excel y PDF**: se descargan desde Perfil (modo completo), por mes o por viaje, y quedan en las Descargas del celular. El PDF trae totales, comparación con el mes anterior, categorías y movimientos.
+- **Gastos generales**: gastos del negocio que no son de un viaje (Mercado Envíos FULL, correo y envíos, publicidad, contadora, monotributo / IIBB, sueldo, insumos de embalaje, otros). No reversible (viajes) son solo los gastos de los viajes.
+- **Ojito** (arriba, al lado del saludo): oculta todos los montos como "$ •••••" y queda así hasta que se vuelva a tocar. Mientras se carga algo, los montos se ven.
+- **Lo de siempre**: al cargar algo que ya se cargó antes, abajo del monto aparecen los últimos montos usados para eso; un toque y queda puesto.
+- **Accesos directos**: dejando apretado el ícono de la app en el celular aparecen Cambié plata, Compré mercadería, Gastos del viaje y Gasté con mi plata (si la app está instalada en la pantalla de inicio).
+- **Versión**: en Perfil → Versión de la app se ve el número (por ejemplo 1.10.0) y la fecha.`;
 
 // Etiqueta de la IA → guía (modo completo) o paso a paso / pantalla (modo simple)
 const IA_ACC = {
   cambio: { guia: 'cambio', flujo: 'cambio' }, compra: { guia: 'compra', flujo: 'compra' }, pasero: { guia: 'noreversible', flujo: 'viaje' },
-  personal: { guia: 'personal', flujo: 'personal' }, usar: { guia: 'usar', flujo: 'usar' }, devolver: { guia: 'devolver', flujo: 'devolver' },
+  personal: { guia: 'personal', flujo: 'personal' }, usar: { guia: 'usar', flujo: 'usar' }, devolver: { guia: 'devolver', flujo: 'devolver' }, general: { guia: 'general', flujo: 'general' },
   contar: { guia: 'contar', flujo: 'contar' }, efectivo: { guia: 'efectivo' }, corregir: { guia: 'corregir', vista: 'lista' },
   cuanto: { guia: 'cuanto', vista: 'lista' }, todos: { guia: 'todos', vista: 'lista' }, excel: { guia: 'excel' }, tipos: { guia: 'tipos' },
   ajustes: { guia: 'ajustes', vista: 'perfil' }, recorrido: { guia: 'recorrido' }
@@ -3205,10 +3498,14 @@ function contextoIA() {
   L.push(`Persona: ${y.nombre} (usuario ${y.usuario}). Su negocio: ${y.negocio}. ${y.admin ? 'Es el ADMIN: ve los datos de todos los negocios.' : 'Ve lo que cargó en la app.'}`);
   L.push('Modo de la app que usa ahora: ' + (esSimple() ? 'SIMPLE' : 'COMPLETO') + '.');
   L.push(`Movimientos sin subir todavía: ${S.cola.length}. Con error (en rojo): ${S.rech.length}.`);
+  L.push('\nLISTAS DE LA APP (usá estos nombres exactos al cargar):');
+  L.push('- Categorías personales: ' + (S.listas['Categorías personales'] || []).join(' | '));
+  L.push('- Categorías de gastos generales: ' + (S.listas['Categorías gastos generales'] || LISTAS_BASE['Categorías gastos generales']).join(' | '));
+  L.push('- Gastos del viaje (descripciones rápidas): ' + (S.listas['Descripciones rápidas'] || []).join(' | '));
   L.push('\nEFECTIVO Y DEUDA (ahora mismo):');
-  negs.forEach(n => L.push(`- ${n}: efectivo del negocio ${fmt(efectivoDe(n))} · le deben al negocio (plata usada sin devolver) ${fmt(deudaDe(n))}`));
-  const suma = (arr, fk, fv) => { const m = {}; arr.forEach(f => { const k = fk(f); m[k] = (m[k] || 0) + (Number(fv(f)) || 0); }); return Object.entries(m).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${fmt(v)}`).join(', '); };
-  const tot = (arr, fv) => fmt(arr.reduce((s, f) => s + (Number(fv(f)) || 0), 0));
+  negs.forEach(n => L.push(`- ${n}: efectivo del negocio ${fmtReal(efectivoDe(n))} · le deben al negocio (plata usada sin devolver) ${fmtReal(deudaDe(n))}`));
+  const suma = (arr, fk, fv) => { const m = {}; arr.forEach(f => { const k = fk(f); m[k] = (m[k] || 0) + (Number(fv(f)) || 0); }); return Object.entries(m).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${fmtReal(v)}`).join(', '); };
+  const tot = (arr, fv) => fmtReal(arr.reduce((s, f) => s + (Number(fv(f)) || 0), 0));
   const meses = [...new Set(S.personal.concat(S.negocio).map(f => String(f.fecha).slice(0, 7)))].filter(Boolean).sort().reverse().slice(0, 12);
   L.push('\nRESÚMENES POR MES (más nuevo primero):');
   meses.forEach(m => {
@@ -3226,7 +3523,8 @@ function contextoIA() {
       const t = tp => N.filter(f => f.tipo === tp);
       if (t('Inversión').length) L.push(`${pre}Compras de mercadería (recuperable): ${tot(t('Inversión'), f => f.monto)} en ${t('Inversión').length} compras.`);
       const no = N.flatMap(partesNegocio).filter(p => p[2] === 'no');
-      if (no.length) L.push(`${pre}No reversible: total ${fmt(no.reduce((s, p) => s + p[1], 0))}. Por categoría: ${suma(no, p => p[0], p => p[1])}.`);
+      if (no.length) L.push(`${pre}No reversible: total ${fmtReal(no.reduce((s, p) => s + p[1], 0))}. Por categoría: ${suma(no, p => p[0], p => p[1])}.`);
+      if (t('Gasto general').length) L.push(`${pre}Gastos generales (fuera de viajes): ${tot(t('Gasto general'), f => f.gastoReal)}. Por categoría: ${suma(t('Gasto general'), f => f.categoria, f => f.gastoReal)}.`);
       if (t('Cambio').length) L.push(`${pre}Cambios a efectivo: ${t('Cambio').length}, transferido ${tot(t('Cambio'), f => f.monto)}, comisiones ${tot(t('Cambio'), f => f.comision)}.`);
       if (t('Devolución').length) L.push(`${pre}Devoluciones al negocio: ${tot(t('Devolución'), f => f.monto)} (en efectivo ${tot(t('Devolución').filter(f => f.pago !== 'Transferencia'), f => f.monto)}, por transferencia ${tot(t('Devolución').filter(f => f.pago === 'Transferencia'), f => f.monto)}).`);
     });
@@ -3236,16 +3534,16 @@ function contextoIA() {
   const d3 = new Date(); d3.setMonth(d3.getMonth() - 3); const desde = aISO(d3);
   const recientes = arr => arr.filter(f => String(f.fecha) >= desde).sort(orden).slice(0, 150);
   L.push('\nMOVIMIENTOS PERSONALES DE LOS ÚLTIMOS 3 MESES (más nuevo primero; lo anterior está solo en los resúmenes): fecha | negocio | cargó | categoría | detalle | plata de | pago | monto | a devolver');
-  recientes(S.personal).forEach(f => L.push([f.fecha, f.negocio, f.usuario || '', f.categoria, f.descripcion || '-', f.origen === 'Personal' ? 'propia' : 'del negocio', f.pago, fmt(f.monto), f.devolver === 'sí' ? 'sí' : 'no'].join(' | ')));
+  recientes(S.personal).forEach(f => L.push([f.fecha, f.negocio, f.usuario || '', f.categoria, f.descripcion || '-', f.origen === 'Personal' ? 'propia' : 'del negocio', f.pago, fmtReal(f.monto), f.devolver === 'sí' ? 'sí' : 'no'].join(' | ')));
   L.push('\nMOVIMIENTOS DEL NEGOCIO DE LOS ÚLTIMOS 3 MESES (más nuevo primero): fecha | negocio | cargó | viaje | tipo | categoría | detalle | monto | pago | extra | efectivo +/-');
   recientes(S.negocio).forEach(f => {
     let extra = '';
-    if (f.tipo === 'Inversión') extra = `${f.unidades} unidades a ${fmt(f.costoUnit)}` + (Number(f.recargo) ? `, recargo ${fmt(f.recargo)}` : '');
-    else if (f.tipo === 'Cambio') extra = `${pct(f.pctCambio)}, comisión ${fmt(f.comision)} ${f.pago === 'Efectivo' ? 'pagada en efectivo' : 'descontada'}, efectivo recibido ${fmt(f.recibido)}`;
-    else if (f.tipo === 'Ajuste') extra = 'efectivo contado ' + fmt(f.monto);
+    if (f.tipo === 'Inversión') extra = `${f.unidades} unidades a ${fmtReal(f.costoUnit)}` + (Number(f.recargo) ? `, recargo ${fmtReal(f.recargo)}` : '');
+    else if (f.tipo === 'Cambio') extra = `${pct(f.pctCambio)}, comisión ${fmtReal(f.comision)} ${f.pago === 'Efectivo' ? 'pagada en efectivo' : 'descontada'}, efectivo recibido ${fmtReal(f.recibido)}`;
+    else if (f.tipo === 'Ajuste') extra = 'efectivo contado ' + fmtReal(f.monto);
     else if (f.tipo === 'Devolución') extra = f.pago === 'Transferencia' ? 'devuelta por transferencia' : 'devuelta en efectivo';
     const mov = Number(f.movEfectivo) || 0;
-    L.push([f.fecha, f.negocio, f.usuario || '', f.viaje || '-', f.tipo, f.categoria, f.descripcion || '-', fmt(f.monto), f.pago, extra || '-', (mov >= 0 ? '+' : '-') + fmt(Math.abs(mov))].join(' | '));
+    L.push([f.fecha, f.negocio, f.usuario || '', f.viaje || '-', f.tipo, f.categoria, f.descripcion || '-', fmtReal(f.monto), f.pago, extra || '-', (mov >= 0 ? '+' : '-') + fmtReal(Math.abs(mov))].join(' | '));
   });
   return L.join('\n');
 }
@@ -3277,9 +3575,10 @@ function pintarIA() {
     else if (m.rol === 'error') h += `<div class="ia-b ia error">${esc(m.txt)}</div>`;
     else {
       const acc = (m.txt.match(/\[\[guia:([a-z]+)\]\]/) || [])[1];
-      const limpio = m.txt.replace(/\[\[guia:[a-z]*\]\]/g, '').trim();
+      if (m.carga === undefined) m.carga = leerCarga(m.txt);
+      const limpio = m.txt.replace(/\[\[guia:[a-z]*\]\]/g, '').replace(/\[\[cargar:[\s\S]*?\]\]/g, '').trim();
       const ir = acc && IA_ACC[acc] && (esSimple() ? (IA_ACC[acc].flujo || IA_ACC[acc].vista) : IA_ACC[acc].guia);
-      h += `<div class="ia-b ia">${textoIA(limpio)}${ir ? `<button type="button" class="ia-ver" data-acc="iaGuia" data-g="${acc}">Ver cómo se hace ${svg('der', 16, 2.6)}</button>` : ''}</div>`;
+      h += `<div class="ia-b ia">${textoIA(limpio)}${m.carga ? tarjetaCarga(m.carga, IA.msgs.indexOf(m)) : ''}${ir && !m.carga ? `<button type="button" class="ia-ver" data-acc="iaGuia" data-g="${acc}">Ver cómo se hace ${svg('der', 16, 2.6)}</button>` : ''}</div>`;
     }
   });
   if (IA.cargando) h += `<div class="ia-b ia escribiendo" aria-label="La IA está escribiendo"><i></i><i></i><i></i></div>`;
@@ -3328,6 +3627,97 @@ async function fotoElegida(file) {
 }
 function quitarFotoIA() { IA.img = ''; IA.imgUrl = ''; const a = $('iaAdj'); if (a) { a.hidden = true; a.innerHTML = ''; } const f = $('iaArchivo'); if (f) f.value = ''; }
 document.addEventListener('change', ev => { if (ev.target.id === 'iaArchivo') fotoElegida(ev.target.files && ev.target.files[0]); });
+/* ---------- La IA propone cargar un movimiento: tarjeta con Guardar / Corregir (nunca guarda sola) ---------- */
+function leerCarga(txt) {
+  const m = String(txt || '').match(/\[\[cargar:([\s\S]*?)\]\](?![\s\S]*\[\[cargar:)/);
+  if (!m) return null;
+  let c; try { c = JSON.parse(m[1].trim()); } catch (e) { return { errores: ['No pude leer la propuesta de la IA. Pedile que la arme de nuevo.'] }; }
+  return Object.assign(validarCarga(c), { estado: '' });
+}
+function validarCarga(c) {
+  const tipos = ['cambio', 'compra', 'viaje', 'general', 'personal', 'usar', 'devolver'];
+  const tipo = String(c && c.tipo || '').toLowerCase(), err = [];
+  if (!tipos.includes(tipo)) return { errores: ['La IA propuso algo que la app no sabe cargar.'] };
+  const n = v => { const x = typeof v === 'number' ? v : num(String(v == null ? '' : v)); return isNaN(x) ? NaN : r2(x); };
+  const enLista = (v, lista) => lista.find(x => x.toLowerCase() === String(v || '').trim().toLowerCase()) || '';
+  const pago = v => /^ef/i.test(String(v || '')) ? 'Efectivo' : /^tr/i.test(String(v || '')) ? 'Transferencia' : '';
+  const negocio = S.yo.admin && S.filtro ? S.filtro : S.yo.negocio;
+  let fecha = String(c.fecha || '').slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(fecha) || fecha > hoy() || isNaN(aFecha(fecha))) fecha = hoy();
+  const d = { fecha }, monto = n(c.monto);
+  if (!(monto > 0)) err.push('Falta el monto.'); else d.monto = String(monto);
+  if (['compra', 'viaje', 'general', 'personal', 'usar'].includes(tipo)) { d.pago = pago(c.pago); if (!d.pago) err.push('Falta si pagaste en efectivo o por transferencia.'); }
+  if (tipo === 'cambio') {
+    const pc = c.pct == null || c.pct === '' ? 0 : n(c.pct);
+    if (!(pc >= 0 && pc <= 100)) err.push('Revisá el porcentaje.'); else d.pct = String(pc);
+    d.comision = /^ef/i.test(String(c.comision || '')) ? 'Efectivo' : 'Descuento';
+    d.lugar = /^otro/i.test(String(c.lugar || '')) ? 'Otro' : 'Bermejo';
+    d.nota = String(c.nota || '').trim().slice(0, 80);
+  } else if (tipo === 'compra') {
+    d.descripcion = String(c.descripcion || '').trim().slice(0, 120); if (!d.descripcion) err.push('Falta qué compraste.');
+    const u = n(c.unidades); if (!(u > 0)) err.push('Faltan las unidades.'); else d.unidades = String(u);
+    const pc = n(c.pct); d.extra = d.pago === 'Transferencia' && pc > 0 ? 'Sí' : 'No'; if (d.extra === 'Sí') d.pct = String(pc);
+  } else if (tipo === 'viaje') {
+    const q = String(c.que || c.descripcion || '').trim(), l = enLista(q, S.listas['Descripciones rápidas'] || []);
+    if (!q) err.push('Falta qué pagaste.');
+    if (l) d.que = l; else { d.que = 'Otra cosa'; d.otro = q.slice(0, 120); }
+  } else if (tipo === 'general') {
+    d.categoria = enLista(c.categoria, S.listas['Categorías gastos generales'] || LISTAS_BASE['Categorías gastos generales']);
+    if (!d.categoria) err.push('Elegí la categoría con Corregir.');
+    d.descripcion = String(c.descripcion || '').trim().slice(0, 120);
+  } else if (tipo === 'personal' || tipo === 'usar') {
+    d.categoria = enLista(c.categoria, S.listas['Categorías personales'] || []);
+    if (!d.categoria) err.push('Elegí la categoría con Corregir.');
+    d.descripcion = String(c.descripcion || '').trim().slice(0, 120);
+    if (tipo === 'usar') {
+      d.devuelto = ['Toda', 'Parte', 'Todavia', 'No'].find(x => x.toLowerCase() === String(c.devuelto || '').toLowerCase().replace('í', 'i')) || 'Todavia';
+      if (d.devuelto === 'Parte') { const pa = n(c.parte); if (!(pa > 0 && pa < monto)) err.push('Revisá cuánto devolviste.'); else d.parte = String(pa); }
+      if (d.devuelto === 'Toda' || d.devuelto === 'Parte') d.pagoDev = /^tr/i.test(String(c.pagoDev || '')) ? 'Transferencia' : 'Efectivo';
+    }
+  } else if (tipo === 'devolver') {
+    d.pagoDev = /^tr/i.test(String(c.pagoDev || c.pago || '')) ? 'Transferencia' : 'Efectivo';
+    if (!(deudaDe(negocio) > 0)) err.push('No hay plata anotada para devolver: primero cargá lo que usaste del negocio.');
+  }
+  return { fl: { tipo, d, negocio, pedirInicial: false, sinControl: true }, errores: err };
+}
+function tarjetaCarga(c, i) {
+  if (!c.fl) return `<div class="ia-carga mal">${esc((c.errores || []).join(' '))}</div>`;
+  const F = FLUJOS[c.fl.tipo], filas = filasFlujo(c.fl);
+  const { saleEfectivo } = c.estado ? { saleEfectivo: 0 } : opDeFlujo(Object.assign({}, c.fl, { d: Object.assign({}, c.fl.d) }));
+  const noAlcanza = saleEfectivo > 0 && saleEfectivo > efectivoDe(c.fl.negocio);
+  return `<div class="ia-carga${c.estado === 'guardado' ? ' ok' : ''}">
+    <div class="ia-carga-tit">${F.emoji} ${esc(F.titulo)}</div>
+    ${filas.map(([k, v]) => `<div class="fila-p"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('')}
+    ${c.errores && c.errores.length ? `<div class="ia-carga-av">${esc(c.errores.join(' '))}</div>` : ''}
+    ${noAlcanza ? `<div class="ia-carga-av">Según la app no alcanza el efectivo del negocio. Revisalo antes de guardar.</div>` : ''}
+    ${c.estado === 'guardado' ? `<div class="ia-carga-listo">✓ Guardado</div>` : `<div class="ia-carga-bot"><button type="button" class="ia-ver" data-acc="iaGuardar" data-i="${i}" ${c.errores && c.errores.length ? 'disabled' : ''}>Guardar ✓</button><button type="button" class="btn btn-sec" data-acc="iaCorregir" data-i="${i}">Corregir</button></div>`}
+  </div>`;
+}
+function guardarCarga(i) {
+  const m = IA.msgs[Number(i)], c = m && m.carga;
+  if (!c || !c.fl || c.estado || (c.errores && c.errores.length)) return;
+  const fl = Object.assign({}, c.fl, { d: Object.assign({}, c.fl.d) });
+  const { op } = opDeFlujo(fl);
+  if (!op) return;
+  encolar(Object.assign({ tipo: 'guardar', id: nuevoId() }, op));
+  if (fl.extra) encolar(fl.extra);
+  c.estado = 'guardado'; pintarIA(); avisar('✓ Guardado');
+}
+function corregirCarga(i) {
+  const m = IA.msgs[Number(i)], c = m && m.carga;
+  if (!c || !c.fl) return;
+  const { tipo, d } = c.fl;
+  cerrarModal();
+  if (esSimple()) return iniciarFlujo(tipo, { d: Object.assign({}, d) });
+  // Modo completo: se abre el formulario con todo completado
+  const neg = c.fl.negocio, set = o => { Object.assign(S.form, o); S.form.hoja === 'personal' ? pintarFormPersonal() : pintarFormNegocio(); };
+  if (tipo === 'cambio') { formNegocio(null, 'Cambio', neg); return set({ fecha: d.fecha, monto: d.monto || '', pctCambio: d.pct || '', pagoComision: d.comision === 'Efectivo' ? 'Efectivo' : 'Transferencia', lugar: d.lugar, nota: d.nota || '' }); }
+  if (tipo === 'compra') { formNegocio(null, 'Inversión', neg); return set({ fecha: d.fecha, descripcion: d.descripcion || '', unidades: d.unidades || '', monto: d.monto || '', pago: d.pago || 'Transferencia', pctRecargo: d.extra === 'Sí' ? d.pct : '' }); }
+  if (tipo === 'viaje') { formNegocio(null, 'No reversible', neg); return set({ fecha: d.fecha, categoria: catDeViaje(d.que), descripcion: d.que === 'Otra cosa' ? (d.otro || '') : d.que, monto: d.monto || '', pago: d.pago || 'Efectivo' }); }
+  if (tipo === 'general') { formNegocio(null, 'Gasto general', neg); return set({ fecha: d.fecha, categoria: d.categoria || '', descripcion: d.descripcion || '', monto: d.monto || '', pago: d.pago || 'Transferencia' }); }
+  if (tipo === 'personal' || tipo === 'usar') { limpiarModal(); formPersonal(null); return set({ fecha: d.fecha, origen: tipo === 'personal' ? 'Personal' : 'Negocio (MercadoLibre)', devolver: tipo === 'usar' && d.devuelto !== 'No' ? 'sí' : '', categoria: d.categoria || '', descripcion: d.descripcion || '', monto: d.monto || '', pago: d.pago || 'Efectivo' }); }
+  if (tipo === 'devolver') { limpiarModal(); formDevolucion(neg, null, { monto: d.monto || '', pago: d.pagoDev === 'Transferencia' ? 'Transferencia' : 'Efectivo', fecha: d.fecha }); }
+}
 function irAccionIA(id) {
   const a = IA_ACC[id]; if (!a) return;
   cerrarModal();
