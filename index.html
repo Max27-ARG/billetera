@@ -151,9 +151,11 @@ button{cursor:pointer}
 .cats{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:8px}
 .mini.cuatro{grid-template-columns:1fr 1fr}
-.ojo-montos{flex:none;width:40px;height:40px;border-radius:13px;border:0;background:var(--sutil);color:var(--soft);display:flex;align-items:center;justify-content:center;margin-left:auto}
-.ojo-montos[aria-pressed="true"]{color:var(--acento);background:rgba(124,77,255,.18)}
-.ojo-montos+.sync{margin-left:0}
+.total-fila{display:flex;align-items:center;gap:16px;min-width:0}
+.ojo-montos{flex:none;width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.18);color:#fff;display:flex;align-items:center;justify-content:center}
+.s-efe .total-fila{flex-direction:row;gap:12px}
+.s-efe .ojo-montos{width:36px;height:36px;background:var(--borde);color:inherit}
+.s-efe .s-contar{flex:none;border:0;font-size:14px;font-weight:800;background:var(--borde);color:inherit;padding:10px 14px;border-radius:12px;white-space:nowrap}
 /* Lo de siempre */
 .rapidos{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--muted)}
 .rapidos button{border:1px solid rgba(124,77,255,.45);background:rgba(124,77,255,.14);color:var(--acento);border-radius:14px;padding:8px 12px;font-weight:800;font-size:14px}
@@ -505,7 +507,7 @@ body.simple .vista{padding-bottom:78px}
 .s-efe span{display:flex;flex-direction:column;gap:2px}
 .s-efe small{font-size:13px;font-weight:700}
 .s-efe b{font-size:26px;font-weight:900;color:#fff}
-.s-efe em{font-style:normal;font-size:13px;font-weight:800;background:var(--borde);padding:8px 12px;border-radius:12px;white-space:nowrap}
+
 .deuda{display:flex;align-items:center;justify-content:space-between;gap:12px;border-radius:22px;padding:16px 18px;background:rgba(255,181,71,.14);border:1px solid rgba(255,181,71,.4)}
 .deuda span{display:flex;flex-direction:column;gap:2px;min-width:0}
 .deuda small{font-size:13px;font-weight:700;color:var(--amber)}
@@ -641,7 +643,7 @@ body.simple .vista{padding-bottom:78px}
 const API = window.BILLETERA_API || '';
 // Fecha y hora de esta versión (se muestra una vez cuando alguien abre la app actualizada)
 // Versión: MAYOR.MENOR.ARREGLO (arreglo → sube el último; algo nuevo → el del medio; cambio enorme → el primero)
-const APP_SERIE = '1.10.0', APP_FECHA = '2026-10-31';
+const APP_SERIE = '1.10.1', APP_FECHA = '2026-10-31';
 const APP_VERSION = APP_SERIE;
 const COLORES = ['#9B6BFF', '#F05BB5', '#3FD6C6', '#FFB547', '#6FA8FF', '#FF8A5B', '#B5E36B', '#D7C8FF'];
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
@@ -1369,13 +1371,12 @@ function vInicio() {
   <div class="cabecera">
     <button type="button" class="avatar" data-ir2="perfil" aria-label="Ir a mi perfil">${esc(iniciales(S.yo.nombre))}</button>
     <div class="saludo"><small>Hola,</small><b>${esc(S.yo.nombre)}</b></div>
-    <button type="button" class="ojo-montos" data-acc="ocultarMontos" aria-label="${OCULTO ? 'Mostrar los montos' : 'Ocultar los montos'}" aria-pressed="${OCULTO}">${svg(OCULTO ? 'ojoNo' : 'ojo', 20, 2)}</button>
     ${chipSync()}
   </div>
   ${filtroNegocios()}
   <section class="hero">
     <div class="fila"><span class="etq">Gastado en ${MESES[aFecha(hoy()).getMonth()]}</span><span class="pill">${esc(etiquetaNeg)}</span></div>
-    <span class="total">${fmt(total)}</span>
+    <div class="total-fila"><span class="total">${fmt(total)}</span>${ojoMontos()}</div>
     <div class="sub"><div><span>Compras y negocio</span><b>${fmt(tNeg)}</b></div><div><span>Gasto personal</span><b>${fmt(tPer)}</b></div></div>
   </section>
   ${tarjetasDeuda()}
@@ -2483,6 +2484,8 @@ function verErrores() {
 /* =========================================================
    Versión nueva
    ========================================================= */
+// Ojito al lado del monto principal (como en Mercado Pago)
+const ojoMontos = () => `<button type="button" class="ojo-montos" data-acc="ocultarMontos" aria-label="${OCULTO ? 'Mostrar los montos' : 'Ocultar los montos'}" aria-pressed="${OCULTO}">${svg(OCULTO ? 'ojoNo' : 'ojo', 22, 2.1)}</button>`;
 function textoVersion() { return 'Versión ' + APP_SERIE; }
 function fechaVersion() { const d = aFecha(APP_FECHA); return d.getDate() + ' ' + MESES[d.getMonth()].slice(0, 3) + ' ' + d.getFullYear(); }
 function mostrarNovedad() {
@@ -2512,11 +2515,10 @@ function vSimple() {
   <div class="s-cab">
     <button type="button" class="avatar" data-ir2="perfil" aria-label="Mi perfil">${esc(iniciales(S.yo.nombre))}</button>
     <div class="saludo"><small>Hola,</small><b>${esc(primerNombre(S.yo.nombre))}</b></div>
-    <button type="button" class="ojo-montos" data-acc="ocultarMontos" aria-label="${OCULTO ? 'Mostrar los montos' : 'Ocultar los montos'}" aria-pressed="${OCULTO}">${svg(OCULTO ? 'ojoNo' : 'ojo', 20, 2)}</button>
     ${chipSync()}
   </div>
   ${deuda > 0 ? `<div class="deuda"><span><small>Le debés al negocio</small><b>${fmt(deuda)}</b></span><button type="button" data-devolver="${esc(neg)}">Devolver</button></div>` : ''}
-  <button type="button" class="s-efe" data-flujo="contar"><span><small>Efectivo del negocio</small><b>${fmt(ef)}</b></span><em>Contar</em></button>
+  <div class="s-efe"><span><small>Efectivo del negocio</small><span class="total-fila"><b>${fmt(ef)}</b>${ojoMontos()}</span></span><button type="button" class="s-contar" data-flujo="contar">Contar</button></div>
   <button type="button" class="s-grande" data-menu="negocio" style="background:linear-gradient(135deg,#7C4DFF,#B347D9);min-height:120px"><span class="oi" aria-hidden="true">🧳</span><span class="tx"><b>Negocio - Compras</b><small>Viajes, compras, cambios y gastos del negocio</small></span>${svg('der', 24, 2.4)}</button>
   <button type="button" class="s-grande" data-menu="personal" style="background:linear-gradient(135deg,#B8661F,#E040A0);min-height:120px"><span class="oi" aria-hidden="true">🏠</span><span class="tx"><b>Gastos personales</b><small>Tus gastos y la plata del negocio que usaste o devolviste</small></span>${svg('der', 24, 2.4)}</button>
   <button type="button" class="btn btn-sec s-ver" data-ir2="lista">${svg('recibo', 22, 2)} Ver lo que cargué</button>`;
