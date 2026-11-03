@@ -514,6 +514,17 @@ body.simple .vista{padding-bottom:78px}
 .deuda b{font-size:24px;font-weight:900}
 .deuda button{border:0;border-radius:14px;padding:12px 16px;background:var(--amber);color:#2A1A00;font-weight:900;font-size:15px;flex:none}
 .deuda.tedeben{background:rgba(63,214,198,.12);border-color:rgba(63,214,198,.4)}
+/* Modo claro: el botón Devolver bien visible (naranja fuerte, letra blanca) */
+html.claro .deuda small{color:#8A4B00}
+html.claro .deuda button{background:#E07000;color:#fff;box-shadow:0 2px 8px rgba(224,112,0,.35)}
+html.claro .deuda.tedeben small{color:var(--tealink)}
+/* Consultar todos: páginas */
+.paginas{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:4px}
+.paginas button{width:46px;height:46px;border-radius:14px;border:0;background:var(--card);color:var(--ink);display:flex;align-items:center;justify-content:center}
+.paginas button:disabled{opacity:.35}
+.paginas span{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;color:var(--soft)}
+.paginas input{width:52px;height:42px;border-radius:12px;border:1px solid var(--borde);background:var(--campo);color:var(--ink);text-align:center;font-weight:800;font-size:16px}
+.pag-nota{margin:2px 0 0;text-align:center;font-size:12.5px;font-weight:700;color:var(--muted)}
 .deuda.tedeben small{color:var(--tealink)}
 /* Cambio compartido y recargo */
 .comp-fila{display:flex;align-items:center;gap:8px;margin-top:8px}
@@ -656,7 +667,7 @@ body.simple .vista{padding-bottom:78px}
 const API = window.BILLETERA_API || '';
 // Fecha y hora de esta versión (se muestra una vez cuando alguien abre la app actualizada)
 // Versión: MAYOR.MENOR.ARREGLO (arreglo → sube el último; algo nuevo → el del medio; cambio enorme → el primero)
-const APP_SERIE = '1.11.0', APP_FECHA = '2026-11-01';
+const APP_SERIE = '1.11.1', APP_FECHA = '2026-11-02';
 const APP_VERSION = APP_SERIE;
 const COLORES = ['#9B6BFF', '#F05BB5', '#3FD6C6', '#FFB547', '#6FA8FF', '#FF8A5B', '#B5E36B', '#D7C8FF'];
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
@@ -1476,7 +1487,8 @@ function vInicio() {
   const tNeg = neg.reduce((s, f) => s + totalNegocio(f), 0);
   const items = topN(agrupar([...per.map(f => [f.categoria, Number(f.monto) || 0]), ...neg.flatMap(partesNegocio).map(p => [p[0], p[1]])]), 5);
   const total = tPer + tNeg;
-  const ultimos = ordenar([...per.map(f => [f, false]), ...neg.map(f => [f, true])].map(x => Object.assign({ _n: x[1] }, x[0]))).slice(0, 5);
+  // Últimos movimientos: los 5 más nuevos, sean de este mes o de antes (como en Mercado Pago)
+  const ultimos = ordenar([...datosFiltrados(S.personal).map(f => Object.assign({ _n: false }, f)), ...datosFiltrados(S.negocio).map(f => Object.assign({ _n: true }, f))]).slice(0, 5);
   const etiquetaNeg = S.yo.admin ? (S.filtro || 'Todos los negocios') : S.yo.negocio;
   return `
   <div class="cabecera">
@@ -1502,7 +1514,7 @@ function vInicio() {
     <div class="ayuda-toca">${S.catAbierta ? 'Tocá un color para ver su monto · Tocá la tarjeta para achicar' : 'Tocá para agrandar'}</div>
   </section>` : `<section class="tarj"><h2>Por categoría</h2><div class="vacio">Todavía no hay gastos este mes.<br>Tocá el <b>+</b> para cargar el primero.</div></section>`}
   <section class="tarj">
-    <h2 class="h2-link">Últimos gastos ${ultimos.length ? `<button type="button" class="ver-todos" data-ir2="todos">Consultar todos ${svg('der', 16, 2.6)}</button>` : ''}</h2>
+    <h2 class="h2-link">Últimos gastos <button type="button" class="ver-todos" data-ir2="todos">Consultar todos ${svg('der', 16, 2.6)}</button></h2>
     <div class="lista">${ultimos.length ? ultimos.map(f => filaMov(f, f._n)).join('') : '<div class="vacio">Acá vas a ver lo último que se cargó.</div>'}</div>
   </section>`;
 }
@@ -2311,7 +2323,7 @@ async function exportar(btn) {
    Clics y escritura (un solo lugar para todo)
    ========================================================= */
 function irA(v, desdeAtras) {
-  if ((v === 'todos' || v === 'lista') && S.vista !== v) { S.busca = ''; S.ftipo = 'todos'; S.todosMax = 60; }
+  if ((v === 'todos' || v === 'lista') && S.vista !== v) { S.busca = ''; S.ftipo = 'todos'; S.todosMax = 60; S.pag = 1; }
   S.vista = v; S.catAbierta = false; S.firmas = {}; S.resaltes = {};
   if (v !== 'negocio') S.viaje = '';
   $('contenido').scrollTop = 0; render();
@@ -2359,7 +2371,8 @@ document.addEventListener('click', async ev => {
   if (ds.sumar && S.form && S.form.parts) { leerCampos(); S.form.parts.push({ neg: ds.sumar, monto: '', mano: '' }); S.form.abierto = ''; return pintarFormNegocio(); }
   if (ds.nuevo2 === 'volver') return elegirTipo();
   if (ds.modo) { cerrarModal(); setModo(ds.modo); saludoRobot(); return; }
-  if (ds.ftipo) { S.ftipo = ds.ftipo; S.todosMax = 60; return render(); }
+  if (ds.ftipo) { S.ftipo = ds.ftipo; S.todosMax = 60; S.pag = 1; return render(); }
+  if (ds.pag) return irPagina((S.pag || 1) + Number(ds.pag));
   if (ds.filtro !== undefined) { S.filtro = ds.filtro; S.viaje = ''; return render(); }
   if (ds.per) { S.per = { tipo: ds.per, ref: hoy() }; return render(); }
   if (ds.mover) { S.per = moverPer(S.per, Number(ds.mover)); return render(); }
@@ -2477,10 +2490,13 @@ function verAjuste(fila) {
     ${botonBorrar()}`);
 }
 document.addEventListener('keydown', ev => { if (ev.key === 'Enter' && ev.target.id === 'fIn') { ev.preventDefault(); siguienteFlujo(); } });
+// Escribir el número de página: va al tocar "ir" en el teclado o al salir del casillero
+document.addEventListener('keydown', ev => { if (ev.key === 'Enter' && ev.target.id === 'pagIn') { ev.preventDefault(); ev.target.blur(); } });
+document.addEventListener('change', ev => { if (ev.target.id === 'pagIn') { const n = parseInt(ev.target.value, 10); irPagina(isNaN(n) ? S.pag : n); } });
 document.addEventListener('input', ev => {
   const valor = ev.target.classList && ev.target.classList.contains('plata-in') ? normalizarPlata(ev.target) : ev.target.value;
   if (ev.target.id === 'fIn' && S.flujo) { const p = pasoFlujo(); if (p && p.k) S.flujo.d[p.k] = valor; const e = $('fErr'); if (e) e.hidden = true; return; }
-  if (ev.target.id === 'buscarTodos') { S.busca = ev.target.value; S.todosMax = 60; $('listaTodos').innerHTML = htmlListaTodos(); return; }
+  if (ev.target.id === 'buscarTodos') { S.busca = ev.target.value; S.todosMax = 60; S.pag = 1; $('listaTodos').innerHTML = htmlListaTodos(); return; }
   const ds = ev.target.dataset || {};
   if (S.form && S.form.parts && ds.part !== undefined) { const p = S.form.parts[Number(ds.part)]; if (p) p.monto = valor; return recalcular(); }
   if (S.form && S.form.parts && ds.mano !== undefined) { const p = S.form.parts[Number(ds.mano)]; if (p) p.mano = valor; return recalcular(); }
@@ -2676,7 +2692,34 @@ function fechaGrupo(iso) {
   const d = aFecha(iso), base = d.getDate() + ' de ' + MESES[d.getMonth()];
   return d.getFullYear() === aFecha(hoy()).getFullYear() ? base : base + ' de ' + d.getFullYear();
 }
+const POR_PAGINA = 30;
+const desde12 = () => { const d = aFecha(hoy()); d.setFullYear(d.getFullYear() - 1); return aISO(d); };
+// Consultar todos (modo completo): últimos 12 meses, de a 30 por página
 function htmlListaTodos() {
+  if (S.vista !== 'todos') return htmlListaSimple();
+  const lim = desde12(), l = filasTodos().filter(f => String(f.fecha) >= lim);
+  const nota = `<p class="pag-nota">Se muestran los últimos 12 meses</p>`;
+  if (!l.length) return `<div class="tarj"><div class="vacio">${S.busca || (S.ftipo && S.ftipo !== 'todos') ? 'No hay movimientos con esa búsqueda o filtro.' : 'Todavía no hay movimientos.'}</div></div>${nota}`;
+  const total = Math.ceil(l.length / POR_PAGINA);
+  S.pag = Math.min(Math.max(1, S.pag || 1), total);
+  let h = '', dia = '';
+  l.slice((S.pag - 1) * POR_PAGINA, S.pag * POR_PAGINA).forEach(f => {
+    if (f.fecha !== dia) { if (dia) h += '</div></section>'; dia = f.fecha; h += `<section class="tarj"><h3 class="fecha-grupo">${esc(fechaGrupo(dia))}</h3><div class="lista">`; }
+    h += filaMov(f, f._n);
+  });
+  h += '</div></section>';
+  if (total > 1) h += `<div class="paginas" role="navigation" aria-label="Páginas">
+    <button type="button" data-pag="-1" aria-label="Página anterior" ${S.pag <= 1 ? 'disabled' : ''}>${svg('izq', 20, 2.6)}</button>
+    <span>Página <input id="pagIn" type="text" inputmode="numeric" enterkeyhint="go" value="${S.pag}" aria-label="Número de página"> de ${total}</span>
+    <button type="button" data-pag="1" aria-label="Página siguiente" ${S.pag >= total ? 'disabled' : ''}>${svg('der', 20, 2.6)}</button></div>`;
+  return h + nota;
+}
+function irPagina(n) {
+  S.pag = n; $('listaTodos').innerHTML = htmlListaTodos();
+  $('contenido').scrollTop = 0;
+}
+// "Ver lo que cargué" (modo simple): queda como estaba, todo con "Ver más"
+function htmlListaSimple() {
   const l = filasTodos(), max = S.todosMax || 60;
   if (!l.length) return `<div class="tarj"><div class="vacio">${S.busca || (S.ftipo && S.ftipo !== 'todos') ? 'No hay movimientos con esa búsqueda o filtro.' : 'Todavía no hay movimientos.'}</div></div>`;
   let h = '', dia = '';
@@ -3541,6 +3584,7 @@ const GUIAS = {
       { el: Q('#contenido [data-ir2=todos]'), txt: 'Elegí <b>Consultar todos</b>', valido: '#contenido [data-ir2=todos]' },
       { el: Q('#contenido .buscar'), txt: 'Acá podés <b>buscar</b> por palabra o por monto.', modo: 'listo', btn: 'Siguiente' },
       { el: Q('#contenido .filtro-tipo'), txt: 'Con estos filtros ves <b>solo un tipo</b>: personal, compras, cambios, préstamos, efectivo o transferencia.', modo: 'listo', btn: 'Siguiente' },
+      { si: () => !!document.querySelector('#contenido .paginas'), el: Q('#contenido .paginas'), txt: 'Se ven los <b>últimos 12 meses</b>, de a 30 por página. Con las flechas <b>‹ ›</b> pasás de página, o escribí el número.', modo: 'listo', mirar: true, btn: 'Siguiente' },
       { el: Q('#listaTodos'), txt: 'Tocando cualquier movimiento ves su <b>detalle</b>. Ahí también está el lápiz ✏️ para corregirlo.', modo: 'listo', mirar: true, btn: 'Entendido' }]
   },
   excel: {
@@ -4062,7 +4106,7 @@ Inicio: arriba el saludo y el círculo con las iniciales (abre el Perfil). Si se
 
 MODO COMPLETO
 Barra de abajo: **Inicio**, **Personal**, **+** (en el medio), **Negocio**, **Perfil**. El ícono 🤖 (abajo a la derecha) tiene esta charla y guías paso a paso que iluminan dónde tocar.
-- **Inicio**: cuánto se gastó en el mes, tarjetas de lo que se debe (al negocio o préstamos), "Comparado con <mes anterior>" (cuánto más o menos que el mes pasado y barras de 6 meses), "Por categoría" (se agranda al elegirla), "Últimos gastos" con **Consultar todos** (buscar por palabra o monto y filtrar por tipo: Personal, Compras, No reversible, Gastos generales, Cambios, Préstamos, Efectivo, Transferencia).
+- **Inicio**: cuánto se gastó en el mes, tarjetas de lo que se debe (al negocio o préstamos), "Comparado con <mes anterior>" (cuánto más o menos que el mes pasado y barras de 6 meses), "Por categoría" (se agranda al elegirla), "Últimos gastos" (los 5 movimientos más nuevos, aunque sean de meses anteriores) con **Consultar todos**, que siempre está: muestra los movimientos de los **últimos 12 meses**, de a **30 por página** (abajo: **‹ Página 1 de N ›**, con flechas o escribiendo el número), con buscador por palabra o monto y filtros por tipo: Personal, Compras, No reversible, Gastos generales, Cambios, Préstamos, Efectivo, Transferencia. Lo de más de 12 meses no se ve ahí, pero sigue guardado (sale en el Excel por mes).
 - **+** abre dos grupos. **Negocio**: **Viajes** (pestañas **Inversión** y **No reversible**), **Gastos generales** (categoría, fecha, monto, detalle, pago; sin viaje), **Cambio a efectivo** y **Préstamo a otro negocio**. **Personal**: **Gasto personal** y **Plata del negocio** (Usé plata del negocio / Devolví plata al negocio).
   · Compra (Inversión): producto, unidades, costo total y **Pago**: **Efectivo**, **Transferencia** o **Combinado** (se escribe lo pagado **En efectivo** y la parte **Por transferencia** se calcula sola). Con transferencia o combinado: **Recargo por transferir** en **$** o en **%** (se cobra sobre lo transferido).
   · Cambio: **Lugar** (**Bermejo**, ya marcado, o **Otro lugar**; en Bermejo queda dentro del viaje del día, en otro lugar sin viaje), **Compartido con otros negocios** (interruptor), monto transferido, "¿Cómo pagaste la comisión?" (**En efectivo** / **Descontada**), "¿Cómo sabés la comisión?" (**Con el %**, o **Con lo que me dieron** / **Con lo que pagué**: escribe el efectivo que le dieron o lo que pagó y la app saca el % exacto), nota opcional.
@@ -4091,7 +4135,7 @@ CONCEPTOS
 - **Ojito** (arriba, al lado del saludo): oculta todos los montos como "$ •••••" y queda así hasta que se vuelva a tocar. Mientras se carga algo, los montos se ven.
 - **Lo de siempre**: al cargar algo que ya se cargó antes, abajo del monto aparecen los últimos montos usados para eso; un toque y queda puesto.
 - **Accesos directos**: dejando apretado el ícono de la app en el celular aparecen Cambié plata, Compré mercadería, Gastos del viaje y Gasté con mi plata (si la app está instalada en la pantalla de inicio).
-- **Versión**: en Perfil → Versión de la app se ve el número (por ejemplo 1.11.0) y la fecha.`;
+- **Versión**: en Perfil → Versión de la app se ve el número (por ejemplo 1.11.1) y la fecha.`;
 
 // Etiqueta de la IA → guía (modo completo) o paso a paso / pantalla (modo simple)
 const IA_ACC = {
