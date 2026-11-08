@@ -667,16 +667,18 @@ html.claro .deuda.tedeben small{color:var(--tealink)}
 const API = window.BILLETERA_API || '';
 // Fecha y hora de esta versión (se muestra una vez cuando alguien abre la app actualizada)
 // Versión: MAYOR.MENOR.ARREGLO (arreglo → sube el último; algo nuevo → el del medio; cambio enorme → el primero)
-const APP_SERIE = '1.11.1', APP_FECHA = '2026-11-02';
+const APP_SERIE = '1.11.2', APP_FECHA = '2026-11-08';
 const APP_VERSION = APP_SERIE;
 const COLORES = ['#9B6BFF', '#F05BB5', '#3FD6C6', '#FFB547', '#6FA8FF', '#FF8A5B', '#B5E36B', '#D7C8FF'];
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const CAT_FACT = 'Facturación MercadoLibre'; // antes "Publicidad" (1.11.2)
+const AYUDA_FACT = 'Cargá el <b>Pago de factura</b> de MercadoLibre que figura en Mercado Pago. Incluye publicidad, Mi página, percepciones y otros cargos que no se descuentan de cada venta.';
 const LISTAS_BASE = {
   'Negocios': ['AEM - DigyStore', 'BazarFreddy', 'RinaMultiventas', 'FernandoDeals'],
   'Categorías personales': ['Casa (luz, gas, agua)', 'Comida', 'Salud', 'Transporte', 'Ropa', 'Educación', 'Salidas', 'Otros'],
   'Categorías no reversibles': ['Insumos', 'Sueldo', 'Interés/Gastos', 'Otros'],
   'Descripciones rápidas': ['Colectivo ida y vuelta', 'Chalana ida', 'Chalana vuelta', 'Pasero', 'Comida/bebidas', 'Baño', 'Bodega/baúl colectivo'],
-  'Categorías gastos generales': ['Mercado Envíos FULL', 'Correo y envíos', 'Publicidad', 'Contadora', 'Monotributo / IIBB', 'Sueldo', 'Insumos (embalaje)', 'Otros']
+  'Categorías gastos generales': ['Mercado Envíos FULL', 'Correo y envíos', 'Facturación MercadoLibre', 'Contadora', 'Monotributo / IIBB', 'Sueldo', 'Insumos (embalaje)', 'Otros']
 };
 const S = {
   token: '', yo: null, listas: LISTAS_BASE, personal: [], negocio: [], ajenos: [], pendientes: 0, ultimaSync: 0,
@@ -1539,17 +1541,23 @@ function tarjetasPrestamo(simple) {
 }
 function formDevolucion(neg, fila, pre) {
   const deuda = deudaDe(neg) + (fila ? Number(fila.monto) || 0 : 0);
-  S.form = { hoja: 'devolucion', id: fila ? fila.id : nuevoId(), editando: !!fila, negocio: neg, monto: fila ? String(fila.monto) : String(deudaDe(neg) || ''), nota: fila && fila.descripcion !== 'Devolución al negocio' ? fila.descripcion : '', fecha: fila ? fila.fecha : hoy(), pago: fila && fila.pago === 'Transferencia' ? 'Transferencia' : 'Efectivo', confirmarBorrar: false };
+  S.form = { hoja: 'devolucion', id: fila ? fila.id : nuevoId(), editando: !!fila, negocio: neg, deuda, monto: fila ? String(fila.monto) : String(deudaDe(neg) || ''), nota: fila && fila.descripcion !== 'Devolución al negocio' ? fila.descripcion : '', fecha: fila ? fila.fecha : hoy(), pago: fila && fila.pago === 'Transferencia' ? 'Transferencia' : 'Efectivo', confirmarBorrar: false };
   if (pre) Object.assign(S.form, pre);
-  abrirModal(`${cab(fila ? 'Editar devolución' : 'Devolver al negocio', 'var(--teal)', 'billetera')}
-    <p class="ayuda" style="margin:0;font-size:14px">${neg !== S.yo.negocio ? esc(neg) + ' le debe' : 'Le debés'} al negocio <b>${fmt(deuda)}</b>. Si devolviste una parte, cambiá el monto.</p>
-    <div class="campo"><label for="fMonto">¿Cuánto devolviste?</label>${plataHTML('fMonto', S.form.monto, 'data-campo="monto"')}</div>
-    <label class="campo" for="fNota">Nota (opcional)<input id="fNota" data-campo="nota" value="${esc(S.form.nota)}" maxlength="80" placeholder="Agregá un detalle si querés"></label>
-    <div class="campo">¿Cómo la devolviste?<div class="segm">${[['Efectivo', 'En efectivo', 'entra al efectivo'], ['Transferencia', 'Transferencia', 'vuelve a Mercado Pago']].map(([v, t, sub]) => `<button type="button" data-set="pago" data-val="${v}" aria-pressed="${S.form.pago === v}">${t}<small>${sub}</small></button>`).join('')}</div></div>
-    <div class="ayuda" id="devAyuda">${ayudaDevolucion(S.form.pago)}</div>
+  if (!S.form.fecha) S.form.fecha = hoy();
+  pintarFormDevolucion();
+}
+function pintarFormDevolucion() {
+  const f = S.form, neg = f.negocio;
+  abrirModal(`${cab(f.editando ? 'Editar devolución' : 'Devolver al negocio', 'var(--teal)', 'billetera')}
+    <p class="ayuda" style="margin:0;font-size:14px">${neg !== S.yo.negocio ? esc(neg) + ' le debe' : 'Le debés'} al negocio <b>${fmt(f.deuda)}</b>. Si devolviste una parte, cambiá el monto.</p>
+    ${campoFecha(f.fecha)}
+    <div class="campo"><label for="fMonto">¿Cuánto devolviste?</label>${plataHTML('fMonto', f.monto, 'data-campo="monto"')}</div>
+    <label class="campo" for="fNota">Nota (opcional)<input id="fNota" data-campo="nota" value="${esc(f.nota)}" maxlength="80" placeholder="Agregá un detalle si querés"></label>
+    <div class="campo">¿Cómo la devolviste?<div class="segm">${[['Efectivo', 'En efectivo', 'entra al efectivo'], ['Transferencia', 'Transferencia', 'vuelve a Mercado Pago']].map(([v, t, sub]) => `<button type="button" data-set="pago" data-val="${v}" aria-pressed="${f.pago === v}">${t}<small>${sub}</small></button>`).join('')}</div></div>
+    <div class="ayuda" id="devAyuda">${ayudaDevolucion(f.pago)}</div>
     <div class="error" id="fError" hidden></div>
-    <button class="btn" type="button" data-acc="guardarDevolucion" style="background:linear-gradient(135deg,#1F9E95,#7C4DFF);color:#fff">Guardar devolución</button>
-    ${fila ? botonBorrar() : ''}`);
+    <button class="btn" type="button" data-acc="guardarDevolucion" style="background:linear-gradient(135deg,#1F9E95,#7C4DFF);color:#fff">${f.editando ? 'Guardar cambios' : 'Guardar devolución'}</button>
+    ${f.editando ? botonBorrar() : ''}`);
 }
 // Cuando no hay nada anotado para devolver: en vez de frenar, ofrece cargar lo que se usó
 function sinDeuda(neg) {
@@ -1744,7 +1752,7 @@ function selNegocio(v) {
 }
 function repintarForm() {
   if (!S.form) return;
-  ({ personal: pintarFormPersonal, prestamo: pintarFormPrestamo, devprest: pintarFormDevPrestamo }[S.form.hoja] || pintarFormNegocio)();
+  ({ personal: pintarFormPersonal, prestamo: pintarFormPrestamo, devprest: pintarFormDevPrestamo, devolucion: pintarFormDevolucion }[S.form.hoja] || pintarFormNegocio)();
 }
 function campoFecha(valor) {
   const h = hoy(), a = ayer();
@@ -1854,6 +1862,7 @@ function pintarFormNegocio() {
   } else if (f.tipo === 'Gasto general') {
     const cats = S.listas['Categorías gastos generales'] || LISTAS_BASE['Categorías gastos generales'];
     cuerpo = `<div class="campo">Categoría<div class="grid3">${cats.map(c => `<button type="button" class="chip" data-set="categoria" data-val="${esc(c)}" aria-pressed="${f.categoria === c}">${esc(c)}</button>`).join('')}</div></div>
+      ${f.categoria === CAT_FACT ? `<p class="ayuda" style="margin:0;font-size:14px">${AYUDA_FACT}</p>` : ''}
       ${campoFecha(f.fecha)}
       <div class="campo"><label for="fMonto">Monto</label>${plataHTML('fMonto', f.monto, 'data-campo="monto"')}</div>${rapidosHTML(rapidosForm(f))}
       <label class="campo" for="fDesc">Detalle (opcional)<input id="fDesc" data-campo="descripcion" value="${esc(f.descripcion)}" maxlength="120" placeholder="Agregá un detalle si querés"></label>
@@ -3092,7 +3101,7 @@ const FLUJOS = {
     P_PAG, { t: 'resumen' }] },
   general: { titulo: 'Otro gasto del negocio', emoji: '🧾', pasos: [
     { k: 'categoria', t: 'grilla', preg: '¿Qué pagaste?', ops: () => (S.listas['Categorías gastos generales'] || LISTAS_BASE['Categorías gastos generales']).map(x => [x, x]) },
-    { k: 'monto', t: 'num', preg: '¿Cuánto pagaste?' },
+    { k: 'monto', t: 'num', preg: '¿Cuánto pagaste?', ayuda: d => d.categoria === CAT_FACT ? AYUDA_FACT.replace(/<[^>]+>/g, '') : '' },
     P_PAG,
     { k: 'descripcion', t: 'texto', preg: '¿Querés anotar un detalle?', ayuda: 'No es obligatorio', ej: 'Una nota corta', opcional: true },
     { t: 'resumen' }] },
@@ -3150,7 +3159,7 @@ function vFlujo() {
   const txt = v => typeof v === 'function' ? v(d) : v;
   let cuerpo = '';
   if (p.t === 'num' || p.t === 'texto') {
-    cuerpo = `<h1 class="f-preg">${esc(txt(p.preg))}</h1>${p.ayuda ? `<p class="f-ayuda">${esc(txt(p.ayuda))}</p>` : ''}
+    cuerpo = `<h1 class="f-preg">${esc(txt(p.preg))}</h1>${p.ayuda && txt(p.ayuda) ? `<p class="f-ayuda">${esc(txt(p.ayuda))}</p>` : ''}
       ${p.t === 'num' && !p.sinPesos ? plataHTML('fIn', d[p.k], `aria-label="${esc(txt(p.preg))}"`, 'grande') + rapidosHTML(rapidosFlujo(fl, p), true) : `<input id="fIn" class="${p.t === 'num' ? 'f-num' : 'f-txt'}" ${p.t === 'num' ? 'inputmode="decimal"' : 'enterkeyhint="next"'} autocomplete="off" value="${esc(d[p.k] || '')}" placeholder="${p.t === 'num' ? (p.sinPesos ? '0' : '$ 0') : esc(p.ej || '')}" aria-label="${esc(txt(p.preg))}">`}
       <div class="f-error" id="fErr" hidden></div>
       <button class="btn btn-grad f-sig" type="button" data-acc="fSig">Siguiente ›</button>
@@ -3565,6 +3574,7 @@ const GUIAS = {
     atajo: () => { limpiarModal(); formDevolucion(S.filtro || S.yo.negocio); },
     camino: [P_MAS, P_PLATA, { el: Q('#modalIn [data-devolver]'), txt: 'Elegí <b>Devolví plata al negocio</b>' }],
     pasos: [
+      { el: cerca('#modalIn [data-cal=abrir]', '.fecha-fila'), txt: '¿La devolviste <b>hoy</b>? Entonces no cambies nada.<br>Si fue otro día, elegí <b>Ayer</b> o la fecha.', modo: 'listo' },
       pCampo('fMonto', 'Ya está puesto <b>todo lo que se debe</b>.<br>Si devolviste una parte, cambiá el monto.'),
       { el: cerca('#modalIn [data-set=pago]', '.segm'), txt: '¿Cómo la devolviste?<br><b>En efectivo</b>: entra al efectivo del negocio.<br><b>Transferencia</b>: vuelve a Mercado Pago; el efectivo no cambia.', modo: 'listo', valido: '#modalIn [data-set=pago]', largo: true },
       pGuardar('guardarDevolucion', 'Elegí <b>Guardar devolución</b> ✓')]
@@ -4058,7 +4068,7 @@ const MANUAL_IA = `CÓMO RESPONDER
 - Montos siempre así: $ 1.234,56. Para sumas usá los RESÚMENES POR MES; si hace falta, sumá con cuidado los MOVIMIENTOS y mostrá de dónde sale.
 - Vos no podés cargar, cambiar ni borrar nada: explicá cómo se hace en la app.
 - Si la respuesta es cómo hacer algo en la app, terminá con UNA etiqueta (sola, en el último renglón) de esta lista, la que corresponda; la app la convierte en "Ver cómo se hace". No la nombres en el texto:
-  [[guia:cambio]] cambio de plata · [[guia:compra]] compra de mercadería · [[guia:pasero]] gastos del viaje (pasaje, pasero, chalana, comida) · [[guia:general]] gastos generales del negocio (envíos, contadora, monotributo, publicidad…) · [[guia:personal]] gasto personal con su plata · [[guia:usar]] usé plata del negocio · [[guia:devolver]] devolver plata al negocio · [[guia:contar]] contar o ajustar el efectivo · [[guia:efectivo]] qué es el efectivo disponible · [[guia:corregir]] corregir o borrar · [[guia:cuanto]] ver cuánto gasté · [[guia:todos]] ver todos los movimientos · [[guia:excel]] descargar el Excel · [[guia:tipos]] qué es recuperable y no reversible · [[guia:ajustes]] tamaño o tipo de letra, modo claro/oscuro y modo simple · [[guia:recorrido]] recorrido por la app · [[guia:compartido]] cambio compartido entre varios negocios · [[guia:prestamo]] prestarle plata a otro negocio de la familia · [[guia:devprest]] devolver un préstamo a otro negocio
+  [[guia:cambio]] cambio de plata · [[guia:compra]] compra de mercadería · [[guia:pasero]] gastos del viaje (pasaje, pasero, chalana, comida) · [[guia:general]] gastos generales del negocio (envíos, contadora, monotributo, facturación de MercadoLibre…) · [[guia:personal]] gasto personal con su plata · [[guia:usar]] usé plata del negocio · [[guia:devolver]] devolver plata al negocio · [[guia:contar]] contar o ajustar el efectivo · [[guia:efectivo]] qué es el efectivo disponible · [[guia:corregir]] corregir o borrar · [[guia:cuanto]] ver cuánto gasté · [[guia:todos]] ver todos los movimientos · [[guia:excel]] descargar el Excel · [[guia:tipos]] qué es recuperable y no reversible · [[guia:ajustes]] tamaño o tipo de letra, modo claro/oscuro y modo simple · [[guia:recorrido]] recorrido por la app · [[guia:compartido]] cambio compartido entre varios negocios · [[guia:prestamo]] prestarle plata a otro negocio de la familia · [[guia:devprest]] devolver un préstamo a otro negocio
 - Temas fuera de la app (impuestos, monotributo, precios, consejos de plata): decí con amabilidad que solo ayudás con la Billetera.
 - Si alguien dice que el admin (Enzo) le cargó algo y no le aparece: NO le sugieras cargarlo de nuevo (quedaría dos veces). Decile que abra la app con internet y deslice hacia abajo para actualizar; si sigue sin aparecer, que le avise a Enzo.
 
@@ -4071,7 +4081,7 @@ CARGAR MOVIMIENTOS DESDE LA CHARLA
   · Préstamo a otro negocio de la familia: {"tipo":"prestar","otro":"<un negocio de la lista Negocios, que no sea el suyo>","monto":18000,"pago":"Efectivo" o "Transferencia","nota":""}
   · Devolvió un préstamo a otro negocio: {"tipo":"devprest","otro":"<el negocio al que le debe>","monto":10000,"pago":"Efectivo" o "Transferencia"}
   · Gasto del viaje (pasero, chalana, comida, colectivo…): {"tipo":"viaje","que":"<una de Gastos del viaje o un texto corto>","monto":3000,"pago":"Efectivo"}
-  · Gasto general del negocio (envíos, contadora, monotributo, publicidad…): {"tipo":"general","categoria":"<una de Categorías de gastos generales>","monto":8450,"pago":"Transferencia","descripcion":""}
+  · Gasto general del negocio (envíos, contadora, monotributo, facturación de MercadoLibre…): {"tipo":"general","categoria":"<una de Categorías de gastos generales>","monto":8450,"pago":"Transferencia","descripcion":""}
   · Gasto personal con su plata: {"tipo":"personal","categoria":"<una de Categorías personales>","monto":15000,"pago":"Efectivo","descripcion":""}
   · Usó plata del negocio para algo personal: {"tipo":"usar","categoria":"<Categorías personales>","monto":27000,"pago":"Transferencia","devuelto":"Toda" | "Parte" | "Todavia" | "No","parte":20000,"pagoDev":"Efectivo" o "Transferencia","descripcion":""}
   · Devolvió plata al negocio: {"tipo":"devolver","monto":7000,"pagoDev":"Efectivo" o "Transferencia"}
@@ -4095,12 +4105,12 @@ Inicio: arriba el saludo y el círculo con las iniciales (abre el Perfil). Si se
   · **💱 Cambié plata**: ¿Cambiaste junto con otro negocio? (**No, solo yo** / **Sí, con otro negocio**). Solo: ¿Cuánto transferiste? → ¿Cuánto efectivo te dieron? (la app calcula sola la comisión y el %; ya no hace falta saber el %). Si le dieron todo, pregunta si pagó una comisión aparte con billetes y cuánto. Con otro negocio: con cuál, cuánto transfirió cada uno, cuánto efectivo les dieron en total y ¿Quién paga la comisión? (**Según lo que transfirió cada uno**, **La pago yo**, **La paga <el otro>** o **La reparto a mano**). Después nota opcional → resumen → **Guardar**. En el resumen dice "Lugar: Bermejo"; si fue en otro lugar, se elige **¿Fue en otro lugar?**.
   · **🛒 Compré mercadería**: producto, unidades, cuánto pagó en total, cómo pagó (**Efectivo**, **Transferencia** o **Una parte y una parte**: pregunta cuánto en efectivo y el resto es transferencia) y si le cobraron un recargo por transferir (en pesos).
   · **🚌 Gastos del viaje**: qué pagó (pasaje, pasero, chalana, comida…), cuánto, cómo.
-  · **🧾 Otro gasto del negocio**: gastos del negocio fuera de viajes (envíos, contadora, monotributo, publicidad…): categoría, cuánto, cómo, detalle opcional. Sin viaje.
+  · **🧾 Otro gasto del negocio**: gastos del negocio fuera de viajes (envíos, contadora, monotributo, facturación de MercadoLibre…): categoría, cuánto, cómo, detalle opcional. Sin viaje.
   · **🤝 Le presté a otro negocio**: a qué negocio de la familia, cuánto, cómo (en efectivo o por transferencia), nota opcional. El otro negocio lo ve solo en su cuenta. Para devolver un préstamo, el que debe toca **Devolver** en la tarjeta "🤝 Le debés a…" del Inicio: cuánto (ya aparece lo que debe) y cómo.
 - 🏠 Gastos personales:
   · **👛 Gasté con mi plata**: gasto personal pagado con su propia plata.
   · **↩️ Usé plata del negocio**: para qué, cuánto, cómo pagó, ¿ya la devolviste? (Sí, toda / Una parte / Todavía no / No la voy a devolver). Si ya devolvió, pregunta cómo: en efectivo o por transferencia.
-  · **💵 Devolví plata al negocio**: cuánto (ya aparece todo lo que se debe) y cómo: **En efectivo** o **Por transferencia**.
+  · **💵 Devolví plata al negocio**: cuánto (ya aparece todo lo que se debe) y cómo: **En efectivo** o **Por transferencia** Si fue otro día, en el resumen final está **¿Fue otro día?**.
 - En cada pantalla: **Siguiente**, **Atrás** arriba a la izquierda y **✕** para salir. Al final, un resumen "¿Está todo bien?" y **Guardar**.
 - **Ver lo que cargué**: la lista; tocando uno se ve el detalle y se puede **corregir** o **borrar**.
 
@@ -4113,7 +4123,7 @@ Barra de abajo: **Inicio**, **Personal**, **+** (en el medio), **Negocio**, **Pe
   · **Cambio compartido**: prendé **Compartido con otros negocios**, poné cuánto transfirió cada negocio (**+ Sumar otro negocio**), "¿Cuánto efectivo les dieron en total?" y "¿Quién paga la comisión?": **Según lo transferido** (cada uno según lo que puso), **Uno solo** (se elige cuál) o **A mano** (se escribe cuánto paga cada uno; tiene que sumar la comisión). Abajo muestra "Así queda cada negocio". Al guardar, cada negocio ve su cambio en su cuenta sin cargar nada.
   · **Préstamo a otro negocio**: a qué negocio de la familia, fecha, cuánto, cómo se lo diste (**Efectivo** / **Transferencia**) y nota. No es gasto. El que presta ve "🤝 <negocio> te debe" y el que recibe "🤝 Le debés a <negocio>" con **Devolver** (todo o una parte, en efectivo o por transferencia). Cuando llega a $ 0 la tarjeta desaparece.
   · Gasto personal: de dónde salió la plata (**Negocio** o **Personal**), categoría, fecha (Hoy, Ayer o calendario), monto, detalle opcional, efectivo o transferencia. Si la plata es del negocio, **Lo voy a devolver** deja anotada la deuda.
-  · Devolución: cuánto, cómo (**En efectivo** / **Transferencia**) y nota opcional.
+  · Devolución: fecha (Hoy, Ayer o calendario; si la devolvió otro día, elegir esa fecha), cuánto, cómo (**En efectivo** / **Transferencia**) y nota opcional.
 - **Negocio**: Mes / Semana / Día, cuatro tarjetas: **Recuperable**, **No reversible (viajes)**, **Gastos generales** y **Efectivo disponible** (elegirlo permite ajustarlo), y los movimientos. Se puede ver por viaje.
 - **Personal**: los gastos personales, mes por mes (elegí el mes para ver otro).
 - **Perfil**: datos de la cuenta, **Versión de la app**, **Subir y actualizar ahora**, **Modo simple**, **Descargar resumen** (Excel o **PDF**, por mes o por viaje), **Cuentas de la familia** (solo el admin), **Mostrar ayudante 🤖**, **Apariencia** (letra y modo claro u oscuro), **Cambiar mi patrón**, **Cerrar sesión**.
@@ -4131,7 +4141,7 @@ CONCEPTOS
 - **Plata del negocio usada para algo personal**: se carga con **Usé plata del negocio**. Si se va a devolver, queda "Le debés al negocio". Al devolver, baja la deuda: **en efectivo** suma al efectivo del negocio; **por transferencia** vuelve a Mercado Pago y el efectivo no cambia.
 - Si alguien quiere devolver y la app dice que no tiene nada anotado, es porque la plata usada no se cargó con **Usé plata del negocio** (o ya devolvió todo). La app ofrece **Cargarlo ahora**.
 - **Excel y PDF**: se descargan desde Perfil (modo completo), por mes o por viaje, y quedan en las Descargas del celular. El Excel viene prolijo: títulos con color, montos con $ y puntos de miles, fechas 31/10/2026, fila de TOTAL en cada hoja y títulos fijos al bajar. Hojas: Resumen, Inversiones (con En efectivo / Por transferencia), No reversibles, Gastos generales, Cambios (con "Compartido con"), Personal, Devoluciones y Préstamos. El PDF trae totales, comparación con el mes anterior, categorías y movimientos.
-- **Gastos generales**: gastos del negocio que no son de un viaje (Mercado Envíos FULL, correo y envíos, publicidad, contadora, monotributo / IIBB, sueldo, insumos de embalaje, otros). No reversible (viajes) son solo los gastos de los viajes.
+- **Gastos generales**: gastos del negocio que no son de un viaje (Mercado Envíos FULL, correo y envíos, Facturación MercadoLibre, contadora, monotributo / IIBB, sueldo, insumos de embalaje, otros). **Facturación MercadoLibre** es el "Pago de factura" mensual de MercadoLibre que figura en Mercado Pago (incluye publicidad, Mi página, percepciones y otros cargos que no se descuentan de cada venta). Antes se llamaba "Publicidad". No reversible (viajes) son solo los gastos de los viajes.
 - **Ojito** (arriba, al lado del saludo): oculta todos los montos como "$ •••••" y queda así hasta que se vuelva a tocar. Mientras se carga algo, los montos se ven.
 - **Lo de siempre**: al cargar algo que ya se cargó antes, abajo del monto aparecen los últimos montos usados para eso; un toque y queda puesto.
 - **Accesos directos**: dejando apretado el ícono de la app en el celular aparecen Cambié plata, Compré mercadería, Gastos del viaje y Gasté con mi plata (si la app está instalada en la pantalla de inicio).
@@ -4348,7 +4358,7 @@ function validarCarga(c) {
     if (!q) err.push('Falta qué pagaste.');
     if (l) d.que = l; else { d.que = 'Otra cosa'; d.otro = q.slice(0, 120); }
   } else if (tipo === 'general') {
-    d.categoria = enLista(c.categoria, S.listas['Categorías gastos generales'] || LISTAS_BASE['Categorías gastos generales']);
+    d.categoria = enLista(/^(publicidad|factura|facturaci[oó]n)/i.test(String(c.categoria || '').trim()) ? CAT_FACT : c.categoria, S.listas['Categorías gastos generales'] || LISTAS_BASE['Categorías gastos generales']);
     if (!d.categoria) err.push('Elegí la categoría con Corregir.');
     d.descripcion = String(c.descripcion || '').trim().slice(0, 120);
   } else if (tipo === 'personal' || tipo === 'usar') {
