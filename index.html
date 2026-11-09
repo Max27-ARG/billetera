@@ -304,6 +304,39 @@ html.ahorro *,html.ahorro *::before,html.ahorro *::after{animation:none!importan
 .pin-teclas{display:grid;grid-template-columns:repeat(3,76px);gap:14px}
 .pin-teclas button{width:76px;height:76px;border-radius:50%;border:0;background:var(--card2);color:var(--ink);font:inherit;font-size:30px;font-weight:800;cursor:pointer}
 .pin-teclas button:active{background:var(--card3)}
+/* 2.0.1 · Ayudante con cuerpo completo (un solo cuerpo: brazos y piernas se mueven desde sus articulaciones) */
+.cam{position:fixed;left:0;top:0;z-index:26;pointer-events:none;will-change:transform;transition:opacity .25s}
+.cam[hidden]{display:none}
+.cam .cam-sombra{position:absolute;left:14%;right:14%;bottom:-5px;height:10px;border-radius:50%;background:rgba(20,10,50,.28)}
+html.claro .cam .cam-sombra{background:rgba(60,30,140,.2)}
+.cam svg{display:block;overflow:visible}
+.cam.voltea svg{transform:scaleX(-1)}
+.cam .pie1,.cam .pie2{transform-box:fill-box;transform-origin:50% 0}
+.cam.camina .cam-cuerpo{animation:camBob .22s ease-in-out infinite alternate}
+.cam.camina .pie1{animation:camPierna .22s ease-in-out infinite alternate}
+.cam.camina .pie2{animation:camPierna .22s ease-in-out infinite alternate-reverse}
+.cam .brazoI{transition:transform .45s ease}
+.cam.senala .brazoI{transform:rotate(var(--brazoS))}
+.cam.senala .dedo{animation:camDedo .5s ease-in-out .45s infinite alternate}
+.cam .av-flota{animation:none!important}
+@keyframes camBob{from{transform:translateY(0)}to{transform:translateY(-6px)}}
+@keyframes camPierna{from{transform:rotate(-14deg)}to{transform:rotate(14deg)}}
+@keyframes camDedo{from{transform:rotate(0deg)}to{transform:rotate(-7deg)}}
+#guia.con-cam .guia-cara{display:none}
+/* 2.0.1 · Apariencia: ejemplo en vivo y "¿Salir sin guardar?" */
+.ap-prev{position:relative;border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:10px;background:#0E0B1A;color:#F4F1FF;border:1px solid var(--borde)}
+.ap-prev.prev-claro{background:#F5F1FF;color:#1F1739}
+.ap-prev small{font-size:.8em;font-weight:700;opacity:.75}
+.ap-prev p{margin:0;font-weight:600;padding-right:52px}
+.ap-hero{border-radius:14px;padding:12px 14px;color:#fff;display:flex;flex-direction:column;gap:2px}
+.ap-hero span{font-size:.85em;font-weight:700}.ap-hero b{font-size:1.6em;font-weight:900}
+.ap-prev .ap-prev-av{position:absolute;right:12px;bottom:10px}
+.segm2x2{display:grid;grid-template-columns:1fr 1fr}
+.segm2x2 button{min-height:46px}
+.ap-salir{position:fixed;inset:0;z-index:400;background:var(--velo);display:flex;align-items:center;justify-content:center;padding:20px}
+.ap-salir-in{background:var(--card);color:var(--ink);border-radius:22px;padding:20px;max-width:360px;width:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:12px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.ap-salir-in b{font-size:20px;font-weight:800}.ap-salir-in p{margin:0;color:var(--soft);font-weight:600}
+.ap-salir-fila{display:flex;gap:10px}.ap-salir-fila .btn{flex:1;padding-left:8px;padding-right:8px}
 /* 2.0.0 · Ayudante (avatares, gestos y globitos) */
 .av{display:inline-grid;place-items:center;position:relative;flex:none;line-height:0}
 .av svg{width:100%;height:100%;overflow:visible}
@@ -322,8 +355,6 @@ html.ahorro *,html.ahorro *::before,html.ahorro *::after{animation:none!importan
 @keyframes avFlota{50%{transform:translateY(-3px)}}
 @keyframes avLuz{50%{opacity:.35}}
 @keyframes avMon{0%,70%,100%{transform:rotateY(0)}85%{transform:rotateY(180deg)}}
-.av[data-pose]::after{position:absolute;right:-8px;top:-10px;font-size:15px;line-height:1;animation:avBadge .4s cubic-bezier(.2,1.4,.4,1)}
-.av[data-pose=saluda]::after{content:'👋'}.av[data-pose=senala]::after{content:'👉'}.av[data-pose=piensa]::after{content:'💭'}.av[data-pose=festeja]::after{content:'🎉'}.av[data-pose=pulgar]::after{content:'👍'}
 .av[data-pose=saluda] svg{animation:avSaluda 1.1s ease-in-out 2}
 .av[data-pose=senala] svg{animation:avSenala 1.1s ease-in-out infinite}
 .av[data-pose=piensa] svg{animation:avPiensa 2s ease-in-out infinite}
@@ -352,13 +383,20 @@ html.ahorro *,html.ahorro *::before,html.ahorro *::after{animation:none!importan
 .ia-cara.claro-av{background:#F4EEFF;padding:1px}
 .ia-cab-av .av{width:20px;height:20px;color:#fff}
 .ia-cab-av.claro-av{background:#F4EEFF!important}.ia-cab-av.claro-av .av{width:30px;height:30px}
-.s-pregunta{display:flex;flex-direction:column;gap:10px}
-.s-chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -18px;padding:0 18px}
-.s-chips::-webkit-scrollbar{display:none}
-.s-chips button{flex:none;border:1px solid var(--borde);background:var(--card);color:var(--ink);border-radius:999px;padding:11px 15px;font:inherit;font-size:15px;font-weight:700;cursor:pointer}
-.s-barra{display:flex;align-items:center;gap:12px;width:100%;min-height:70px;border:2px solid var(--violet2);background:var(--card);color:var(--ink);border-radius:22px;padding:10px 16px;font:inherit;font-size:20px;font-weight:800;text-align:left;cursor:pointer}
-.s-barra > span:not(.av){flex:1}
-.s-barra svg{color:var(--lilac)}
+.s-pregunta{display:flex;flex-direction:column;gap:12px;margin-top:auto}
+/* 2.0.1: las preguntas, una arriba de la otra (la más usada abajo), cada una unida con una línea a la barra */
+.s-chips{position:relative;display:flex;flex-direction:column-reverse;align-items:flex-start;gap:9px;padding-left:40px}
+.s-chips::before{content:'';position:absolute;left:17px;top:22px;bottom:-14px;width:2px;border-radius:2px;background:var(--violet2);opacity:.75}
+.s-chips::after{content:'';position:absolute;left:13px;bottom:-19px;width:10px;height:10px;border-radius:50%;background:var(--violet)}
+.s-q{position:relative;display:flex;max-width:100%}
+.s-q::before{content:'';position:absolute;left:-23px;top:50%;width:23px;height:2px;margin-top:-1px;background:var(--violet2);opacity:.75}
+.s-q::after{content:'';position:absolute;left:-27px;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:var(--violet)}
+.s-chips button{flex:none;max-width:100%;border:1.5px solid var(--borde);background:var(--card);color:var(--ink);border-radius:999px;padding:11px 15px;font:inherit;font-size:15px;font-weight:700;text-align:left;cursor:pointer}
+.s-barra{display:flex;align-items:center;gap:12px;width:calc(100% - 62px);min-height:60px;box-sizing:border-box;border:2px solid var(--violet2);background:var(--card);color:var(--ink);border-radius:20px;padding:8px 14px 8px 18px;font:inherit;font-size:20px;font-weight:800;text-align:left;cursor:pointer}
+.s-barra > span{flex:1}
+.s-barra svg{color:var(--lilac);flex:none}
+.vista:has(> .s-pregunta){min-height:100%;box-sizing:border-box}
+body.simple .vista:has(> .s-pregunta){padding-bottom:calc(16px + var(--safe-b))}
 .s-av{width:46px;height:46px;border-radius:50%;background:var(--grad);color:#fff;padding:8px;box-sizing:border-box}
 .s-av.claro-av{background:#F4EEFF;padding:2px}
 .ap-avs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -379,17 +417,14 @@ html.ahorro *,html.ahorro *::before,html.ahorro *::after{animation:none!importan
 .deu-f.tedeben{background:rgba(63,214,198,.12);border-color:rgba(63,214,198,.4)}
 .deu-f.tedeben small{color:var(--tealink)}
 html.claro .deu-f button{background:#C46A00;color:#fff}
-.cabecera{position:sticky;top:calc(-20px - var(--safe-t));z-index:6;margin:calc(-20px - var(--safe-t)) -18px 0;padding:calc(20px + var(--safe-t)) 18px 8px;background:var(--bg);transition:padding .3s}
-.cabecera.compacta{padding-top:calc(28px + var(--safe-t));padding-bottom:10px;box-shadow:0 8px 18px -12px rgba(0,0,0,.5)}
-.cabecera .avatar,.cabecera .saludo{transition:max-width .35s ease,opacity .25s ease,margin .35s ease}
-.cabecera .avatar{max-width:46px}
-.cabecera .saludo{max-width:400px}
-.cabecera.compacta .avatar,.cabecera.compacta .saludo{max-width:0;opacity:0;overflow:hidden;margin-right:-12px}
-.lupa-ini{flex:0 1 auto;height:44px;min-width:44px;border-radius:14px;border:1px solid var(--borde);background:var(--card);color:var(--ink);display:flex;align-items:center;gap:8px;padding:0 11px;font:inherit;font-weight:700;font-size:15px;overflow:hidden;white-space:nowrap;cursor:pointer;transition:flex-grow .35s ease}
+.cabecera{position:sticky;top:calc(-20px - var(--safe-t));z-index:6;margin:calc(-20px - var(--safe-t)) -18px 0;padding:calc(20px + var(--safe-t)) 18px 8px;background:var(--bg);--pb:0}
+.cabecera.compacta{box-shadow:0 8px 18px -12px rgba(0,0,0,.5)}
+/* 2.0.1: --pb va de 0 a 1 mientras bajás: la lupa se estira de a poco, siguiendo al dedo */
+.cabecera .avatar{max-width:calc((1 - var(--pb)) * 46px);opacity:calc(1 - var(--pb) * 1.6);margin-right:calc(var(--pb) * -12px);overflow:hidden}
+.cabecera .saludo{max-width:calc((1 - var(--pb)) * 400px);opacity:calc(1 - var(--pb) * 1.6);margin-right:calc(var(--pb) * -12px);overflow:hidden}
+.lupa-ini{flex:var(--pb) 1 auto;height:44px;min-width:44px;border-radius:14px;border:1px solid var(--borde);background:var(--card);color:var(--ink);display:flex;align-items:center;gap:8px;padding:0 11px;font:inherit;font-weight:700;font-size:15px;overflow:hidden;white-space:nowrap;cursor:pointer}
 .lupa-ini svg{flex:none;color:var(--lilac)}
-.lupa-ini span{max-width:0;opacity:0;transition:max-width .35s ease,opacity .25s ease;color:var(--muted)}
-.cabecera.compacta .lupa-ini{flex-grow:1}
-.cabecera.compacta .lupa-ini span{max-width:240px;opacity:1}
+.lupa-ini span{max-width:calc(var(--pb) * 240px);opacity:calc(var(--pb) * 2 - 1);color:var(--muted)}
 .bus-cab{display:flex;align-items:center;gap:10px}
 .bus-bar{flex:1;min-width:0;display:flex;align-items:center;gap:10px;height:50px;border-radius:16px;border:2px solid var(--violet2);background:var(--campo);padding:0 14px;color:var(--lilac)}
 .bus-bar input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font:inherit;font-size:17px;font-weight:700;outline:none}
@@ -812,7 +847,7 @@ html.claro .deuda.tedeben small{color:var(--tealink)}
 
 /* ================= Actualización 8: campo de plata (estilo Ualá) ================= */
 .plata{position:relative}
-.plata-in{position:absolute;inset:0;width:100%;height:100%;opacity:0;border:0;font-size:16px;caret-color:transparent;cursor:text}
+.plata-in{position:absolute;inset:0;width:100%;height:100%;opacity:0;border:0;font-size:16px;caret-color:transparent;cursor:text;-webkit-touch-callout:none;touch-action:pan-y}
 .plata-ver{display:flex;align-items:center;min-height:50px;border:1px solid var(--borde);background:var(--campo);border-radius:14px;padding:10px 12px;font-size:21px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden}
 .plata-ver sup{font-size:.55em;position:relative;top:-.15em;vertical-align:super;margin-left:1px;font-weight:800}
 .pv{display:inline-flex;align-items:flex-start}
@@ -938,7 +973,7 @@ html.claro .deuda.tedeben small{color:var(--tealink)}
 const API = window.BILLETERA_API || '';
 // Fecha y hora de esta versión (se muestra una vez cuando alguien abre la app actualizada)
 // Versión: MAYOR.MENOR.ARREGLO (arreglo → sube el último; algo nuevo → el del medio; cambio enorme → el primero)
-const APP_SERIE = '2.0.0', APP_FECHA = '2026-11-09';
+const APP_SERIE = '2.0.1', APP_FECHA = '2026-11-09';
 const APP_VERSION = APP_SERIE;
 const COLORES = ['#9B6BFF', '#F05BB5', '#3FD6C6', '#FFB547', '#6FA8FF', '#FF8A5B', '#B5E36B', '#D7C8FF'];
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
@@ -1081,17 +1116,44 @@ function ponerPct(el, v) { if (!el) return; el.value = v; if (v) el.dataset.auto
 const valorDe = el => el.classList && el.classList.contains('plata-in') ? deCentavos(el.value) : el.value;
 document.addEventListener('focusin', e => { if (e.target.classList && e.target.classList.contains('plata-in')) { const t = e.target, L = t.value.length; setTimeout(() => { if (t.dataset.toque) return; try { t.setSelectionRange(L, L); } catch (x) {} pintarPlata(t, null); }, 0); } });
 document.addEventListener('focusout', e => { if (e.target.classList && e.target.classList.contains('plata-in')) pintarPlata(e.target, null); });
-// Tocar sobre el número: el cursor va al lugar tocado
-document.addEventListener('click', e => {
-  const t = e.target; if (!t.classList || !t.classList.contains('plata-in')) return;
+// Tocar sobre el número: el cursor va al lugar tocado (mitad derecha de un número = después de ese número)
+function posPlata(t, x) {
   const ds = [...t.parentNode.querySelectorAll('.plata-ver i[data-i]')];
-  if (!ds.length) return;
   let k = t.value.length, mejor = Infinity;
   ds.forEach(sp => { const r = sp.getBoundingClientRect(), i = Number(sp.dataset.i);
-    [[r.left, i], [r.right, i + 1]].forEach(([x, pos]) => { const dd = Math.abs(e.clientX - x); if (dd < mejor) { mejor = dd; k = pos; } }); });
+    [[r.left, i], [r.right, i + 1]].forEach(([xx, pos]) => { const dd = Math.abs(x - xx); if (dd < mejor) { mejor = dd; k = pos; } }); });
+  return ds.length ? k : null;
+}
+document.addEventListener('click', e => {
+  const t = e.target; if (!t.classList || !t.classList.contains('plata-in')) return;
+  const k = posPlata(t, e.clientX); if (k == null) return;
   t.dataset.toque = '1';
   setTimeout(() => { delete t.dataset.toque; try { t.setSelectionRange(k, k); } catch (x) {} pintarPlata(t, k); }, 0);
 });
+// 2.0.1 · Mover la barrita con el dedo: mantenés apoyado y deslizás de costado; la barrita te sigue.
+// (El número de verdad está escondido detrás del dibujo: por eso la app mueve la barrita ella misma.)
+let ARR = null;
+document.addEventListener('touchstart', e => {
+  const t = e.target; if (!t.classList || !t.classList.contains('plata-in') || e.touches.length !== 1) { ARR = null; return; }
+  ARR = { t, x: e.touches[0].clientX, y: e.touches[0].clientY, mueve: false };
+}, { passive: true });
+document.addEventListener('touchmove', e => {
+  if (!ARR || e.touches.length !== 1) return;
+  const x = e.touches[0].clientX, y = e.touches[0].clientY;
+  if (!ARR.mueve) {
+    if (Math.abs(x - ARR.x) < 8 || Math.abs(x - ARR.x) < Math.abs(y - ARR.y)) return;
+    ARR.mueve = true; ARR.t.dataset.toque = '1';
+    if (document.activeElement !== ARR.t) ARR.t.focus();
+  }
+  e.preventDefault();
+  const k = posPlata(ARR.t, x); if (k == null) return;
+  try { ARR.t.setSelectionRange(k, k); } catch (er) {}
+  pintarPlata(ARR.t, k);
+}, { passive: false });
+document.addEventListener('touchend', e => {
+  if (ARR && ARR.mueve) { e.preventDefault(); const t = ARR.t; setTimeout(() => { delete t.dataset.toque; }, 60); }
+  ARR = null;
+}, { passive: false });
 document.addEventListener('keyup', e => { const t = e.target; if (t.classList && t.classList.contains('plata-in') && /Arrow|Home|End/.test(e.key)) pintarPlata(t, t.selectionStart); });
 document.addEventListener('visibilitychange', () => {
   const a = document.activeElement, esPlata = a && a.classList && a.classList.contains('plata-in');
@@ -1321,8 +1383,13 @@ async function sincronizar() {
     const modoAntes = modoActual();
     const prefsPend = S.yo && S.yo.usuario ? LS.get(kPrefsPend(), {}) : {};
     const r = await api({ accion: 'sync', token: S.token, ops: enviadas, modo: modoPend || undefined, prefs: Object.keys(prefsPend).length ? prefsPend : undefined });
-    if (r.yo && r.yo.prefs && Object.keys(prefsPend).length) { LS.set(kPrefsPend(), {}); LS.set('bd_prefs_' + r.yo.usuario, r.yo.prefs); }
-    else if (r.yo && r.yo.prefs) LS.set('bd_prefs_' + r.yo.usuario, r.yo.prefs);
+    if (r.yo && r.yo.prefs) {
+      // Solo se dan por guardadas las preferencias que se mandaron; si mientras tanto elegiste otra, queda pendiente y gana
+      const ahora = LS.get(kPrefsPend(), {});
+      Object.keys(prefsPend).forEach(k => { if (ahora[k] === prefsPend[k]) delete ahora[k]; });
+      LS.set(kPrefsPend(), ahora);
+      LS.set('bd_prefs_' + r.yo.usuario, Object.assign({}, r.yo.prefs, ahora));
+    }
     if (modoPend && r.yo && r.yo.modo === modoPend) LS.del(kModoPend()); // queda pendiente hasta que Google lo guarde
     if (r.yo && r.yo.modo) LS.set(kModo(), r.yo.modo);
     const procesadas = new Set((r.resultados || []).map(x => x.opId));
@@ -1463,6 +1530,7 @@ $('formCrear').addEventListener('submit', async e => {
 
 function cerrarSesionLocal(msg) {
   // Se borra la sesión y los datos guardados, pero NO los gastos sin subir.
+  AP = null; { const o = $('apSalir'); if (o) o.remove(); }
   if (S.yo) LS.del(kEstado());
   LS.del('bd_sesion');
   S.token = ''; S.personal = []; S.negocio = []; S.ajenos = []; S.cola = []; S.rech = [];
@@ -1637,6 +1705,7 @@ function render() {
   restaurarCarriles();
   animarGraficos();
   contarHero();
+  if (S.vista === 'inicio') lupaProgreso();
   if (S.vista === 'analisis') montarAnalisis();
   barras.forEach((c, i) => {
     const nueva = document.querySelector('#contenido ' + c);
@@ -2084,6 +2153,8 @@ function htmlUsuarios() {
 function abrirModal(html, clase) { $('modalIn').className = 'vidrio' + (clase ? ' ' + clase : ''); $('modalIn').innerHTML = html; if (!clase) { $('modal').style.height = ''; $('modal').style.top = ''; } if ($('modal').hidden) { $('modal').hidden = false; histRevisar(); } }
 function limpiarModal() { S.form = null; S.formGuardado = null; S.volverA = null; }
 function cerrarModal(desdeAtras) {
+  if (AP && !$('modal').hidden && $('apPrev') && apSucio()) { preguntarSalirAp(); if (desdeAtras) histRevisar(); return; }
+  AP = null;
   const estaba = !$('modal').hidden;
   $('modal').hidden = true; $('modalIn').innerHTML = ''; $('modalIn').className = 'vidrio'; $('modal').style.height = ''; $('modal').style.top = ''; limpiarModal();
   if (typeof IA !== 'undefined') IA.cargando = false;
@@ -2223,6 +2294,11 @@ function formNegocio(fila, tipo, neg, pedirIni) {
     compartido: false, parts: [], recTotal: '', pctComp: '', compModo: 'monto', reparto: 'prop', quienPaga: '' };
   if (fila && fila.tipo === 'Gasto general') Object.assign(S.form, separarCat(L_GEN, fila.categoria));
   if (fila && fila.tipo === 'Cambio') { const red = redondeoDeNota(S.form.nota); if (red) { S.form.redondeo = String(red.dado); S.form.nota = red.resto; S.form.verRedondeo = true; } }
+  if (fila && fila.tipo === 'Cambio' && !fila.grupo) {
+    const E = Number(fila.recibido) || Number(fila.monto) || 0, C = Number(fila.comision) || 0, B = fila.pago === 'Efectivo' ? C : fila.pago === 'Combinado' ? Number(fila.efeParte) || 0 : 0;
+    Object.assign(S.form, { recibidoTxt: E ? String(E) : '', comPesos: String(C), pctCambio: E > 0 ? fmtPctIn(r6(C / E * 100)) : '', comModo: 'monto', comBill: fila.pago === 'Combinado' ? String(B) : '' });
+    S.form.montoMan = r2(E + C - B) !== r2(Number(fila.monto) || 0);
+  }
   if (fila && fila.tipo === 'Cambio' && fila.grupo) {
     // Cambio compartido: se arma con las filas de todos los negocios (la del que se tocó, primero)
     const filas = grupoFilas(fila.grupo).filter(x => x.tipo === 'Cambio').sort((a, b) => (a.id === fila.id ? -1 : b.id === fila.id ? 1 : 0));
@@ -2311,13 +2387,16 @@ function pintarFormNegocio() {
         ${f.reparto === 'uno' ? `<div class="grid3">${f.parts.map(p => `<button type="button" class="chip" data-set="quienPaga" data-val="${esc(p.neg)}" aria-pressed="${(f.quienPaga || f.parts[0].neg) === p.neg}">${esc(p.neg)}</button>`).join('')}</div>` : ''}
         ${f.reparto === 'mano' ? f.parts.map((p, i) => `<div class="comp-fila"><span class="comp-neg">${esc(p.neg)}</span>${plataHTML('fMano' + i, p.mano, `data-mano="${i}" aria-label="Comisión que paga ${esc(p.neg)}"`)}<span class="comp-x vacio" aria-hidden="true"></span></div>`).join('') : ''}`;
     } else {
-      const efe = f.pagoComision === 'Efectivo', mix = f.pagoComision === 'Combinado';
-      medio = `<div class="campo"><label for="fMonto">Transferiste</label>${plataHTML('fMonto', f.monto, 'data-campo="monto"')}</div>
-      <div class="campo">¿Cómo pagaste la comisión?<div class="segm">${[['Efectivo', 'Con billetes', 'recibís todo'], ['Transferencia', 'Transferí de más', 'recibís menos'], ['Combinado', 'Una parte', 'con billetes']].map(([v, t, sub]) => `<button type="button" data-set="pagoComision" data-val="${v}" aria-pressed="${f.pagoComision === v}">${t}<small>${sub}</small></button>`).join('')}</div></div>
-      ${mix ? `<div class="campo"><label for="fRecib">¿Cuánto efectivo te dieron?</label>${plataHTML('fRecib', f.recibidoTxt, 'data-campo="recibidoTxt"')}</div>
-        <div class="campo"><label for="fComB">¿Cuánto de la comisión pagaste con billetes?</label>${plataHTML('fComB', f.comBill, 'data-campo="comBill"')}</div>`
-        : parHTML(paresDe(f)[0], f, efe ? '¿Cuánto pagaste de comisión?' : '¿Cuánto efectivo te dieron?', 'Comisión')}
-      ${redondeoHTML(f, efe ? num(f.monto) : num(f.recibidoTxt))}`;
+      const mix = f.pagoComision === 'Combinado';
+      if (!f.montoMan) { const K = cambioCompleto(f); f.monto = K.Tcalc > 0 ? String(K.Tcalc) : ''; }
+      medio = `<div class="campo"><label for="fRecib">¿Cuánto efectivo te dieron?</label>${plataHTML('fRecib', f.recibidoTxt, 'data-campo="recibidoTxt"')}</div>
+      ${parHTML(paresDe(f)[0], f, '¿Cuánto fue la comisión?', 'O en %')}
+      <div class="campo">¿Cómo pagaste la comisión?<div class="segm">${[['Transferencia', 'Transferí de más', 'recibís menos'], ['Efectivo', 'Con billetes', 'recibís todo'], ['Combinado', 'Una parte', 'con billetes']].map(([v, t, sub]) => `<button type="button" data-set="pagoComision" data-val="${v}" aria-pressed="${f.pagoComision === v}">${t}<small>${sub}</small></button>`).join('')}</div></div>
+      ${mix ? `<div class="campo"><label for="fComB">¿Cuánto de la comisión pagaste con billetes?</label>${plataHTML('fComB', f.comBill, 'data-campo="comBill"')}</div>` : ''}
+      <div class="campo"><label for="fMonto">Transferiste</label>${plataHTML('fMonto', f.monto, 'data-campo="monto"')}
+        <span class="ayuda" style="margin:0">Se calcula solo. Si transferiste otro monto, cambialo: la comisión no cambia y se ajusta lo que pagaste con billetes.</span>
+        <button type="button" class="link-mas" id="fMontoCalc" data-acc="montoCalc" ${f.montoMan ? '' : 'hidden'}>Usar lo que calculó la app</button></div>
+      ${redondeoHTML(f, num(f.recibidoTxt))}`;
     }
     cuerpo = `<p class="ayuda" style="margin:0">Cuando pasás plata por transferencia y te la dan en efectivo.</p>
       ${lugarSeg}
@@ -2341,10 +2420,7 @@ const fmtPctIn = n => (isFinite(n) && n >= 0) ? String(Math.round(n * 10000) / 1
 function paresDe(f) {
   if (!f || f.hoja !== 'negocio') return [];
   if (f.tipo === 'Cambio' && f.compartido) return [{ m: 'recTotal', p: 'pctComp', idM: 'fRecT', idP: 'fPctT', modo: 'compModo', vm: 'monto', vp: 'pct', base: () => repartoCambio(f).total, mDeP: (b, x) => efeDeTransf(b, x), pDeM: (b, x) => pctSobreEfe(b - x, x) }];
-  if (f.tipo === 'Cambio' && f.pagoComision === 'Combinado') return [];
-  if (f.tipo === 'Cambio') return f.pagoComision === 'Efectivo'
-    ? [{ m: 'comPesos', p: 'pctCambio', idM: 'fComP', idP: 'fPctC', modo: 'comModo', vm: 'monto', vp: 'pct', base: () => num(f.monto), mDeP: (b, x) => b * x / 100, pDeM: (b, x) => x / b * 100 }]
-    : [{ m: 'recibidoTxt', p: 'pctCambio', idM: 'fRecib', idP: 'fPctC', modo: 'comModo', vm: 'monto', vp: 'pct', base: () => num(f.monto), mDeP: (b, x) => efeDeTransf(b, x), pDeM: (b, x) => pctSobreEfe(b - x, x) }];
+  if (f.tipo === 'Cambio') return [{ m: 'comPesos', p: 'pctCambio', idM: 'fComP', idP: 'fPctC', modo: 'comModo', vm: 'monto', vp: 'pct', base: () => num(f.recibidoTxt), mDeP: (b, x) => b * x / 100, pDeM: (b, x) => x / b * 100 }];
   if (f.tipo === 'Inversión' && f.pago !== 'Efectivo') return [{ m: 'recargoPesos', p: 'pctRecargo', idM: 'fRecP', idP: 'fPct', modo: 'recModo', vm: 'pesos', vp: 'pct', base: () => transfInv(f), mDeP: (b, x) => b * x / 100, pDeM: (b, x) => x / b * 100 }];
   return [];
 }
@@ -2393,10 +2469,22 @@ function redondeoHTML(f, rec) {
 }
 function recCambioForm(f) {
   if (f.compartido) return repartoCambio(f).rec;
-  const m = num(f.monto) > 0 ? num(f.monto) : 0;
-  if (f.pagoComision === 'Efectivo') return m;
-  if (f.pagoComision === 'Combinado') return num(f.recibidoTxt) > 0 ? num(f.recibidoTxt) : 0;
-  return f.comModo === 'monto' ? (num(f.recibidoTxt) > 0 ? num(f.recibidoTxt) : 0) : efeDeTransf(m, num(f.pctCambio) || 0);
+  return cambioCompleto(f).E;
+}
+// 2.0.1 · Cambio en modo completo, igual que el simple: primero el efectivo, después la comisión y cómo la pagaste.
+// Lo transferido se calcula solo; si lo cambiás, la comisión queda igual y lo que la transferencia no cubrió se pagó con billetes.
+function cambioCompleto(f) {
+  const E = num(f.recibidoTxt) > 0 ? r2(num(f.recibidoTxt)) : 0, C = num(f.comPesos) > 0 ? r2(num(f.comPesos)) : 0;
+  const Bp = f.pagoComision === 'Efectivo' ? C : f.pagoComision === 'Combinado' ? Math.min(C, num(f.comBill) > 0 ? r2(num(f.comBill)) : 0) : 0;
+  const Tcalc = r2(E + C - Bp), man = !!f.montoMan && num(f.monto) > 0, T = man ? r2(num(f.monto)) : Tcalc;
+  const B = man ? r2(Math.max(0, C - Math.max(0, T - E))) : Bp;
+  return { E, C, B, T, Tcalc, man, com: r2(T - E + B) };
+}
+function autoTransf(f, campo) {
+  if (!f || f.hoja !== 'negocio' || f.tipo !== 'Cambio' || f.compartido) return;
+  if (campo === 'monto') { const K = cambioCompleto(Object.assign({}, f, { montoMan: false })); f.montoMan = lleno(f.monto) && r2(num(f.monto)) !== K.Tcalc; }
+  else if (!f.montoMan) { const K = cambioCompleto(f); f.monto = K.Tcalc > 0 ? String(K.Tcalc) : ''; ponerPlata($('fMonto'), f.monto); }
+  const l = $('fMontoCalc'); if (l) l.hidden = !f.montoMan;
 }
 function notaRedondeoForm(f) {
   if (!f.verRedondeo || !lleno(f.redondeo)) return '';
@@ -2422,14 +2510,10 @@ function calcForm(f) {
     return { c: `<div class="caja"><div><span>Total transferido</span><span>${fmt(R.total)}</span></div><div class="t"><span>Comisión total</span><b>${fmt(Math.max(0, R.com))}</b></div>${R.total > 0 && R.rec > 0 && R.com >= 0 ? `<div><span>Equivale a</span><span>${pct(r6(pctSobreEfe(R.com, R.rec)))}</span></div>` : ''}</div>`,
       b: `${notaRedondeoForm(f)}${R.err ? `<div class="efe-nota mal">${esc(R.err)}</div>` : ''}${R.rec > 0 ? `<div class="campo" style="margin-top:${R.err ? 12 : 0}px"><span>Así queda cada negocio</span>${R.parts.map(p => `<div class="caja"><div><b style="color:var(--ink)">${esc(p.neg)}</b></div><div><span>Comisión</span><span>${fmt(p.com)}</span></div><div class="t"><span>Efectivo que recibe</span><b>${fmt(p.rec)}</b></div></div>`).join('')}</div>` : ''}` };
   }
-  const m = num(f.monto) > 0 ? num(f.monto) : 0, pc = num(f.pctCambio), efe = f.pagoComision === 'Efectivo', mix = f.pagoComision === 'Combinado';
   // El % es sobre el efectivo que te dan (900.000 al 1,5% = 13.500)
-  let com, rec, bill = 0;
-  if (mix) { rec = num(f.recibidoTxt) > 0 ? num(f.recibidoTxt) : 0; bill = num(f.comBill) > 0 ? r2(num(f.comBill)) : 0; com = m > 0 && rec > 0 ? r2(m - rec + bill) : 0; }
-  else if (efe) { rec = m; com = f.comModo === 'monto' ? (num(f.comPesos) > 0 ? r2(num(f.comPesos)) : 0) : (m > 0 && pc >= 0 ? r2(m * pc / 100) : 0); bill = com; }
-  else { rec = f.comModo === 'monto' ? (num(f.recibidoTxt) > 0 ? num(f.recibidoTxt) : 0) : (m > 0 && pc >= 0 ? efeDeTransf(m, pc) : 0); com = m > 0 && rec > 0 ? r2(m - rec) : 0; }
-  return { b: `<div class="caja"><div><span>Comisión (cuenta como gasto)</span><span style="color:#FFB3D9;font-weight:800">-${fmt(com)}</span></div>${(f.comModo === 'monto' || mix) && rec > 0 && com >= 0 ? `<div><span>Equivale a</span><span>${pct(r6(pctSobreEfe(com, rec)))}</span></div>` : ''}${bill ? `<div><span>La pagás con billetes</span><span>${fmt(bill)}</span></div>` : ''}<div class="t"><span>Efectivo que recibís</span><b>${fmt(rec)}</b></div></div>
-      ${notaRedondeoForm(f)}${com < 0 ? `<div class="efe-nota mal" style="margin-top:13px">Te dieron más de lo que transferiste: revisá los números.</div>` : `<div class="efe-nota" style="margin-top:13px">Efectivo de ${esc(f.negocio)}: ${fmt(ef)} → <b>${fmt(r2(ef + m - com))}</b></div>`}` };
+  const K = cambioCompleto(f), alReves = K.T > 0 && K.E > 0 && K.T < K.E;
+  return { b: `<div class="caja"><div><span>Comisión (cuenta como gasto)</span><span style="color:#FFB3D9;font-weight:800">${alReves ? '—' : '-' + fmt(K.com)}</span></div>${K.E > 0 && K.com > 0 && !alReves ? `<div><span>Equivale a</span><span>${pct(r6(pctSobreEfe(K.com, K.E)))}</span></div>` : ''}${K.B ? `<div><span>La pagás con billetes</span><span>${fmt(K.B)}</span></div>` : ''}<div><span>Transferiste</span><span>${fmt(K.T)}</span></div><div class="t"><span>Efectivo que recibís</span><b>${fmt(K.E)}</b></div></div>
+      ${notaRedondeoForm(f)}${alReves ? `<div class="efe-nota mal" style="margin-top:13px">Transferiste menos que el efectivo que te dieron: revisá los números.</div>` : `<div class="efe-nota" style="margin-top:13px">Efectivo de ${esc(f.negocio)}: ${fmt(ef)} → <b>${fmt(r2(ef + K.E - K.B))}</b></div>`}` };
 }
 // Compra: lo pagado por transferencia y el recargo (en $ o en %)
 function transfInv(f) {
@@ -2502,34 +2586,15 @@ function guardarNegocio() {
       });
       return terminarGuardarNegocio(f, d, opsGrupo(g, filas, prev));
     }
-    d.monto = num(f.monto); d.pagoComision = f.pagoComision === 'Efectivo' || f.pagoComision === 'Combinado' ? f.pagoComision : 'Transferencia';
-    if (!(d.monto > 0)) return errorForm('Poné cuánto transferiste.');
-    if (d.pagoComision === 'Combinado') {
-      // Una parte de la comisión se transfirió de más y otra se pagó con billetes
-      const r = num(f.recibidoTxt), b = num(f.comBill || '0');
-      if (!(r > 0)) return errorForm('Poné cuánto efectivo te dieron.');
-      if (r > d.monto) return errorForm('Te dieron más de lo que transferiste: revisá los números.');
-      if (!(b >= 0)) return errorForm('Poné cuánto de la comisión pagaste con billetes.');
-      d.recibido = r; d.comBilletes = r2(b);
-      if (!(b > 0)) { d.pagoComision = 'Transferencia'; delete d.comBilletes; }
-    } else if (f.comModo === 'monto') {
-      if (d.pagoComision === 'Efectivo') {
-        const c = num(f.comPesos || '0');
-        if (!(c >= 0)) return errorForm('Poné cuánto pagaste de comisión (si no pagaste nada, 0).');
-        if (c > d.monto) return errorForm('La comisión no puede ser más de lo que transferiste.');
-        d.comisionPesos = c;
-      } else {
-        const r = num(f.recibidoTxt);
-        if (!(r > 0)) return errorForm('Poné cuánto efectivo te dieron.');
-        if (r > d.monto) return errorForm('Te dieron más de lo que transferiste: revisá los números.');
-        d.recibido = r;
-      }
-    } else {
-      d.pctCambio = num(f.pctCambio || '0');
-      if (!(d.pctCambio >= 0 && d.pctCambio <= 100)) return errorForm('Revisá el % del cambio.');
-      // El % es sobre el efectivo: se manda lo que te dieron, ya calculado
-      if (d.pagoComision !== 'Efectivo') { d.recibido = efeDeTransf(d.monto, d.pctCambio); delete d.pctCambio; }
-    }
+    const K = cambioCompleto(f);
+    if (!(K.E > 0)) return errorForm('Poné cuánto efectivo te dieron.');
+    if (f.pagoComision === 'Combinado' && num(f.comBill) > K.C) return errorForm('Lo que pagaste con billetes no puede ser más que la comisión.');
+    if (!(K.T > 0)) return errorForm('Poné cuánto transferiste.');
+    if (K.T < K.E) return errorForm('Te dieron más de lo que transferiste: revisá los números.');
+    d.monto = K.T;
+    if (K.B > 0 && !(K.T > K.E)) Object.assign(d, { pagoComision: 'Efectivo', comisionPesos: K.B }); // toda la comisión con billetes
+    else if (K.B > 0) Object.assign(d, { pagoComision: 'Combinado', recibido: K.E, comBilletes: K.B }); // una parte con billetes
+    else Object.assign(d, { pagoComision: 'Transferencia', recibido: K.E });
     // Si antes era compartido y ahora no: se borran las filas de los otros negocios
     if (f.grupo) return terminarGuardarNegocio(f, d, opsGrupo('', [{ id: f.id, datos: d }], grupoFilas(f.grupo)));
   }
@@ -3010,15 +3075,19 @@ document.addEventListener('click', async ev => {
     iaPregunta: () => { const q = t.dataset.txt; abrirIA(); setTimeout(() => enviarIA(q), 80); },
     globoOk: () => cerrarGlobito(),
     globoIA: () => { cerrarGlobito(); abrirIA(); },
-    apAvatar: () => { setPref('avatar', t.dataset.av); pintarRobot(); abrirApariencia(); poseRobot('saluda'); avisar('Ahora te ayuda ' + AVATARES[avId()].titulo); },
+    apAvatar: () => { AP.d.avatar = t.dataset.av; abrirApariencia(); },
     iaGuia: () => irAccionIA(t.dataset.g),
     apariencia: abrirApariencia,
     ocultarMontos: () => { OCULTO = !OCULTO; LS.set('bd_ocultar', OCULTO); render(); avisar(OCULTO ? 'Montos ocultos' : 'Montos visibles'); },
     verPDF: () => exportarPDF(t),
-    apFuente: () => { LS.set('bd_fuente', t.dataset.f); aplicarApariencia(); t.parentNode.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b === t)); },
-    apTema: () => { LS.set('bd_tema', t.dataset.t); aplicarApariencia(); abrirApariencia(); },
-    apColor: () => { setPref('color', t.dataset.col); aplicarApariencia(); abrirApariencia(); },
-    apAhorro: () => { LS.set('bd_ahorro_modo', t.dataset.v); aplicarApariencia(); abrirApariencia(); },
+    apFuente: () => { AP.d.fuente = t.dataset.f; abrirApariencia(); },
+    apTema: () => { AP.d.tema = t.dataset.t; abrirApariencia(); },
+    apColor: () => { AP.d.color = t.dataset.col; abrirApariencia(); },
+    apAhorro: () => { AP.d.ahorro = t.dataset.v; abrirApariencia(); },
+    apGuardar: guardarApariencia,
+    montoCalc: () => { if (!S.form) return; S.form.montoMan = false; autoTransf(S.form, ''); recalcular(); },
+    apSeguir: () => { const o = $('apSalir'); if (o) o.remove(); },
+    apDescartar: () => { const o = $('apSalir'); if (o) o.remove(); AP = null; cerrarModal(); },
     dispositivos: verDispositivos,
     cerrarDisp: async () => { t.disabled = true; try { const r = await api({ accion: 'sesiones', token: S.token, cerrar: t.dataset.id }); pintarDispositivos(r.sesiones || []); avisar('✓ Sesión cerrada en ese dispositivo'); } catch (e) { t.disabled = false; avisar(e.red ? 'Hace falta internet' : e.message); } },
     desbloqueo: () => elegirDesbloqueo(t.dataset.m),
@@ -3045,10 +3114,18 @@ function verAjuste(fila) {
     <p class="ayuda" style="margin:0">Un ajuste no se edita. Si estuvo mal, borralo y cargá uno nuevo desde "Efectivo disponible".</p>
     ${botonBorrar()}`);
 }
+// 2.0.1 · Buscador: queda completo justo cuando la fila "Gastado en … / Todos los negocios" pasa por debajo
+function lupaProgreso() {
+  const c = document.querySelector('#contenido .cabecera'), fila = document.querySelector('#contenido .hero .fila'), cont = $('contenido');
+  if (!c || !fila || !cont) return;
+  const y = cont.scrollTop, falta = fila.getBoundingClientRect().bottom - c.getBoundingClientRect().bottom;
+  const p = y <= 0 ? 0 : Math.max(0, Math.min(1, y / Math.max(1, y + falta)));
+  c.style.setProperty('--pb', p.toFixed(3)); c.classList.toggle('compacta', p >= 1);
+}
 // La tira del día por día: el resumen de los 7 días cambia mientras deslizás
 document.addEventListener('scroll', ev => {
-  if (ev.target && ev.target.id === 'carrilDias') return ventanaDias();
-  if (ev.target && ev.target.id === 'contenido' && S.vista === 'inicio') { const c = document.querySelector('#contenido .cabecera'); if (c) c.classList.toggle('compacta', ev.target.scrollTop > 30); }
+  if (ev.target && ev.target.id === 'carrilDias') return alternarComp.anim ? null : ventanaDias();
+  if (ev.target && ev.target.id === 'contenido' && S.vista === 'inicio') lupaProgreso();
 }, true);
 // Análisis (pantalla nueva, solo modo completo)
 function irAnalisis() { if (esSimple()) return; S.anaMes = mesIni(); S.anaSel = null; irA('analisis'); }
@@ -3168,10 +3245,10 @@ function montarAnalisis() {
   el('line', { x1: -50, x2: 50, y1: 6, y2: 6, 'stroke-width': 2, class: 'c-linea' }, gC);
   grupo('neg', 34, 'Negocio', A.totNeg);
   const selG = () => st.seg ? byId(st.seg).g : st.grupo;
-  const objetivo = d => { const g = selG(); if (st.seg === d.id) return { r1: 110, r2: 158 }; if (g && d.g !== g) return { r1: 120, r2: 144 }; if (g) return { r1: 113, r2: st.seg ? 150 : 153 }; return { r1: 116, r2: 148 }; };
+  const objetivo = d => { const g = selG(); if (st.seg === d.id) return { r1: 113, r2: 157 }; if (g && d.g !== g) return { r1: 120, r2: 144 }; if (g) return { r1: 113, r2: st.seg ? 150 : 153 }; return { r1: 116, r2: 148 }; };
   const vistaObjetivo = () => {
     const d = st.seg && byId(st.seg); if (!d) return { x: CX, y: CY, s: 1 };
-    const a = (d.subList && st.sub != null) ? d.subList[st.sub].mid : d.mid, sin = Math.sin(a * D), cos = Math.cos(a * D);
+    const a = (d.subList && st.sub != null) ? (d.afuera ? d.subList[st.sub].bm : d.subList[st.sub].mid) : d.mid, sin = Math.sin(a * D), cos = Math.cos(a * D);
     return { x: sin >= 0 ? CX - 80 : CX + 80, y: cos > 0.34 ? CY + 34 : (cos < -0.34 ? CY - 34 : CY), s: 0.64 };
   };
   let anim = null;
@@ -3201,6 +3278,8 @@ function montarAnalisis() {
   const armarSubs = aparecer => {
     const g = $('anaSubs'); g.innerHTML = ''; if (animSub) cancelAnimationFrame(animSub);
     const d = st.seg && byId(st.seg); if (!d || !d.subList) return;
+    d.afuera = d.subList.some(s => s.a1 - s.a0 < 9);
+    if (d.afuera) return armarBloques(d, g, aparecer);
     const piezas = d.subList.map((s, i) => {
       const p = el('path', { class: 'seg', tabindex: '0', role: 'button', 'aria-label': s.name + ' ' + fmtReal(s.amount) }, g);
       const c = st.sub === i ? d.color : aclarar(d.color, i, d.subList.length); p.style.fill = c; p.style.stroke = c; p.style.strokeWidth = 3;
@@ -3211,19 +3290,55 @@ function montarAnalisis() {
     const paso = now => { const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3); piezas.forEach(({ s, p }, i) => p.setAttribute('d', sector(165, st.sub === i ? 190 : 182, d.a0 + (s.a0 - d.a0) * e, d.a0 + (s.a1 - d.a0) * e))); if (k < 1) animSub = requestAnimationFrame(paso); };
     animSub = requestAnimationFrame(paso);
   };
-  let timers = [];
+  // 2.0.1 · Mini-categorías muy finitas para el dedo: salen del círculo como bloques más grandes, en abanico,
+  // unidos con líneas finas a una línea curva que sale de la categoría elegida. Los bloques son pedacitos de anillo, como el resto.
+  const armarBloques = (d, g, aparecer) => {
+    const n = d.subList.length, RB = 172;
+    let paso = 17; if ((n - 1) * paso > 150) paso = 150 / (n - 1);
+    const ancho = Math.min(13, paso * 0.76), ini = d.mid - (n - 1) * paso / 2, fin = ini + (n - 1) * paso;
+    d.subList.forEach((s, i) => { s.bm = ini + i * paso; });
+    const P = (r, a) => pt(r, a).map(v => v.toFixed(2)).join(' ');
+    let camino = `M${P(158, d.mid)} L${P(RB, d.mid)} M${P(RB, ini)} A${RB} ${RB} 0 0 1 ${P(RB, fin)}`;
+    d.subList.forEach(s => { camino += ` M${P(RB, s.bm)} L${P(184, s.bm)}`; });
+    const lin = el('path', { d: camino, fill: 'none', 'stroke-width': 2.6, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, g);
+    lin.style.stroke = d.color;
+    if (aparecer && !RM) { const L = 700; lin.style.strokeDasharray = L; lin.style.strokeDashoffset = L; requestAnimationFrame(() => requestAnimationFrame(() => { lin.style.transition = 'stroke-dashoffset .45s ease-out'; lin.style.strokeDashoffset = 0; })); }
+    const piezas = d.subList.map((s, i) => {
+      const [nx, ny] = pt(184, s.bm), nodo = el('circle', { cx: nx.toFixed(2), cy: ny.toFixed(2), r: 3.4, 'stroke-width': 2.2 }, g);
+      nodo.style.fill = 'var(--bg)'; nodo.style.stroke = d.color;
+      const p = el('path', { class: 'seg', tabindex: '0', role: 'button', 'aria-label': s.name + ' ' + fmtReal(s.amount) }, g);
+      const c = st.sub === i ? d.color : aclarar(d.color, i, n); p.style.fill = c; p.style.stroke = c; p.style.strokeWidth = 3;
+      tocar(p, () => { st.sub = (st.sub === i ? null : i); armarSubs(false); animar(trazar); pista(); limpiarTraza(); });
+      return { s, p, i };
+    });
+    const t0 = performance.now(), dur = (RM || !aparecer) ? 1 : 420;
+    const pasoA = now => {
+      const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+      piezas.forEach(({ s, p, i }) => { const r2 = st.sub === i ? 230 : 222; p.setAttribute('d', sector(188, 188 + (r2 - 188) * e + 0.5, s.bm - ancho / 2, s.bm + ancho / 2)); });
+      if (k < 1) animSub = requestAnimationFrame(pasoA);
+    };
+    animSub = requestAnimationFrame(pasoA);
+  };
+  let timers = [], sinAnim = false;
   const limpiarTraza = () => { timers.forEach(clearTimeout); timers = []; $('anaTraza').innerHTML = ''; };
   const escribir = (nodo, txt, i, listo) => {
-    if (RM) { nodo.textContent = txt; if (listo) listo(); return; }
-    nodo.textContent = txt.slice(0, i) + (i < txt.length ? '▌' : '');
+    if (RM || nodo.dataset.quieto) { nodo.textContent = txt; if (listo) listo(); return; }
+    nodo.textContent = txt.slice(0, i);
     if (i < txt.length) timers.push(setTimeout(() => escribir(nodo, txt, i + 1, listo), 32)); else if (listo) listo();
   };
   const trazar = () => {
     limpiarTraza();
+    const quieto = RM || sinAnim; sinAnim = false;
     const g = $('anaTraza'), d = st.seg && byId(st.seg); if (!d) return;
     let a, nombre, monto, rIni;
-    if (d.subList && st.sub != null) { const s = d.subList[st.sub]; a = s.mid; nombre = s.name; monto = s.amount; rIni = 198; }
-    else { a = d.mid; nombre = d.name; monto = d.amount; rIni = d.subList ? 192 : 168; }
+    if (d.subList && st.sub != null) { const s = d.subList[st.sub]; a = d.afuera ? s.bm : s.mid; nombre = s.name; monto = s.amount; rIni = d.afuera ? 233 : 198; }
+    else {
+      a = d.mid; nombre = d.name; monto = d.amount; rIni = d.subList ? 192 : 168;
+      if (d.afuera) { // sale del extremo de la línea curva que queda del lado del rótulo
+        const aI = d.subList[0].bm, aF = d.subList[d.subList.length - 1].bm, sI = Math.sin(aI * D), sF = Math.sin(aF * D);
+        a = Math.sin(d.mid * D) >= 0 ? (sI > sF ? aI : aF) : (sI < sF ? aI : aF); rIni = 172;
+      }
+    }
     const cos = Math.cos(a * D), der = Math.sin(a * D) >= 0, [sx, sy] = aPantalla(pt(rIni, a), vista);
     let ex = sx, ey = sy;
     if (Math.abs(cos) > 0.34) { ex = sx + (der ? 24 : -24); ey = sy + (cos > 0 ? -24 : 24); }
@@ -3232,8 +3347,10 @@ function montarAnalisis() {
     const linea = (dy, recorte, op, ancho, retraso) => {
       const fin = der ? fx - recorte : fx + recorte;
       const p = el('path', { d: `M${sx} ${sy + dy} L${ex} ${ey + dy} L${fin} ${ey + dy}`, fill: 'none', 'stroke-width': ancho, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', filter: 'url(#anaGlow)', opacity: op }, g);
-      p.style.stroke = 'var(--trace)'; p.style.strokeDasharray = largo; p.style.strokeDashoffset = largo;
-      requestAnimationFrame(() => requestAnimationFrame(() => { p.style.transition = RM ? 'none' : `stroke-dashoffset .55s ease-out ${retraso}s`; p.style.strokeDashoffset = 0; }));
+      p.style.stroke = 'var(--trace)';
+      if (quieto) return;
+      p.style.strokeDasharray = largo; p.style.strokeDashoffset = largo;
+      requestAnimationFrame(() => requestAnimationFrame(() => { p.style.transition = `stroke-dashoffset .55s ease-out ${retraso}s`; p.style.strokeDashoffset = 0; }));
     };
     linea((Math.abs(cos) > 0.34 && cos < 0) ? -7 : 7, 30, 0.4, 1.4, 0.08);
     linea(0, 0, 1, 2.3, 0);
@@ -3241,7 +3358,8 @@ function montarAnalisis() {
     const fin = el('circle', { cx: fx + (der ? -5 : 5), cy: ey, r: 4.3, 'stroke-width': 2, filter: 'url(#anaGlow)', opacity: 0 }, g); fin.style.fill = 'var(--card)'; fin.style.stroke = 'var(--trace)';
     const anc = der ? 'end' : 'start';
     const tN = el('text', { class: 't-name', x: fx, y: ey - 30, 'text-anchor': anc }, g), tM = el('text', { class: 't-amt', x: fx, y: ey - 11, 'text-anchor': anc }, g);
-    timers.push(setTimeout(() => { fin.setAttribute('opacity', 1); escribir(tN, nombre, 0, () => escribir(tM, fmt(monto), 0)); }, RM ? 0 : 560));
+    if (quieto) { tN.dataset.quieto = tM.dataset.quieto = '1'; fin.setAttribute('opacity', 1); escribir(tN, nombre, 0); escribir(tM, fmt(monto), 0); return; }
+    timers.push(setTimeout(() => { fin.setAttribute('opacity', 1); escribir(tN, nombre, 0, () => escribir(tM, fmt(monto), 0)); }, 560));
   };
   const marcarLista = () => { const g = selG(); document.querySelectorAll('#anaLista .ana-fila').forEach(f => { const d = byId(f.dataset.catir); f.classList.toggle('apagada', !!(g && d && d.g !== g)); f.classList.toggle('sel', st.seg === f.dataset.catir); }); };
   const pista = () => {
@@ -3260,10 +3378,9 @@ function montarAnalisis() {
   // Entrada: el círculo se dibuja solo y los tres montos suben desde 0 (solo cuando cambian los datos o el mes)
   const firma = 'ana|' + A.ym + '|' + total + '|' + (S.filtro || '');
   const entrar = S.firmas.ana !== firma && !RM; S.firmas.ana = firma;
-  if (!entrar) { actualizar(false, 1); return; }
+  if (!entrar) { sinAnim = true; actualizar(false, 1); return; }
   st.seg = null; st.sub = null; st.grupo = null;
   actualizar(false, 1);
-  sonarMonedas();
   const nodos = [...gC.querySelectorAll('[data-val]')], T = $('anaTotal'), t0 = performance.now(), dur = 1000;
   const paso = now => {
     if (!sv.isConnected) return;
@@ -3349,6 +3466,7 @@ document.addEventListener('input', ev => {
   if (!c || !S.form) return;
   S.form[c] = valor;
   if (S.form.hoja === 'negocio') syncPares(S.form, c, true);
+  if (S.form.hoja === 'negocio' && ['monto', 'recibidoTxt', 'comPesos', 'pctCambio', 'comBill'].includes(c)) autoTransf(S.form, c);
   if (S.form.hoja === 'negocio' && ['monto', 'unidades', 'pctRecargo', 'pctCambio', 'recTotal', 'pctComp', 'recibidoTxt', 'comPesos', 'efeParte', 'recargoPesos', 'redondeo', 'comBill'].includes(c)) recalcular();
   if (S.form.hoja === 'prestamo' && c === 'monto' && $('calcB')) $('calcB').innerHTML = calcPrestamo(S.form);
 });
@@ -3882,8 +4000,8 @@ function vSimple() {
   <button type="button" class="s-grande" data-menu="personal" style="background:linear-gradient(135deg,#B8661F,#E040A0);min-height:120px"><span class="oi" aria-hidden="true">🏠</span><span class="tx"><b>Gastos personales</b><small>Tus gastos y la plata del negocio que usaste o devolviste</small></span>${svg('der', 24, 2.4)}</button>
   <button type="button" class="btn btn-sec s-ver" data-ir2="lista">${svg('recibo', 22, 2)} Ver lo que cargué</button>
   <section class="s-pregunta" aria-label="Preguntale a ${esc(nombreAyu())}">
-    <div class="s-chips">${['¿Cómo cargo un cambio de plata?', '¿Cómo anoto una compra?', '¿Cómo devuelvo plata al negocio?', '¿Cuánta plata del negocio tengo?', '¿Qué cargué hoy?'].map(q => `<button type="button" data-acc="iaPregunta" data-txt="${esc(q)}">${esc(q)}</button>`).join('')}</div>
-    <button type="button" class="s-barra" data-acc="abrirIA">${avatarHTML('s-av' + (avId() !== 'robot' ? ' claro-av' : ''))}<span>Preguntale a ${esc(nombreAyu())}</span>${svg('der', 22, 2.6)}</button>
+    <div class="s-chips">${['¿Cómo cargo un cambio de plata?', '¿Cómo anoto una compra?', '¿Cómo devuelvo plata al negocio?', '¿Cuánta plata del negocio tengo?', '¿Qué cargué hoy?'].map(q => `<span class="s-q"><button type="button" data-acc="iaPregunta" data-txt="${esc(q)}">${esc(q)}</button></span>`).join('')}</div>
+    <button type="button" class="s-barra" data-acc="abrirIA"><span>Preguntale a ${esc(nombreAyu())}</span>${svg('der', 22, 2.6)}</button>
   </section>`;
 }
 function vMenuSimple() {
@@ -4016,7 +4134,7 @@ function vFlujo() {
       <button class="btn btn-grad f-sig" type="button" data-acc="fRedOk">Listo ✓</button>
       ${num(d.redondeo) ? `<button class="btn btn-ghost" type="button" data-acc="fRedQuitar" style="font-size:16px">No fue redondeado</button>` : `<button class="btn btn-ghost" type="button" data-acc="fRedNo" style="font-size:16px">Volver</button>`}`;
   } else if (fl.editMonto) {
-    cuerpo = `<h1 class="f-preg">¿Cuánto transferiste?</h1><p class="f-ayuda">La app calculó ${esc(fmt(transfCalc(d)))}. Si transferiste otro monto, escribilo: la comisión se ajusta sola.</p>
+    cuerpo = `<h1 class="f-preg">¿Cuánto transferiste?</h1><p class="f-ayuda">La app calculó ${esc(fmt(transfCalc(d)))}. Si transferiste otro monto, escribilo. La comisión no cambia: lo que la transferencia no cubrió lo pagaste con billetes.</p>
       ${plataHTML('fIn', d.montoMan || String(transfCalc(d)), 'aria-label="Lo que transferiste"', 'grande')}
       <div class="f-error" id="fErr" hidden></div>
       <button class="btn btn-grad f-sig" type="button" data-acc="fMontoOk">Listo ✓</button>
@@ -4068,7 +4186,7 @@ function filasFlujo(fl) {
     R.parts.forEach(p => add(p.neg, 'paga ' + fmt(p.com) + ' · recibe ' + fmt(p.rec)));
     add('Lugar', d.lugar === 'Otro' ? 'Otro lugar' : 'Bermejo');
   } else if (fl.tipo === 'cambio') {
-    const rec = num(d.recibido), c = comFinalSolo(d), bill = billetesSolo(d), m = transfSolo(d);
+    const rec = num(d.recibido), c = comFinalSolo(d), bill = billetesFin(d), m = transfSolo(d);
     add('Te dieron', fmt(rec));
     add('Comisión', c > 0 ? fmt(c) + ' (' + pct(r6(pctSobreEfe(c, rec))) + ')' : 'Sin comisión');
     if (bill > 0) add('Con billetes', fmt(bill));
@@ -4172,8 +4290,11 @@ const comSolo = d => r2(num(d.comPesos) || 0);
 const billetesSolo = d => !(comSolo(d) > 0) ? 0 : d.como === 'billetes' ? comSolo(d) : d.como === 'parte' ? r2(num(d.billetes) || 0) : 0;
 const transfCalc = d => r2(num(d.recibido) + (comSolo(d) > 0 ? comSolo(d) - billetesSolo(d) : 0));
 const transfSolo = d => lleno(d.montoMan) ? num(d.montoMan) : transfCalc(d);
+// "¿Transferiste otro monto?": la comisión acordada no cambia; lo que la transferencia no cubrió se pagó con billetes.
+// Si la transferencia cubrió toda la comisión o más, no hubo billetes y la comisión es lo transferido de más.
+const billetesFin = d => lleno(d.montoMan) ? r2(Math.max(0, comSolo(d) - (num(d.montoMan) - num(d.recibido)))) : billetesSolo(d);
 // Comisión que de verdad queda: lo transferido de más + lo pagado con billetes
-const comFinalSolo = d => r2(transfSolo(d) - num(d.recibido) + billetesSolo(d));
+const comFinalSolo = d => r2(transfSolo(d) - num(d.recibido) + billetesFin(d));
 const comisionFlujo = d => r2(num(d.monto) + num(d.montoOtro) - num(d.recibido));
 function repartoFlujo(fl) {
   const d = fl.d, com = comisionFlujo(d), mia = d.quien === 'mano' ? num(d.miParte) || 0 : 0;
@@ -4196,7 +4317,7 @@ function opDeFlujo(fl) {
       const filas = R.parts.map(p => { const ex = prev.find(x => x.negocio === p.neg); return { id: ex ? ex.id : (p.neg === neg ? (fl.editId || G) : idPar(G, p.neg)), datos: { negocio: p.neg, tipo: 'Cambio', fecha, viaje: viajeC, monto: p.monto, recibido: p.rec, nota, contraparte: R.parts.filter(q => q.neg !== p.neg).map(q => q.neg).join(', ') } }; });
       return { ops: opsGrupo(G, filas, prev), saleEfectivo: 0 };
     }
-    const datos = { negocio: neg, tipo: 'Cambio', fecha, viaje: viajeC, monto: m, nota }, rec = num(d.recibido), bill = billetesSolo(d);
+    const datos = { negocio: neg, tipo: 'Cambio', fecha, viaje: viajeC, monto: m, nota }, rec = num(d.recibido), bill = billetesFin(d);
     if (bill > 0 && !(m > rec)) Object.assign(datos, { pagoComision: 'Efectivo', comisionPesos: bill }); // toda la comisión con billetes
     else if (bill > 0) Object.assign(datos, { pagoComision: 'Combinado', recibido: rec, comBilletes: bill }); // una parte con billetes
     else datos.recibido = rec;
@@ -4354,9 +4475,10 @@ const GUIAS = {
       { el: cerca('#modalIn [data-set=lugar]', '.segm'), txt: '¿Dónde fue el cambio?<br><b>Bermejo</b> ya está marcado. Si fue en otro lugar, elegí <b>Otro lugar</b>.', modo: 'listo', valido: '#modalIn [data-set=lugar]' },
       P_VIAJE, P_VIAJE2,
       { si: () => !compOn(), el: Q('#modalIn [data-acc=cambioComp]'), txt: 'Si cambiaste <b>junto con otro negocio</b> de la familia, usá la guía <b>Cambio compartido</b>. Si fue solo tuyo, dejá esto apagado.', modo: 'listo', mirar: true, btn: 'Siguiente' },
-      pCampo('fMonto', '¿Cuánto <b>transferiste</b>?'),
-      { el: cerca('#modalIn [data-set=pagoComision]', '.segm'), txt: 'La comisión: ¿la pagaste <b>con billetes</b>, la <b>transferiste de más</b> o fue <b>una parte</b> de cada forma?', modo: 'listo', valido: '#modalIn [data-set=pagoComision]' },
-      { el: () => { const e = $('fRecib') || $('fComP'); return e ? (e.closest('.par') || e.closest('.campo')) : null; }, txt: () => $('fComP') ? 'Escribí cuánto pagaste de <b>comisión</b> o el <b>%</b>.<br>El otro casillero se completa solo.' : 'Escribí cuánto <b>efectivo te dieron</b> o el <b>%</b> de comisión.<br>El otro casillero se completa solo.', modo: 'listo', largo: true },
+      pCampo('fRecib', '¿Cuánto <b>efectivo</b> te dieron?'),
+      { el: () => { const e = $('fComP'); return e ? e.closest('.par') : null; }, txt: 'Escribí la <b>comisión</b> en pesos o en <b>%</b>.<br>El otro casillero se completa solo.', modo: 'listo', mirar: true, btn: 'Siguiente' },
+      { el: cerca('#modalIn [data-set=pagoComision]', '.segm'), txt: 'La comisión: ¿la <b>transferiste de más</b>, la pagaste <b>con billetes</b> o fue <b>una parte</b> de cada forma?', modo: 'listo', valido: '#modalIn [data-set=pagoComision]' },
+      { el: () => { const e = $('fMonto'); return e ? e.closest('.campo') : null; }, txt: 'Lo que <b>transferiste</b> se calcula solo. Si transferiste otro monto, cambialo.', modo: 'listo', mirar: true, btn: 'Siguiente' },
       pGuardar('guardarNegocio', 'Tocá <b>Guardar cambio</b> ✓')]
   },
   compartido: {
@@ -4611,6 +4733,7 @@ function iniciarGuia(nombre) {
     else { cerrarModal(); pasos = g.camino.concat(g.pasos); }
   }
   Object.assign(GUIA, { activa: true, nombre, pasos, i: -1, n: 0, largo: !!g.largo });
+  camEntrar();
   $('guia').hidden = false; pintarRobot();
   { const c = $('guia').querySelector('.guia-cara'); c.innerHTML = avatarHTML('', 'senala'); c.classList.toggle('claro-av', avId() !== 'robot'); }
   $('guiaX').innerHTML = svg('x', 16, 2.4);
@@ -4623,7 +4746,7 @@ function terminarGuia(mensaje, exito) {
   if (!GUIA.activa) return;
   const nombre = GUIA.nombre;
   GUIA.activa = false; cancelAnimationFrame(GUIA.raf);
-  $('guia').hidden = true; pintarRobot();
+  $('guia').hidden = true; pintarRobot(); camSalir();
   if (exito && GUIAS[nombre].tarea) LS.set('bd_guia_usos_' + nombre, LS.get('bd_guia_usos_' + nombre, 0) + 1);
   if (mensaje) setTimeout(() => avisar(mensaje), 50);
 }
@@ -4661,6 +4784,7 @@ function ubicarGuia() {
   }
   GUIA.falta = 0;
   const r = el.getBoundingClientRect(), pad = 6;
+  if (CAM.el && !CAM.el.hidden) camIrA(r);
   luz.style.left = (r.left - pad) + 'px'; luz.style.top = (r.top - pad) + 'px';
   luz.style.width = (r.width + pad * 2) + 'px'; luz.style.height = (r.height + pad * 2) + 'px';
   const gw = globo.offsetWidth, gh = globo.offsetHeight;
@@ -4668,6 +4792,11 @@ function ubicarGuia() {
   if (r.bottom + 16 + gh < top0 + H - 8) { y = r.bottom + 16; lado = 'abajo'; }
   else if (r.top - 16 - gh > top0 + 8) { y = r.top - 16 - gh; lado = 'arriba'; }
   else { y = Math.max(top0 + 12, top0 + H - gh - 12); lado = 'centro'; }
+  // El globito no tapa al ayudante: si se cruzan, se corre para arriba o para abajo
+  if (CAM.el && !CAM.el.hidden && CAM.dim && x < CAM.tx + CAM.dim.w && x + gw > CAM.tx) {
+    if (lado === 'abajo') y = Math.min(Math.max(y, CAM.ty + CAM.dim.h + 10), top0 + H - gh - 8);
+    else if (lado === 'arriba') y = Math.max(Math.min(y, CAM.ty - gh - 10), top0 + 8);
+  }
   globo.style.left = x + 'px'; globo.style.top = y + 'px';
   globo.classList.toggle('abajo', lado === 'abajo'); globo.classList.toggle('arriba', lado === 'arriba'); globo.classList.toggle('centro', lado === 'centro');
   globo.style.setProperty('--ax', Math.min(Math.max(20, r.left + r.width / 2 - x), gw - 20) + 'px');
@@ -4838,7 +4967,7 @@ if (navigator.getBattery) navigator.getBattery().then(b => {
   ver(); b.addEventListener('levelchange', ver); b.addEventListener('chargingchange', ver);
 }).catch(() => {});
 function htmlColores() {
-  const act = pref('color', 'violeta');
+  const act = AP ? AP.d.color : pref('color', 'violeta');
   return `<div class="ap-colores">${COLORES_APP.map(([k, t, c1, c2]) => `<button type="button" data-acc="apColor" data-col="${k}" aria-pressed="${act === k}" aria-label="Color ${t}"><i style="background:linear-gradient(135deg,${c1},${c2})"></i><small>${t}</small></button>`).join('')}</div>`;
 }
 /* ---------- Dispositivos conectados ---------- */
@@ -4925,6 +5054,100 @@ async function elegirDesbloqueo(m) {
   if (!(await huellaPosible())) return avisar('Este celular no tiene huella disponible para la app');
   try { await crearHuella(); LS.set(kDesb(), 'huella'); avisar('✓ Listo: ahora abrís la app con tu huella'); render(); }
   catch (e) { avisar('No se pudo guardar la huella. Probá de nuevo.'); }
+}
+
+/* =========================================================
+   2.0.1 · Ayudante con cuerpo completo: sale del ícono, camina hasta lo que hay que tocar y lo señala con la mano.
+   ========================================================= */
+function cuerpoAyudante(id) {
+  const pt = (x, y, w, h, f, extra) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${f}"${extra || ''}/>`;
+  if (id === 'pixel') {
+    const M = AV_COL, celdas = (filas, c0, r0) => filas.map((fila, r) => [...fila].map((ch, c) => ch === '.' ? '' : pt((c0 + c) * 4, (r0 + r) * 4, 4.3, 4.3, M[ch])).join('')).join('');
+    const cab = AV_MAPA.slice(0, 13).map(f => '..' + f + '..').concat(['....oovvvyyvvvoo....', '...ovvvvvyyvvvvvo...']);
+    const torso = ['...ovvvvvvvvvvvvo...', '...ovvvvvyvvvvvvo...', '...ovvvvvvvvvvvvo...', '...ovvvvvyvvvvvvo...', '...oovvvvvvvvvvoo...', '....owwwwwwwwwwo....'];
+    const pierna = ['.owwwo', '.owwwo', '.owwwo', 'owwwwo', 'oooooo'], brazo = ['ovo', 'ovo', 'ovo', 'owo', 'owo', '.o.'];
+    return { w: 80, h: 104, armY: 57, tip: -10, svg: `<svg width="80" height="104" viewBox="0 0 80 104" shape-rendering="crispEdges" style="--brazoS:90deg" aria-hidden="true">
+      <g class="pie1">${celdas(pierna, 3, 21)}</g><g class="pie2">${celdas(pierna.map(x => [...x].reverse().join('')), 11, 21)}</g>
+      ${celdas(cab.concat(torso), 0, 0)}${celdas(brazo, 15, 14)}
+      <g class="brazoI" style="transform-origin:14px 57px"><g class="dedo" style="transform-origin:14px 57px">${celdas(brazo, 2, 14)}</g></g></svg>` };
+  }
+  if (id === 'robot') {
+    return { w: 80, h: 110, armY: 61, tip: 2, svg: `<svg width="80" height="110" viewBox="0 0 80 110" style="--brazoS:66deg" aria-hidden="true">
+      <line x1="40" y1="6" x2="40" y2="16" stroke="#7C4DFF" stroke-width="3" stroke-linecap="round"/><circle cx="40" cy="5" r="4" fill="#FFD23F"/>
+      <rect x="11" y="28" width="5" height="12" rx="2" fill="#9B6BFF"/><rect x="64" y="28" width="5" height="12" rx="2" fill="#9B6BFF"/>
+      <rect x="16" y="16" width="48" height="36" rx="12" fill="#7C4DFF"/><rect x="22" y="22" width="36" height="24" rx="8" fill="#1A1530"/>
+      <circle cx="33" cy="33" r="3.6" fill="#3FD6C6"/><circle cx="47" cy="33" r="3.6" fill="#3FD6C6"/><path d="M34 40 Q40 44 46 40" fill="none" stroke="#3FD6C6" stroke-width="2.2" stroke-linecap="round"/>
+      <rect x="35" y="52" width="10" height="6" fill="#5B3FD6"/>
+      <g class="pie1"><rect x="27" y="85" width="10" height="15" rx="4" fill="#7C4DFF"/><rect x="24" y="98" width="15" height="7" rx="3.5" fill="#2A1B4D"/></g>
+      <g class="pie2"><rect x="43" y="85" width="10" height="15" rx="4" fill="#7C4DFF"/><rect x="41" y="98" width="15" height="7" rx="3.5" fill="#2A1B4D"/></g>
+      <rect x="22" y="57" width="36" height="30" rx="10" fill="#9B6BFF"/><circle cx="40" cy="70" r="4.5" fill="#FFD23F"/>
+      <path d="M58 62 L67 80" stroke="#7C4DFF" stroke-width="6" stroke-linecap="round"/><circle cx="67" cy="82" r="4.5" fill="#F4EEFF"/>
+      <g class="brazoI" style="transform-origin:22px 62px"><g class="dedo" style="transform-origin:22px 62px"><path d="M22 62 L13 80" stroke="#7C4DFF" stroke-width="6" stroke-linecap="round"/><circle cx="13" cy="82" r="4.5" fill="#F4EEFF"/></g></g></svg>` };
+  }
+  // Los Rabbit dibujados (Asesor, Conejo-robot, Con monedita): su misma cabeza, con cuerpo, brazos y piernas
+  const T = {
+    asesor: { ropa: '#7C4DFF', pata: '#F4EEFF', pierna: '#F4EEFF', extra: '<path d="M50 102 L60 121 L70 102Z" fill="#F4EEFF"/><path d="M57.5 108 L62.5 108 L61.5 125 L60 129 L58.5 125Z" fill="#FFD23F"/>' },
+    conejo: { ropa: '#C9B8F5', pata: '#EDE6FF', pierna: '#D9CEFF', extra: '<rect x="48" y="112" width="24" height="16" rx="6" fill="#1D1530"/><circle cx="60" cy="120" r="4" fill="#4FD8FF"/>' },
+    moneda: { ropa: '#7C4DFF', pata: '#C9B6FF', pierna: '#7C4DFF', extra: '<ellipse cx="60" cy="128" rx="15" ry="16" fill="#C9B6FF"/>' }
+  }[id] || {};
+  const cab = AV_SVG[id]().replace('<svg viewBox="0 0 120 120"', '<svg x="0" y="0" width="120" height="120" viewBox="0 0 120 120"');
+  const brazo = (x1, x2) => `<path d="M${x1} 112 L${x2} 138" stroke="${T.ropa}" stroke-width="11" stroke-linecap="round"/><path d="M${x1} 112 L${x2} 138" stroke="#2A1B4D" stroke-width="15" stroke-linecap="round" opacity="0"/><circle cx="${x2 + (x2 < 60 ? -1 : 1)}" cy="141" r="6.5" fill="${T.pata}" stroke="#2A1B4D" stroke-width="2.5"/>`;
+  const moneda = id === 'moneda' ? '<circle cx="95" cy="150" r="8" fill="#FFD23F" stroke="#B8860B" stroke-width="2.5"/><path d="M95 145.5 V154.5" stroke="#B8860B" stroke-width="2" stroke-linecap="round"/>' : '';
+  const pie = (x, cl) => `<g class="${cl}"><rect x="${x}" y="150" width="13" height="30" rx="6" fill="${T.pierna}" stroke="#2A1B4D" stroke-width="3"/><rect x="${x - 5}" y="174" width="21" height="11" rx="5.5" fill="#2A1B4D"/></g>`;
+  return { w: 66, h: 110, armY: 62, tip: 5, svg: `<svg width="66" height="110" viewBox="0 0 120 200" style="--brazoS:74deg" aria-hidden="true">
+    ${pie(44, 'pie1')}${pie(63, 'pie2')}
+    <rect x="34" y="98" width="52" height="58" rx="18" fill="${T.ropa}" stroke="#2A1B4D" stroke-width="3"/>${T.extra || ''}
+    ${brazo(82, 92)}${moneda}
+    ${cab}
+    <g class="brazoI" style="transform-origin:38px 112px"><g class="dedo" style="transform-origin:38px 112px">${brazo(38, 28)}</g></g></svg>` };
+}
+const CAM = { el: null, id: '', x: 0, y: 0, tx: 0, ty: 0, flip: false, volver: false, raf: 0, dim: null };
+function camDesdeIcono() {
+  const r = $('robot') && !$('robot').hidden ? $('robot').getBoundingClientRect() : null;
+  const W = innerWidth, H = innerHeight, d = CAM.dim || { w: 70, h: 110 };
+  return r && r.width ? [r.left + r.width / 2 - d.w / 2, r.bottom - d.h] : [W - d.w - 14, H - d.h - 100];
+}
+function camEntrar() {
+  if (!CAM.el) { CAM.el = document.createElement('div'); CAM.el.className = 'cam'; CAM.el.hidden = true; CAM.el.setAttribute('aria-hidden', 'true'); document.body.appendChild(CAM.el); }
+  if (CAM.id !== avId()) { CAM.id = avId(); CAM.dim = cuerpoAyudante(CAM.id); CAM.el.innerHTML = `<div class="cam-sombra"></div><div class="cam-cuerpo">${CAM.dim.svg}</div>`; CAM.el.style.width = CAM.dim.w + 'px'; }
+  [CAM.x, CAM.y] = camDesdeIcono(); CAM.tx = CAM.x; CAM.ty = CAM.y; CAM.volver = false; CAM.flip = false;
+  CAM.el.hidden = false; CAM.el.style.opacity = 1; $('guia').classList.add('con-cam');
+  if ($('robot')) $('robot').style.visibility = 'hidden';
+  camPintar(); cancelAnimationFrame(CAM.raf); CAM.raf = requestAnimationFrame(camPaso);
+}
+function camIrA(r) {
+  // Se para al costado de lo que hay que tocar y lo señala; si no hay lugar, se para encima del borde derecho
+  const d = CAM.dim, vv = window.visualViewport, W = vv ? vv.width : innerWidth, H = vv ? vv.height : innerHeight, top0 = vv ? vv.offsetTop : 0;
+  const cy = r.top + r.height / 2;
+  let x, flip = false;
+  if (r.right + 4 + d.w <= W - 4) x = r.right + 2 - d.tip;
+  else if (r.left - 4 - d.w >= 4) { x = r.left - 2 - d.w + d.tip; flip = true; }
+  else x = W - d.w - 6;
+  CAM.tx = x; CAM.ty = Math.max(top0 + 8, Math.min(top0 + H - d.h - 10, cy - d.armY)); CAM.flip = flip;
+}
+function camSalir() {
+  if (!CAM.el || CAM.el.hidden) return;
+  [CAM.tx, CAM.ty] = camDesdeIcono(); CAM.volver = true; CAM.flip = false;
+  if ($('robot')) $('robot').style.visibility = 'hidden';
+  cancelAnimationFrame(CAM.raf); CAM.raf = requestAnimationFrame(camPaso);
+}
+function camPintar() {
+  const quieto = Math.hypot(CAM.tx - CAM.x, CAM.ty - CAM.y) < 1.5;
+  CAM.el.style.transform = `translate(${CAM.x.toFixed(1)}px,${CAM.y.toFixed(1)}px)`;
+  CAM.el.classList.toggle('camina', !quieto);
+  CAM.el.classList.toggle('senala', quieto && !CAM.volver);
+  CAM.el.classList.toggle('voltea', quieto && CAM.flip && !CAM.volver);
+}
+function camPaso() {
+  const dx = CAM.tx - CAM.x, dy = CAM.ty - CAM.y, dist = Math.hypot(dx, dy), v = animOff() ? 1e6 : 10;
+  if (dist > v) { CAM.x += dx / dist * v; CAM.y += dy / dist * v; } else { CAM.x = CAM.tx; CAM.y = CAM.ty; }
+  camPintar();
+  if (CAM.volver && dist <= v) {
+    CAM.el.style.opacity = 0;
+    setTimeout(() => { if (CAM.volver) { CAM.el.hidden = true; $('guia').classList.remove('con-cam'); } if ($('robot')) $('robot').style.visibility = ''; }, 250);
+    return;
+  }
+  if (GUIA.activa || dist > v) CAM.raf = requestAnimationFrame(camPaso);
 }
 /* ---------- 2.0.0 · Tarjeta de deudas (modo completo): préstamos entre negocios y lo que se le debe a cada negocio ---------- */
 function tarjetaDeudas() {
@@ -5091,18 +5314,24 @@ function restaurarCarriles() {
 }
 // Abrir / cerrar "Comparado con…" con la misma animación que "Por categoría"
 function alternarComp() {
-  const vieja = $('tarjComp'); if (!vieja) return;
+  const vieja = $('tarjComp'); if (!vieja || alternarComp.anim) return;
   const h0 = vieja.offsetHeight;
   guardarCarriles();
   S.compAbierta = !S.compAbierta;
   vieja.outerHTML = tarjComparacion(mesIni());
+  const nu = $('tarjComp'); if (!nu) return;
+  if (animOff() || !nu.animate) { restaurarCarriles(); return; }
+  // El trabajo pesado (armar los días) se hace antes; la animación arranca recién en el cuadro siguiente,
+  // así no se "come" el principio y abre parejo de punta a punta
+  alternarComp.anim = true;
   restaurarCarriles();
-  const nu = $('tarjComp'); if (!nu || animOff()) return;
   const h1 = nu.offsetHeight;
-  nu.style.height = h0 + 'px'; nu.style.overflow = 'hidden'; void nu.offsetHeight;
-  nu.style.transition = 'height .8s cubic-bezier(.22,.8,.24,1)'; nu.style.height = h1 + 'px';
-  clearTimeout(alternarComp.t);
-  alternarComp.t = setTimeout(() => { nu.style.transition = ''; nu.style.height = ''; nu.style.overflow = ''; }, 820);
+  nu.style.height = h0 + 'px'; nu.style.overflow = 'hidden';
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    const a = nu.animate([{ height: h0 + 'px' }, { height: h1 + 'px' }], { duration: 650, easing: 'cubic-bezier(.25,.8,.25,1)' });
+    const fin = () => { nu.style.height = ''; nu.style.overflow = ''; alternarComp.anim = false; if ($('carrilDias')) ventanaDias(); };
+    a.onfinish = fin; a.oncancel = fin;
+  }));
 }
 const animOff = () => (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) || ahorroActivo();
 // Recordatorio: si hace 3 días o más que no cargás nada
@@ -5133,7 +5362,8 @@ function contarHero() {
   const v = Number(el.dataset.cuenta), firma = 'hero|' + v + '|' + el.dataset.mes + '|' + (S.filtro || '');
   if (S.firmas.hero === firma) return; S.firmas.hero = firma;
   if (!(v > 0) || animOff()) return;
-  sonarMonedas();
+  const kSon = 'bd_son_ult_' + S.yo.usuario;
+  if (sonidoOn() && Date.now() - Number(LS.get(kSon, 0)) >= 6 * 3600e3) { LS.set(kSon, Date.now()); sonarMonedas(); }
   const t0 = performance.now(), dur = 900;
   const paso = ahora => {
     if (!el.isConnected) return;
@@ -5295,33 +5525,72 @@ function aplicarApariencia() {
   const m = document.querySelector('meta[name=theme-color]'); if (m) m.content = claro ? '#F5F1FF' : '#0E0B1A';
 }
 if (temaClaroSistema && temaClaroSistema.addEventListener) temaClaroSistema.addEventListener('change', () => { if (LS.get('bd_tema', 'oscuro') === 'auto') aplicarApariencia(); });
+/* 2.0.1 · Apariencia con borrador: lo que elegís se ve solo en el ejemplo de la ventana.
+   La app cambia recién con "Guardar cambios"; si salís sin guardar, todo queda como estaba. */
+var AP = null; // var: cerrarModal lo consulta y puede correr antes de esta línea
+function apActual() { return { tam: tamActual(), fuente: FUENTES[LS.get('bd_fuente', 'urbanist')] ? LS.get('bd_fuente', 'urbanist') : 'urbanist', tema: LS.get('bd_tema', 'oscuro'), desde: hNoche()[0], hasta: hNoche()[1], ahorro: LS.get('bd_ahorro_modo', 'no'), color: pref('color', 'violeta'), avatar: avId() }; }
+const apSucio = () => !!AP && JSON.stringify(AP.d) !== JSON.stringify(AP.orig);
+const nocheEntre = (a, b) => { const h = new Date().getHours(); return a > b ? (h >= a || h < b) : (h >= a && h < b); };
+function htmlApEjemplo(d) {
+  const z = TAMANOS[d.tam][0], fam = (FUENTES[d.fuente] || FUENTES.urbanist).fam;
+  const claro = d.tema === 'claro' || (d.tema === 'auto' && !!(temaClaroSistema && temaClaroSistema.matches)) || (d.tema === 'horario' && !nocheEntre(d.desde, d.hasta));
+  const c = COLORES_APP.find(x => x[0] === d.color) || COLORES_APP[0];
+  return `<div class="ap-prev${claro ? ' prev-claro' : ''}" id="apPrev" style="font-family:${fam},system-ui,sans-serif;font-size:${Math.round(15 * z)}px">
+    <small>Así se va a ver</small>
+    <div class="ap-hero" style="background:linear-gradient(135deg,${c[2]},${c[3]})"><span>Gastado en noviembre</span><b>$ 500.000,00</b></div>
+    <p>Así se van a ver los textos y los montos en la app.</p>
+    ${avatarHTML('ap-av ap-prev-av' + (d.avatar !== 'robot' ? ' claro-av' : ''), '', d.avatar)}
+  </div>`;
+}
 function abrirApariencia() {
   Object.keys(FUENTES).forEach(cargarFuente);
-  const ti = tamActual(), fk = LS.get('bd_fuente', 'urbanist'), tema = LS.get('bd_tema', 'oscuro');
+  if (!AP) AP = { orig: apActual(), d: apActual() };
+  const d = AP.d, y1 = $('modalIn').scrollTop, y2 = $('modal').scrollTop, abierto = !!$('apPrev');
   abrirModal(`${cab('Apariencia', 'var(--grad)', 'letra')}
-    <div class="ap-ejemplo"><small>Ejemplo de texto</small><p>Gastos del mes: <b>$ 500.000,00</b>. Así se van a ver los textos y los montos en la app.</p></div>
-    <div class="campo"><span>Tamaño de letra: <b id="apTamTxt">${TAMANOS[ti][1]}</b></span>
-      <div class="ap-tam"><span class="a1" aria-hidden="true">A</span><input type="range" id="apTam" min="0" max="${TAMANOS.length - 1}" step="1" value="${ti}" aria-label="Tamaño de letra"><span class="a2" aria-hidden="true">A</span></div></div>
-    <div class="campo">Tipo de letra<div class="ap-fuentes">${Object.entries(FUENTES).map(([k, f]) => `<button type="button" data-acc="apFuente" data-f="${k}" aria-pressed="${fk === k}" style="font-family:${f.fam},system-ui,sans-serif"><b>Aa</b><small>${f.nombre}</small></button>`).join('')}</div></div>
-    <div class="campo">Color de la app${htmlColores()}<small style="font-weight:600;color:var(--muted);font-size:12.5px">Se ve al instante. Se guarda en tu cuenta.</small></div>
-    <div class="campo">Modo<div class="segm segm4">${[['oscuro', '🌙 Oscuro'], ['claro', '☀️ Claro'], ['auto', 'Como el celu'], ['horario', '⏰ Por horario']].map(([v, t]) => `<button type="button" data-acc="apTema" data-t="${v}" aria-pressed="${tema === v}">${t}</button>`).join('')}</div>
-      ${tema === 'horario' ? `<div class="ap-horas"><label>Oscuro desde las <select id="apNocheDesde">${Array.from({ length: 24 }, (_, h) => `<option value="${h}" ${hNoche()[0] === h ? 'selected' : ''}>${h}:00</option>`).join('')}</select></label><label>hasta las <select id="apNocheHasta">${Array.from({ length: 24 }, (_, h) => `<option value="${h}" ${hNoche()[1] === h ? 'selected' : ''}>${h}:00</option>`).join('')}</select></label></div>`
-        : `<small style="font-weight:600;color:var(--muted);font-size:12.5px">"Como el celu": claro u oscuro igual que tu celular. "Por horario": oscuro a la hora que elijas.</small>`}</div>
-    <div class="campo">Ahorro de energía<div class="segm">${[['no', 'Apagado'], ['auto', 'Con poca batería'], ['si', 'Siempre']].map(([v, t]) => `<button type="button" data-acc="apAhorro" data-v="${v}" aria-pressed="${LS.get('bd_ahorro_modo', 'no') === v}">${t}</button>`).join('')}</div>
+    ${htmlApEjemplo(d)}
+    <div class="campo"><span>Tamaño de letra: <b id="apTamTxt">${TAMANOS[d.tam][1]}</b></span>
+      <div class="ap-tam"><span class="a1" aria-hidden="true">A</span><input type="range" id="apTam" min="0" max="${TAMANOS.length - 1}" step="1" value="${d.tam}" aria-label="Tamaño de letra"><span class="a2" aria-hidden="true">A</span></div></div>
+    <div class="campo">Tipo de letra<div class="ap-fuentes">${Object.entries(FUENTES).map(([k, f]) => `<button type="button" data-acc="apFuente" data-f="${k}" aria-pressed="${d.fuente === k}" style="font-family:${f.fam},system-ui,sans-serif"><b>Aa</b><small>${f.nombre}</small></button>`).join('')}</div></div>
+    <div class="campo">Color de la app${htmlColores()}<small style="font-weight:600;color:var(--muted);font-size:12.5px">Se guarda en tu cuenta.</small></div>
+    <div class="campo">Modo<div class="segm segm2x2">${[['oscuro', '🌙 Oscuro'], ['claro', '☀️ Claro'], ['auto', 'Predeterminado del sistema'], ['horario', '⏰ Programado']].map(([v, t]) => `<button type="button" data-acc="apTema" data-t="${v}" aria-pressed="${d.tema === v}">${t}</button>`).join('')}</div>
+      ${d.tema === 'horario' ? `<div class="ap-horas"><label>Oscuro desde las <select id="apNocheDesde">${Array.from({ length: 24 }, (_, h) => `<option value="${h}" ${d.desde === h ? 'selected' : ''}>${h}:00</option>`).join('')}</select></label><label>hasta las <select id="apNocheHasta">${Array.from({ length: 24 }, (_, h) => `<option value="${h}" ${d.hasta === h ? 'selected' : ''}>${h}:00</option>`).join('')}</select></label></div>`
+        : `<small style="font-weight:600;color:var(--muted);font-size:12.5px">"Predeterminado del sistema": claro u oscuro igual que tu celular. "Programado": oscuro a la hora que elijas.</small>`}</div>
+    <div class="campo">Ahorro de energía<div class="segm">${[['no', 'Apagado'], ['auto', 'Con poca batería'], ['si', 'Siempre']].map(([v, t]) => `<button type="button" data-acc="apAhorro" data-v="${v}" aria-pressed="${d.ahorro === v}">${t}</button>`).join('')}</div>
       <small style="font-weight:600;color:var(--muted);font-size:12.5px">Apaga las animaciones y el sonido. "Con poca batería": cuando queda 20% o menos y no está cargando.</small></div>
-    <div class="campo">Ayudante<div class="ap-avs">${Object.entries(AVATARES).map(([k, a]) => `<button type="button" data-acc="apAvatar" data-av="${k}" aria-pressed="${avId() === k}">${avatarHTML('ap-av' + (k !== 'robot' ? ' claro-av' : ''), '', k)}<span><b>${esc(a.titulo)}</b><small>${esc(a.sub)}</small></span></button>`).join('')}</div>
+    <div class="campo">Ayudante<div class="ap-avs">${Object.entries(AVATARES).map(([k, a]) => `<button type="button" data-acc="apAvatar" data-av="${k}" aria-pressed="${d.avatar === k}">${avatarHTML('ap-av' + (k !== 'robot' ? ' claro-av' : ''), '', k)}<span><b>${esc(a.titulo)}</b><small>${esc(a.sub)}</small></span></button>`).join('')}</div>
       <small style="font-weight:600;color:var(--muted);font-size:12.5px">El ayudante elegido se guarda en tu cuenta: sigue igual en otro celular o en la compu.</small></div>
     <p class="ayuda" style="margin:0;font-size:13px">La letra y el modo se guardan en este celular. Un tipo de letra nuevo se descarga la primera vez con internet.</p>
-    <button class="btn btn-grad" type="button" data-acc="cerrar">Listo</button>`);
+    <button class="btn btn-grad" type="button" data-acc="apGuardar">Guardar cambios</button>`);
+  if (abierto) { $('modalIn').scrollTop = y1; $('modal').scrollTop = y2; }
+}
+function guardarApariencia() {
+  if (!AP) return cerrarModal();
+  const d = AP.d, o = AP.orig, hubo = apSucio();
+  LS.set('bd_tam', d.tam); LS.set('bd_fuente', d.fuente); LS.set('bd_tema', d.tema);
+  LS.set('bd_noche_desde', d.desde); LS.set('bd_noche_hasta', d.hasta); LS.set('bd_ahorro_modo', d.ahorro);
+  if (d.color !== o.color) setPref('color', d.color);
+  if (d.avatar !== o.avatar) setPref('avatar', d.avatar);
+  AP = null; cerrarModal();
+  aplicarApariencia(); pintarRobot(); render();
+  if (hubo) { avisar('✓ Cambios guardados'); if (d.avatar !== o.avatar) setTimeout(() => poseRobot('saluda'), 300); }
+}
+function preguntarSalirAp() {
+  if ($('apSalir')) return;
+  const o = document.createElement('div'); o.id = 'apSalir'; o.className = 'ap-salir';
+  o.innerHTML = `<div class="ap-salir-in" role="dialog" aria-modal="true" aria-labelledby="apSalirT"><b id="apSalirT">¿Salir sin guardar?</b><p>Los cambios que elegiste no se van a guardar.</p><div class="ap-salir-fila"><button type="button" class="btn btn-sec" data-acc="apDescartar">Salir sin guardar</button><button type="button" class="btn btn-grad" data-acc="apSeguir">Seguir eligiendo</button></div></div>`;
+  o.addEventListener('click', e => { if (e.target === o) o.remove(); });
+  document.body.appendChild(o);
 }
 document.addEventListener('change', ev => {
-  if (ev.target.id === 'apNocheDesde') { LS.set('bd_noche_desde', Number(ev.target.value)); aplicarApariencia(); }
-  if (ev.target.id === 'apNocheHasta') { LS.set('bd_noche_hasta', Number(ev.target.value)); aplicarApariencia(); }
+  if (!AP) return;
+  if (ev.target.id === 'apNocheDesde' && $('apPrev')) { AP.d.desde = Number(ev.target.value); $('apPrev').outerHTML = htmlApEjemplo(AP.d); }
+  if (ev.target.id === 'apNocheHasta' && $('apPrev')) { AP.d.hasta = Number(ev.target.value); $('apPrev').outerHTML = htmlApEjemplo(AP.d); }
 });
 document.addEventListener('input', ev => {
-  if (ev.target.id !== 'apTam') return;
-  LS.set('bd_tam', Number(ev.target.value)); aplicarApariencia();
-  const l = $('apTamTxt'); if (l) l.textContent = TAMANOS[tamActual()][1];
+  if (ev.target.id !== 'apTam' || !AP) return;
+  AP.d.tam = Number(ev.target.value);
+  const l = $('apTamTxt'); if (l) l.textContent = TAMANOS[AP.d.tam][1];
+  if ($('apPrev')) $('apPrev').outerHTML = htmlApEjemplo(AP.d);
 });
 
 /* =========================================================
@@ -5355,25 +5624,34 @@ document.addEventListener('keydown', ev => {
 document.addEventListener('beforeinput', ev => {
   const el = ev.target;
   if (!el.matches || !el.matches('input,textarea')) return;
-  if (performance.now() - TEC.cerrado < 600) { ev.preventDefault(); return; }
-  TEC.ult = { el, valor: el.value, t: performance.now() };
+  const ahora = performance.now();
+  // Mientras el teclado baja (o recién bajó) no entra ninguna tecla: es la "tecla fantasma"
+  if (ahora - TEC.cerrado < 600 || (TEC.bajando && ahora - TEC.bajando < 700)) { ev.preventDefault(); return; }
+  TEC.ult = { el, valor: el.value, t: ahora };
 }, true);
 function tecladoSeCerro() {
   const ahora = performance.now();
   TEC.cerrado = ahora;
   const el = document.activeElement;
-  if (!el || !el.matches || !el.matches('input,textarea')) return;
-  // Una tecla que llegó justo antes de que termine de bajar el teclado: se deshace
-  if (TEC.ult && TEC.ult.el === el && ahora - TEC.ult.t < 450 && el.value !== TEC.ult.valor) {
+  if (!el || !el.matches || !el.matches('input,textarea')) { TEC.bajando = 0; return; }
+  // 2.0.1: solo se deshace una tecla que llegó MIENTRAS el teclado bajaba (la fantasma).
+  // La última tecla que escribiste antes de esconderlo es tuya y se respeta, aunque lo escondas enseguida,
+  // pases a otra casilla o salgas de la app.
+  const desde = TEC.bajando || (ahora - 200);
+  if (TEC.ult && TEC.ult.el === el && TEC.ult.t >= desde - 30 && el.value !== TEC.ult.valor && !document.hidden && Date.now() - plataOculta > 1500) {
     el.value = TEC.ult.valor;
     el.dispatchEvent(new Event('input', { bubbles: true }));
   }
-  TEC.ult = null;
+  TEC.ult = null; TEC.bajando = 0;
   el.blur();
 }
 if (window.visualViewport) {
   const medir = () => {
     const h = visualViewport.height;
+    // El teclado empieza a bajar: la pantalla visible crece
+    if (TEC.abierto && TEC.hPrev && h > TEC.hPrev + 30 && !TEC.bajando) TEC.bajando = performance.now();
+    if (TEC.hPrev && h < TEC.hPrev - 30) TEC.bajando = 0;
+    TEC.hPrev = h;
     if (h > TEC.maxAlto) TEC.maxAlto = h;
     const abierto = h < TEC.maxAlto - 150;
     if (TEC.abierto && !abierto) tecladoSeCerro();
@@ -5422,7 +5700,7 @@ Billetera Digital anota los gastos de la familia: los personales y los del negoc
 - Los montos se escriben como en Ualá: los números entran por la derecha y los dos últimos son los centavos. Para $ 500.000,00 se escribe 50000000 (con los dos ceros de los centavos). Si escribe 500000 queda $ 5.000,00.
 - Si un movimiento aparece en rojo, Google no lo aceptó: hay que abrirlo y corregirlo.
 - Hay dos modos; se cambia en **Perfil** → **Modo simple** (prender o apagar).
-- **Perfil** → **Apariencia**: tamaño de la letra (barra de Chica a Enorme, con texto de ejemplo), tipo de letra (Moderna, Muy clara, Redondeada), **Color de la app** (Violeta, Azul, Verde, Naranja, Rosa: se ve al instante y se guarda en la cuenta), modo **Oscuro**, **Claro**, **Como el celu** o **Por horario** (oscuro desde y hasta la hora que se elija, por ejemplo de 20 a 7), **Ahorro de energía** (Apagado, Con poca batería = 20% o menos sin cargar, o Siempre: apaga animaciones y el sonido) y el **Ayudante**. La letra, el modo y el ahorro se guardan en cada celular.
+- **Perfil** → **Apariencia**: tamaño de la letra (barra de Chica a Enorme, con texto de ejemplo), tipo de letra (Moderna, Muy clara, Redondeada), **Color de la app** (Violeta, Azul, Verde, Naranja, Rosa; se guarda en la cuenta), modo **Oscuro**, **Claro**, **Predeterminado del sistema** (igual que el celular) o **Programado** (oscuro desde y hasta la hora que se elija, por ejemplo de 20 a 7), **Ahorro de energía** (Apagado, Con poca batería = 20% o menos sin cargar, o Siempre: apaga animaciones y el sonido) y el **Ayudante**. Arriba, el ejemplo muestra cómo va a quedar; la app cambia recién al tocar **Guardar cambios**. Si se sale sin guardar, aparece "¿Salir sin guardar?" con **Salir sin guardar** (todo queda como estaba) y **Seguir eligiendo**. La letra, el modo y el ahorro se guardan en cada celular.
 - **Perfil → Dispositivos conectados**: lista de celulares y compus donde está abierta la cuenta, con el último uso. **Cerrar** saca la cuenta de ese dispositivo (para entrar de nuevo ahí hace falta usuario y contraseña).
 - Teclado: la tecla → del teclado pasa al campo siguiente; en el último, lo esconde. Si al esconder el teclado se escribía un número solo, la app ahora lo ignora.
 - En esta charla se puede mandar una **foto o captura** con el ícono 📷. Si te mandan una foto, describí lo que ves que tenga que ver con la app o con sus gastos (por ejemplo un comprobante o una pantalla con error) y explicá cómo cargarlo o resolverlo. No podés cargar nada vos.
@@ -5448,11 +5726,11 @@ Inicio: arriba el saludo y el círculo con las iniciales (abre el Perfil). Si se
 
 MODO COMPLETO
 Barra de abajo: **Inicio**, **Personal**, **+** (en el medio), **Negocio**, **Perfil**. El ícono 🤖 (abajo a la derecha) tiene esta charla y guías paso a paso que iluminan dónde tocar.
-- **Ayudante**: en **Perfil → Apariencia → Ayudante** cada uno elige el suyo: el **Robotito** (viene de entrada) o **Rabbit, tu asesor de confianza**, con 4 apariencias (Pixel, Asesor, Conejo-robot y Con monedita). Se guarda en la cuenta (sigue igual en otro celular). Hace gestos en los globitos (saluda, señala, piensa, festeja) y su carita sale en el chat. En el **modo simple**, en Inicio está la barra grande **Preguntale a…** con preguntas comunes arriba; en las demás pantallas, tocando el ícono aparece un globito que explica esa pantalla con palabras simples (con **Entendido** y **Preguntale a…**). Con el teclado abierto, el ícono y su globito suben y se siguen viendo.
+- **Ayudante**: en **Perfil → Apariencia → Ayudante** cada uno elige el suyo: el **Robotito** (viene de entrada) o **Rabbit, tu asesor de confianza**, con 4 apariencias (Pixel, Asesor, Conejo-robot y Con monedita). Se guarda en la cuenta (sigue igual en otro celular). Hace gestos en los globitos (saluda, señala, piensa, festeja) y su carita sale en el chat. En las guías (**Mostrame cómo**) sale del ícono con el cuerpo entero, camina hasta lo que hay que tocar y lo señala con la mano. En el **modo simple**, en Inicio está abajo la barra grande **Preguntale a…**, a la izquierda del ícono, y arriba de ella las preguntas comunes en lista, unidas con líneas; en las demás pantallas, tocando el ícono aparece un globito que explica esa pantalla con palabras simples (con **Entendido** y **Preguntale a…**). Con el teclado abierto, el ícono y su globito suben y se siguen viendo.
 - **Deudas** (Inicio, modo completo): una sola tarjeta con dos partes: **Préstamos entre negocios** (compensados: si Rina le debe 20.000 a Freddy y Freddy 5.000 a Rina, se ve "Rina le debe a Freddy $ 15.000") y **Le debés al negocio** (lo que cada uno le debe a su propio negocio). El admin ve todas; cada uno ve solo las de su negocio. Cada deuda tiene **Devolver**.
 - **Buscador** (modo completo): la lupa al lado del nombre en Inicio; al bajar con el dedo se estira y queda arriba como barra "Buscá en la Billetera". Abre una pantalla para escribir: muestra **Sugerencias** (las guías, para que el ayudante muestre cómo hacer algo), la tarjeta **Tu asistente** (abre el chat de la IA) y, mientras se escribe, las guías y los movimientos que coinciden (de los últimos 12 meses), con **Ver los N en Consultar todos**.
 - **Análisis** (solo modo completo, se entra desde la fila del monto de Inicio): el mes con flechas ‹ ›, el total y los botones de negocios. Un círculo con todas las categorías (negocio en violetas y celestes, personal en rosas y naranjas); en el centro **Personal** y **Negocio** con sus montos (todo sube desde 0 al entrar). Eligiendo Personal o Negocio (o el anillo finito de adentro), el otro grupo queda gris. Eligiendo una parte, el círculo se achica y se corre, y una línea de circuito muestra el nombre y el monto. **Mercadería** abre un segundo anillo con los 3 productos con más gasto y "Otros productos"; **Viaje** (pasero, colectivo, comida…) y **Comisiones** (cambio y recargos) también. Debajo, la lista de categorías con su % y **Ver movimientos**: abre la pantalla de la categoría con las barras mes a mes (se deslizan, la línea punteada es el promedio), sus mini-categorías y "Tenés N gastos" (tocando uno se corrige como siempre).
-- **Inicio**: cuánto se gastó en el mes (el número sube desde 0 al entrar; con el **Sonido de monedas** prendido en Perfil, suena; viene apagado). La fila del monto, el ojito y la flecha **›** lleva a la pantalla **Análisis** (el ojito sigue ocultando los montos). Tarjetas de lo que se debe (al negocio o préstamos), "Comparado con <mes anterior>" con las barras de los meses: se ven 6 y deslizando se ven los anteriores, hasta 12 meses atrás; al elegir la barra de un mes, todo Inicio pasa a ese mes ("Gastado en julio"). Tocando el espacio vacío de esa tarjeta se abre el **día por día**: siempre se ven 7 días y se desliza de a uno; arriba, el resumen de esos 7 días (total, negocio, personal y efectivo al cierre); eligiendo un día se ve su detalle. Si alguien no carga nada en 3 días, ve el aviso "Hace N días que no cargás nada". "Por categoría" (se agranda al elegirla), "Últimos gastos" (los 5 movimientos más nuevos, aunque sean de meses anteriores) con **Consultar todos**, que siempre está: muestra los movimientos de los **últimos 12 meses**, de a **30 por página** (abajo: **‹ Página 1 de N ›**, con flechas o escribiendo el número), con buscador por palabra o monto y filtros por tipo: Personal, Compras, No reversible, Gastos generales, Cambios, Préstamos, Efectivo, Transferencia. Lo de más de 12 meses no se ve ahí, pero sigue guardado (sale en el Excel por mes).
+- **Inicio**: cuánto se gastó en el mes (el número sube desde 0 al entrar; con el **Sonido de monedas** prendido en Perfil, suena como máximo una vez cada 6 horas y solo en Inicio; viene apagado). La fila del monto, el ojito y la flecha **›** lleva a la pantalla **Análisis** (el ojito sigue ocultando los montos). Tarjetas de lo que se debe (al negocio o préstamos), "Comparado con <mes anterior>" con las barras de los meses: se ven 6 y deslizando se ven los anteriores, hasta 12 meses atrás; al elegir la barra de un mes, todo Inicio pasa a ese mes ("Gastado en julio"). Tocando el espacio vacío de esa tarjeta se abre el **día por día**: siempre se ven 7 días y se desliza de a uno; arriba, el resumen de esos 7 días (total, negocio, personal y efectivo al cierre); eligiendo un día se ve su detalle. Si alguien no carga nada en 3 días, ve el aviso "Hace N días que no cargás nada". "Por categoría" (se agranda al elegirla), "Últimos gastos" (los 5 movimientos más nuevos, aunque sean de meses anteriores) con **Consultar todos**, que siempre está: muestra los movimientos de los **últimos 12 meses**, de a **30 por página** (abajo: **‹ Página 1 de N ›**, con flechas o escribiendo el número), con buscador por palabra o monto y filtros por tipo: Personal, Compras, No reversible, Gastos generales, Cambios, Préstamos, Efectivo, Transferencia. Lo de más de 12 meses no se ve ahí, pero sigue guardado (sale en el Excel por mes).
 - **+** abre dos grupos. **Negocio**: **Viajes** (pestañas **Inversión** y **No reversible**), **Gastos generales** (categoría, fecha, monto, detalle, pago; sin viaje), **Cambio a efectivo** y **Préstamo a otro negocio**. **Personal**: **Gasto personal** (si la plata salió del negocio, se elige **Negocio (MercadoLibre)** y se prende **Lo voy a devolver**) y **Devolver plata al negocio**.
   · Compra (Inversión): producto, unidades, costo total y **Pago**: **Efectivo**, **Transferencia** o **Combinado** (se escribe lo pagado **En efectivo** y la parte **Por transferencia** se calcula sola). Con transferencia o combinado: **Recargo por transferir** en **$** o en **%** (se cobra sobre lo transferido).
   · Cambio: **Lugar** (**Bermejo**, ya marcado, o **Otro lugar**; en Bermejo queda dentro del viaje del día, en otro lugar sin viaje), **Compartido con otros negocios** (interruptor), monto transferido, "¿Cómo pagaste la comisión?" (**Con billetes** / **Transferí de más** / **Una parte**), y según eso: **¿Cuánto efectivo te dieron?** con **Comisión %** al lado (escribe en el que quiera y el otro se completa solo), **¿Cuánto pagaste de comisión?** con su % si fue con billetes, o, con "Una parte", **¿Cuánto efectivo te dieron?** y **¿Cuánto de la comisión pagaste con billetes?**. Abajo, **¿Te dieron un monto redondeado?** para anotar si le dieron de más y dio vuelto con su efectivo. Nota opcional.
@@ -5469,7 +5747,7 @@ Barra de abajo: **Inicio**, **Personal**, **+** (en el medio), **Negocio**, **Pe
 CONCEPTOS
 - **Inversión / Recuperable**: mercadería comprada para vender. La plata vuelve cuando se vende. Puede tener un recargo de la tienda si se pagó por transferencia.
 - **No reversible**: gastos que no vuelven: pasero, colectivo, chalana, baño, bodega, comida del viaje, la comisión del cambio. Categorías: Insumos (pasajes, pasero), Sueldo (comida y bebida del viaje), Interés/Gastos (comisiones, recargos), Otros.
-- **Cambio a efectivo**: se transfiere (por ejemplo a un cambista en Bermejo, o a un conocido) y te dan efectivo. Con conocidos muchas veces no hay comisión (0%). La comisión es un gasto no reversible. Desde la 2.0.0 el % es sobre el EFECTIVO que te dan, como lo calcula la familia: pedís 900.000, el cambista cobra 1,5% → 13.500. Se paga transfiriendo de más (913.500), con billetes que ya tenías (transferís 900.000) o una parte de cada forma (transferís 903.500 y pagás 10.000 con billetes). Si escribís el monto, la app saca sola el % con varios decimales (1.000 de 70.000 = 1,4286%). Los cambios cargados antes de la 2.0.0 tienen el % calculado sobre lo transferido.
+- **Cambio a efectivo**: se transfiere (por ejemplo a un cambista en Bermejo, o a un conocido) y te dan efectivo. Con conocidos muchas veces no hay comisión (0%). La comisión es un gasto no reversible. Desde la 2.0.0 el % es sobre el EFECTIVO que te dan, como lo calcula la familia: pedís 900.000, el cambista cobra 1,5% → 13.500. Se paga transfiriendo de más (913.500), con billetes que ya tenías (transferís 900.000) o una parte de cada forma (transferís 903.500 y pagás 10.000 con billetes). Si escribís el monto, la app saca sola el % con varios decimales (1.000 de 70.000 = 1,4286%). Los cambios cargados antes de la 2.0.0 tienen el % calculado sobre lo transferido. En los dos modos se pregunta en el mismo orden: primero **¿Cuánto efectivo te dieron?**, después la comisión ($ o %), **¿Cómo pagaste la comisión?** y, si fue una parte, cuánto con billetes. Lo transferido se calcula solo. Si se transfirió otro monto ("¿Transferiste otro monto?" en el simple, o cambiando **Transferiste** en el completo), la comisión acordada no cambia y lo que la transferencia no cubrió se pagó con billetes: efectivo 900.000 al 1,5% = 13.500; si transferiste 908.000, la transferencia cubrió 8.000 y los billetes son 5.500. Si la transferencia cubre toda la comisión o más, no hubo billetes. No deja guardar si te dieron más de lo que transferiste.
 - **Cambio compartido**: cuando varios negocios de la familia cambian juntos con el mismo cambista. Cada negocio queda con lo que transfirió, su parte de la comisión y su efectivo.
 - **Préstamo entre negocios**: un negocio de la familia le da plata a otro. No es gasto ni venta: solo queda anotado lo que se debe. En efectivo, baja el efectivo del que presta y sube el del que recibe; por transferencia, el efectivo no cambia.
 - **Pago combinado**: una compra pagada una parte en efectivo y otra por transferencia, en una sola carga. Del efectivo del negocio baja solo la parte en efectivo. En un cambio, con la comisión con billetes dan todo lo transferido y la comisión se paga con billetes; transferida de más, dan menos; con una parte de cada forma, el efectivo sube lo que te dieron menos lo pagado con billetes. En todos los casos el efectivo del negocio sube lo transferido menos la comisión.
@@ -5749,7 +6027,13 @@ function corregirCarga(i) {
   if (esSimple()) return iniciarFlujo(tipo, Object.assign({ d: Object.assign({}, d) }, c.fl.otro ? { otro: c.fl.otro } : {}));
   // Modo completo: se abre el formulario con todo completado
   const neg = c.fl.negocio, set = o => { Object.assign(S.form, o); S.form.hoja === 'personal' ? pintarFormPersonal() : pintarFormNegocio(); };
-  if (tipo === 'cambio') { formNegocio(null, 'Cambio', neg); const efe = d.como === 'billetes'; return set({ fecha: d.fecha, monto: String(transfSolo(d) || d.monto || ''), comModo: 'monto', pagoComision: efe ? 'Efectivo' : 'Transferencia', recibidoTxt: efe ? '' : (d.recibido || ''), comPesos: efe ? (d.comPesos || '') : '', lugar: d.lugar, nota: d.nota || '' }); }
+  if (tipo === 'cambio') {
+    formNegocio(null, 'Cambio', neg);
+    const E = num(d.recibido) || 0, C = num(d.comPesos) || 0;
+    return set({ fecha: d.fecha, recibidoTxt: E ? String(E) : '', comPesos: C ? String(C) : '', pctCambio: E > 0 && C ? fmtPctIn(r6(C / E * 100)) : '', comModo: 'monto',
+      pagoComision: d.como === 'billetes' ? 'Efectivo' : d.como === 'parte' ? 'Combinado' : 'Transferencia', comBill: d.como === 'parte' ? String(d.billetes || '') : '',
+      montoMan: lleno(d.montoMan), monto: lleno(d.montoMan) ? String(d.montoMan) : '', lugar: d.lugar, nota: d.nota || '' });
+  }
   if (tipo === 'compra') { formNegocio(null, 'Inversión', neg); return set({ fecha: d.fecha, descripcion: d.descripcion || '', unidades: d.unidades || '', monto: d.monto || '', pago: d.pago || 'Transferencia', efeParte: d.efeParte || '', recModo: 'pesos', recargoPesos: d.extra === 'Sí' ? d.recPesos : '' }); }
   if (tipo === 'prestar') { limpiarModal(); formPrestamo(null); S.form.negocio = neg; Object.assign(S.form, { otro: d.otro || '', monto: d.monto || '', pago: d.pago === 'Transferencia' ? 'Transferencia' : 'Efectivo', fecha: d.fecha, nota: d.nota || '' }); return pintarFormPrestamo(); }
   if (tipo === 'devprest') { limpiarModal(); formDevPrestamo(neg, c.fl.otro); Object.assign(S.form, { monto: d.monto || '', pago: d.pago === 'Transferencia' ? 'Transferencia' : 'Efectivo', fecha: d.fecha }); return pintarFormDevPrestamo(); }
