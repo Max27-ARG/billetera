@@ -70,6 +70,7 @@ button{cursor:pointer}
 .btn{border:0;border-radius:16px;padding:15px 18px;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;gap:8px}
 .btn-grad{background:var(--grad);color:#fff}
 .btn-sec{background:var(--card3);color:var(--ink)}
+.btn-rojo{background:#D92D3F;color:#fff}
 .btn-ghost{background:transparent;color:var(--soft);font-weight:700;font-size:14px;padding:10px}
 .btn:disabled{opacity:.55;cursor:default}
 .error{background:rgba(255,107,129,.14);color:var(--errtxt);border-radius:12px;padding:10px 12px;font-size:14px;font-weight:700}
@@ -304,6 +305,22 @@ html.ahorro *,html.ahorro *::before,html.ahorro *::after{animation:none!importan
 .pin-teclas{display:grid;grid-template-columns:repeat(3,76px);gap:14px}
 .pin-teclas button{width:76px;height:76px;border-radius:50%;border:0;background:var(--card2);color:var(--ink);font:inherit;font-size:30px;font-weight:800;cursor:pointer}
 .pin-teclas button:active{background:var(--card3)}
+/* 2.0.2 · Modo simple: el ayudante de cuerpo entero fuera de Inicio, señalando su globito */
+.cam.ayu-parado{left:auto;top:auto;right:12px;bottom:calc(14px + var(--safe-b) + var(--kb,0px));transform:none;pointer-events:auto;cursor:pointer;z-index:7;transition:bottom .2s ease}
+.cam.ayu-parado.aparece{animation:ayuAparece .4s cubic-bezier(.2,1.3,.4,1)}
+.cam.ayu-parado.al-icono{animation:ayuAlIcono .28s ease-in forwards}
+#robot.vuelve{animation:icoVuelve .38s cubic-bezier(.2,1.4,.4,1)}
+@keyframes ayuAparece{from{transform:translateY(26px) scale(.45);opacity:0}to{transform:none;opacity:1}}
+@keyframes ayuAlIcono{to{transform:translateY(22px) scale(.4);opacity:0}}
+@keyframes icoVuelve{from{transform:scale(.35);opacity:0}to{transform:none;opacity:1}}
+body.con-cuerpo .robot-globo{right:calc(14px + var(--ayw,70px));bottom:calc(14px + var(--safe-b) + var(--kb,0px) + 40px);max-width:min(300px,calc(100vw - 104px))}
+.robot-globo .g-acc .g-stop{background:transparent!important;color:var(--muted)!important;text-decoration:underline;padding-left:4px;padding-right:4px}
+/* Inicio simple: la barra queda abajo, al lado del ícono, y sube mientras está el mensaje del ayudante */
+body.simple.ini-simple #contenido{padding-bottom:0}
+.s-pregunta{transition:transform .35s ease}
+body.ini-simple #contenido > .vista{transition:transform .35s ease}
+body.globo-ini .s-pregunta{transform:translateY(calc(-1 * var(--sube1,0px)))}
+body.globo-ini.ini-simple #contenido > .vista{transform:translateY(calc(-1 * var(--sube2,0px)))}
 /* 2.0.1 · Ayudante con cuerpo completo (un solo cuerpo: brazos y piernas se mueven desde sus articulaciones) */
 .cam{position:fixed;left:0;top:0;z-index:26;pointer-events:none;will-change:transform;transition:opacity .25s}
 .cam[hidden]{display:none}
@@ -973,7 +990,7 @@ html.claro .deuda.tedeben small{color:var(--tealink)}
 const API = window.BILLETERA_API || '';
 // Fecha y hora de esta versión (se muestra una vez cuando alguien abre la app actualizada)
 // Versión: MAYOR.MENOR.ARREGLO (arreglo → sube el último; algo nuevo → el del medio; cambio enorme → el primero)
-const APP_SERIE = '2.0.1', APP_FECHA = '2026-11-09';
+const APP_SERIE = '2.0.2', APP_FECHA = '2026-11-09';
 const APP_VERSION = APP_SERIE;
 const COLORES = ['#9B6BFF', '#F05BB5', '#3FD6C6', '#FFB547', '#6FA8FF', '#FF8A5B', '#B5E36B', '#D7C8FF'];
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
@@ -1706,6 +1723,12 @@ function render() {
   animarGraficos();
   contarHero();
   if (S.vista === 'inicio') lupaProgreso();
+  document.body.classList.toggle('ini-simple', esSimple() && S.vista === 'inicio');
+  if (esSimple() && S.vista === 'inicio') {
+    const c = $('contenido'), v = c.firstElementChild, cs = getComputedStyle(c);
+    if (v) v.style.minHeight = (c.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom)) + 'px';
+  } else document.body.classList.remove('globo-ini');
+  ayuLugar(); guiaPorPantalla();
   if (S.vista === 'analisis') montarAnalisis();
   barras.forEach((c, i) => {
     const nueva = document.querySelector('#contenido ' + c);
@@ -1747,7 +1770,7 @@ function anillo(id, items, total, o) {
   let ac = 0, arcos = '';
   items.forEach(([, v], i) => {
     const largo = v / total * C, gap = items.length > 1 ? Math.min(4, largo / 3) : 0, vis = Math.max(largo - gap, 0.01);
-    arcos += `<circle class="arco" data-seg="${i}" data-graf="${id}" data-ini="${ac}" data-len="${vis}" cx="${cx}" cy="${cx}" r="${R}" fill="none" stroke="${COLORES[i % COLORES.length]}" stroke-width="${g}" stroke-dasharray="${vis} ${C}" stroke-dashoffset="${-ac}" transform="rotate(-90 ${cx} ${cx})"/>`;
+    arcos += `<circle class="arco" data-seg="${i}" data-graf="${id}" data-ini="${ac}" data-len="${vis}" cx="${cx}" cy="${cx}" r="${R}" fill="none" stroke="${items[i][2] || COLORES[i % COLORES.length]}" stroke-width="${g}" stroke-dasharray="${vis} ${C}" stroke-dashoffset="${-ac}" transform="rotate(-90 ${cx} ${cx})"/>`;
     ac += largo;
   });
   const L = String(o.valor).length, grande = L > 15 ? 17 : L > 13 ? 20 : L > 11 ? 23 : 27;
@@ -1758,8 +1781,8 @@ function anillo(id, items, total, o) {
     <text class="c2" x="${cx}" y="${cx + 16}" text-anchor="middle" font-size="${grande}" font-weight="900" style="fill:var(--ink)">${esc(o.valor)}</text>
     <text class="c3" x="${cx}" y="${cx + 38}" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--c3)">${esc(o.abajo)}</text></g>${chico}</svg>`;
 }
-function legIt(id, [k, v], i, total) {
-  return `<button type="button" class="leg-it" data-graf="${id}" data-seg="${i}" aria-pressed="false"><i style="background:${COLORES[i % COLORES.length]}"></i><span class="n">${esc(k)}</span><span class="m">${fmt(v)}</span><b>${Math.round(v / total * 100)}%</b></button>`;
+function legIt(id, [k, v, col], i, total) {
+  return `<button type="button" class="leg-it" data-graf="${id}" data-seg="${i}" aria-pressed="false"><i style="background:${col || COLORES[i % COLORES.length]}"></i><span class="n">${esc(k)}</span><span class="m">${fmt(v)}</span><b>${Math.round(v / total * 100)}%</b></button>`;
 }
 const movs = n => n + ' movimiento' + (n === 1 ? '' : 's');
 // Se anima solo cuando cambian los números o se entra a la pantalla (no cada vez que se actualiza solo)
@@ -1893,7 +1916,8 @@ function vInicio() {
   const neg = datosFiltrados(S.negocio).filter(f => enRango(f, mes));
   const tPer = per.reduce((s, f) => s + (Number(f.monto) || 0), 0);
   const tNeg = neg.reduce((s, f) => s + totalNegocio(f), 0);
-  const items = topN(agrupar([...per.map(f => [f.categoria, Number(f.monto) || 0]), ...neg.flatMap(partesNegocio).map(p => [p[0], p[1]])]), 5);
+  let items = colorearCats(catsDeFilas(per, neg)).sort((a, b) => b.amount - a.amount).map(c => [c.name, c.amount, c.color]);
+  if (items.length > 5) items = [...items.slice(0, 4), ['Otros', r2(items.slice(4).reduce((s2, x) => s2 + x[1], 0)), '#8E89A8']];
   const total = tPer + tNeg;
   // Últimos movimientos: los 5 más nuevos, sean de este mes o de antes (como en Mercado Pago)
   const ultimos = ordenar([...datosFiltrados(S.personal).map(f => Object.assign({ _n: false }, f)), ...datosFiltrados(S.negocio).map(f => Object.assign({ _n: true }, f))]).slice(0, 5);
@@ -2083,6 +2107,7 @@ function vPerfil() {
     <div id="usuariosAdmin">${usuariosAdmin ? htmlUsuarios() : `<button class="btn btn-sec" type="button" data-acc="verUsuarios">Ver cuentas</button>`}</div>
   </section>` : ''}
 
+  ${esSimple() ? `<button class="interruptor" type="button" role="switch" data-acc="guiaSimpleOnOff" aria-checked="${guiaSimpleOn()}"><span><b>Guía del ayudante</b><small>${esc(NombreAyu())} te explica cada pantalla</small></span><span class="switch" aria-hidden="true"></span></button>` : ''}
   ${esSimple() ? '' : `<button class="interruptor" type="button" role="switch" data-acc="sonidoOnOff" aria-checked="${LS.get('bd_sonido_' + y.usuario, false) === true}"><span><b>Sonido de monedas</b><small>Suena cuando el monto de Inicio sube desde 0</small></span><span class="switch" aria-hidden="true"></span></button>`}
   ${esSimple() ? '' : `<button class="interruptor" type="button" role="switch" data-acc="ayudanteOnOff" aria-checked="${LS.get('bd_ayudante', true) !== false}"><span><b>Mostrar ayudante 🤖</b><small>El robotito que te guía paso a paso</small></span><span class="switch" aria-hidden="true"></span></button>`}
   <button class="interruptor" type="button" data-acc="apariencia"><span><b>Apariencia</b><small>Letra · Color · Modo claro u oscuro · Ayudante · Ahorro de energía</small></span>${svg('der', 20, 2.2)}</button>
@@ -3065,7 +3090,7 @@ document.addEventListener('click', async ev => {
     ayudanteOnOff: () => { const on = LS.get('bd_ayudante', true) === false; LS.set('bd_ayudante', on); t.setAttribute('aria-checked', on); pintarRobot(); avisar(on ? 'Ayudante activado' : 'Ayudante oculto'); },
     guia: () => { const n = t.dataset.guia; cerrarModal(); setTimeout(() => iniciarGuia(n), 120); },
     guiaMenu: abrirAyudante,
-    abrirIA: () => abrirIA(),
+    abrirIA: () => abrirIA(t.dataset.foco === '1'),
     iaEnviar: () => enviarIA(),
     iaGuardar: () => guardarCarga(t.dataset.i),
     iaCorregir: () => corregirCarga(t.dataset.i),
@@ -3073,7 +3098,9 @@ document.addEventListener('click', async ev => {
     iaQuitarFoto: quitarFotoIA,
     iaSug: () => enviarIA(t.dataset.txt),
     iaPregunta: () => { const q = t.dataset.txt; abrirIA(); setTimeout(() => enviarIA(q), 80); },
-    globoOk: () => cerrarGlobito(),
+    globoOk: () => { AYU.vistos.add(claveAyu()); cerrarGlobito(); },
+    guiaStop: () => { LS.set('bd_guia_simple_' + S.yo.usuario, false); cerrarGlobito(); avisar('Guía apagada. La podés prender de nuevo en Perfil.'); },
+    guiaSimpleOnOff: () => { const k = 'bd_guia_simple_' + S.yo.usuario, on = !guiaSimpleOn(); LS.set(k, on); t.setAttribute('aria-checked', on); if (on) AYU.vistos.clear(); avisar(on ? 'Guía del ayudante prendida' : 'Guía del ayudante apagada'); },
     globoIA: () => { cerrarGlobito(); abrirIA(); },
     apAvatar: () => { AP.d.avatar = t.dataset.av; abrirApariencia(); },
     iaGuia: () => irAccionIA(t.dataset.g),
@@ -3136,8 +3163,23 @@ function irAnalisis() { if (esSimple()) return; S.anaMes = mesIni(); S.anaSel = 
    ========================================================= */
 const ICO_CAT = { 'Mercadería': '🛒', 'Viaje': '🚌', 'Comisiones': '💱', 'Comida': '🍽️', 'Salud': '💊', 'Ropa': '👕', 'Transporte': '🚕', 'Educación': '📚', 'Salidas': '🎉', 'Otros': '✏️', 'Casa (luz, gas, agua)': '🏠', 'Facturación MercadoLibre': '🧾', 'Contadora': '📋', 'Envíos': '📦', 'Correo Andreani': '📦', 'Mercado Envíos FULL': '📦', 'Monotributo': '🏛️' };
 const icoCat = n => ICO_CAT[n] || (/env[ií]o|correo|andreani|full/i.test(n) ? '📦' : /monotrib|iibb|impuesto|afip|arca/i.test(n) ? '🏛️' : /factur/i.test(n) ? '🧾' : '🏷️');
-const COL_NEG = ['#7C4DFF', '#4F7DF3', '#2FB3E0', '#9A7BFF', '#3CCFC4', '#5B5FD9', '#6FA8FF', '#8E7CFF'];
-const COL_PER = ['#E0409E', '#FF7A59', '#F5A23D', '#EE6A9B', '#FFB877', '#C23A8C', '#FF9F6B', '#F07FB8'];
+// 2.0.2: Negocio en la familia del azul tirando a violeta, Personal en la del naranja tirando a rojo.
+// Tonos oscuros y claros intercalados: dos categorías que quedan juntas nunca se confunden.
+const COL_NEG = ['#4F46E5', '#8FA7FF', '#7C3AED', '#5FA8F5', '#2E5BDB', '#A78BFA', '#5B21B6', '#6CB4FF'];
+const COL_PER = ['#F2542D', '#FDA65A', '#C81E1E', '#FF8A70', '#E8700F', '#FBC28A', '#9F1D1D', '#F98C5B'];
+const GRUPO_COL = { neg: '#5B4BEA', per: '#F2542D' };
+function colorearCats(cats) {
+  const ord = g => cats.filter(c => c.g === g).sort((a, b) => b.amount - a.amount);
+  return [...ord('neg').map((c, i) => Object.assign(c, { color: COL_NEG[i % COL_NEG.length] })), ...ord('per').map((c, i) => Object.assign(c, { color: COL_PER[i % COL_PER.length] }))];
+}
+// Siluetas simples en blanco para adentro del círculo
+const SIL = { carro: 'M3 4h2l2.4 11h10.2L20 8H6.2M9.5 20h.01M17 20h.01', bus: 'M5 17h14M6 17V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v10M6 11h12M8 20h.01M16 20h.01', cambio: 'M7 7h11l-3-3M17 17H6l3 3',
+  recibo: 'M7 3h10v18l-2.5-1.5L12 21l-2.5-1.5L7 21zM10 8h4M10 12h4', caja: 'M3 8l9-5 9 5v8l-9 5-9-5zM3 8l9 5 9-5M12 13v8', edificio: 'M3 21h18M5 21V10M19 21V10M9 21v-7M15 21v-7M2 10l10-6 10 6z',
+  comida: 'M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M17 3c-2 2-2 6 0 8v10', salud: 'M10 4h4v6h6v4h-6v6h-4v-6H4v-4h6z', ropa: 'M8 4L3 7l2 4 3-1v10h8V10l3 1 2-4-5-3a4 4 0 0 1-8 0z',
+  auto: 'M5 16h14M6 16l1.5-5h9L18 16M4 16v3h3v-3M17 16v3h3v-3', libro: 'M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 21V5', copa: 'M8 3h8l-1 7a3 3 0 0 1-6 0zM12 13v6M8 21h8',
+  casa: 'M4 11l8-7 8 7M6 10v10h12V10M10 20v-5h4v5', lapiz: 'M4 20l4-1 10-10-3-3L5 16zM14 6l3 3', etiqueta: 'M3 12V4h8l9 9-8 8zM7.5 7.5h.01' };
+const silCat = n => ({ 'Mercadería': 'carro', 'Viaje': 'bus', 'Comisiones': 'cambio', 'Comida': 'comida', 'Salud': 'salud', 'Ropa': 'ropa', 'Transporte': 'auto', 'Educación': 'libro', 'Salidas': 'copa', 'Otros': 'lapiz', 'Casa (luz, gas, agua)': 'casa', 'Facturación MercadoLibre': 'recibo', 'Contadora': 'recibo' })[n]
+  || (/env[ií]o|correo|andreani|full/i.test(n) ? 'caja' : /monotrib|iibb|impuesto|afip|arca/i.test(n) ? 'edificio' : /factur/i.test(n) ? 'recibo' : 'etiqueta');
 // Lo que aporta cada fila a cada categoría del análisis
 function catsDeFilas(per, neg) {
   const M = {}, add = (id, g, name, monto, sub, f, hojaN) => {
@@ -3167,9 +3209,7 @@ function catsDeFilas(per, neg) {
 function datosAnalisis(ym) {
   const per = datosFiltrados(S.personal).filter(f => String(f.fecha).slice(0, 7) === ym);
   const neg = datosFiltrados(S.negocio).filter(f => String(f.fecha).slice(0, 7) === ym);
-  const cats = catsDeFilas(per, neg);
-  const ord = g => cats.filter(c => c.g === g).sort((a, b) => b.amount - a.amount);
-  const lista = [...ord('neg').map((c, i) => Object.assign(c, { color: COL_NEG[i % COL_NEG.length] })), ...ord('per').map((c, i) => Object.assign(c, { color: COL_PER[i % COL_PER.length] }))];
+  const lista = colorearCats(catsDeFilas(per, neg));
   const total = r2(lista.reduce((a, c) => a + c.amount, 0)), totNeg = r2(lista.filter(c => c.g === 'neg').reduce((a, c) => a + c.amount, 0));
   return { ym, lista, total, totNeg, totPer: r2(total - totNeg), n: per.length + neg.length };
 }
@@ -3221,12 +3261,14 @@ function montarAnalisis() {
   datos.forEach(d => {
     d.path = el('path', { class: 'seg', tabindex: '0', role: 'button', 'aria-label': d.name + ' ' + fmtReal(d.amount) }, gAn);
     d.path.style.fill = d.color; d.path.style.stroke = d.color;
-    d.ico = el('text', { class: 'ico' }, gAn); d.ico.textContent = d.icon;
+    d.ico = el('svg', { class: 'ico', width: 18, height: 18, viewBox: '0 0 24 24', overflow: 'visible' }, gAn);
+    const sp = SIL[silCat(d.name)];
+    d.ico.innerHTML = `<path d="${sp}" fill="none" stroke="rgba(20,10,50,.35)" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/><path d="${sp}" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>`;
     tocar(d.path, () => elegirSeg(d.id));
   });
   const spanNeg = A.totNeg / total * 360, inter = [];
-  if (A.totNeg > 0) inter.push({ g: 'neg', a0: A.totPer > 0 ? 1.5 : 0, a1: A.totPer > 0 ? spanNeg - 1.5 : 360, color: '#7C4DFF' });
-  if (A.totPer > 0) inter.push({ g: 'per', a0: A.totNeg > 0 ? spanNeg + 1.5 : 0, a1: A.totNeg > 0 ? 358.5 : 360, color: '#E0409E' });
+  if (A.totNeg > 0) inter.push({ g: 'neg', a0: A.totPer > 0 ? 1.5 : 0, a1: A.totPer > 0 ? spanNeg - 1.5 : 360, color: GRUPO_COL.neg });
+  if (A.totPer > 0) inter.push({ g: 'per', a0: A.totNeg > 0 ? spanNeg + 1.5 : 0, a1: A.totNeg > 0 ? 358.5 : 360, color: GRUPO_COL.per });
   inter.forEach(o => {
     o.path = el('path', { d: sector(101, 108, o.a0, o.a1), class: 'seg', tabindex: '0', role: 'button', 'aria-label': o.g === 'neg' ? 'Elegir Negocio' : 'Elegir Personal' }, $('anaInterno'));
     o.path.style.fill = o.color; o.path.style.stroke = o.color; o.path.style.strokeWidth = 2;
@@ -3237,7 +3279,7 @@ function montarAnalisis() {
     const gg = el('g', { class: 'c-grupo', 'data-g': k, tabindex: '0', role: 'button', 'aria-label': 'Elegir ' + labTxt }, gC);
     el('rect', { x: -86, y: y0 - 18, width: 172, height: 50, rx: 12, fill: 'transparent' }, gg);
     const lab = el('text', { class: 'c-lab', x: 6, y: y0 }, gg); lab.textContent = labTxt;
-    const dot = el('circle', { cx: 6 - labTxt.length * 4.4 - 9, cy: y0 - 4.5, r: 4.5 }, gg); dot.style.fill = k === 'neg' ? '#7C4DFF' : '#E0409E';
+    const dot = el('circle', { cx: 6 - labTxt.length * 4.4 - 9, cy: y0 - 4.5, r: 4.5 }, gg); dot.style.fill = GRUPO_COL[k];
     const v = el('text', { class: 'c-val', x: 0, y: y0 + 26, 'data-val': val }, gg); v.style.fontSize = (fmtReal(val).length > 13 ? 19 : 23) + 'px'; v.textContent = fmt(val);
     tocar(gg, () => elegirGrupo(k));
   };
@@ -3249,13 +3291,14 @@ function montarAnalisis() {
   const vistaObjetivo = () => {
     const d = st.seg && byId(st.seg); if (!d) return { x: CX, y: CY, s: 1 };
     const a = (d.subList && st.sub != null) ? (d.afuera ? d.subList[st.sub].bm : d.subList[st.sub].mid) : d.mid, sin = Math.sin(a * D), cos = Math.cos(a * D);
-    return { x: sin >= 0 ? CX - 80 : CX + 80, y: cos > 0.34 ? CY + 34 : (cos < -0.34 ? CY - 34 : CY), s: 0.64 };
+    const s = 0.64, rMax = (d.afuera ? 232 : d.subList ? 184 : 160) * s + 6, lim = (v, max) => Math.max(rMax, Math.min(max - rMax, v));
+    return { x: lim(sin >= 0 ? CX - 80 : CX + 80, 420), y: lim(cos > 0.34 ? CY + 34 : (cos < -0.34 ? CY - 34 : CY), 400), s };
   };
   let anim = null;
   const animar = (listo, dur0) => {
     const from = datos.map(d => ({ ...d.cur })), to = datos.map(objetivo), v0 = { ...vista }, v1 = vistaObjetivo(), g = selG();
-    datos.forEach(d => { const gris = g && d.g !== g, c = gris ? 'var(--gris)' : d.color; d.path.style.fill = c; d.path.style.stroke = c; d.ico.style.opacity = (d.a1 - d.a0 < 9) ? 0 : (gris ? 0.4 : 1); });
-    inter.forEach(o => { const c = (g && o.g !== g) ? 'var(--gris)' : o.color; o.path.style.fill = c; o.path.style.stroke = c; });
+    datos.forEach(d => { const gris = g && d.g !== g; d.path.style.fill = d.color; d.path.style.stroke = d.color; d.path.style.opacity = gris ? 0.3 : 1; d.ico.style.opacity = (d.a1 - d.a0 < 9) ? 0 : (gris ? 0.5 : 1); });
+    inter.forEach(o => { const gris = g && o.g !== g; o.path.style.fill = o.color; o.path.style.stroke = o.color; o.path.style.opacity = gris ? 0.3 : 1; });
     gC.querySelectorAll('.c-grupo').forEach(n => n.classList.toggle('apagado', !!(g && n.dataset.g !== g)));
     if (anim) cancelAnimationFrame(anim);
     const t0 = performance.now(), dur = RM ? 1 : (dur0 != null ? dur0 : 800);
@@ -3265,10 +3308,10 @@ function montarAnalisis() {
       datos.forEach((d, i) => {
         d.cur = { r1: from[i].r1 + (to[i].r1 - from[i].r1) * e, r2: from[i].r2 + (to[i].r2 - from[i].r2) * e };
         d.path.setAttribute('d', sector(d.cur.r1, d.cur.r2, d.a0, d.a1));
-        const [ix, iy] = pt((d.cur.r1 + d.cur.r2) / 2, d.mid); d.ico.setAttribute('x', ix.toFixed(1)); d.ico.setAttribute('y', iy.toFixed(1));
+        const [ix, iy] = pt((d.cur.r1 + d.cur.r2) / 2, d.mid); d.ico.setAttribute('x', (ix - 9).toFixed(1)); d.ico.setAttribute('y', (iy - 9).toFixed(1));
       });
       vista = { x: v0.x + (v1.x - v0.x) * e, y: v0.y + (v1.y - v0.y) * e, s: v0.s + (v1.s - v0.s) * e };
-      ponerVista(vista);
+      ponerVista(vista); if (traza) traza();
       if (k < 1) anim = requestAnimationFrame(paso); else if (listo) listo();
     };
     anim = requestAnimationFrame(paso);
@@ -3283,7 +3326,7 @@ function montarAnalisis() {
     const piezas = d.subList.map((s, i) => {
       const p = el('path', { class: 'seg', tabindex: '0', role: 'button', 'aria-label': s.name + ' ' + fmtReal(s.amount) }, g);
       const c = st.sub === i ? d.color : aclarar(d.color, i, d.subList.length); p.style.fill = c; p.style.stroke = c; p.style.strokeWidth = 3;
-      tocar(p, () => { st.sub = (st.sub === i ? null : i); armarSubs(false); animar(trazar); pista(); limpiarTraza(); });
+      tocar(p, () => { st.sub = (st.sub === i ? null : i); armarSubs(false); trazar(); animar(); pista(); });
       return { s, p };
     });
     const t0 = performance.now(), dur = (RM || !aparecer) ? 1 : 380;
@@ -3298,7 +3341,10 @@ function montarAnalisis() {
     const ancho = Math.min(13, paso * 0.76), ini = d.mid - (n - 1) * paso / 2, fin = ini + (n - 1) * paso;
     d.subList.forEach((s, i) => { s.bm = ini + i * paso; });
     const P = (r, a) => pt(r, a).map(v => v.toFixed(2)).join(' ');
-    let camino = `M${P(158, d.mid)} L${P(RB, d.mid)} M${P(RB, ini)} A${RB} ${RB} 0 0 1 ${P(RB, fin)}`;
+    const der = Math.sin(d.mid * D) >= 0, sI = Math.sin(ini * D), sF = Math.sin(fin * D);
+    d.busExt = (der ? sI > sF : sI < sF) ? ini - 14 : fin + 14;
+    const b0 = Math.min(ini, d.busExt), b1 = Math.max(fin, d.busExt);
+    let camino = `M${P(158, d.mid)} L${P(RB, d.mid)} M${P(RB, b0)} A${RB} ${RB} 0 0 1 ${P(RB, b1)}`;
     d.subList.forEach(s => { camino += ` M${P(RB, s.bm)} L${P(184, s.bm)}`; });
     const lin = el('path', { d: camino, fill: 'none', 'stroke-width': 2.6, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, g);
     lin.style.stroke = d.color;
@@ -3308,7 +3354,7 @@ function montarAnalisis() {
       nodo.style.fill = 'var(--bg)'; nodo.style.stroke = d.color;
       const p = el('path', { class: 'seg', tabindex: '0', role: 'button', 'aria-label': s.name + ' ' + fmtReal(s.amount) }, g);
       const c = st.sub === i ? d.color : aclarar(d.color, i, n); p.style.fill = c; p.style.stroke = c; p.style.strokeWidth = 3;
-      tocar(p, () => { st.sub = (st.sub === i ? null : i); armarSubs(false); animar(trazar); pista(); limpiarTraza(); });
+      tocar(p, () => { st.sub = (st.sub === i ? null : i); armarSubs(false); trazar(); animar(); pista(); });
       return { s, p, i };
     });
     const t0 = performance.now(), dur = (RM || !aparecer) ? 1 : 420;
@@ -3319,8 +3365,8 @@ function montarAnalisis() {
     };
     animSub = requestAnimationFrame(pasoA);
   };
-  let timers = [], sinAnim = false;
-  const limpiarTraza = () => { timers.forEach(clearTimeout); timers = []; $('anaTraza').innerHTML = ''; };
+  let timers = [], sinAnim = false, traza = null;
+  const limpiarTraza = () => { timers.forEach(clearTimeout); timers = []; traza = null; $('anaTraza').innerHTML = ''; };
   const escribir = (nodo, txt, i, listo) => {
     if (RM || nodo.dataset.quieto) { nodo.textContent = txt; if (listo) listo(); return; }
     nodo.textContent = txt.slice(0, i);
@@ -3334,30 +3380,32 @@ function montarAnalisis() {
     if (d.subList && st.sub != null) { const s = d.subList[st.sub]; a = d.afuera ? s.bm : s.mid; nombre = s.name; monto = s.amount; rIni = d.afuera ? 233 : 198; }
     else {
       a = d.mid; nombre = d.name; monto = d.amount; rIni = d.subList ? 192 : 168;
-      if (d.afuera) { // sale del extremo de la línea curva que queda del lado del rótulo
-        const aI = d.subList[0].bm, aF = d.subList[d.subList.length - 1].bm, sI = Math.sin(aI * D), sF = Math.sin(aF * D);
-        a = Math.sin(d.mid * D) >= 0 ? (sI > sF ? aI : aF) : (sI < sF ? aI : aF); rIni = 172;
-      }
+      if (d.afuera) { a = d.busExt; rIni = 172; } // sale de la punta de la línea curva de la categoría, pasando el último bloque
     }
-    const cos = Math.cos(a * D), der = Math.sin(a * D) >= 0, [sx, sy] = aPantalla(pt(rIni, a), vista);
-    let ex = sx, ey = sy;
-    if (Math.abs(cos) > 0.34) { ex = sx + (der ? 24 : -24); ey = sy + (cos > 0 ? -24 : 24); }
-    ey = Math.max(46, Math.min(384, ey));
-    const fx = der ? 412 : 8, largo = Math.hypot(ex - sx, ey - sy) + Math.abs(fx - ex);
-    const linea = (dy, recorte, op, ancho, retraso) => {
-      const fin = der ? fx - recorte : fx + recorte;
-      const p = el('path', { d: `M${sx} ${sy + dy} L${ex} ${ey + dy} L${fin} ${ey + dy}`, fill: 'none', 'stroke-width': ancho, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', filter: 'url(#anaGlow)', opacity: op }, g);
+    const cos = Math.cos(a * D), der = Math.sin(a * D) >= 0, fx = der ? 412 : 8, anc = der ? 'end' : 'start';
+    const linea = (op, ancho, retraso) => {
+      const p = el('path', { pathLength: 100, fill: 'none', 'stroke-width': ancho, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', filter: 'url(#anaGlow)', opacity: op }, g);
       p.style.stroke = 'var(--trace)';
-      if (quieto) return;
-      p.style.strokeDasharray = largo; p.style.strokeDashoffset = largo;
-      requestAnimationFrame(() => requestAnimationFrame(() => { p.style.transition = `stroke-dashoffset .55s ease-out ${retraso}s`; p.style.strokeDashoffset = 0; }));
+      if (!quieto) { p.style.strokeDasharray = 100; p.style.strokeDashoffset = 100; requestAnimationFrame(() => requestAnimationFrame(() => { p.style.transition = `stroke-dashoffset .55s ease-out ${retraso}s`; p.style.strokeDashoffset = 0; })); }
+      return p;
     };
-    linea((Math.abs(cos) > 0.34 && cos < 0) ? -7 : 7, 30, 0.4, 1.4, 0.08);
-    linea(0, 0, 1, 2.3, 0);
-    const ini = el('circle', { cx: sx, cy: sy, r: 3.3, filter: 'url(#anaGlow)' }, g); ini.style.fill = 'var(--trace)';
-    const fin = el('circle', { cx: fx + (der ? -5 : 5), cy: ey, r: 4.3, 'stroke-width': 2, filter: 'url(#anaGlow)', opacity: 0 }, g); fin.style.fill = 'var(--card)'; fin.style.stroke = 'var(--trace)';
-    const anc = der ? 'end' : 'start';
-    const tN = el('text', { class: 't-name', x: fx, y: ey - 30, 'text-anchor': anc }, g), tM = el('text', { class: 't-amt', x: fx, y: ey - 11, 'text-anchor': anc }, g);
+    const l2 = linea(0.4, 1.4, 0.08), l1 = linea(1, 2.3, 0);
+    const ini = el('circle', { r: 3.3, filter: 'url(#anaGlow)' }, g); ini.style.fill = 'var(--trace)';
+    const fin = el('circle', { r: 4.3, 'stroke-width': 2, filter: 'url(#anaGlow)', opacity: 0 }, g); fin.style.fill = 'var(--card)'; fin.style.stroke = 'var(--trace)';
+    const tN = el('text', { class: 't-name', 'text-anchor': anc }, g), tM = el('text', { class: 't-amt', 'text-anchor': anc }, g);
+    // Se vuelve a ubicar en cada cuadro mientras el círculo se mueve: la línea sale en el momento y lo sigue
+    traza = () => {
+      const [sx, sy] = aPantalla(pt(rIni, a), vista);
+      let ex = sx, ey = sy;
+      if (Math.abs(cos) > 0.34) { ex = sx + (der ? 24 : -24); ey = sy + (cos > 0 ? -24 : 24); }
+      ey = Math.max(46, Math.min(384, ey));
+      const dy = (Math.abs(cos) > 0.34 && cos < 0) ? -7 : 7;
+      l1.setAttribute('d', `M${sx} ${sy} L${ex} ${ey} L${fx} ${ey}`);
+      l2.setAttribute('d', `M${sx} ${sy + dy} L${ex} ${ey + dy} L${der ? fx - 30 : fx + 30} ${ey + dy}`);
+      ini.setAttribute('cx', sx); ini.setAttribute('cy', sy); fin.setAttribute('cx', fx + (der ? -5 : 5)); fin.setAttribute('cy', ey);
+      tN.setAttribute('x', fx); tN.setAttribute('y', ey - 30); tM.setAttribute('x', fx); tM.setAttribute('y', ey - 11);
+    };
+    traza();
     if (quieto) { tN.dataset.quieto = tM.dataset.quieto = '1'; fin.setAttribute('opacity', 1); escribir(tN, nombre, 0); escribir(tM, fmt(monto), 0); return; }
     timers.push(setTimeout(() => { fin.setAttribute('opacity', 1); escribir(tN, nombre, 0, () => escribir(tM, fmt(monto), 0)); }, 560));
   };
@@ -3370,7 +3418,7 @@ function montarAnalisis() {
     P.textContent = t; V.hidden = !d;
     if (d) { V.textContent = 'Ver movimientos de ' + (d.subList && st.sub != null ? d.subList[st.sub].name : d.name) + ' ›'; V.dataset.catir = d.id; }
   };
-  const actualizar = (subsNuevos, dur) => { limpiarTraza(); armarSubs(subsNuevos); animar(trazar, dur); marcarLista(); pista(); };
+  const actualizar = (subsNuevos, dur) => { limpiarTraza(); armarSubs(subsNuevos); trazar(); animar(null, dur); marcarLista(); pista(); };
   function elegirSeg(id) { if (st.seg === id) { st.seg = null; st.sub = null; } else { st.seg = id; st.sub = null; } actualizar(true); }
   function elegirGrupo(k) { st.seg = null; st.sub = null; st.grupo = st.grupo === k ? null : k; actualizar(false); }
   $('anaFondo').addEventListener('click', () => { st.seg = null; st.sub = null; st.grupo = null; actualizar(false); });
@@ -3411,7 +3459,7 @@ function vCategoria() {
   const filas = c ? c.filas.map(x => x.f).sort((a, b) => (b.fecha + (b.cargado || '')).localeCompare(a.fecha + (a.cargado || ''))) : [];
   const esN = new Set(c ? c.filas.filter(x => x.n).map(x => x.f) : []);
   return `
-  <div class="titulo-todos"><button type="button" class="volver" data-acc="volverAnalisis" aria-label="Volver a Análisis">${svg('izq', 20, 2.4)}</button><span class="cat-ic" style="background:${g === 'neg' ? '#7C4DFF' : '#E0409E'}33">${icoCat(nombre)}</span><h1>${esc(nombre)}<small>${g === 'neg' ? 'Negocio' : 'Personal'} · ${esc(S.filtro || (S.yo.admin ? 'Todos los negocios' : S.yo.negocio))}</small></h1></div>
+  <div class="titulo-todos"><button type="button" class="volver" data-acc="volverAnalisis" aria-label="Volver a Análisis">${svg('izq', 20, 2.4)}</button><span class="cat-ic" style="background:${GRUPO_COL[g === 'neg' ? 'neg' : 'per']}33">${icoCat(nombre)}</span><h1>${esc(nombre)}<small>${g === 'neg' ? 'Negocio' : 'Personal'} · ${esc(S.filtro || (S.yo.admin ? 'Todos los negocios' : S.yo.negocio))}</small></h1></div>
   <div class="ana-tot"><span>Gastado en ${esc(nombreMes(ym))}</span><span class="cat-monto"><b>${fmt(act)}</b>${dif != null ? `<em class="${dif > 0 ? 'mas' : 'menos'}">${dif > 0 ? '↑' : '↓'} ${Math.abs(dif)}%</em>` : ''}</span>
     ${antIdx >= 0 ? `<small>${ant > 0 ? fmt(Math.abs(r2(act - ant))) + (act >= ant ? ' más' : ' menos') + ' que en ' + esc(nombreMes(meses[antIdx])) : 'Sin gastos en ' + esc(nombreMes(meses[antIdx]))}</small>` : ''}</div>
   <section class="tarj"><h2 style="margin:0">Mes a mes</h2>
@@ -4001,7 +4049,7 @@ function vSimple() {
   <button type="button" class="btn btn-sec s-ver" data-ir2="lista">${svg('recibo', 22, 2)} Ver lo que cargué</button>
   <section class="s-pregunta" aria-label="Preguntale a ${esc(nombreAyu())}">
     <div class="s-chips">${['¿Cómo cargo un cambio de plata?', '¿Cómo anoto una compra?', '¿Cómo devuelvo plata al negocio?', '¿Cuánta plata del negocio tengo?', '¿Qué cargué hoy?'].map(q => `<span class="s-q"><button type="button" data-acc="iaPregunta" data-txt="${esc(q)}">${esc(q)}</button></span>`).join('')}</div>
-    <button type="button" class="s-barra" data-acc="abrirIA"><span>Preguntale a ${esc(nombreAyu())}</span>${svg('der', 22, 2.6)}</button>
+    <button type="button" class="s-barra" data-acc="abrirIA" data-foco="1"><span>Preguntale a ${esc(nombreAyu())}</span>${svg('der', 22, 2.6)}</button>
   </section>`;
 }
 function vMenuSimple() {
@@ -4673,8 +4721,9 @@ function pintarRobot() {
   const r = $('robot');
   if (r.dataset.av !== avId()) { r.innerHTML = avatarHTML(); r.dataset.av = avId(); r.classList.toggle('claro-av', avId() !== 'robot'); }
   r.setAttribute('aria-label', 'Ayudante: ' + NombreAyu());
-  r.hidden = !esSimple() && LS.get('bd_ayudante', true) === false;
-  if (r.hidden) { const g = $('robotGlobo'); if (g) g.hidden = true; }
+  r.hidden = (!esSimple() && LS.get('bd_ayudante', true) === false) || ayuFuera();
+  if (r.hidden && !ayuFuera()) { const g = $('robotGlobo'); if (g) g.hidden = true; }
+  if (AYU.el && AYU.id !== avId() && ayuFuera()) ayuCuerpo();
 }
 function abrirAyudante() {
   if (esSimple()) return S.vista === 'inicio' ? abrirIA() : explicarPantalla();
@@ -4767,8 +4816,24 @@ function siguientePaso() {
   const el = p.el();
   if (el) {
     el.scrollIntoView({ block: 'center', behavior: 'smooth' });
-    if (p.modo === 'listo' && el.matches('input')) setTimeout(() => { try { el.focus({ preventScroll: true }); } catch (e) {} }, 300);
+    if (p.modo === 'listo' && el.matches('input')) setTimeout(() => { try { el.focus({ preventScroll: true }); } catch (e) {} verConTeclado(el); }, 300);
   }
+}
+// 2.0.2 · Mientras sube el teclado, corre la pantalla para que el campo quede a la vista (arriba del teclado)
+function verConTeclado(el) {
+  const vv = window.visualViewport; if (!vv || !el) return;
+  const acomodar = () => {
+    if (document.activeElement !== el || !el.getClientRects().length) return;
+    const r = el.getBoundingClientRect(), arriba = vv.offsetTop + 70, abajo = vv.offsetTop + vv.height - 24;
+    if (r.bottom <= abajo && r.top >= arriba) return;
+    const meta = (arriba + abajo) / 2 - (r.top + r.height / 2);
+    let c = el.parentElement;
+    while (c && c !== document.body && !(c.scrollHeight > c.clientHeight + 2 && /(auto|scroll)/.test(getComputedStyle(c).overflowY))) c = c.parentElement;
+    if (c && c !== document.body) c.scrollTop -= meta; else window.scrollBy(0, -meta);
+  };
+  vv.addEventListener('resize', acomodar);
+  [120, 350, 650, 1000].forEach(t => setTimeout(acomodar, t));
+  setTimeout(() => vv.removeEventListener('resize', acomodar), 1400);
 }
 // Ubica la luz y el globito sobre lo que hay que tocar (se llama en cada cuadro, así sigue a la pantalla)
 function ubicarGuia() {
@@ -4942,8 +5007,10 @@ function explicarPantalla() {
   const g = $('robotGlobo'), t = textoPantalla(); if (!g) return;
   if (!t) return abrirIA();
   clearTimeout(globitoRobot.t1); clearTimeout(globitoRobot.t2); clearTimeout(cerrarGlobito.t);
-  g.innerHTML = `<div class="g-fila">${avatarHTML('g-av', 'senala')}<p>${esc(t)}</p></div><div class="g-acc"><button type="button" data-acc="globoOk">Entendido</button><button type="button" data-acc="globoIA">Preguntale a ${esc(nombreAyu())}</button></div>`;
+  const cuerpo = ayuFuera();
+  g.innerHTML = `<div class="g-fila">${cuerpo ? '' : avatarHTML('g-av', 'senala')}<p>${esc(t)}</p></div><div class="g-acc"><button type="button" data-acc="globoOk">Entendido</button><button type="button" data-acc="globoIA">Preguntale a ${esc(nombreAyu())}</button>${cuerpo && guiaSimpleOn() ? '<button type="button" class="g-stop" data-acc="guiaStop">Detener guía</button>' : ''}</div>`;
   g.classList.add('explica'); g.hidden = false; g.classList.remove('chau');
+  AYU.clave = claveAyu(); ayuSenala(cuerpo);
 }
 // Con el teclado abierto, el ícono y su globito suben y quedan a la vista
 if (window.visualViewport) {
@@ -5105,6 +5172,7 @@ const CAM = { el: null, id: '', x: 0, y: 0, tx: 0, ty: 0, flip: false, volver: f
 function camDesdeIcono() {
   const r = $('robot') && !$('robot').hidden ? $('robot').getBoundingClientRect() : null;
   const W = innerWidth, H = innerHeight, d = CAM.dim || { w: 70, h: 110 };
+  if (ayuFuera()) return [W - 12 - d.w, H - 14 - d.h];
   return r && r.width ? [r.left + r.width / 2 - d.w / 2, r.bottom - d.h] : [W - d.w - 14, H - d.h - 100];
 }
 function camEntrar() {
@@ -5113,6 +5181,7 @@ function camEntrar() {
   [CAM.x, CAM.y] = camDesdeIcono(); CAM.tx = CAM.x; CAM.ty = CAM.y; CAM.volver = false; CAM.flip = false;
   CAM.el.hidden = false; CAM.el.style.opacity = 1; $('guia').classList.add('con-cam');
   if ($('robot')) $('robot').style.visibility = 'hidden';
+  if (AYU.el) AYU.el.hidden = true;
   camPintar(); cancelAnimationFrame(CAM.raf); CAM.raf = requestAnimationFrame(camPaso);
 }
 function camIrA(r) {
@@ -5144,10 +5213,68 @@ function camPaso() {
   camPintar();
   if (CAM.volver && dist <= v) {
     CAM.el.style.opacity = 0;
-    setTimeout(() => { if (CAM.volver) { CAM.el.hidden = true; $('guia').classList.remove('con-cam'); } if ($('robot')) $('robot').style.visibility = ''; }, 250);
+    setTimeout(() => { if (CAM.volver) { CAM.el.hidden = true; $('guia').classList.remove('con-cam'); } if ($('robot')) $('robot').style.visibility = ''; AYU.fuera = null; ayuLugar(); }, 250);
     return;
   }
   if (GUIA.activa || dist > v) CAM.raf = requestAnimationFrame(camPaso);
+}
+
+/* =========================================================
+   2.0.2 · Modo simple: fuera de Inicio el ayudante está con el cuerpo entero (en Inicio vuelve a ser el ícono)
+   y, con la guía prendida, explica cada pantalla solo, señalando su globito.
+   ========================================================= */
+const AYU = { el: null, id: '', fuera: null, clave: '', vistos: new Set() };
+const guiaSimpleOn = () => !!S.yo && LS.get('bd_guia_simple_' + S.yo.usuario, true) !== false;
+function ayuCuerpo() {
+  if (!AYU.el) {
+    AYU.el = document.createElement('div'); AYU.el.className = 'cam ayu-parado'; AYU.el.hidden = true;
+    AYU.el.setAttribute('role', 'button'); AYU.el.tabIndex = 0;
+    const tocar = () => { const g = $('robotGlobo'); if (g && !g.hidden && g.classList.contains('explica')) { AYU.vistos.add(claveAyu()); cerrarGlobito(); } else abrirAyudante(); };
+    AYU.el.onclick = tocar; AYU.el.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tocar(); } };
+    document.body.appendChild(AYU.el);
+  }
+  if (AYU.id !== avId()) {
+    AYU.id = avId(); const d = cuerpoAyudante(AYU.id);
+    AYU.el.innerHTML = `<div class="cam-sombra"></div><div class="cam-cuerpo">${d.svg}</div>`; AYU.el.style.width = d.w + 'px';
+    document.documentElement.style.setProperty('--ayw', d.w + 'px');
+  }
+  AYU.el.setAttribute('aria-label', 'Ayudante: ' + NombreAyu());
+  return AYU.el;
+}
+const ayuFuera = () => esSimple() && !$('app').hidden && !!S.yo && S.vista !== 'inicio';
+const ayuSenala = on => { if (AYU.el) AYU.el.classList.toggle('senala', !!on); };
+function ayuLugar() {
+  const r = $('robot'); if (!r) return;
+  const fuera = ayuFuera(), cuerpo = ayuCuerpo();
+  document.body.classList.toggle('con-cuerpo', fuera);
+  if (GUIA.activa) { cuerpo.hidden = true; return; } // mientras guía, camina el otro
+  if (fuera === AYU.fuera) { cuerpo.hidden = !fuera; if (fuera) r.hidden = true; return; }
+  const antes = AYU.fuera; AYU.fuera = fuera;
+  if (fuera) {
+    r.hidden = true; cuerpo.classList.remove('al-icono'); cuerpo.hidden = false;
+    if (antes === false && !animOff()) { cuerpo.classList.remove('aparece'); void cuerpo.offsetWidth; cuerpo.classList.add('aparece'); }
+  } else {
+    const alIcono = () => {
+      cuerpo.hidden = true; cuerpo.classList.remove('al-icono'); pintarRobot();
+      if (antes && !r.hidden && !animOff()) { r.classList.remove('vuelve'); void r.offsetWidth; r.classList.add('vuelve'); }
+    };
+    if (antes && !cuerpo.hidden && !animOff()) { cuerpo.classList.add('al-icono'); setTimeout(alIcono, 260); } else alIcono();
+  }
+}
+function claveAyu() {
+  if (S.vista === 'flujo' && S.flujo) { const p = pasoFlujo(); return 'flujo|' + S.flujo.tipo + '|' + (S.flujo.editMonto ? 'monto' : (p ? (p.k || p.t) : '')) + '|' + (S.flujo.i || 0); }
+  return S.vista + '|' + (S.menu || '');
+}
+// Después de cada pantalla: el globito cambia al texto de la pantalla nueva (o aparece solo, con la guía prendida)
+function guiaPorPantalla() {
+  const g = $('robotGlobo'); if (!g) return;
+  const abierto = !g.hidden && g.classList.contains('explica');
+  if (!ayuFuera() || GUIA.activa) { if (abierto) { g.hidden = true; g.classList.remove('explica'); } ayuSenala(false); AYU.clave = ''; return; }
+  const k = claveAyu(); if (k === AYU.clave) return;
+  AYU.clave = k; clearTimeout(guiaPorPantalla.t);
+  if (!abierto && !(guiaSimpleOn() && !AYU.vistos.has(k))) return;
+  if (abierto && !textoPantalla()) { g.hidden = true; g.classList.remove('explica'); ayuSenala(false); return; }
+  guiaPorPantalla.t = setTimeout(() => { if (claveAyu() === k && $('modal').hidden && !GUIA.activa && textoPantalla()) explicarPantalla(); }, abierto ? 0 : 450);
 }
 /* ---------- 2.0.0 · Tarjeta de deudas (modo completo): préstamos entre negocios y lo que se le debe a cada negocio ---------- */
 function tarjetaDeudas() {
@@ -5184,7 +5311,7 @@ function guiasBusca(q) {
 function htmlBusqueda() {
   const q = S.buscaG || '', gs = guiasBusca(q), movs0 = q.trim() ? buscarMovs(q) : [];
   const tarjGuia = ([k, g]) => `<button type="button" class="bus-guia" data-acc="buscaGuia" data-guia="${k}"><span class="oi">🤖</span><b>${esc(g.titulo)}</b><small>Te muestro cómo, paso a paso</small></button>`;
-  const ia = `<button type="button" class="ia-card" data-acc="abrirIA"><span class="ia-in"><span class="oi">💬</span><span><b>Tu asistente</b><small>${q.trim() ? '¿No encontrás lo que buscás? Preguntale' : 'Resolvé cualquier duda al instante'}</small></span>${svg('der', 18, 2.4)}</span></button>`;
+  const ia = `<button type="button" class="ia-card" data-acc="abrirIA" data-foco="1"><span class="ia-in"><span class="oi">💬</span><span><b>Tu asistente</b><small>${q.trim() ? '¿No encontrás lo que buscás? Preguntale' : 'Resolvé cualquier duda al instante'}</small></span>${svg('der', 18, 2.4)}</span></button>`;
   if (!q.trim()) return `<h3 class="sec-t">Sugerencias</h3><div class="bus-sug">${gs.map(tarjGuia).join('')}</div>${ia}`;
   return `${gs.length ? `<h3 class="sec-t">Guías</h3><div class="bus-sug">${gs.map(tarjGuia).join('')}</div>` : ''}
     <h3 class="sec-t">${movs0.length ? (movs0.length === 1 ? '1 movimiento' : movs0.length + ' movimientos') : 'No hay movimientos con "' + esc(q.trim()) + '"'}</h3>
@@ -5577,7 +5704,7 @@ function guardarApariencia() {
 function preguntarSalirAp() {
   if ($('apSalir')) return;
   const o = document.createElement('div'); o.id = 'apSalir'; o.className = 'ap-salir';
-  o.innerHTML = `<div class="ap-salir-in" role="dialog" aria-modal="true" aria-labelledby="apSalirT"><b id="apSalirT">¿Salir sin guardar?</b><p>Los cambios que elegiste no se van a guardar.</p><div class="ap-salir-fila"><button type="button" class="btn btn-sec" data-acc="apDescartar">Salir sin guardar</button><button type="button" class="btn btn-grad" data-acc="apSeguir">Seguir eligiendo</button></div></div>`;
+  o.innerHTML = `<div class="ap-salir-in" role="dialog" aria-modal="true" aria-labelledby="apSalirT"><b id="apSalirT">¿Salir sin guardar?</b><p>Los cambios que elegiste no se van a guardar.</p><div class="ap-salir-fila"><button type="button" class="btn btn-rojo" data-acc="apDescartar">Salir</button><button type="button" class="btn btn-sec" data-acc="apSeguir">Volver</button></div></div>`;
   o.addEventListener('click', e => { if (e.target === o) o.remove(); });
   document.body.appendChild(o);
 }
@@ -5700,7 +5827,7 @@ Billetera Digital anota los gastos de la familia: los personales y los del negoc
 - Los montos se escriben como en Ualá: los números entran por la derecha y los dos últimos son los centavos. Para $ 500.000,00 se escribe 50000000 (con los dos ceros de los centavos). Si escribe 500000 queda $ 5.000,00.
 - Si un movimiento aparece en rojo, Google no lo aceptó: hay que abrirlo y corregirlo.
 - Hay dos modos; se cambia en **Perfil** → **Modo simple** (prender o apagar).
-- **Perfil** → **Apariencia**: tamaño de la letra (barra de Chica a Enorme, con texto de ejemplo), tipo de letra (Moderna, Muy clara, Redondeada), **Color de la app** (Violeta, Azul, Verde, Naranja, Rosa; se guarda en la cuenta), modo **Oscuro**, **Claro**, **Predeterminado del sistema** (igual que el celular) o **Programado** (oscuro desde y hasta la hora que se elija, por ejemplo de 20 a 7), **Ahorro de energía** (Apagado, Con poca batería = 20% o menos sin cargar, o Siempre: apaga animaciones y el sonido) y el **Ayudante**. Arriba, el ejemplo muestra cómo va a quedar; la app cambia recién al tocar **Guardar cambios**. Si se sale sin guardar, aparece "¿Salir sin guardar?" con **Salir sin guardar** (todo queda como estaba) y **Seguir eligiendo**. La letra, el modo y el ahorro se guardan en cada celular.
+- **Perfil** → **Apariencia**: tamaño de la letra (barra de Chica a Enorme, con texto de ejemplo), tipo de letra (Moderna, Muy clara, Redondeada), **Color de la app** (Violeta, Azul, Verde, Naranja, Rosa; se guarda en la cuenta), modo **Oscuro**, **Claro**, **Predeterminado del sistema** (igual que el celular) o **Programado** (oscuro desde y hasta la hora que se elija, por ejemplo de 20 a 7), **Ahorro de energía** (Apagado, Con poca batería = 20% o menos sin cargar, o Siempre: apaga animaciones y el sonido) y el **Ayudante**. Arriba, el ejemplo muestra cómo va a quedar; la app cambia recién al tocar **Guardar cambios**. Si se sale sin guardar, aparece "¿Salir sin guardar?" con **Salir** (en rojo: todo queda como estaba) y **Volver** (sigue eligiendo). La letra, el modo y el ahorro se guardan en cada celular.
 - **Perfil → Dispositivos conectados**: lista de celulares y compus donde está abierta la cuenta, con el último uso. **Cerrar** saca la cuenta de ese dispositivo (para entrar de nuevo ahí hace falta usuario y contraseña).
 - Teclado: la tecla → del teclado pasa al campo siguiente; en el último, lo esconde. Si al esconder el teclado se escribía un número solo, la app ahora lo ignora.
 - En esta charla se puede mandar una **foto o captura** con el ícono 📷. Si te mandan una foto, describí lo que ves que tenga que ver con la app o con sus gastos (por ejemplo un comprobante o una pantalla con error) y explicá cómo cargarlo o resolverlo. No podés cargar nada vos.
@@ -5726,10 +5853,10 @@ Inicio: arriba el saludo y el círculo con las iniciales (abre el Perfil). Si se
 
 MODO COMPLETO
 Barra de abajo: **Inicio**, **Personal**, **+** (en el medio), **Negocio**, **Perfil**. El ícono 🤖 (abajo a la derecha) tiene esta charla y guías paso a paso que iluminan dónde tocar.
-- **Ayudante**: en **Perfil → Apariencia → Ayudante** cada uno elige el suyo: el **Robotito** (viene de entrada) o **Rabbit, tu asesor de confianza**, con 4 apariencias (Pixel, Asesor, Conejo-robot y Con monedita). Se guarda en la cuenta (sigue igual en otro celular). Hace gestos en los globitos (saluda, señala, piensa, festeja) y su carita sale en el chat. En las guías (**Mostrame cómo**) sale del ícono con el cuerpo entero, camina hasta lo que hay que tocar y lo señala con la mano. En el **modo simple**, en Inicio está abajo la barra grande **Preguntale a…**, a la izquierda del ícono, y arriba de ella las preguntas comunes en lista, unidas con líneas; en las demás pantallas, tocando el ícono aparece un globito que explica esa pantalla con palabras simples (con **Entendido** y **Preguntale a…**). Con el teclado abierto, el ícono y su globito suben y se siguen viendo.
+- **Ayudante**: en **Perfil → Apariencia → Ayudante** cada uno elige el suyo: el **Robotito** (viene de entrada) o **Rabbit, tu asesor de confianza**, con 4 apariencias (Pixel, Asesor, Conejo-robot y Con monedita). Se guarda en la cuenta (sigue igual en otro celular). Hace gestos en los globitos (saluda, señala, piensa, festeja) y su carita sale en el chat. En las guías (**Mostrame cómo**) sale del ícono con el cuerpo entero, camina hasta lo que hay que tocar y lo señala con la mano. En el **modo simple**, en Inicio está abajo la barra grande **Preguntale a…** (abre el chat con el teclado listo), a la izquierda del ícono, y arriba de ella las preguntas comunes en lista, unidas con líneas; cuando sale el mensaje de bienvenida la barra sube y después vuelve a bajar. En las demás pantallas el ayudante está abajo a la derecha con el cuerpo entero, y al entrar a cada pantalla aparece solo un globito que la explica con palabras simples mientras la señala (con **Entendido**, **Preguntale a…** y **Detener guía**). Esa guía viene prendida; se apaga con **Detener guía** o en **Perfil → Guía del ayudante**, y apagada el globito sale solo tocando al ayudante. Al volver a Inicio, el ayudante vuelve a ser el ícono. Con el teclado abierto, el ícono y su globito suben y se siguen viendo.
 - **Deudas** (Inicio, modo completo): una sola tarjeta con dos partes: **Préstamos entre negocios** (compensados: si Rina le debe 20.000 a Freddy y Freddy 5.000 a Rina, se ve "Rina le debe a Freddy $ 15.000") y **Le debés al negocio** (lo que cada uno le debe a su propio negocio). El admin ve todas; cada uno ve solo las de su negocio. Cada deuda tiene **Devolver**.
 - **Buscador** (modo completo): la lupa al lado del nombre en Inicio; al bajar con el dedo se estira y queda arriba como barra "Buscá en la Billetera". Abre una pantalla para escribir: muestra **Sugerencias** (las guías, para que el ayudante muestre cómo hacer algo), la tarjeta **Tu asistente** (abre el chat de la IA) y, mientras se escribe, las guías y los movimientos que coinciden (de los últimos 12 meses), con **Ver los N en Consultar todos**.
-- **Análisis** (solo modo completo, se entra desde la fila del monto de Inicio): el mes con flechas ‹ ›, el total y los botones de negocios. Un círculo con todas las categorías (negocio en violetas y celestes, personal en rosas y naranjas); en el centro **Personal** y **Negocio** con sus montos (todo sube desde 0 al entrar). Eligiendo Personal o Negocio (o el anillo finito de adentro), el otro grupo queda gris. Eligiendo una parte, el círculo se achica y se corre, y una línea de circuito muestra el nombre y el monto. **Mercadería** abre un segundo anillo con los 3 productos con más gasto y "Otros productos"; **Viaje** (pasero, colectivo, comida…) y **Comisiones** (cambio y recargos) también. Debajo, la lista de categorías con su % y **Ver movimientos**: abre la pantalla de la categoría con las barras mes a mes (se deslizan, la línea punteada es el promedio), sus mini-categorías y "Tenés N gastos" (tocando uno se corrige como siempre).
+- **Análisis** (solo modo completo, se entra desde la fila del monto de Inicio): el mes con flechas ‹ ›, el total y los botones de negocios. Un círculo con todas las categorías (negocio en azules tirando a violeta, personal en naranjas tirando a rojo; cada categoría tiene su tono, y es el mismo en **Por categoría** de Inicio y en la lista); adentro de cada parte, un dibujito blanco de la categoría; en el centro **Personal** y **Negocio** con sus montos (todo sube desde 0 al entrar). Eligiendo Personal o Negocio (o el anillo finito de adentro), el otro grupo queda con sus colores apagados. Eligiendo una parte, el círculo se achica y se corre, y una línea de circuito muestra el nombre y el monto. **Mercadería** abre un segundo anillo con los 3 productos con más gasto y "Otros productos"; **Viaje** (pasero, colectivo, comida…) y **Comisiones** (cambio y recargos) también. Debajo, la lista de categorías con su % y **Ver movimientos**: abre la pantalla de la categoría con las barras mes a mes (se deslizan, la línea punteada es el promedio), sus mini-categorías y "Tenés N gastos" (tocando uno se corrige como siempre).
 - **Inicio**: cuánto se gastó en el mes (el número sube desde 0 al entrar; con el **Sonido de monedas** prendido en Perfil, suena como máximo una vez cada 6 horas y solo en Inicio; viene apagado). La fila del monto, el ojito y la flecha **›** lleva a la pantalla **Análisis** (el ojito sigue ocultando los montos). Tarjetas de lo que se debe (al negocio o préstamos), "Comparado con <mes anterior>" con las barras de los meses: se ven 6 y deslizando se ven los anteriores, hasta 12 meses atrás; al elegir la barra de un mes, todo Inicio pasa a ese mes ("Gastado en julio"). Tocando el espacio vacío de esa tarjeta se abre el **día por día**: siempre se ven 7 días y se desliza de a uno; arriba, el resumen de esos 7 días (total, negocio, personal y efectivo al cierre); eligiendo un día se ve su detalle. Si alguien no carga nada en 3 días, ve el aviso "Hace N días que no cargás nada". "Por categoría" (se agranda al elegirla), "Últimos gastos" (los 5 movimientos más nuevos, aunque sean de meses anteriores) con **Consultar todos**, que siempre está: muestra los movimientos de los **últimos 12 meses**, de a **30 por página** (abajo: **‹ Página 1 de N ›**, con flechas o escribiendo el número), con buscador por palabra o monto y filtros por tipo: Personal, Compras, No reversible, Gastos generales, Cambios, Préstamos, Efectivo, Transferencia. Lo de más de 12 meses no se ve ahí, pero sigue guardado (sale en el Excel por mes).
 - **+** abre dos grupos. **Negocio**: **Viajes** (pestañas **Inversión** y **No reversible**), **Gastos generales** (categoría, fecha, monto, detalle, pago; sin viaje), **Cambio a efectivo** y **Préstamo a otro negocio**. **Personal**: **Gasto personal** (si la plata salió del negocio, se elige **Negocio (MercadoLibre)** y se prende **Lo voy a devolver**) y **Devolver plata al negocio**.
   · Compra (Inversión): producto, unidades, costo total y **Pago**: **Efectivo**, **Transferencia** o **Combinado** (se escribe lo pagado **En efectivo** y la parte **Por transferencia** se calcula sola). Con transferencia o combinado: **Recargo por transferir** en **$** o en **%** (se cobra sobre lo transferido).
@@ -5838,7 +5965,7 @@ function contextoIA() {
   return L.join('\n');
 }
 
-function abrirIA() {
+function abrirIA(foco) {
   if (GUIA.activa) return;
   IA.msgs = []; IA.cargando = false; IA.img = ''; IA.imgUrl = '';
   abrirModal(`<div class="v-cab"><span class="ic ia-cab-av${avId() !== 'robot' ? ' claro-av' : ''}" style="background:var(--grad)">${avatarHTML()}</span><b>Preguntale a ${esc(nombreAyu())}</b><button class="cerrar" type="button" data-acc="cerrar" aria-label="Cerrar">${svg('x', 18, 2.2)}</button></div>
@@ -5848,6 +5975,7 @@ function abrirIA() {
     <button type="button" class="ia-enviar" data-acc="iaEnviar" aria-label="Enviar">${svg('enviar', 22, 2.2)}</button></div>`, 'chat');
   ajustarChat();
   pintarIA();
+  if (foco) { const i = $('iaIn'); if (i) try { i.focus({ preventScroll: true }); } catch (e) {} }
 }
 function textoIA(t) {
   return esc(t).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/(^|\n)\s*[*•-]\s+/g, '$1• ').replace(/\n/g, '<br>');
@@ -6073,11 +6201,24 @@ function globitoRobot() {
     if (!$('modal').hidden || $('app').hidden || GUIA.activa || getComputedStyle(r).display === 'none') return;
     g.innerHTML = `<div class="g-fila">${avatarHTML('g-av', 'saluda')}<p>¡Hola, ${esc(primerNombre(S.yo.nombre))}! ${avId() === 'robot' ? 'Si tenés alguna duda con la app, acá estoy para ayudarte.' : 'Soy Rabbit, tu asesor de confianza. Si tenés una duda, acá estoy.'}</p></div>`;
     g.classList.remove('explica'); g.hidden = false; g.classList.remove('chau'); poseRobot('saluda');
+    if (esSimple() && S.vista === 'inicio') subirBarra(g);
     globitoRobot.t2 = setTimeout(cerrarGlobito, 5500);
   }, 900);
 }
+// 2.0.2 · Modo simple, Inicio: con el mensaje de bienvenida la barra sube justo lo necesario para quedar arriba del globito.
+// Primero usa el espacio libre que haya arriba de las preguntas; si no alcanza, sube toda la pantalla (nada queda encimado).
+function subirBarra(g) {
+  const pr = document.querySelector('#contenido .s-pregunta'), barra = pr && pr.querySelector('.s-barra'); if (!barra) return;
+  const prev = pr.previousElementSibling, topG = innerHeight - (parseFloat(getComputedStyle(g).bottom) || 0) - g.offsetHeight;
+  const falta = Math.max(0, Math.round(barra.getBoundingClientRect().bottom - (topG - 12)));
+  const libre = prev ? Math.max(0, Math.round(pr.getBoundingClientRect().top - prev.getBoundingClientRect().bottom - 16)) : 0;
+  const u1 = Math.min(falta, libre), st = document.documentElement.style;
+  st.setProperty('--sube1', u1 + 'px'); st.setProperty('--sube2', (falta - u1) + 'px');
+  document.body.classList.add('globo-ini');
+}
 function cerrarGlobito() {
-  const g = $('robotGlobo'); if (!g || g.hidden) return;
+  const g = $('robotGlobo'); ayuSenala(false); document.body.classList.remove('globo-ini');
+  if (!g || g.hidden) return;
   g.classList.add('chau'); clearTimeout(cerrarGlobito.t); cerrarGlobito.t = setTimeout(() => { g.hidden = true; g.classList.remove('chau'); }, 350);
 }
 $('robotGlobo').onclick = ev => { if (ev.target.closest('button')) return; cerrarGlobito(); if (!$('robotGlobo').classList.contains('explica')) abrirAyudante(); };
