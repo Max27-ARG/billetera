@@ -313,8 +313,11 @@ html.ahorro *,html.ahorro *::before,html.ahorro *::after{animation:none!importan
 @keyframes ayuAparece{from{transform:translateY(26px) scale(.45);opacity:0}to{transform:none;opacity:1}}
 @keyframes ayuAlIcono{to{transform:translateY(22px) scale(.4);opacity:0}}
 @keyframes icoVuelve{from{transform:scale(.35);opacity:0}to{transform:none;opacity:1}}
-body.con-cuerpo .robot-globo{right:calc(14px + var(--ayw,70px));bottom:calc(14px + var(--safe-b) + var(--kb,0px) + 40px);max-width:min(300px,calc(100vw - 104px))}
-.robot-globo .g-acc .g-stop{background:transparent!important;color:var(--muted)!important;text-decoration:underline;padding-left:4px;padding-right:4px}
+body.con-cuerpo .robot-globo{padding:11px 12px;right:calc(14px + var(--ayw,70px));bottom:calc(14px + var(--safe-b) + var(--kb,0px) + 40px);max-width:min(300px,calc(100vw - 104px))}
+/* 2.0.3 · Con el teclado abierto, el ayudante y su globito se esconden (vuelven al cerrarlo) */
+body.simple.tec-abierto .cam.ayu-parado,body.simple.tec-abierto .robot-globo.explica{display:none!important}
+/* lugar de sobra abajo para que el botón principal pueda quedar arriba del globito */
+body.simple.con-cuerpo #contenido{padding-bottom:calc(320px + var(--safe-b))}
 /* Inicio simple: la barra queda abajo, al lado del ícono, y sube mientras está el mensaje del ayudante */
 body.simple.ini-simple #contenido{padding-bottom:0}
 .s-pregunta{transition:transform .35s ease}
@@ -328,14 +331,63 @@ body.globo-ini.ini-simple #contenido > .vista{transform:translateY(calc(-1 * var
 html.claro .cam .cam-sombra{background:rgba(60,30,140,.2)}
 .cam svg{display:block;overflow:visible}
 .cam.voltea svg{transform:scaleX(-1)}
-.cam .pie1,.cam .pie2{transform-box:fill-box;transform-origin:50% 0}
 .cam.camina .cam-cuerpo{animation:camBob .22s ease-in-out infinite alternate}
-.cam.camina .pie1{animation:camPierna .22s ease-in-out infinite alternate}
-.cam.camina .pie2{animation:camPierna .22s ease-in-out infinite alternate-reverse}
-.cam .brazoI{transition:transform .45s ease}
-.cam.senala .brazoI{transform:rotate(var(--brazoS))}
-.cam.senala .dedo{animation:camDedo .5s ease-in-out .45s infinite alternate}
 .cam .av-flota{animation:none!important}
+/* 2.0.3 · Se mueve entero: parado respira, parpadea y mueve cabeza y orejas; caminando balancea brazos y piernas;
+   al llegar frena con un rebotito; señalando levanta el brazo de a poco e inclina la cabeza */
+.cam svg.rig{display:block;overflow:visible;transition:transform .3s ease}
+.cam.voltea svg.rig{transform:scaleX(-1)}
+.cam .rig .tronco{animation:rigResp 2.4s ease-in-out infinite alternate}
+.cam .rig .cab{animation:rigCab 3.6s ease-in-out infinite alternate}
+.cam .rig .av-ojo{transform-box:fill-box;transform-origin:center;animation:rigParpadeo 4.4s infinite}
+.cam .rig .av-oi,.cam .rig .av-od{transform-box:fill-box;transform-origin:50% 100%;animation:rigOreja 4.2s ease-in-out infinite}
+.cam .rig .av-od{animation-delay:.2s}
+.cam .rig .antena{transform-box:fill-box;transform-origin:50% 100%;animation:rigAntena 1.5s ease-in-out infinite alternate}
+.cam .rig .brazoD{animation:rigBrazoQ 2.4s ease-in-out infinite alternate}
+.cam .rig .brazoI{transition:transform .6s cubic-bezier(.3,1.45,.5,1);animation:rigBrazoQ 2.4s ease-in-out infinite alternate-reverse}
+.cam .rig .pie1,.cam .rig .pie2{transform-box:fill-box;transform-origin:50% 0}
+.cam.camina .rig .tronco{animation:rigTrote .22s ease-in-out infinite alternate}
+.cam.camina.va-der .rig .tronco{animation-name:rigTroteDer}
+.cam.camina .rig .cab{animation:rigCabPaso .22s ease-in-out infinite alternate}
+.cam.camina .rig .brazoI{animation:rigBrazoPaso .22s ease-in-out infinite alternate}
+.cam.camina .rig .brazoD{animation:rigBrazoPaso .22s ease-in-out infinite alternate-reverse}
+.cam.camina .rig .pie1{animation:rigPierna .22s ease-in-out infinite alternate}
+.cam.camina .rig .pie2{animation:rigPierna .22s ease-in-out infinite alternate-reverse}
+.cam.camina .rig .av-oi,.cam.camina .rig .av-od,.cam.camina .rig .antena{animation:rigOrejaPaso .22s ease-in-out infinite alternate}
+.cam.llega .rig .tronco{animation:rigFrena .45s cubic-bezier(.3,1.5,.5,1)}
+.cam.senala .rig .brazoI{animation:none;transform:rotate(var(--brazoS))}
+.cam.senala .rig .dedo{animation:rigDedo .5s ease-in-out .6s infinite alternate}
+.cam.senala .rig .cab{animation:rigCabMira 2.6s ease-in-out infinite alternate}
+.cam .rig-pixel .tronco{animation:rigRespPix 1.8s steps(1) infinite}
+.cam .rig-pixel .cab{animation:none}
+.cam .rig-pixel .av-oi,.cam .rig-pixel .av-od{animation:rigOrejaPix 4.2s steps(1) infinite}
+.cam.camina .rig-pixel .tronco,.cam.camina.va-der .rig-pixel .tronco{animation:rigTrotePix .44s steps(1) infinite}
+.cam.camina .rig-pixel .cab{animation:none}
+.cam.camina .rig-pixel .brazoI{animation-name:rigBrazoPix}
+.cam.camina .rig-pixel .brazoD{animation-name:rigBrazoPix}
+.cam.camina .rig-pixel .av-oi,.cam.camina .rig-pixel .av-od{animation:rigOrejaPix .44s steps(1) infinite}
+.cam.llega .rig-pixel .tronco{animation:rigFrenaPix .45s steps(1)}
+.cam.senala .rig-pixel .cab{animation:none;transform:translateX(-2px)}
+@keyframes rigRespPix{0%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@keyframes rigOrejaPix{0%,70%{transform:translateY(0)}76%{transform:translateY(-3px)}84%{transform:translateY(0)}}
+@keyframes rigTrotePix{0%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes rigBrazoPix{from{transform:rotate(-14deg)}to{transform:rotate(14deg)}}
+@keyframes rigFrenaPix{0%{transform:translateY(0)}30%{transform:translateY(4px)}65%{transform:translateY(-2px)}100%{transform:translateY(0)}}
+@keyframes rigResp{from{transform:translateY(0)}to{transform:translateY(-1.3%)}}
+@keyframes rigCab{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
+@keyframes rigParpadeo{0%,88%,100%{transform:scaleY(1)}93%{transform:scaleY(.1)}}
+@keyframes rigOreja{0%,62%,100%{transform:rotate(0)}70%{transform:rotate(-11deg)}78%{transform:rotate(7deg)}86%{transform:rotate(0)}}
+@keyframes rigAntena{from{transform:rotate(-10deg)}to{transform:rotate(10deg)}}
+@keyframes rigBrazoQ{from{transform:rotate(-3deg)}to{transform:rotate(4deg)}}
+@keyframes rigTrote{from{transform:rotate(-5deg) translateY(0)}to{transform:rotate(-5deg) translateY(-3%)}}
+@keyframes rigTroteDer{from{transform:rotate(5deg) translateY(0)}to{transform:rotate(5deg) translateY(-3%)}}
+@keyframes rigCabPaso{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
+@keyframes rigBrazoPaso{from{transform:rotate(-20deg)}to{transform:rotate(20deg)}}
+@keyframes rigPierna{from{transform:rotate(-16deg)}to{transform:rotate(16deg)}}
+@keyframes rigOrejaPaso{from{transform:rotate(-5deg)}to{transform:rotate(6deg)}}
+@keyframes rigFrena{0%{transform:scale(1,1)}30%{transform:scale(1.07,.87)}65%{transform:scale(.97,1.05)}100%{transform:scale(1,1)}}
+@keyframes rigDedo{from{transform:rotate(0)}to{transform:rotate(-8deg)}}
+@keyframes rigCabMira{from{transform:rotate(-8deg)}to{transform:rotate(-3deg)}}
 @keyframes camBob{from{transform:translateY(0)}to{transform:translateY(-6px)}}
 @keyframes camPierna{from{transform:rotate(-14deg)}to{transform:rotate(14deg)}}
 @keyframes camDedo{from{transform:rotate(0deg)}to{transform:rotate(-7deg)}}
@@ -390,9 +442,9 @@ html.claro .cam .cam-sombra{background:rgba(60,30,140,.2)}
 .robot-globo .g-av{width:36px;height:36px;border-radius:50%;background:var(--grad);color:#fff;padding:6px;box-sizing:border-box}
 .robot-globo .g-av.av-pixel,.robot-globo .g-av.av-asesor,.robot-globo .g-av.av-conejo,.robot-globo .g-av.av-moneda{background:#F4EEFF;padding:2px}
 .robot-globo.explica{max-width:min(320px,calc(100vw - 100px));cursor:default}
-.robot-globo .g-acc{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-.robot-globo .g-acc button{border:0;border-radius:12px;padding:9px 12px;font:inherit;font-size:14px;font-weight:800;cursor:pointer;background:var(--card3);color:var(--ink)}
-.robot-globo .g-acc button + button{background:var(--grad);color:#fff}
+.robot-globo .g-acc{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.robot-globo .g-acc button{border:0;border-radius:12px;padding:9px 9px;font:inherit;font-size:calc(14px * var(--zoom,1));font-weight:800;cursor:pointer;background:var(--card3);color:var(--ink)}
+.robot-globo .g-acc button[data-acc="globoIA"]{background:var(--grad);color:#fff}
 .robot,.robot-globo{transition:bottom .2s ease}
 .ia-fila{display:flex;align-items:flex-end;gap:8px;max-width:100%}
 .ia-fila .ia-b{min-width:0}
@@ -421,6 +473,11 @@ body.simple .vista:has(> .s-pregunta){padding-bottom:calc(16px + var(--safe-b))}
 .ap-avs button[aria-pressed="true"]{border-color:var(--violet2);background:rgba(124,77,255,.18)}
 .ap-avs button span:not(.av){display:flex;flex-direction:column;min-width:0}
 .ap-avs b{font-size:14px;font-weight:800}.ap-avs small{font-size:12px;font-weight:600;color:var(--muted)}
+.ap-atu-tit{margin-top:12px;font-size:14px;font-weight:800;color:var(--soft)}
+.ap-atuendos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:6px}
+.ap-atuendos button{display:flex;flex-direction:column;align-items:center;gap:4px;border:2px solid var(--borde);background:var(--card);color:var(--ink);border-radius:14px;padding:8px 2px;font:inherit;cursor:pointer;min-width:0}
+.ap-atuendos button[aria-pressed="true"]{border-color:var(--violet2);background:rgba(124,77,255,.18)}
+.ap-atuendos b{font-size:12px;font-weight:800;line-height:1.1;text-align:center}
 .ap-av{width:42px;height:42px;border-radius:50%;background:var(--grad);color:#fff;padding:8px;box-sizing:border-box}
 .ap-av.claro-av{background:#F4EEFF;padding:2px}
 @media (prefers-reduced-motion: reduce){.av *,.av svg,.av::after{animation:none!important}}
@@ -990,7 +1047,7 @@ html.claro .deuda.tedeben small{color:var(--tealink)}
 const API = window.BILLETERA_API || '';
 // Fecha y hora de esta versión (se muestra una vez cuando alguien abre la app actualizada)
 // Versión: MAYOR.MENOR.ARREGLO (arreglo → sube el último; algo nuevo → el del medio; cambio enorme → el primero)
-const APP_SERIE = '2.0.2', APP_FECHA = '2026-11-09';
+const APP_SERIE = '2.0.3', APP_FECHA = '2026-11-09';
 const APP_VERSION = APP_SERIE;
 const COLORES = ['#9B6BFF', '#F05BB5', '#3FD6C6', '#FFB547', '#6FA8FF', '#FF8A5B', '#B5E36B', '#D7C8FF'];
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
@@ -3098,11 +3155,11 @@ document.addEventListener('click', async ev => {
     iaQuitarFoto: quitarFotoIA,
     iaSug: () => enviarIA(t.dataset.txt),
     iaPregunta: () => { const q = t.dataset.txt; abrirIA(); setTimeout(() => enviarIA(q), 80); },
-    globoOk: () => { AYU.vistos.add(claveAyu()); cerrarGlobito(); },
-    guiaStop: () => { LS.set('bd_guia_simple_' + S.yo.usuario, false); cerrarGlobito(); avisar('Guía apagada. La podés prender de nuevo en Perfil.'); },
+    globoOk: () => { AYU.vistos.add(claveAyu()); cerrarGlobito(); if (S.vista === 'flujo') enfocarFlujo(); },
+    guiaStop: () => { LS.set('bd_guia_simple_' + S.yo.usuario, false); cerrarGlobito(); avisar('Guía apagada. La podés prender de nuevo en Perfil.'); if (S.vista === 'flujo') enfocarFlujo(); },
     guiaSimpleOnOff: () => { const k = 'bd_guia_simple_' + S.yo.usuario, on = !guiaSimpleOn(); LS.set(k, on); t.setAttribute('aria-checked', on); if (on) AYU.vistos.clear(); avisar(on ? 'Guía del ayudante prendida' : 'Guía del ayudante apagada'); },
     globoIA: () => { cerrarGlobito(); abrirIA(); },
-    apAvatar: () => { AP.d.avatar = t.dataset.av; abrirApariencia(); },
+    apAvatar: () => { if (AP.d.avatar !== 'robot') AP.rab = AP.d.avatar; AP.d.avatar = t.dataset.av; if (AP.d.avatar !== 'robot') AP.rab = AP.d.avatar; abrirApariencia(); },
     iaGuia: () => irAccionIA(t.dataset.g),
     apariencia: abrirApariencia,
     ocultarMontos: () => { OCULTO = !OCULTO; LS.set('bd_ocultar', OCULTO); render(); avisar(OCULTO ? 'Montos ocultos' : 'Montos visibles'); },
@@ -3338,13 +3395,13 @@ function montarAnalisis() {
   const armarBloques = (d, g, aparecer) => {
     const n = d.subList.length, RB = 172;
     let paso = 17; if ((n - 1) * paso > 150) paso = 150 / (n - 1);
-    const ancho = Math.min(13, paso * 0.76), ini = d.mid - (n - 1) * paso / 2, fin = ini + (n - 1) * paso;
-    d.subList.forEach((s, i) => { s.bm = ini + i * paso; });
+    // 2.0.3 · Idea 2: los bloques van todos juntos del lado contrario al texto (hacia el centro de arriba o de abajo),
+    // así la línea futurista sale del centro de la categoría, igual que en las demás, y nunca se cruza con ellos
+    const ancho = Math.min(13, paso * 0.76), sd = (Math.sign(Math.sin(d.mid * D)) || 1) * Math.cos(d.mid * D) < 0 ? 1 : -1;
+    d.subList.forEach((s, i) => { s.bm = d.mid + sd * (14 + i * paso); });
     const P = (r, a) => pt(r, a).map(v => v.toFixed(2)).join(' ');
-    const der = Math.sin(d.mid * D) >= 0, sI = Math.sin(ini * D), sF = Math.sin(fin * D);
-    d.busExt = (der ? sI > sF : sI < sF) ? ini - 14 : fin + 14;
-    const b0 = Math.min(ini, d.busExt), b1 = Math.max(fin, d.busExt);
-    let camino = `M${P(158, d.mid)} L${P(RB, d.mid)} M${P(RB, b0)} A${RB} ${RB} 0 0 1 ${P(RB, b1)}`;
+    const tallo = d.mid + sd * 6, ult = d.mid + sd * (14 + (n - 1) * paso), b0 = Math.min(tallo, ult), b1 = Math.max(tallo, ult);
+    let camino = `M${P(158, tallo)} L${P(RB, tallo)} M${P(RB, b0)} A${RB} ${RB} 0 0 1 ${P(RB, b1)}`;
     d.subList.forEach(s => { camino += ` M${P(RB, s.bm)} L${P(184, s.bm)}`; });
     const lin = el('path', { d: camino, fill: 'none', 'stroke-width': 2.6, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, g);
     lin.style.stroke = d.color;
@@ -3380,7 +3437,7 @@ function montarAnalisis() {
     if (d.subList && st.sub != null) { const s = d.subList[st.sub]; a = d.afuera ? s.bm : s.mid; nombre = s.name; monto = s.amount; rIni = d.afuera ? 233 : 198; }
     else {
       a = d.mid; nombre = d.name; monto = d.amount; rIni = d.subList ? 192 : 168;
-      if (d.afuera) { a = d.busExt; rIni = 172; } // sale de la punta de la línea curva de la categoría, pasando el último bloque
+      if (d.afuera) rIni = 162; // 2.0.3 · sale del centro de la categoría (los bloques quedan del otro lado)
     }
     const cos = Math.cos(a * D), der = Math.sin(a * D) >= 0, fx = der ? 412 : 8, anc = der ? 'end' : 'start';
     const linea = (op, ancho, retraso) => {
@@ -4314,7 +4371,9 @@ function siguienteFlujo() {
   fl.i = Math.min(fl.i + 1, pasosFlujo().length - 1);
   $('contenido').scrollTop = 0; render(); enfocarFlujo();
 }
-function enfocarFlujo() { const i = $('fIn'); if (i) { try { i.focus({ preventScroll: true }); const L = i.value.length; i.setSelectionRange(L, L); } catch (e) {} } }
+// 2.0.3 · Opción B: con la guía prendida, primero se explica la pantalla y el teclado espera a que toquen el campo
+const guiaEspera = () => esSimple() && S.vista === 'flujo' && !GUIA.activa && guiaSimpleOn() && !AYU.vistos.has(claveAyu()) && !!textoPantalla();
+function enfocarFlujo() { if (guiaEspera()) return; const i = $('fIn'); if (i) { try { i.focus({ preventScroll: true }); const L = i.value.length; i.setSelectionRange(L, L); } catch (e) {} } }
 function elegirOpcionFlujo(v) {
   const fl = S.flujo, p = pasoFlujo(); if (!p || !p.k) return;
   fl.d[p.k] = v;
@@ -4968,6 +5027,7 @@ const AVATARES = {
   conejo: { nombre: 'Rabbit', titulo: 'Rabbit · Conejo-robot', sub: 'Con luces en las orejas' },
   moneda: { nombre: 'Rabbit', titulo: 'Rabbit · Con monedita', sub: 'La moneda gira' }
 };
+const ATUENDOS = ['pixel', 'asesor', 'conejo', 'moneda'];
 const avId = () => { const a = S.yo ? pref('avatar', 'robot') : 'robot'; return AVATARES[a] ? a : 'robot'; };
 const nombreAyu = () => AVATARES[avId()].nombre;
 const NombreAyu = () => { const n = nombreAyu(); return n[0].toUpperCase() + n.slice(1); };
@@ -4984,22 +5044,19 @@ function poseRobot(p, ms) {
 }
 // Modo simple: el ícono explica la pantalla que se está viendo, con palabras simples
 function textoPantalla() {
+  // 2.0.3 · Textos cortos (1 o 2 líneas): no repiten lo que la pantalla ya dice
   const v = S.vista;
-  if (v === 'menu') return S.menu === 'negocio'
-    ? 'Acá anotás lo del negocio. Tocá lo que hiciste: si cambiaste plata, si compraste mercadería, lo que pagaste en el viaje, otro gasto del negocio o si le prestaste plata a otro negocio.'
-    : 'Acá anotás tus gastos. "Gasté con mi plata" es cuando pagaste con tu plata. "Usé plata del negocio" es cuando usaste plata del negocio para algo tuyo. "Devolví plata al negocio" es cuando la devolviste.';
-  if (v === 'lista') return 'Acá ves todo lo que cargaste, lo más nuevo arriba. Tocá uno para verlo, corregirlo o borrarlo.';
-  if (v === 'perfil') return 'Acá está tu cuenta: tu nombre, si todo está subido y cómo se ve la app. Si algo no se subió, tocá "Subir y actualizar ahora".';
+  if (v === 'menu') return S.menu === 'negocio' ? 'Elegí lo que hiciste con la plata del negocio.' : 'Elegí qué pasó con tu plata o con la del negocio.';
+  if (v === 'lista') return 'Tocá uno para verlo, corregirlo o borrarlo.';
+  if (v === 'perfil') return 'Si algo no se subió, tocá "Subir y actualizar ahora".';
   if (v === 'flujo' && S.flujo) {
-    const p = pasoFlujo(), F = FLUJOS[S.flujo.tipo]; if (!p) return '';
-    if (S.flujo.editMonto) return 'Si transferiste otro monto, escribilo con el teclado y tocá Listo. Si no, tocá Volver.';
-    if (p.t === 'resumen') return 'Revisá que todo esté bien. Si algo está mal, tocá Atrás. Si está bien, tocá Guardar. La nota es opcional: podés dejarla vacía.';
-    const preg = typeof p.preg === 'function' ? p.preg(S.flujo.d) : p.preg;
-    const como = p.t === 'par' ? 'Escribí la plata o el porcentaje: el otro se completa solo. Después tocá Siguiente.'
-      : p.t === 'num' ? 'Escribí el número con el teclado. Los puntos los pone la app sola. Después tocá Siguiente.'
-      : p.t === 'texto' ? 'Escribí una palabra corta.' + (p.opcional ? ' Si no querés, tocá Saltar.' : ' Después tocá Siguiente.')
-      : 'Tocá la opción que corresponde. Si te equivocaste, tocá Atrás.';
-    return `Estás anotando "${F.titulo}". Te pregunto: ${preg} ${como}`;
+    const p = pasoFlujo(); if (!p) return '';
+    if (S.flujo.editMonto) return 'Escribí lo que transferiste y tocá Listo.';
+    if (p.t === 'resumen') return 'Si todo está bien, tocá Guardar.';
+    if (p.t === 'par') return 'Escribí uno de los dos y tocá Siguiente.';
+    if (p.t === 'num') return 'Escribí el número y tocá Siguiente.';
+    if (p.t === 'texto') return 'Escribí una palabra corta' + (p.opcional ? ' o tocá Saltar.' : ' y tocá Siguiente.');
+    return 'Tocá la opción que corresponde.';
   }
   return '';
 }
@@ -5008,9 +5065,18 @@ function explicarPantalla() {
   if (!t) return abrirIA();
   clearTimeout(globitoRobot.t1); clearTimeout(globitoRobot.t2); clearTimeout(cerrarGlobito.t);
   const cuerpo = ayuFuera();
-  g.innerHTML = `<div class="g-fila">${cuerpo ? '' : avatarHTML('g-av', 'senala')}<p>${esc(t)}</p></div><div class="g-acc"><button type="button" data-acc="globoOk">Entendido</button><button type="button" data-acc="globoIA">Preguntale a ${esc(nombreAyu())}</button>${cuerpo && guiaSimpleOn() ? '<button type="button" class="g-stop" data-acc="guiaStop">Detener guía</button>' : ''}</div>`;
+  g.innerHTML = `<div class="g-fila">${cuerpo ? '' : avatarHTML('g-av', 'senala')}<p>${esc(t)}</p></div><div class="g-acc">${cuerpo && guiaSimpleOn() ? '<button type="button" data-acc="guiaStop">Detener guía</button>' : ''}<button type="button" data-acc="globoIA">Preguntale a ${esc(nombreAyu())}</button></div>`;
   g.classList.add('explica'); g.hidden = false; g.classList.remove('chau');
   AYU.clave = claveAyu(); ayuSenala(cuerpo);
+  if (cuerpo) setTimeout(despejarBoton, 90);
+}
+// 2.0.3 · Si el globito tapa Siguiente o Guardar, la pantalla sube lo justo para que el botón quede arriba del globito
+function despejarBoton() {
+  const g = $('robotGlobo'), b = document.querySelector('#contenido .f-sig'), c = $('contenido');
+  if (!g || g.hidden || !g.classList.contains('explica') || !b || !b.getClientRects().length || document.body.classList.contains('tec-abierto')) return;
+  const gb = g.getBoundingClientRect(), bb = b.getBoundingClientRect();
+  if (!gb.height || bb.bottom <= gb.top - 10) return;
+  c.scrollBy({ top: bb.bottom - (gb.top - 12), behavior: animOff() ? 'auto' : 'smooth' });
 }
 // Con el teclado abierto, el ícono y su globito suben y quedan a la vista
 if (window.visualViewport) {
@@ -5126,30 +5192,40 @@ async function elegirDesbloqueo(m) {
 /* =========================================================
    2.0.1 · Ayudante con cuerpo completo: sale del ícono, camina hasta lo que hay que tocar y lo señala con la mano.
    ========================================================= */
+// 2.0.3 · Cuerpo entero "vivo": piernas, tronco, cabeza, orejas/antena, ojos y los dos brazos, cada uno en su grupo
 function cuerpoAyudante(id) {
-  const pt = (x, y, w, h, f, extra) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${f}"${extra || ''}/>`;
+  const pt = (x, y, w, h, f) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${f}"/>`;
   if (id === 'pixel') {
-    const M = AV_COL, celdas = (filas, c0, r0) => filas.map((fila, r) => [...fila].map((ch, c) => ch === '.' ? '' : pt((c0 + c) * 4, (r0 + r) * 4, 4.3, 4.3, M[ch])).join('')).join('');
-    const cab = AV_MAPA.slice(0, 13).map(f => '..' + f + '..').concat(['....oovvvyyvvvoo....', '...ovvvvvyyvvvvvo...']);
-    const torso = ['...ovvvvvvvvvvvvo...', '...ovvvvvyvvvvvvo...', '...ovvvvvvvvvvvvo...', '...ovvvvvyvvvvvvo...', '...oovvvvvvvvvvoo...', '....owwwwwwwwwwo....'];
+    const M = AV_COL, celdas = (filas, c0, r0, filtro) => filas.map((fila, r) => [...fila].map((ch, c) => ch === '.' || (filtro && !filtro(ch, c, r)) ? '' : pt((c0 + c) * 4, (r0 + r) * 4, 4.3, 4.3, M[ch])).join('')).join('');
+    const cab = AV_MAPA.slice(0, 13).map(f => '..' + f + '..');
+    const torso = ['....oovvvyyvvvoo....', '...ovvvvvyyvvvvvo...', '...ovvvvvvvvvvvvo...', '...ovvvvvyvvvvvvo...', '...ovvvvvvvvvvvvo...', '...ovvvvvyvvvvvvo...', '...oovvvvvvvvvvoo...', '....owwwwwwwwwwo....'];
     const pierna = ['.owwwo', '.owwwo', '.owwwo', 'owwwwo', 'oooooo'], brazo = ['ovo', 'ovo', 'ovo', 'owo', 'owo', '.o.'];
-    return { w: 80, h: 104, armY: 57, tip: -10, svg: `<svg width="80" height="104" viewBox="0 0 80 104" shape-rendering="crispEdges" style="--brazoS:90deg" aria-hidden="true">
+    const oreja = (izq) => (ch, c, r) => r < 5 && (izq ? c < 10 : c >= 10), ojo = ch => ch === 'e' || ch === 'h';
+    const resto = (ch, c, r) => r >= 5 && !ojo(ch);
+    return { w: 80, h: 104, armY: 57, tip: -10, svg: `<svg class="rig rig-pixel" width="80" height="104" viewBox="0 0 80 104" shape-rendering="crispEdges" style="--brazoS:90deg" aria-hidden="true">
       <g class="pie1">${celdas(pierna, 3, 21)}</g><g class="pie2">${celdas(pierna.map(x => [...x].reverse().join('')), 11, 21)}</g>
-      ${celdas(cab.concat(torso), 0, 0)}${celdas(brazo, 15, 14)}
-      <g class="brazoI" style="transform-origin:14px 57px"><g class="dedo" style="transform-origin:14px 57px">${celdas(brazo, 2, 14)}</g></g></svg>` };
+      <g class="tronco" style="transform-origin:40px 100px">${celdas(torso, 0, 13)}
+        <g class="brazoD" style="transform-origin:66px 57px">${celdas(brazo, 15, 14)}</g>
+        <g class="cab" style="transform-origin:40px 52px"><g class="av-oi">${celdas(cab, 0, 0, oreja(true))}</g><g class="av-od">${celdas(cab, 0, 0, oreja(false))}</g>${celdas(cab, 0, 0, resto)}<g class="av-ojo">${celdas(cab, 0, 0, ojo)}</g></g>
+        <g class="brazoI" style="transform-origin:14px 57px"><g class="dedo" style="transform-origin:14px 57px">${celdas(brazo, 2, 14)}</g></g>
+      </g></svg>` };
   }
   if (id === 'robot') {
-    return { w: 80, h: 110, armY: 61, tip: 2, svg: `<svg width="80" height="110" viewBox="0 0 80 110" style="--brazoS:66deg" aria-hidden="true">
-      <line x1="40" y1="6" x2="40" y2="16" stroke="#7C4DFF" stroke-width="3" stroke-linecap="round"/><circle cx="40" cy="5" r="4" fill="#FFD23F"/>
-      <rect x="11" y="28" width="5" height="12" rx="2" fill="#9B6BFF"/><rect x="64" y="28" width="5" height="12" rx="2" fill="#9B6BFF"/>
-      <rect x="16" y="16" width="48" height="36" rx="12" fill="#7C4DFF"/><rect x="22" y="22" width="36" height="24" rx="8" fill="#1A1530"/>
-      <circle cx="33" cy="33" r="3.6" fill="#3FD6C6"/><circle cx="47" cy="33" r="3.6" fill="#3FD6C6"/><path d="M34 40 Q40 44 46 40" fill="none" stroke="#3FD6C6" stroke-width="2.2" stroke-linecap="round"/>
-      <rect x="35" y="52" width="10" height="6" fill="#5B3FD6"/>
+    return { w: 80, h: 110, armY: 61, tip: 2, svg: `<svg class="rig rig-robot" width="80" height="110" viewBox="0 0 80 110" style="--brazoS:66deg" aria-hidden="true">
       <g class="pie1"><rect x="27" y="85" width="10" height="15" rx="4" fill="#7C4DFF"/><rect x="24" y="98" width="15" height="7" rx="3.5" fill="#2A1B4D"/></g>
       <g class="pie2"><rect x="43" y="85" width="10" height="15" rx="4" fill="#7C4DFF"/><rect x="41" y="98" width="15" height="7" rx="3.5" fill="#2A1B4D"/></g>
-      <rect x="22" y="57" width="36" height="30" rx="10" fill="#9B6BFF"/><circle cx="40" cy="70" r="4.5" fill="#FFD23F"/>
-      <path d="M58 62 L67 80" stroke="#7C4DFF" stroke-width="6" stroke-linecap="round"/><circle cx="67" cy="82" r="4.5" fill="#F4EEFF"/>
-      <g class="brazoI" style="transform-origin:22px 62px"><g class="dedo" style="transform-origin:22px 62px"><path d="M22 62 L13 80" stroke="#7C4DFF" stroke-width="6" stroke-linecap="round"/><circle cx="13" cy="82" r="4.5" fill="#F4EEFF"/></g></g></svg>` };
+      <g class="tronco" style="transform-origin:40px 102px">
+        <rect x="35" y="50" width="10" height="9" fill="#5B3FD6"/>
+        <rect x="22" y="57" width="36" height="30" rx="10" fill="#9B6BFF"/><circle cx="40" cy="70" r="4.5" fill="#FFD23F"/>
+        <g class="brazoD" style="transform-origin:58px 62px"><path d="M58 62 L67 80" stroke="#7C4DFF" stroke-width="6" stroke-linecap="round"/><circle cx="67" cy="82" r="4.5" fill="#F4EEFF"/></g>
+        <g class="cab" style="transform-origin:40px 54px">
+          <g class="antena"><line x1="40" y1="6" x2="40" y2="16" stroke="#7C4DFF" stroke-width="3" stroke-linecap="round"/><circle cx="40" cy="5" r="4" fill="#FFD23F"/></g>
+          <rect x="11" y="28" width="5" height="12" rx="2" fill="#9B6BFF"/><rect x="64" y="28" width="5" height="12" rx="2" fill="#9B6BFF"/>
+          <rect x="16" y="16" width="48" height="36" rx="12" fill="#7C4DFF"/><rect x="22" y="22" width="36" height="24" rx="8" fill="#1A1530"/>
+          <g class="av-ojo"><circle cx="33" cy="33" r="3.6" fill="#3FD6C6"/><circle cx="47" cy="33" r="3.6" fill="#3FD6C6"/></g><path d="M34 40 Q40 44 46 40" fill="none" stroke="#3FD6C6" stroke-width="2.2" stroke-linecap="round"/>
+        </g>
+        <g class="brazoI" style="transform-origin:22px 62px"><g class="dedo" style="transform-origin:22px 62px"><path d="M22 62 L13 80" stroke="#7C4DFF" stroke-width="6" stroke-linecap="round"/><circle cx="13" cy="82" r="4.5" fill="#F4EEFF"/></g></g>
+      </g></svg>` };
   }
   // Los Rabbit dibujados (Asesor, Conejo-robot, Con monedita): su misma cabeza, con cuerpo, brazos y piernas
   const T = {
@@ -5157,16 +5233,20 @@ function cuerpoAyudante(id) {
     conejo: { ropa: '#C9B8F5', pata: '#EDE6FF', pierna: '#D9CEFF', extra: '<rect x="48" y="112" width="24" height="16" rx="6" fill="#1D1530"/><circle cx="60" cy="120" r="4" fill="#4FD8FF"/>' },
     moneda: { ropa: '#7C4DFF', pata: '#C9B6FF', pierna: '#7C4DFF', extra: '<ellipse cx="60" cy="128" rx="15" ry="16" fill="#C9B6FF"/>' }
   }[id] || {};
-  const cab = AV_SVG[id]().replace('<svg viewBox="0 0 120 120"', '<svg x="0" y="0" width="120" height="120" viewBox="0 0 120 120"');
-  const brazo = (x1, x2) => `<path d="M${x1} 112 L${x2} 138" stroke="${T.ropa}" stroke-width="11" stroke-linecap="round"/><path d="M${x1} 112 L${x2} 138" stroke="#2A1B4D" stroke-width="15" stroke-linecap="round" opacity="0"/><circle cx="${x2 + (x2 < 60 ? -1 : 1)}" cy="141" r="6.5" fill="${T.pata}" stroke="#2A1B4D" stroke-width="2.5"/>`;
-  const moneda = id === 'moneda' ? '<circle cx="95" cy="150" r="8" fill="#FFD23F" stroke="#B8860B" stroke-width="2.5"/><path d="M95 145.5 V154.5" stroke="#B8860B" stroke-width="2" stroke-linecap="round"/>' : '';
+  const cab = AV_SVG[id]().replace('<svg viewBox="0 0 120 120"', '<svg x="0" y="0" width="120" height="120" viewBox="0 0 120 120" overflow="visible"')
+    .replace(/<g class="av-mon">[\s\S]*?<\/g><ellipse cx="80" cy="92"[^>]*\/>/, '');
+  // Brazos con borde oscuro (como las piernas) y abiertos hacia afuera: salen de atrás del cuerpo, no quedan pegados
+  const brazo = (x1, x2) => `<path d="M${x1} 110 L${x2} 150" stroke="#2A1B4D" stroke-width="15" stroke-linecap="round"/><path d="M${x1} 110 L${x2} 150" stroke="${T.ropa}" stroke-width="9" stroke-linecap="round"/><circle cx="${x2 + (x2 < 60 ? -1 : 1)}" cy="153" r="7.5" fill="${T.pata}" stroke="#2A1B4D" stroke-width="2.5"/>`;
+  const moneda = id === 'moneda' ? '<circle cx="106" cy="167" r="12.5" fill="#FFD23F" stroke="#B8860B" stroke-width="2.5"/><text x="106" y="172.5" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="800" font-size="15" fill="#8A5A00">$</text>' : '';
   const pie = (x, cl) => `<g class="${cl}"><rect x="${x}" y="150" width="13" height="30" rx="6" fill="${T.pierna}" stroke="#2A1B4D" stroke-width="3"/><rect x="${x - 5}" y="174" width="21" height="11" rx="5.5" fill="#2A1B4D"/></g>`;
-  return { w: 66, h: 110, armY: 62, tip: 5, svg: `<svg width="66" height="110" viewBox="0 0 120 200" style="--brazoS:74deg" aria-hidden="true">
+  return { w: 66, h: 110, armY: 60, tip: -4, svg: `<svg class="rig rig-${id}" width="66" height="110" viewBox="0 0 120 200" style="--brazoS:68deg" aria-hidden="true">
     ${pie(44, 'pie1')}${pie(63, 'pie2')}
-    <rect x="34" y="98" width="52" height="58" rx="18" fill="${T.ropa}" stroke="#2A1B4D" stroke-width="3"/>${T.extra || ''}
-    ${brazo(82, 92)}${moneda}
-    ${cab}
-    <g class="brazoI" style="transform-origin:38px 112px"><g class="dedo" style="transform-origin:38px 112px">${brazo(38, 28)}</g></g></svg>` };
+    <g class="tronco" style="transform-origin:60px 184px">
+      <g class="brazoD" style="transform-origin:80px 110px">${brazo(80, 100)}${moneda}</g>
+      <g class="brazoI" style="transform-origin:40px 110px"><g class="dedo" style="transform-origin:40px 110px">${brazo(40, 20)}</g></g>
+      <rect x="34" y="98" width="52" height="58" rx="18" fill="${T.ropa}" stroke="#2A1B4D" stroke-width="3"/>${T.extra || ''}
+      <g class="cab" style="transform-origin:60px 102px">${cab}</g>
+    </g></svg>` };
 }
 const CAM = { el: null, id: '', x: 0, y: 0, tx: 0, ty: 0, flip: false, volver: false, raf: 0, dim: null };
 function camDesdeIcono() {
@@ -5204,6 +5284,9 @@ function camPintar() {
   const quieto = Math.hypot(CAM.tx - CAM.x, CAM.ty - CAM.y) < 1.5;
   CAM.el.style.transform = `translate(${CAM.x.toFixed(1)}px,${CAM.y.toFixed(1)}px)`;
   CAM.el.classList.toggle('camina', !quieto);
+  if (!quieto) CAM.el.classList.toggle('va-der', CAM.tx > CAM.x);
+  if (quieto && CAM.caminaba && !CAM.volver) { CAM.el.classList.add('llega'); clearTimeout(CAM.tLlega); CAM.tLlega = setTimeout(() => CAM.el && CAM.el.classList.remove('llega'), 460); }
+  CAM.caminaba = !quieto;
   CAM.el.classList.toggle('senala', quieto && !CAM.volver);
   CAM.el.classList.toggle('voltea', quieto && CAM.flip && !CAM.volver);
 }
@@ -5229,7 +5312,7 @@ function ayuCuerpo() {
   if (!AYU.el) {
     AYU.el = document.createElement('div'); AYU.el.className = 'cam ayu-parado'; AYU.el.hidden = true;
     AYU.el.setAttribute('role', 'button'); AYU.el.tabIndex = 0;
-    const tocar = () => { const g = $('robotGlobo'); if (g && !g.hidden && g.classList.contains('explica')) { AYU.vistos.add(claveAyu()); cerrarGlobito(); } else abrirAyudante(); };
+    const tocar = () => { const g = $('robotGlobo'); if (g && !g.hidden && g.classList.contains('explica')) { AYU.vistos.add(claveAyu()); cerrarGlobito(); if (S.vista === 'flujo') enfocarFlujo(); } else abrirAyudante(); };
     AYU.el.onclick = tocar; AYU.el.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tocar(); } };
     document.body.appendChild(AYU.el);
   }
@@ -5673,6 +5756,7 @@ function abrirApariencia() {
   Object.keys(FUENTES).forEach(cargarFuente);
   if (!AP) AP = { orig: apActual(), d: apActual() };
   const d = AP.d, y1 = $('modalIn').scrollTop, y2 = $('modal').scrollTop, abierto = !!$('apPrev');
+  const rab = d.avatar !== 'robot' ? d.avatar : (AP.rab || 'pixel'); // el último atuendo de Rabbit que se eligió
   abrirModal(`${cab('Apariencia', 'var(--grad)', 'letra')}
     ${htmlApEjemplo(d)}
     <div class="campo"><span>Tamaño de letra: <b id="apTamTxt">${TAMANOS[d.tam][1]}</b></span>
@@ -5684,7 +5768,10 @@ function abrirApariencia() {
         : `<small style="font-weight:600;color:var(--muted);font-size:12.5px">"Predeterminado del sistema": claro u oscuro igual que tu celular. "Programado": oscuro a la hora que elijas.</small>`}</div>
     <div class="campo">Ahorro de energía<div class="segm">${[['no', 'Apagado'], ['auto', 'Con poca batería'], ['si', 'Siempre']].map(([v, t]) => `<button type="button" data-acc="apAhorro" data-v="${v}" aria-pressed="${d.ahorro === v}">${t}</button>`).join('')}</div>
       <small style="font-weight:600;color:var(--muted);font-size:12.5px">Apaga las animaciones y el sonido. "Con poca batería": cuando queda 20% o menos y no está cargando.</small></div>
-    <div class="campo">Ayudante<div class="ap-avs">${Object.entries(AVATARES).map(([k, a]) => `<button type="button" data-acc="apAvatar" data-av="${k}" aria-pressed="${d.avatar === k}">${avatarHTML('ap-av' + (k !== 'robot' ? ' claro-av' : ''), '', k)}<span><b>${esc(a.titulo)}</b><small>${esc(a.sub)}</small></span></button>`).join('')}</div>
+    <div class="campo">Ayudante<div class="ap-avs">
+      <button type="button" data-acc="apAvatar" data-av="robot" aria-pressed="${d.avatar === 'robot'}">${avatarHTML('ap-av', '', 'robot')}<span><b>Robotito</b><small>El de siempre</small></span></button>
+      <button type="button" data-acc="apAvatar" data-av="${rab}" aria-pressed="${d.avatar !== 'robot'}">${avatarHTML('ap-av claro-av', '', rab)}<span><b>Rabbit</b><small>${ATUENDOS.length} atuendos</small></span></button></div>
+      ${d.avatar !== 'robot' ? `<div class="ap-atu-tit">Atuendo de Rabbit</div><div class="ap-atuendos">${ATUENDOS.map(k => `<button type="button" data-acc="apAvatar" data-av="${k}" aria-pressed="${d.avatar === k}">${avatarHTML('ap-av claro-av', '', k)}<b>${esc(AVATARES[k].titulo.split(' · ')[1])}</b></button>`).join('')}</div>` : ''}
       <small style="font-weight:600;color:var(--muted);font-size:12.5px">El ayudante elegido se guarda en tu cuenta: sigue igual en otro celular o en la compu.</small></div>
     <p class="ayuda" style="margin:0;font-size:13px">La letra y el modo se guardan en este celular. Un tipo de letra nuevo se descarga la primera vez con internet.</p>
     <button class="btn btn-grad" type="button" data-acc="apGuardar">Guardar cambios</button>`);
@@ -5782,6 +5869,7 @@ if (window.visualViewport) {
     if (h > TEC.maxAlto) TEC.maxAlto = h;
     const abierto = h < TEC.maxAlto - 150;
     if (TEC.abierto && !abierto) tecladoSeCerro();
+    if (TEC.abierto !== abierto) { document.body.classList.toggle('tec-abierto', abierto); if (!abierto) setTimeout(despejarBoton, 320); }
     TEC.abierto = abierto;
   };
   visualViewport.addEventListener('resize', medir);
@@ -5853,10 +5941,10 @@ Inicio: arriba el saludo y el círculo con las iniciales (abre el Perfil). Si se
 
 MODO COMPLETO
 Barra de abajo: **Inicio**, **Personal**, **+** (en el medio), **Negocio**, **Perfil**. El ícono 🤖 (abajo a la derecha) tiene esta charla y guías paso a paso que iluminan dónde tocar.
-- **Ayudante**: en **Perfil → Apariencia → Ayudante** cada uno elige el suyo: el **Robotito** (viene de entrada) o **Rabbit, tu asesor de confianza**, con 4 apariencias (Pixel, Asesor, Conejo-robot y Con monedita). Se guarda en la cuenta (sigue igual en otro celular). Hace gestos en los globitos (saluda, señala, piensa, festeja) y su carita sale en el chat. En las guías (**Mostrame cómo**) sale del ícono con el cuerpo entero, camina hasta lo que hay que tocar y lo señala con la mano. En el **modo simple**, en Inicio está abajo la barra grande **Preguntale a…** (abre el chat con el teclado listo), a la izquierda del ícono, y arriba de ella las preguntas comunes en lista, unidas con líneas; cuando sale el mensaje de bienvenida la barra sube y después vuelve a bajar. En las demás pantallas el ayudante está abajo a la derecha con el cuerpo entero, y al entrar a cada pantalla aparece solo un globito que la explica con palabras simples mientras la señala (con **Entendido**, **Preguntale a…** y **Detener guía**). Esa guía viene prendida; se apaga con **Detener guía** o en **Perfil → Guía del ayudante**, y apagada el globito sale solo tocando al ayudante. Al volver a Inicio, el ayudante vuelve a ser el ícono. Con el teclado abierto, el ícono y su globito suben y se siguen viendo.
+- **Ayudante**: en **Perfil → Apariencia → Ayudante** cada uno elige el suyo: el **Robotito** (viene de entrada) o **Rabbit, tu asesor de confianza**; al elegir Rabbit aparecen abajo sus 4 atuendos (Pixel, Asesor, Conejo-robot y Con monedita). Con el cuerpo entero se mueve todo: respira, parpadea, mueve la cabeza y las orejas, camina moviendo brazos y piernas y señala levantando el brazo. Se guarda en la cuenta (sigue igual en otro celular). Hace gestos en los globitos (saluda, señala, piensa, festeja) y su carita sale en el chat. En las guías (**Mostrame cómo**) sale del ícono con el cuerpo entero, camina hasta lo que hay que tocar y lo señala con la mano. En el **modo simple**, en Inicio está abajo la barra grande **Preguntale a…** (abre el chat con el teclado listo), a la izquierda del ícono, y arriba de ella las preguntas comunes en lista, unidas con líneas; cuando sale el mensaje de bienvenida la barra sube y después vuelve a bajar. En las demás pantallas el ayudante está abajo a la derecha con el cuerpo entero, y al entrar a cada pantalla aparece solo un globito corto que la explica mientras la señala (con **Detener guía** y **Preguntale a…**, sin "Entendido" para anotar rápido). El globito crece con el tamaño de letra; si tapa **Siguiente** o **Guardar**, la pantalla sube sola para que el botón quede arriba. En las preguntas donde hay que escribir, con la guía prendida primero aparece el globito y el teclado se abre al tocar el campo; con el teclado abierto, el ayudante y su globito se esconden y vuelven al cerrarlo. Esa guía viene prendida; se apaga con **Detener guía** o en **Perfil → Guía del ayudante**, y apagada el globito sale solo tocando al ayudante. Al volver a Inicio, el ayudante vuelve a ser el ícono. Con el teclado abierto, el ícono y su globito suben y se siguen viendo.
 - **Deudas** (Inicio, modo completo): una sola tarjeta con dos partes: **Préstamos entre negocios** (compensados: si Rina le debe 20.000 a Freddy y Freddy 5.000 a Rina, se ve "Rina le debe a Freddy $ 15.000") y **Le debés al negocio** (lo que cada uno le debe a su propio negocio). El admin ve todas; cada uno ve solo las de su negocio. Cada deuda tiene **Devolver**.
 - **Buscador** (modo completo): la lupa al lado del nombre en Inicio; al bajar con el dedo se estira y queda arriba como barra "Buscá en la Billetera". Abre una pantalla para escribir: muestra **Sugerencias** (las guías, para que el ayudante muestre cómo hacer algo), la tarjeta **Tu asistente** (abre el chat de la IA) y, mientras se escribe, las guías y los movimientos que coinciden (de los últimos 12 meses), con **Ver los N en Consultar todos**.
-- **Análisis** (solo modo completo, se entra desde la fila del monto de Inicio): el mes con flechas ‹ ›, el total y los botones de negocios. Un círculo con todas las categorías (negocio en azules tirando a violeta, personal en naranjas tirando a rojo; cada categoría tiene su tono, y es el mismo en **Por categoría** de Inicio y en la lista); adentro de cada parte, un dibujito blanco de la categoría; en el centro **Personal** y **Negocio** con sus montos (todo sube desde 0 al entrar). Eligiendo Personal o Negocio (o el anillo finito de adentro), el otro grupo queda con sus colores apagados. Eligiendo una parte, el círculo se achica y se corre, y una línea de circuito muestra el nombre y el monto. **Mercadería** abre un segundo anillo con los 3 productos con más gasto y "Otros productos"; **Viaje** (pasero, colectivo, comida…) y **Comisiones** (cambio y recargos) también. Debajo, la lista de categorías con su % y **Ver movimientos**: abre la pantalla de la categoría con las barras mes a mes (se deslizan, la línea punteada es el promedio), sus mini-categorías y "Tenés N gastos" (tocando uno se corrige como siempre).
+- **Análisis** (solo modo completo, se entra desde la fila del monto de Inicio): el mes con flechas ‹ ›, el total y los botones de negocios. Un círculo con todas las categorías (negocio en azules tirando a violeta, personal en naranjas tirando a rojo; cada categoría tiene su tono, y es el mismo en **Por categoría** de Inicio y en la lista); adentro de cada parte, un dibujito blanco de la categoría; en el centro **Personal** y **Negocio** con sus montos (todo sube desde 0 al entrar). Eligiendo Personal o Negocio (o el anillo finito de adentro), el otro grupo queda con sus colores apagados. Eligiendo una parte, el círculo se achica y se corre, y una línea de circuito sale del centro de esa parte y muestra el nombre y el monto. Si sus mini-categorías son muy finitas, salen afuera como bloques, todos juntos del lado contrario al texto. **Mercadería** abre un segundo anillo con los 3 productos con más gasto y "Otros productos"; **Viaje** (pasero, colectivo, comida…) y **Comisiones** (cambio y recargos) también. Debajo, la lista de categorías con su % y **Ver movimientos**: abre la pantalla de la categoría con las barras mes a mes (se deslizan, la línea punteada es el promedio), sus mini-categorías y "Tenés N gastos" (tocando uno se corrige como siempre).
 - **Inicio**: cuánto se gastó en el mes (el número sube desde 0 al entrar; con el **Sonido de monedas** prendido en Perfil, suena como máximo una vez cada 6 horas y solo en Inicio; viene apagado). La fila del monto, el ojito y la flecha **›** lleva a la pantalla **Análisis** (el ojito sigue ocultando los montos). Tarjetas de lo que se debe (al negocio o préstamos), "Comparado con <mes anterior>" con las barras de los meses: se ven 6 y deslizando se ven los anteriores, hasta 12 meses atrás; al elegir la barra de un mes, todo Inicio pasa a ese mes ("Gastado en julio"). Tocando el espacio vacío de esa tarjeta se abre el **día por día**: siempre se ven 7 días y se desliza de a uno; arriba, el resumen de esos 7 días (total, negocio, personal y efectivo al cierre); eligiendo un día se ve su detalle. Si alguien no carga nada en 3 días, ve el aviso "Hace N días que no cargás nada". "Por categoría" (se agranda al elegirla), "Últimos gastos" (los 5 movimientos más nuevos, aunque sean de meses anteriores) con **Consultar todos**, que siempre está: muestra los movimientos de los **últimos 12 meses**, de a **30 por página** (abajo: **‹ Página 1 de N ›**, con flechas o escribiendo el número), con buscador por palabra o monto y filtros por tipo: Personal, Compras, No reversible, Gastos generales, Cambios, Préstamos, Efectivo, Transferencia. Lo de más de 12 meses no se ve ahí, pero sigue guardado (sale en el Excel por mes).
 - **+** abre dos grupos. **Negocio**: **Viajes** (pestañas **Inversión** y **No reversible**), **Gastos generales** (categoría, fecha, monto, detalle, pago; sin viaje), **Cambio a efectivo** y **Préstamo a otro negocio**. **Personal**: **Gasto personal** (si la plata salió del negocio, se elige **Negocio (MercadoLibre)** y se prende **Lo voy a devolver**) y **Devolver plata al negocio**.
   · Compra (Inversión): producto, unidades, costo total y **Pago**: **Efectivo**, **Transferencia** o **Combinado** (se escribe lo pagado **En efectivo** y la parte **Por transferencia** se calcula sola). Con transferencia o combinado: **Recargo por transferir** en **$** o en **%** (se cobra sobre lo transferido).
