@@ -1047,7 +1047,7 @@ html.claro .deuda.tedeben small{color:var(--tealink)}
 const API = window.BILLETERA_API || '';
 // Fecha y hora de esta versión (se muestra una vez cuando alguien abre la app actualizada)
 // Versión: MAYOR.MENOR.ARREGLO (arreglo → sube el último; algo nuevo → el del medio; cambio enorme → el primero)
-const APP_SERIE = '2.0.3', APP_FECHA = '2026-11-09';
+const APP_SERIE = '2.0.4', APP_FECHA = '2026-11-13';
 const APP_VERSION = APP_SERIE;
 const COLORES = ['#9B6BFF', '#F05BB5', '#3FD6C6', '#FFB547', '#6FA8FF', '#FF8A5B', '#B5E36B', '#D7C8FF'];
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
@@ -1356,16 +1356,25 @@ function idPar(g, neg) {
   const i = (S.listas['Negocios'] || []).indexOf(neg);
   return g + 'n' + (i >= 0 ? i : String(neg).replace(/[^A-Za-z0-9]/g, '').slice(0, 10));
 }
-// Saldo de préstamos de un negocio con cada otro: positivo = el otro le debe · negativo = le debe al otro
-function prestamosDe(neg) {
+// 2.0.4 · Préstamos entre negocios por dirección: lo que el otro te debe y lo que vos le debés van por separado
+// (un préstamo nuevo en sentido contrario ya no descuenta la deuda vieja)
+function prestDir(neg) {
   const m = {};
   S.negocio.filter(f => f.negocio === neg && esPrest(f)).forEach(f => {
-    const sg = { Prestado: 1, Cobrado: -1, Recibido: -1, Devuelto: 1 }[f.categoria] || 0;
-    m[f.contraparte] = r2((m[f.contraparte] || 0) + sg * (Number(f.monto) || 0));
+    const o = m[f.contraparte] = m[f.contraparte] || { meDeben: 0, debo: 0 }, v = Number(f.monto) || 0;
+    if (f.categoria === 'Prestado') o.meDeben += v; else if (f.categoria === 'Cobrado') o.meDeben -= v;
+    else if (f.categoria === 'Recibido') o.debo += v; else if (f.categoria === 'Devuelto') o.debo -= v;
   });
+  Object.values(m).forEach(o => { o.meDeben = r2(o.meDeben); o.debo = r2(o.debo); });
   return m;
 }
-const debeA = (neg, otro) => Math.max(0, -(prestamosDe(neg)[otro] || 0));
+// Deudas por préstamos de un negocio: [otro, saldo] · positivo = el otro te debe · negativo = le debés (con el mismo negocio pueden estar las dos)
+function prestamosDe(neg) {
+  const out = [];
+  Object.entries(prestDir(neg)).forEach(([o, d]) => { if (d.meDeben > 0.004) out.push([o, d.meDeben]); if (d.debo > 0.004) out.push([o, -d.debo]); });
+  return out;
+}
+const debeA = (neg, otro) => Math.max(0, (prestDir(neg)[otro] || {}).debo || 0);
 function textoPrest(f) {
   const r = ROL_PREST[f.categoria] || ['', ''];
   return { titulo: r[1] + f.contraparte, sale: salePrest(f.categoria), auto: f.descripcion === r[0] + f.contraparte };
@@ -2021,7 +2030,7 @@ function tarjetasPrestamo(simple) {
   let h = '';
   negs.forEach(n => {
     const propio = !S.yo.admin || n === S.yo.negocio;
-    Object.entries(prestamosDe(n)).forEach(([otro, s]) => {
+    prestamosDe(n).forEach(([otro, s]) => {
       if (s < -0.004) h += `<div class="deuda prest"><span><small>🤝 ${propio ? 'Le debés a ' + esc(otro) : esc(n) + ' le debe a ' + esc(otro)}</small><b>${fmt(-s)}</b></span><button type="button" data-devprest="${esc(n + '|' + otro)}">Devolver</button></div>`;
       else if (s > 0.004 && !varios) h += `<div class="deuda tedeben"><span><small>🤝 ${esc(otro)} ${propio ? 'te debe' : 'le debe a ' + esc(n)}</small><b>${fmt(s)}</b></span></div>`;
     });
@@ -2943,7 +2952,7 @@ async function exportar(btn) {
     r++; seccion('HOY');
     linea('Efectivo del negocio', efectivoDe(n));
     if (deudaDe(n) > 0) linea('Plata usada que se le debe al negocio', deudaDe(n));
-    Object.entries(prestamosDe(n)).filter(([, s]) => Math.abs(s) > 0.004).forEach(([o, s]) => linea(s > 0 ? o + ' te debe (préstamo)' : 'Le debés a ' + o + ' (préstamo)', Math.abs(s)));
+    prestamosDe(n).forEach(([o, s]) => linea(s > 0 ? o + ' te debe (préstamo)' : 'Le debés a ' + o + ' (préstamo)', Math.abs(s)));
     ws.pageSetup.orientation = 'portrait';
   } else {
     const filasR = negs.map(n => {
@@ -3842,8 +3851,8 @@ function verDetalle(h, f) {
     add('Tipo', f.tipo === 'Préstamo' ? 'Préstamo entre negocios (no es gasto)' : 'Devolución de un préstamo');
     if (!t.auto) add('Nota', f.descripcion);
     add('Cómo', f.pago === 'Transferencia' ? 'Por transferencia (el efectivo no cambia)' : t.sale ? 'En efectivo (salió del efectivo)' : 'En efectivo (entró al efectivo)');
-    const sal = prestamosDe(f.negocio)[f.contraparte] || 0;
-    add(sal < 0 ? 'Le debés todavía' : 'Te debe todavía', fmt(Math.abs(sal)));
+    const d = prestDir(f.negocio)[f.contraparte] || { meDeben: 0, debo: 0 }, meDeben = f.categoria === 'Prestado' || f.categoria === 'Cobrado';
+    add(meDeben ? 'Te debe todavía' : 'Le debés todavía', fmt(Math.max(0, meDeben ? d.meDeben : d.debo)));
   } else if (esN && f.tipo === 'Devolución') {
     titulo = 'Devolución al negocio'; monto = f.monto; signo = '+';
     add('Tipo', 'Devolución al negocio'); if (f.descripcion !== 'Devolución al negocio') add('Nota', f.descripcion);
@@ -5364,7 +5373,7 @@ function tarjetaDeudas() {
   const todos = S.listas['Negocios'] || [], adminTodo = S.yo.admin && !S.filtro;
   const negs = adminTodo ? todos : [S.filtro || S.yo.negocio], propio = n => n === S.yo.negocio;
   const prest = [], vistos = new Set();
-  negs.forEach(n => Object.entries(prestamosDe(n)).forEach(([otro, sal]) => {
+  negs.forEach(n => prestamosDe(n).forEach(([otro, sal]) => {
     if (Math.abs(sal) < 0.005) return;
     const deudor = sal < 0 ? n : otro, acreedor = sal < 0 ? otro : n, clave = deudor + '|' + acreedor;
     if (vistos.has(clave)) return; vistos.add(clave);
@@ -5942,7 +5951,7 @@ Inicio: arriba el saludo y el círculo con las iniciales (abre el Perfil). Si se
 MODO COMPLETO
 Barra de abajo: **Inicio**, **Personal**, **+** (en el medio), **Negocio**, **Perfil**. El ícono 🤖 (abajo a la derecha) tiene esta charla y guías paso a paso que iluminan dónde tocar.
 - **Ayudante**: en **Perfil → Apariencia → Ayudante** cada uno elige el suyo: el **Robotito** (viene de entrada) o **Rabbit, tu asesor de confianza**; al elegir Rabbit aparecen abajo sus 4 atuendos (Pixel, Asesor, Conejo-robot y Con monedita). Con el cuerpo entero se mueve todo: respira, parpadea, mueve la cabeza y las orejas, camina moviendo brazos y piernas y señala levantando el brazo. Se guarda en la cuenta (sigue igual en otro celular). Hace gestos en los globitos (saluda, señala, piensa, festeja) y su carita sale en el chat. En las guías (**Mostrame cómo**) sale del ícono con el cuerpo entero, camina hasta lo que hay que tocar y lo señala con la mano. En el **modo simple**, en Inicio está abajo la barra grande **Preguntale a…** (abre el chat con el teclado listo), a la izquierda del ícono, y arriba de ella las preguntas comunes en lista, unidas con líneas; cuando sale el mensaje de bienvenida la barra sube y después vuelve a bajar. En las demás pantallas el ayudante está abajo a la derecha con el cuerpo entero, y al entrar a cada pantalla aparece solo un globito corto que la explica mientras la señala (con **Detener guía** y **Preguntale a…**, sin "Entendido" para anotar rápido). El globito crece con el tamaño de letra; si tapa **Siguiente** o **Guardar**, la pantalla sube sola para que el botón quede arriba. En las preguntas donde hay que escribir, con la guía prendida primero aparece el globito y el teclado se abre al tocar el campo; con el teclado abierto, el ayudante y su globito se esconden y vuelven al cerrarlo. Esa guía viene prendida; se apaga con **Detener guía** o en **Perfil → Guía del ayudante**, y apagada el globito sale solo tocando al ayudante. Al volver a Inicio, el ayudante vuelve a ser el ícono. Con el teclado abierto, el ícono y su globito suben y se siguen viendo.
-- **Deudas** (Inicio, modo completo): una sola tarjeta con dos partes: **Préstamos entre negocios** (compensados: si Rina le debe 20.000 a Freddy y Freddy 5.000 a Rina, se ve "Rina le debe a Freddy $ 15.000") y **Le debés al negocio** (lo que cada uno le debe a su propio negocio). El admin ve todas; cada uno ve solo las de su negocio. Cada deuda tiene **Devolver**.
+- **Deudas** (Inicio, modo completo): una sola tarjeta con dos partes: **Préstamos entre negocios** (cada dirección por separado, no se compensan: si Rina le debe 20.000 a Freddy y después Freddy le pide prestado 5.000 a Rina, se ven las dos: "Rina le debe a Freddy $ 20.000" y "Freddy le debe a Rina $ 5.000", cada una con su **Devolver**) y **Le debés al negocio** (lo que cada uno le debe a su propio negocio). El admin ve todas; cada uno ve solo las de su negocio. Cada deuda tiene **Devolver**.
 - **Buscador** (modo completo): la lupa al lado del nombre en Inicio; al bajar con el dedo se estira y queda arriba como barra "Buscá en la Billetera". Abre una pantalla para escribir: muestra **Sugerencias** (las guías, para que el ayudante muestre cómo hacer algo), la tarjeta **Tu asistente** (abre el chat de la IA) y, mientras se escribe, las guías y los movimientos que coinciden (de los últimos 12 meses), con **Ver los N en Consultar todos**.
 - **Análisis** (solo modo completo, se entra desde la fila del monto de Inicio): el mes con flechas ‹ ›, el total y los botones de negocios. Un círculo con todas las categorías (negocio en azules tirando a violeta, personal en naranjas tirando a rojo; cada categoría tiene su tono, y es el mismo en **Por categoría** de Inicio y en la lista); adentro de cada parte, un dibujito blanco de la categoría; en el centro **Personal** y **Negocio** con sus montos (todo sube desde 0 al entrar). Eligiendo Personal o Negocio (o el anillo finito de adentro), el otro grupo queda con sus colores apagados. Eligiendo una parte, el círculo se achica y se corre, y una línea de circuito sale del centro de esa parte y muestra el nombre y el monto. Si sus mini-categorías son muy finitas, salen afuera como bloques, todos juntos del lado contrario al texto. **Mercadería** abre un segundo anillo con los 3 productos con más gasto y "Otros productos"; **Viaje** (pasero, colectivo, comida…) y **Comisiones** (cambio y recargos) también. Debajo, la lista de categorías con su % y **Ver movimientos**: abre la pantalla de la categoría con las barras mes a mes (se deslizan, la línea punteada es el promedio), sus mini-categorías y "Tenés N gastos" (tocando uno se corrige como siempre).
 - **Inicio**: cuánto se gastó en el mes (el número sube desde 0 al entrar; con el **Sonido de monedas** prendido en Perfil, suena como máximo una vez cada 6 horas y solo en Inicio; viene apagado). La fila del monto, el ojito y la flecha **›** lleva a la pantalla **Análisis** (el ojito sigue ocultando los montos). Tarjetas de lo que se debe (al negocio o préstamos), "Comparado con <mes anterior>" con las barras de los meses: se ven 6 y deslizando se ven los anteriores, hasta 12 meses atrás; al elegir la barra de un mes, todo Inicio pasa a ese mes ("Gastado en julio"). Tocando el espacio vacío de esa tarjeta se abre el **día por día**: siempre se ven 7 días y se desliza de a uno; arriba, el resumen de esos 7 días (total, negocio, personal y efectivo al cierre); eligiendo un día se ve su detalle. Si alguien no carga nada en 3 días, ve el aviso "Hace N días que no cargás nada". "Por categoría" (se agranda al elegirla), "Últimos gastos" (los 5 movimientos más nuevos, aunque sean de meses anteriores) con **Consultar todos**, que siempre está: muestra los movimientos de los **últimos 12 meses**, de a **30 por página** (abajo: **‹ Página 1 de N ›**, con flechas o escribiendo el número), con buscador por palabra o monto y filtros por tipo: Personal, Compras, No reversible, Gastos generales, Cambios, Préstamos, Efectivo, Transferencia. Lo de más de 12 meses no se ve ahí, pero sigue guardado (sale en el Excel por mes).
@@ -6003,7 +6012,7 @@ function contextoIA() {
   L.push('- Gastos del viaje (descripciones rápidas): ' + (S.listas['Descripciones rápidas'] || []).join(' | '));
   L.push('\nEFECTIVO Y DEUDA (ahora mismo):');
   negs.forEach(n => {
-    const pr = Object.entries(prestamosDe(n)).filter(([, s]) => Math.abs(s) > 0.004).map(([o, s]) => s > 0 ? `${o} le debe ${fmtReal(s)}` : `le debe a ${o} ${fmtReal(-s)}`);
+    const pr = prestamosDe(n).map(([o, s]) => s > 0 ? `${o} le debe ${fmtReal(s)}` : `le debe a ${o} ${fmtReal(-s)}`);
     L.push(`- ${n}: efectivo del negocio ${fmtReal(efectivoDe(n))} · le deben al negocio (plata usada sin devolver) ${fmtReal(deudaDe(n))} · préstamos entre negocios: ${pr.length ? pr.join(', ') : 'ninguno pendiente'}`);
   });
   const suma = (arr, fk, fv) => { const m = {}; arr.forEach(f => { const k = fk(f); m[k] = (m[k] || 0) + (Number(fv(f)) || 0); }); return Object.entries(m).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${fmtReal(v)}`).join(', '); };
